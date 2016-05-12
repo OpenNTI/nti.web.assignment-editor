@@ -1,195 +1,132 @@
 import HistoryStack from '../HistoryStack';
 
 describe('History Stack tests', () => {
-	it('Empty can\'t undo or redo', () => {
-		let stack = new HistoryStack();
-
-		expect(stack.canUndo).toBeFalsy();
-		expect(stack.canRedo).toBeFalsy();
-	});
-
-
-	it('Pushing state enables undo', () => {
-		let stack = new HistoryStack();
-
-		stack.push({test: 1});
-
-		expect(stack.canUndo).toBeTruthy();
-		expect(stack.canRedo).toBeFalsy();
-	});
-
-
-	describe('With 1 previous state, and no redos', () => {
+	describe('Empty State', () => {
 		let stack;
 
 		beforeEach(() => {
 			stack = new HistoryStack();
-			stack.push({test: 0});
 		});
 
-
-		it('Undo returns null', () => {
-			let state = stack.undo();
-
-			expect(state).toBeFalsy();
-		});
-
-
-		it('Redo returns undefined', () => {
-			let state = stack.redo();
-
-			expect(state).toBeFalsy();
-		});
-
-
-		it('Undo disables undo', () => {
-			stack.undo();
-
+		it('Undo is disabled', () => {
 			expect(stack.canUndo).toBeFalsy();
 		});
 
 
-		it('Undo enables redo', () => {
-			stack.undo();
-
-			expect(stack.canRedo).toBeTruthy();
-		});
-	});
-
-
-	describe('With 2 previous states, and no redos', () => {
-		let stack;
-
-		beforeEach(() => {
-			stack = new HistoryStack();
-			stack.push({test: 0});
-			stack.push({test: 1});
+		it('Redo is disabled', () => {
+			expect(stack.canRedo).toBeFalsy();
 		});
 
 
-		it('Undo returns the first state', () => {
-			let state = stack.undo();
-
-			expect(state.test).toEqual(0);
+		it('Undo returns undefined', () => {
+			expect(stack.undo()).toBeFalsy();
 		});
 
 
 		it('Redo returns undefined', () => {
-			let state = stack.redo();
+			expect(stack.redo()).toBeFalsy();
+		});
+	});
 
-			expect(state).toBeFalsy();
+	describe('2 pushes', () => {
+		let stack;
+
+		beforeEach(() => {
+			stack = new HistoryStack();
+
+			stack.push({index: 0});
+			stack.push({index: 1});
 		});
 
 
-		it('Undo leaves undo enabled', () => {
-			stack.undo();
-
+		it('Undo is enabled', () => {
 			expect(stack.canUndo).toBeTruthy();
 		});
 
 
-		it('Undo enables redo', () => {
-			stack.undo();
+		it ('Redo is disabled', () => {
+			expect(stack.canRedo).toBeFalsy();
+		});
+
+
+		it('Undo returns the second state, and enables redo', () => {
+			let state = stack.undo();
 
 			expect(stack.canRedo).toBeTruthy();
+			expect(state.index).toEqual(0);
+		});
+
+
+		it('2 undos returns the undefined, disables undo, and enables redo', () => {
+			stack.undo();
+			let state = stack.undo();
+
+			expect(state).toBeFalsy();
+			expect(stack.canUndo).toBeFalsy();
+			expect(stack.canRedo).toBeTruthy();
+		});
+
+
+		it('Redo returns the current state', () => {
+			let state = stack.redo();
+
+			expect(state.index).toEqual(1);
 		});
 	});
 
 
-	describe('With no previous states, and 1 redo', () => {
+	describe('3 pushes and 1 undo', () => {
 		let stack;
 
-		beforeEach(() => {
+		beforeEach(()=> {
 			stack = new HistoryStack();
 
-			stack.push({test: 0});
+			stack.push({index: 0});
+			stack.push({index: 1});
+			stack.push({index: 2});
+
 			stack.undo();
 		});
 
-
-		it('Push clears and disables redo', () => {
-			stack.push({test: 1});
-
-			let state = stack.redo();
-
-			expect(stack.canRedo).toBeFalsy();
-			expect(state).toBeFalsy();
-		});
-
-
-		it('Undo returns undefined', () => {
-			let state = stack.undo();
-
-			expect(state).toBeFalsy();
-		});
-
-
-		it('Redo returns the first redo', () => {
-			let state = stack.redo();
-
-			expect(state.test).toEqual(0);
-		});
-
-
-		it('Redo enables undo', () => {
-			stack.redo();
-
+		it('Undo is enabled', () => {
 			expect(stack.canUndo).toBeTruthy();
 		});
 
-		it('Redo disables redo', () => {
-			stack.redo();
 
-			expect(stack.canRedo).toBeFalsy();
+		it('Redo is enabled', () => {
+			expect(stack.canRedo).toBeTruthy();
 		});
-	});
 
 
-	describe('With no previous states, and 2 redos', () => {
-		let stack;
+		it('Undo returns the first state, enables undo, and enables redo', () => {
+			let state = stack.undo();
 
-		beforeEach(() => {
-			stack = new HistoryStack();
+			expect(state.index).toEqual(0);
+			expect(stack.canUndo).toBeTruthy();
+			expect(stack.canRedo).toBeTruthy();
+		});
 
-			stack.push({test: 0});
-			stack.push({test: 1});
+
+		it('2 undos returns undefined, disables redo, and enables redo', () => {
 			stack.undo();
-		});
-
-
-		it('Push clears and disables redo', () => {
-			stack.push({test: 2});
-
-			let state = stack.redo();
-
-			expect(stack.canRedo).toBeFalsy();
-			expect(state).toBeFalsy();
-		});
-
-
-		it('Undo returns undefined', () => {
 			let state = stack.undo();
 
 			expect(state).toBeFalsy();
+			expect(stack.canUndo).toBeFalsy();
+			expect(stack.canRedo).toBeTruthy();
 		});
 
 
-		it('Redo returns the first redo', () => {
+		it('Push disables redo', () => {
+			stack.push({index: 3});
+
+			expect(stack.canRedo).toBeFalsy();
+		});
+
+		it('Redo returns last state, and disables redo', () => {
 			let state = stack.redo();
 
-			expect(state.test).toEqual(1);
-		});
-
-
-		it('Redo enables undo', () => {
-			stack.redo();
-
-			expect(stack.canUndo).toBeTruthy();
-		});
-
-		it('Redo leaves redo enabled', () => {
-			stack.redo();
-
+			expect(state.index).toBe(2);
 			expect(stack.canRedo).toBeFalsy();
 		});
 	});

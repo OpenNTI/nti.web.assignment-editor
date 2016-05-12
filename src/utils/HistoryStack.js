@@ -12,44 +12,50 @@ export default class HistoryStack {
 	push (state) {
 		let p = PRIVATE.get(this);
 
-		p.undo.push(state);
+		if (p.currentState !== undefined) {
+			p.undo.push(p.currentState);
+		}
 		p.redo = [];
+
+		p.currentState = state;
 	}
 
 
 	undo () {
 		let p = PRIVATE.get(this);
-		let state;
 
-		if (p.undo.length > 0) {
-			state = p.undo.pop();
-			p.redo.push(state);
-			state = p.undo[0];
+		if (this.canUndo) {
+			p.redo.push(p.currentState);
+			p.currentState = p.undo.pop();
 		}
 
-		return state;
+		return p.currentState;
 	}
 
 
 	redo () {
 		let p = PRIVATE.get(this);
-		let state;
 
-		if (p.redo.length > 0) {
-			state = p.redo.pop();
-			p.undo.push(state);
+		if (this.canRedo) {
+			p.undo.push(p.currentState);
+			p.currentState = p.redo.pop();
 		}
 
-		return state;
+		return p.currentState;
 	}
 
 
 	get canUndo () {
-		return PRIVATE.get(this).undo.length !== 0;
+		return PRIVATE.get(this).currentState !== undefined;
 	}
 
 
 	get canRedo () {
 		return PRIVATE.get(this).redo.length !== 0;
+	}
+
+
+	get currentState () {
+		return PRIVATE.get(this).currentState;
 	}
 }
