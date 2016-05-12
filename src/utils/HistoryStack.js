@@ -12,6 +12,10 @@ export default class HistoryStack {
 	push (state) {
 		let p = PRIVATE.get(this);
 
+		if (p.currentState === undefined) {
+			p.initialState = state;
+		}
+
 		if (p.currentState !== undefined) {
 			p.undo.push(p.currentState);
 		}
@@ -46,7 +50,9 @@ export default class HistoryStack {
 
 
 	get canUndo () {
-		return PRIVATE.get(this).currentState !== undefined;
+		let p = PRIVATE.get(this);
+
+		return p.currentState !== undefined && p.currentState !== p.initialState;
 	}
 
 

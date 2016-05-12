@@ -57,11 +57,11 @@ describe('History Stack tests', () => {
 		});
 
 
-		it('2 undos returns the undefined, disables undo, and enables redo', () => {
+		it('2 undos returns the initial state, disables undo, and enables redo', () => {
 			stack.undo();
 			let state = stack.undo();
 
-			expect(state).toBeFalsy();
+			expect(state.index).toEqual(0);
 			expect(stack.canUndo).toBeFalsy();
 			expect(stack.canRedo).toBeTruthy();
 		});
@@ -98,20 +98,20 @@ describe('History Stack tests', () => {
 		});
 
 
-		it('Undo returns the first state, enables undo, and enables redo', () => {
+		it('Undo returns the first state, disables undo, and enables redo', () => {
 			let state = stack.undo();
 
 			expect(state.index).toEqual(0);
-			expect(stack.canUndo).toBeTruthy();
+			expect(stack.canUndo).toBeFalsy();
 			expect(stack.canRedo).toBeTruthy();
 		});
 
 
-		it('2 undos returns undefined, disables redo, and enables redo', () => {
+		it('2 undos returns the initial state, disables redo, and enables redo', () => {
 			stack.undo();
 			let state = stack.undo();
 
-			expect(state).toBeFalsy();
+			expect(state.index).toEqual(0);
 			expect(stack.canUndo).toBeFalsy();
 			expect(stack.canRedo).toBeTruthy();
 		});
