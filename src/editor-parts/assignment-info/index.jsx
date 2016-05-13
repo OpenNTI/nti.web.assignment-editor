@@ -1,21 +1,24 @@
 import React from 'react';
 
+import AssignmentTitle from './AssignmentTitle';
+import AssignmentDescription from './AssignmentDescription';
+
 export default class AssignmentInfo extends React.Component {
 	constructor (props) {
 		super(props);
 
-		this.onTitleChange = this.onTitleChange.bind(this);
+		this.state = {
+			value: ''
+		};
 	}
 
-	onTitleChange () {
-		debugger;
-	}
 
 	render () {
 
 		return (
 			<div className="assignment-info">
-				<input type="text" value={this.state.value} onChange={this.onTitleChange}/>
+				<AssignmentTitle />
+				<AssignmentDescription />
 			</div>
 		);
 	}

@@ -1,21 +1,37 @@
 import React from 'react';
-import HistoryStack from './utils/HistoryStack';
+import AssignmentInfo from './editor-parts/assignment-info';
+import Controls from './editor-parts/controls';
+import SelectionManager from './utils/SelectionManager';
 
-// import AssigmentInfo from './editor-parts';
+let selectionManager = new SelectionManager();
 
 export default class AssignmentEditor extends React.Component {
+
+	static childContextTypes = {
+		SelectionManager: React.PropTypes.shape({
+			select: React.PropTypes.fn,
+			unseleft: React.PropTypes.fn
+		})
+	}
+
 
 	constructor (props) {
 		super(props);
 	}
 
-	render () {
-		let undoColor = this.stack.canUndo ? 'black' : 'grey';
-		let redoColor = this.stack.canRedo ? 'black' : 'grey';
 
+	getChildContext () {
+		return {
+			SelectionManager: selectionManager
+		};
+	}
+
+
+	render () {
 		return (
 			<div>
-				// <AssignmentInfo assignment={this.props.assignment} />
+				<Controls />
+				<AssignmentInfo assignment={this.props.assignment} />
 			</div>
 		);
 	}
