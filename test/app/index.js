@@ -2,12 +2,12 @@
 import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Cmp from '../../src/index';
+import {Editor} from '../../src/index';
 
 import 'normalize.css';
 
 ReactDOM.render(
-	<Cmp/>,
+	<Editor/>,
 	document.getElementById('content')
 );
 
