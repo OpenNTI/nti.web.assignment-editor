@@ -2,7 +2,7 @@ import React from 'react';
 import Field from './Field';
 
 export default class Description extends Field {
-	fieldName = 'content'
+	get fieldName () { return 'content'; }
 
 	getSelectableValue () {
 		return 'Description';
@@ -10,7 +10,7 @@ export default class Description extends Field {
 
 	renderInput () {
 		return (
-			<input type="text" value={this.fieldName} />
+			<span>{this.fieldName}</span>
 		);
 	}
 }

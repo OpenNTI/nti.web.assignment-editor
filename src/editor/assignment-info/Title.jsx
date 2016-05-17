@@ -2,15 +2,28 @@ import React from 'react';
 import Field from './Field';
 
 export default class Title extends Field {
-	fieldName = 'title'
+	get fieldName () { return 'title'; }
+
+	constructor (props) {
+		super(props);
+
+		this.onChange = this.onChange.bind(this);
+	}
+
 
 	getSelectableValue () {
 		return 'Title';
 	}
 
+
+	onChange (e) {
+		super.onChange(e.target.value);
+	}
+
+
 	renderInput () {
 		return (
-			<input type="text" value={this.fieldName} />
+			<input type="text" value={this.state.value} onChange={this.onChange} />
 		);
 	}
 }

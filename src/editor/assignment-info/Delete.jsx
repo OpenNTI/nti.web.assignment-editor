@@ -2,7 +2,7 @@ import React from 'react';
 import Field from './Field';
 
 export default class Delete extends Field {
-	fieldName = 'Delete'
+	get fieldName () { return 'Delete'; }
 
 	getSelectableValue () {
 		return 'Delete';
@@ -10,7 +10,7 @@ export default class Delete extends Field {
 
 	renderInput () {
 		return (
-			<input type="text" value={this.fieldName} />
+			<span>{this.fieldName}</span>
 		);
 	}
 }

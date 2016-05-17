@@ -2,7 +2,7 @@ import React from 'react';
 import Field from './Field';
 
 export default class PointValue extends Field {
-	fieldName = 'PointValue'
+	get fieldName () { return 'PointValue'; }
 
 	getSelectableValue () {
 		return 'Point Value';
@@ -10,7 +10,7 @@ export default class PointValue extends Field {
 
 	renderInput () {
 		return (
-			<input type="text" value={this.fieldName} />
+			<span>{this.fieldName}</span>
 		);
 	}
 }

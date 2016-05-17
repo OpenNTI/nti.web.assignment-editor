@@ -20,7 +20,7 @@ export default class AssignmentEditor extends React.Component {
 
 	render () {
 		const {assignment, schema} = this.props;
-		const cls = cx({loading: !!assignment});
+		const cls = cx('assignment-editor', {loading: !!assignment});
 
 		return (
 			<div className={cls}>

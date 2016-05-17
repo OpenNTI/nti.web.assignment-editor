@@ -2,7 +2,7 @@ import React from 'react';
 import Field from './Field';
 
 export default class AvailableEnding extends Field {
-	fieldName = 'available_for_submission_ending'
+	get fieldName () { return 'available_for_submission_ending'; }
 
 	getSelectableValue () {
 		return 'Available Submission Ending';
@@ -10,7 +10,7 @@ export default class AvailableEnding extends Field {
 
 	renderInput () {
 		return (
-			<input type="text" value={this.fieldName} />
+			<span>{this.fieldName}</span>
 		);
 	}
 }

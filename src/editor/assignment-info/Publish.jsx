@@ -2,7 +2,7 @@ import React from 'react';
 import Field from './Field';
 
 export default class Publish extends Field {
-	fieldName = 'Publish'
+	get fieldName () { return  'Publish'; }
 
 	getSelectableValue () {
 		return 'Publish';
@@ -10,7 +10,7 @@ export default class Publish extends Field {
 
 	renderInput () {
 		return (
-			<input type="text" value={this.fieldName} />
+			<span>{this.fieldName}</span>
 		);
 	}
 }

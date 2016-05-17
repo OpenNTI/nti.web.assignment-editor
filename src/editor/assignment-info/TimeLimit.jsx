@@ -2,7 +2,7 @@ import React from 'react';
 import Field from './Field';
 
 export default class TimeLimit extends Field {
-	fieldName = 'TimeLimit'
+	get fieldName () { return 'TimeLimit'; }
 
 	getSelectableValue () {
 		return 'Time Limit';
@@ -10,7 +10,7 @@ export default class TimeLimit extends Field {
 
 	renderInput () {
 		return (
-			<input type="text" value={this.fieldName} />
+			<span>{this.fieldName}</span>
 		);
 	}
 }
