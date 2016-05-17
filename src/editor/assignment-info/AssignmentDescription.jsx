@@ -1,6 +1,6 @@
 import React from 'react';
 import SimpleText from '../inputs/SimpleText';
-import Selectable from '../../utils/Selectable';
+import Selectable from '../utils/Selectable';
 
 
 export default class AssignmentDescription extends React.Component {
@@ -18,20 +18,6 @@ export default class AssignmentDescription extends React.Component {
 
 
 	onChange () {}
-
-
-	activateSelection () {
-		if (this.selectable) {
-			this.selectable.select();
-		}
-	}
-
-
-	deactivateSelection () {
-		if (this.selectable) {
-			this.selectable.unselect();
-		}
-	}
 
 
 	render () {

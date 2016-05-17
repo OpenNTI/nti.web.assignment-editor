@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+
 exports = module.exports = Object.assign(require('./webpack.config'), {
 	entry: './test/app/index.js',
 	externals: [],
@@ -7,3 +9,7 @@ exports = module.exports = Object.assign(require('./webpack.config'), {
 		publicPath: '/'
 	}
 });
+
+exports.plugins.push(new webpack.DefinePlugin({
+	'SERVER': false
+}));

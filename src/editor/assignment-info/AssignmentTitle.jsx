@@ -1,6 +1,6 @@
 import React from 'react';
 import SimpleText from '../inputs/SimpleText';
-import Selectable from '../../utils/Selectable';
+import Selectable from '../utils/Selectable';
 
 
 export default class AssignmentTitle extends React.Component {
