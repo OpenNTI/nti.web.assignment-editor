@@ -39,9 +39,9 @@ export default class Controls extends React.Component {
 
 
 	componentWillUnmount () {
-	 	let selectionManager = this.context.SelectionManager;
+		let selectionManager = this.context.SelectionManager;
 
-	 	selectionManager.removeListener('selection-changed', this.selectionChanged);
+		selectionManager.removeListener('selection-changed', this.selectionChanged);
 	}
 
 

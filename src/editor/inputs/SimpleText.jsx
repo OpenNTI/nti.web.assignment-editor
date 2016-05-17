@@ -33,9 +33,7 @@ export default class SimpleText extends React.Component {
 	}
 
 
-	onChange (e) {
-		debugger;
-	}
+	onChange () {}
 
 
 	render () {

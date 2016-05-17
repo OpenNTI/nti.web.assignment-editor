@@ -23,8 +23,10 @@ class Store extends StorePrototype {
 	}
 
 
-	[SetAssignment] (assignment) {
+	[SetAssignment] (e) {
+		const assignment = e.action.response;
 		let p = PRIVATE.get(this);
+
 
 		if (assignment instanceof Error) {
 			p.error = assignment;
@@ -33,12 +35,13 @@ class Store extends StorePrototype {
 		}
 
 		if (p.schema !== null) {
-			this.emitChange({type: LOADED, assignment: assignment, schema: p.schema});
+			this.emitChange({type: LOADED});
 		}
 	}
 
 
-	[SetSchema] (schema) {
+	[SetSchema] (e) {
+		const schema = e.action.response;
 		let p = PRIVATE.get(this);
 
 		if (!(schema instanceof Error)) {
@@ -46,10 +49,10 @@ class Store extends StorePrototype {
 		}
 
 		if (p.assignment !== null) {
-			this.emitChange({type: LOADED, assignment: p.assignment, schema: schema});
+			this.emitChange({type: LOADED});
 		}
 
-		this.emitChange({type: LOADED_SCHEMA, schema: schema});
+		this.emitChange({type: LOADED_SCHEMA});
 	}
 
 

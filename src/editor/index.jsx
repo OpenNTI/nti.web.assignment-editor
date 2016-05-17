@@ -4,7 +4,7 @@ import AssignmentEditor from './assignment-editor';
 import Controls from './controls';
 import Sidebar from './sidebar';
 import SelectionManager from './utils/SelectionManager';
-import {LOADED, LOADED_SCHEMA} from './Constants';
+import {LOADED} from './Constants';
 import Store from './Store';
 import {loadAssignment} from './Actions';
 import cx from 'classnames';
@@ -33,14 +33,14 @@ export default class Editor extends React.Component {
 	constructor (props) {
 		super(props);
 
-		this.state = {
-			loading: false
-		};
+		this.state = {};
 
 		this.onStoreChange = this.onStoreChange.bind(this);
+	}
 
+
+	componentDidMount () {
 		Store.addChangeListener(this.onStoreChange);
-
 		loadAssignment(this.props.NTIID);
 	}
 
@@ -53,8 +53,8 @@ export default class Editor extends React.Component {
 	onStoreChange (data) {
 		if (data.type === LOADED) {
 			this.setState({
-				assignment: data.assignment,
-				schema: data.schema
+				assignment: Store.assignment,
+				schema: Store.schema
 			});
 		}
 	}

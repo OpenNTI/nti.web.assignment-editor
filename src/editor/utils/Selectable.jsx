@@ -8,7 +8,9 @@ export default class Selectable extends React.Component {
 		value: React.PropTypes.string,
 		id: React.PropTypes.string,
 		className: React.PropTypes.string,
-		children: React.PropTypes.any
+		children: React.PropTypes.any,
+		onSelect: React.PropTypes.fn,
+		onUnselect: React.PropTypes.fn
 	}
 
 	static contextTypes = {
@@ -19,6 +21,11 @@ export default class Selectable extends React.Component {
 			removeListener: React.PropTypes.fn,
 			isSelected: React.PropTypes.fn
 		})
+	}
+
+	static defaultProps = {
+		onSelect: () => {},
+		onUnselect: () => {}
 	}
 
 	constructor (props) {
@@ -90,23 +97,33 @@ export default class Selectable extends React.Component {
 
 
 	select (e) {
-		let selectionManager = this.context.SelectionManager;
-		let item = this.getSelectionItem();
+		const selectionManager = this.context.SelectionManager;
+		const item = this.getSelectionItem();
+		const {onSelect} = this.props;
 
 		if (selectionManager) {
 			selectionManager.select(item);
 			e.stopPropagation();
 		}
+
+		if (onSelect) {
+			onSelect(item);
+		}
 	}
 
 
 	unselect (e) {
-		let selectionManager = this.context.SelectionManager;
-		let item = this.getSelectionItem();
+		const selectionManager = this.context.SelectionManager;
+		const item = this.getSelectionItem();
+		const {onUnselect} = this.props;
 
 		if (selectionManager) {
 			selectionManager.unselect(item);
 			e.stopPropagation();
+		}
+
+		if (onUnselect) {
+			onUnselect(item);
 		}
 	}
 
