@@ -8,9 +8,15 @@ export default class Description extends Field {
 		return 'Description';
 	}
 
+
+	onChange (e) {
+		super.onChange(e.target.value);
+	}
+
+
 	renderInput () {
 		return (
-			<span>{this.fieldName}</span>
+			<textarea onChange={this.onChange}>{this.state.value}</textarea>
 		);
 	}
 }
