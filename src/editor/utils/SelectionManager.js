@@ -1,6 +1,11 @@
 import {EventEmitter} from 'events';
+import Logger from 'nti-util-logger';
 
 const PRIVATE = new WeakMap();
+const MonitorItem = Symbol('Monitor Item');
+const UnmonitorItem = Symbol('Unmonitor Item');
+const ItemUpdated = Symbol('Item Updated');
+const logger = Logger.get('selectionmanager');
 
 export class SelectionItem extends EventEmitter {
 	constructor (config) {
@@ -16,6 +21,8 @@ export class SelectionItem extends EventEmitter {
 			id: config.id,
 			value: config.value
 		});
+
+		this.setMaxListeners(1000);
 	}
 
 
@@ -30,12 +37,12 @@ export class SelectionItem extends EventEmitter {
 
 
 	set value (value) {
-		this.emit('value-changed', value);
-
 		PRIVATE.set(this, {
 			id: this.id,
 			value: value
 		});
+
+		this.emit('updated', this);
 	}
 }
 
@@ -46,6 +53,8 @@ export default class SelectionManager extends EventEmitter {
 		PRIVATE.set(this, {
 			selectedItems: []
 		});
+
+		this[ItemUpdated] = this[ItemUpdated].bind(this);
 	}
 
 
@@ -69,6 +78,7 @@ export default class SelectionManager extends EventEmitter {
 			addedNew = addedNew || !selectedMap[item.id];
 
 			if (!keepCurrent || !selectedMap[item.id]) {
+				this[MonitorItem](item);
 				acc.push(item);
 			}
 
@@ -101,6 +111,7 @@ export default class SelectionManager extends EventEmitter {
 			if (!unselectMap[item.id]) {
 				acc.push(item);
 			} else {
+				this[UnmonitorItem](item);
 				itemRemoved = true;
 			}
 
@@ -133,5 +144,35 @@ export default class SelectionManager extends EventEmitter {
 		}
 
 		return selection;
+	}
+
+
+	[MonitorItem] (item) {
+		if (item.addListener) {
+			item.addListener('updated', this[ItemUpdated]);
+		} else {
+			logger.warn('Selection item does not have addListener');
+		}
+	}
+
+
+	[UnmonitorItem] (item) {
+		if (!item.removeListener) {
+			item.removeListener('updated', this[ItemUpdated]);
+		} else {
+			logger.warn('Selection item does not have removeListener');
+		}
+	}
+
+
+	[ItemUpdated] (item) {
+		const p = PRIVATE.get(this);
+
+		if (this.isSelected(item)) {
+			this.emit('selection-changed', p.selectedItems);
+		} else {
+			logger.warn('Got update event for item that is not selected');
+			this[UnmonitorItem](item);
+		}
 	}
 }

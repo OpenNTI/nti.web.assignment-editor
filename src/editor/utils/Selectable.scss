@@ -1,5 +1,5 @@
 .selectable {
-	input, textarea {
+	&, input, textarea {
 		&:focus {
 			outline: 0;
 		}

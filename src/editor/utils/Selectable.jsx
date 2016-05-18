@@ -1,6 +1,5 @@
 import React from 'react';
 import cx from 'classnames';
-
 import {SelectionItem} from './SelectionManager';
 
 export default class Selectable extends React.Component {
@@ -47,8 +46,17 @@ export default class Selectable extends React.Component {
 	}
 
 
-	componentWillReceiveProps (/*nextProps*/) {
-		//TODO: when receiving new props update the value of the selection item, and warn if the id changes
+	componentWillReceiveProps (nextProps) {
+		const prevProps = this.props;
+		const item = this.getSelectionItem();
+
+		if (prevProps.id !== nextProps.id) {
+			return;
+		}
+
+		if (prevProps.value !== nextProps.value) {
+			item.value = nextProps.value;
+		}
 	}
 
 
