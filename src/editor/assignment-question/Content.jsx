@@ -4,7 +4,7 @@ import {saveQuestionContent} from './Actions';
 
 export default class QuestionContent extends React.Component {
 	static propTypes = {
-		Question: React.PropTypes.object.isRequired,
+		question: React.PropTypes.object.isRequired,
 		onFocus: React.PropTypes.func,
 		onBlur: React.PropTypes.func
 	}
@@ -13,10 +13,10 @@ export default class QuestionContent extends React.Component {
 	constructor (props) {
 		super(props);
 
-		const {Question} = props;
+		const {question} = props;
 
 		this.state = {
-			content: Question.content
+			content: question.content
 		};
 
 		this.onFocus = this.onFocus.bind(this);
@@ -35,14 +35,14 @@ export default class QuestionContent extends React.Component {
 
 
 	onBlur () {
-		const {onBlur, Question} = this.props;
+		const {onBlur, question} = this.props;
 		const {content} = this.state;
 
 		if (onBlur) {
 			onBlur();
 		}
 
-		saveQuestionContent(Question, content);
+		saveQuestionContent(question, content);
 	}
 
 

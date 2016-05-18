@@ -3,7 +3,7 @@ import React from 'react';
 import {getInputWidget} from './inputs';
 
 function questionParts (props) {
-	let {parts} = props.Question;
+	let {parts} = props.question;
 
 	if (parts.length === 0) {
 		return (
@@ -19,7 +19,7 @@ function questionParts (props) {
 }
 
 questionParts.propTypes = {
-	Question: React.PropTypes.object.isRequired
+	question: React.PropTypes.object.isRequired
 };
 
 

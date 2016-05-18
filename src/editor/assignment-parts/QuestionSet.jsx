@@ -4,7 +4,8 @@ import Question from '../assignment-question';
 export default class QuestionSetComponent extends React.Component {
 
 	static propTypes = {
-		QuestionSet: React.PropTypes.object.isRequired
+		questionSet: React.PropTypes.object.isRequired,
+		assignment: React.PropTypes.object.isRequired
 	}
 
 	constructor (props) {
@@ -15,13 +16,13 @@ export default class QuestionSetComponent extends React.Component {
 
 
 	render () {
-		const {QuestionSet} = this.props;
-		const {questions} = QuestionSet;
+		const {questionSet} = this.props;
+		const {questions} = questionSet;
 
 		return (
 			<div className="questions">
 				{questions.map((question) => {
-					return (<Question key={question.NTIID} Question={question} />);
+					return (<Question key={question.NTIID} question={question} questionSet={questionSet}/>);
 				})}
 			</div>
 		);

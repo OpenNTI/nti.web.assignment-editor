@@ -44,7 +44,7 @@ export default class AssignmentParts extends React.Component {
 		}
 
 		return (
-			<Part Part={parts[0]} />
+			<Part part={parts[0]} assignment={this.props.assignment} />
 		);
 	}
 }
