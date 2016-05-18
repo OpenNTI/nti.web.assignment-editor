@@ -5,8 +5,8 @@ import {saveQuestionContent} from './Actions';
 export default class QuestionContent extends React.Component {
 	static propTypes = {
 		Question: React.PropTypes.object.isRequired,
-		onFocus: React.PropTypes.fn,
-		onBlur: React.PropTypes.fn
+		onFocus: React.PropTypes.func,
+		onBlur: React.PropTypes.func
 	}
 
 

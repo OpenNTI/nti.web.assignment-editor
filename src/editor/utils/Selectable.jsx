@@ -9,17 +9,17 @@ export default class Selectable extends React.Component {
 		id: React.PropTypes.string,
 		className: React.PropTypes.string,
 		children: React.PropTypes.any,
-		onSelect: React.PropTypes.fn,
-		onUnselect: React.PropTypes.fn
+		onSelect: React.PropTypes.func,
+		onUnselect: React.PropTypes.func
 	}
 
 	static contextTypes = {
 		SelectionManager: React.PropTypes.shape({
-			select: React.PropTypes.fn,
-			unselect: React.PropTypes.fn,
-			addListener: React.PropTypes.fn,
-			removeListener: React.PropTypes.fn,
-			isSelected: React.PropTypes.fn
+			select: React.PropTypes.func,
+			unselect: React.PropTypes.func,
+			addListener: React.PropTypes.func,
+			removeListener: React.PropTypes.func,
+			isSelected: React.PropTypes.func
 		})
 	}
 
