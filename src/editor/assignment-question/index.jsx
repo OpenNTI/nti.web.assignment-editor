@@ -1,6 +1,7 @@
 import React from 'react';
 import Selectable from '../utils/Selectable';
 import Content from './Content';
+import Parts from './Parts';
 
 export default class QuestionComponent extends React.Component {
 	static propTypes = {
@@ -45,7 +46,7 @@ export default class QuestionComponent extends React.Component {
 		return (
 			<Selectable className="question" id={selectableId} value={selectableValue}>
 				<Content Question={Question} onFocus={this.onContentFocus} onBlur={this.onContentBlur}/>
-				<span>Answers</span>
+				<Parts Question={Question} />
 			</Selectable>
 		);
 	}
