@@ -1,5 +1,5 @@
 import React from 'react';
-import Question from './Question';
+import Question from '../assignment-question';
 
 export default class QuestionSetComponent extends React.Component {
 

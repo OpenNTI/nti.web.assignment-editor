@@ -1,5 +1,5 @@
 import {dispatch} from 'nti-lib-dispatcher';
-import {SAVING, ASSIGNMENT_UPDATED, ERROR} from '../Constants';
+import {SAVING, ASSIGNMENT_UPDATED, ASSIGNMENT_ERROR} from '../Constants';
 
 export function saveFieldOnAssignment (assignment, field, newValue) {
 	const oldValue = assignment[field];
@@ -16,6 +16,6 @@ export function saveFieldOnAssignment (assignment, field, newValue) {
 			dispatch(ASSIGNMENT_UPDATED, assignment);
 		})
 		.catch((reason) => {
-			dispatch(ERROR, reason);
+			dispatch(ASSIGNMENT_ERROR, reason);
 		});
 }

@@ -16,7 +16,7 @@ export default class Description extends Field {
 
 	renderInput () {
 		return (
-			<textarea onChange={this.onChange}>{this.state.value}</textarea>
+			<textarea onChange={this.onChange} value={this.state.value}></textarea>
 		);
 	}
 }

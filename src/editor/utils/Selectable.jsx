@@ -134,7 +134,7 @@ export default class Selectable extends React.Component {
 		let cls = cx(className || '', 'selectable', { selected: selected});
 
 		return (
-			<div className={cls} onFocus={this.select} onBlur={this.unselect}>
+			<div className={cls} onFocus={this.select} onBlur={this.unselect} tabIndex="0">
 				{children}
 			</div>
 		);

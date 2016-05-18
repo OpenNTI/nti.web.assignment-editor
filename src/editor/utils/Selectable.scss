@@ -1,0 +1,11 @@
+.selectable {
+	input, textarea {
+		&:focus {
+			outline: 0;
+		}
+	}
+
+	&.selected {
+		box-shadow: 0 0 1px 1px blue;
+	}
+}
