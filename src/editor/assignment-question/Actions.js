@@ -12,7 +12,7 @@ export function saveQuestionContent (question, content) {
 		content: content
 	}).then(() => {
 		dispatch(QUESTION_UPDATED, question);
-	}).fail((reason) => {
+	}).catch((reason) => {
 		dispatch(QUESTION_ERROR, reason);
 	});
 }
