@@ -18,7 +18,7 @@ export default class Editor extends React.Component {
 
 
 	static defaultProps = {
-		NTIID: 'tag:nextthought.com,2011-10:NTI-NAQ-assignment_andrew_ligon_4743924853241199962_21650fae'
+		NTIID: 'tag:nextthought.com,2011-10:NTI-NAQ-assignment_andrew_ligon_4743919737168060609_e92f9379'
 	}
 
 
