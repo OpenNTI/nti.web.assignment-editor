@@ -39,7 +39,8 @@
     "nti-lib-dispatcher": "^1.0.0",
     "nti-lib-store": "^1.0.0",
     "nti-util-logger": "^1.0.0",
-    "nti-web-client": "^1.0.0"
+    "nti-web-client": "^1.0.0",
+    "react-flip-move": "^2.2.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",

@@ -1,14 +1,9 @@
 import React from 'react';
 
-export default class FileUploadPart extends React.Component {
+export default class FileUploadEditor extends React.Component {
 	static propTypes = {
 		item: React.PropTypes.object.isRequired
 	}
-
-	//TODO: get this mime type from the model
-	static handles = [
-		'application/vnd.nextthought.assessment.filepart'
-	]
 
 
 	constructor (props) {

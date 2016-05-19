@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {getInputWidget} from './inputs';
+import {getEditorWidget} from '../assignment-inputs';
 
 function questionParts (props) {
 	let {parts} = props.question;
@@ -13,7 +13,7 @@ function questionParts (props) {
 
 	return (
 		<div className="question-parts">
-			{parts.map(getInputWidget)}
+			{parts.map(getEditorWidget)}
 		</div>
 	);
 }

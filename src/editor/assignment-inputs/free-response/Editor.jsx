@@ -1,14 +1,9 @@
 import React from 'react';
 
-export default class FreeResponsePart extends React.Component {
+export default class FreeResponseEditor extends React.Component {
 	static propTypes = {
 		item: React.PropTypes.object.isRequired
 	}
-
-	//TODO: get this mime type from the model
-	static handles = [
-		'application/vnd.nextthought.assessment.freeresponsepart'
-	]
 
 
 	constructor (props) {
