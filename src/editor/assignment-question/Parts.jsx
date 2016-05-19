@@ -3,7 +3,8 @@ import React from 'react';
 import {getEditorWidget} from '../assignment-inputs';
 
 function questionParts (props) {
-	let {parts} = props.question;
+	const {question} = props;
+	const {parts} = question;
 
 	if (parts.length === 0) {
 		return (
@@ -13,7 +14,9 @@ function questionParts (props) {
 
 	return (
 		<div className="question-parts">
-			{parts.map(getEditorWidget)}
+			{parts.map((part, index) => {
+				return getEditorWidget(part, index, question);
+			})}
 		</div>
 	);
 }

@@ -77,7 +77,7 @@ export default class BaseButton extends React.Component {
 		const usedCls = cx('used', {isUsed: usedCount > 0});
 
 		return (
-			<div className="button">
+			<div className="button" onClick={this.onClick}>
 				<span className={iconCls}></span>
 				<span className="label">{label}</span>
 				<span className={usedCls}>{usedCount} used</span>

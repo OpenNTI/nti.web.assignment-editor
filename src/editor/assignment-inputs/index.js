@@ -30,7 +30,7 @@ function canHandle (cmp, type) {
 }
 
 
-export function getEditorWidget (part, index) {
+export function getEditorWidget (part, index, question) {
 	const mimeType = part && part.MimeType && part.MimeType.toLowerCase();
 	let cmp;
 
@@ -48,7 +48,7 @@ export function getEditorWidget (part, index) {
 
 	return React.createElement(cmp, {
 		key: part.NTIID,
-		index, part
+		index, part, question
 	});
 }
 

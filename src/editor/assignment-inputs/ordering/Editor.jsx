@@ -2,7 +2,7 @@ import React from 'react';
 
 export default class OrderingEditor extends React.Component {
 	static propTypes = {
-		item: React.PropTypes.object.isRequired
+		part: React.PropTypes.object.isRequired
 	}
 
 

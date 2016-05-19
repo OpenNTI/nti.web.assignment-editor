@@ -1,8 +1,11 @@
 import React from 'react';
+import Choices from './Choices';
+import {savePart} from './Actions';
 
 export default class MultipleChoiceEditor extends React.Component {
 	static propTypes = {
-		item: React.PropTypes.object.isRequired
+		part: React.PropTypes.object.isRequired,
+		question: React.PropTypes.object.isRequired
 	}
 
 
@@ -10,12 +13,26 @@ export default class MultipleChoiceEditor extends React.Component {
 		super(props);
 
 		this.state = {};
+
+		this.choicesChanged = this.choicesChanged.bind(this);
+	}
+
+
+	choicesChanged (choices, solution) {
+		savePart(this.props.part, choices, solution);
 	}
 
 
 	render () {
+		const {part} = this.props;
+		let {choices, solutions} = part;
+		let solution = solutions[0];//For now just handle the first solution
+
+		solution = solution && solution.value;
+		choices = choices.slice(0);
+
 		return (
-			<div>TODO: Fill Out Multiple Choice Type</div>
+			<Choices partId={part.NTIID} choices={choices} solution={solution} onChange={this.choicesChanged}/>
 		);
 	}
 }
