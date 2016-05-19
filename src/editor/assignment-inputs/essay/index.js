@@ -1,8 +1,7 @@
 import Editor from './Editor';
 import Button from './Button';
 
-
-export default class EditorPart {
+export default class EssayPart {
 	//TODO: get this mime type from the model
 	static handles = [
 		'application/vnd.nextthought.assessment.modeledcontentpart'
@@ -18,3 +17,6 @@ export default class EditorPart {
 		return Editor;
 	}
 }
+
+Button.handles = EssayPart.handles;
+Editor.handles = EssayPart.handles;

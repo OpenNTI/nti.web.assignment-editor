@@ -53,12 +53,13 @@ export function getEditorWidget (part, index) {
 }
 
 
-export function getButtons (mimeTypes) {
+export function getButtons (mimeTypes, assignment) {
 	//TODO: filter this down to whats accepted by the schema
 	if (!mimeTypes) {
 		return KINDS.map((cmp) => {
 			return React.createElement(cmp.button, {
-				key: cmp.handles
+				key: cmp.handles,
+				assignment
 			});
 		});
 	}

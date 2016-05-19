@@ -17,3 +17,6 @@ export default class FreeResponsePart {
 		return Editor;
 	}
 }
+
+Button.handles = FreeResponsePart.handles;
+Editor.handles = FreeResponsePart.handles;

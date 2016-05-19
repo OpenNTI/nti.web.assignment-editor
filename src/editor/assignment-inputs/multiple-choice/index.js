@@ -18,3 +18,6 @@ export default class MultipleChoicePart {
 		return Editor;
 	}
 }
+
+Button.handles = MultipleChoicePart.handles;
+Editor.handles = MultipleChoicePart.handles;

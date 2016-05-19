@@ -16,9 +16,11 @@ export default class QuestionTypes extends React.Component {
 
 
 	render () {
+		const {assignment} = this.props;
+
 		return (
 			<div className="question-types">
-				{getButtons()}
+				{getButtons(null, assignment)}
 			</div>
 		);
 	}

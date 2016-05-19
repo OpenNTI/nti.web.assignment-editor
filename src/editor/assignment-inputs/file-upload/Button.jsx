@@ -1,16 +1,11 @@
-import React from 'react';
+import Base from '../base/Button';
 
-export default class FileUploadButton extends React.Component {
+export default class FileUploadButton extends Base {
+	label = 'File Upload'
+
 	constructor (props) {
 		super(props);
 
 		this.state = {};
-	}
-
-
-	render () {
-		return (
-			<div>File Upload Button</div>
-		);
 	}
 }

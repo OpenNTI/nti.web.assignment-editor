@@ -17,3 +17,6 @@ export default class FileUploadPart {
 		return Editor;
 	}
 }
+
+Button.handles = FileUploadPart.handles;
+Editor.handles = FileUploadPart.handles;

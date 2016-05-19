@@ -17,3 +17,6 @@ export default class OrderingPart {
 		return Editor;
 	}
 }
+
+Button.handles = OrderingPart.handles;
+Editor.handles = OrderingPart.handles;
