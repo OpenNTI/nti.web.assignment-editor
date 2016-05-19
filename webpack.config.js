@@ -48,10 +48,27 @@ exports = module.exports = {
 			}
 		],
 		loaders: [
-			{ test: /\.js(x?)$/, exclude: /node_modules/, loader: 'babel' },
+			{
+				test: /\.js(x?)$/i,
+				exclude: /node_modules/,
+				loader: 'babel',
+				query: {
+					sourceMaps: true
+				}
+			},
+
 			{ test: /\.json$/, loader: 'json' },
 
-			{ test: /\.(ico|gif|png|jpg|svg)$/, loader: 'url?limit=500&name=assets/[name].[ext]&mimeType=image/[ext]' },
+			{
+				test: /\.(ico|gif|png|jpg|svg)$/,
+				loader: 'url',
+				query: {
+					limit: 500,
+					name: 'assets/[name]-[hash].[ext]',
+					mimeType: 'image/[ext]'
+				}
+			},
+
 			{ test: /\.(s?)css$/, loader: ExtractTextPlugin.extract(
 				'style-loader',
 				'css?sourceMap&-minimize!postcss!resolve-url!sass'
