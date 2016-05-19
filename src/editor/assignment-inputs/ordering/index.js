@@ -1,9 +1,7 @@
 import Editor from './Editor';
 import Button from './Button';
 
-import base from '../base';
-
-export default class OrderingPart extends base {
+export default class OrderingPart {
 	//TODO: get this mime type from the model
 	static handles = [
 		'application/vnd.nextthought.assessment.orderingpart'

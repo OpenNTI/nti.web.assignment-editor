@@ -36,10 +36,9 @@ export function loadSchema (assignment) {
 				return service.get(link);
 			})
 			.then((schema) => {
-				debugger;
+				dispatch(LOADED_SCHEMA, schema);
 			})
 			.catch((reason) => {
-				debugger;
 				logger.error('Failed to load schema: ', reason);
 				dispatch(LOADED_SCHEMA, defaultSchema);
 			});

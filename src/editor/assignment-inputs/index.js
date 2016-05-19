@@ -19,9 +19,7 @@ const KINDS = [
 ];
 
 
-function canHandle (cmp, part) {
-	let type = part && part.MimeType && part.MimeType.toLowerCase();
-
+function canHandle (cmp, type) {
 	return (cmp.handles || []).reduce((acc, mimeType) => {
 		if (mimeType.toLowerCase() === type) {
 			acc = true;
@@ -33,10 +31,11 @@ function canHandle (cmp, part) {
 
 
 export function getEditorWidget (part, index) {
+	const mimeType = part && part.MimeType && part.MimeType.toLowerCase();
 	let cmp;
 
 	for (let Type of KINDS) {
-		if (canHandle(Type, part)) {
+		if (canHandle(Type, mimeType)) {
 			cmp = Type.editor;
 			break;
 		}
@@ -55,5 +54,12 @@ export function getEditorWidget (part, index) {
 
 
 export function getButtons (mimeTypes) {
-
+	//TODO: filter this down to whats accepted by the schema
+	if (!mimeTypes) {
+		return KINDS.map((cmp) => {
+			return React.createElement(cmp.button, {
+				key: cmp.handles
+			});
+		});
+	}
 }
