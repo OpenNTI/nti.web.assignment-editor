@@ -1,5 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
+import {appendQuestionTo} from '../Actions';
+
+const QuestionMimeType = 'application/vnd.nextthought.naquestion';
 
 function getCountInQuestion (question, types) {
 	const {parts} = question;
@@ -25,7 +28,8 @@ function getCountInPart (part, types) {
 
 export default class BaseButton extends React.Component {
 	static propTypes = {
-		assignment: React.PropTypes.object.isRequired
+		assignment: React.PropTypes.object.isRequired,
+		activeQuestion: React.PropTypes.object
 	}
 
 	static set handles (handles) {
@@ -38,6 +42,8 @@ export default class BaseButton extends React.Component {
 
 
 	iconCls = ''
+	label = 'Add Question'
+	defaultQuestionContent = 'Blank Question'
 
 
 	constructor (props) {
@@ -49,8 +55,29 @@ export default class BaseButton extends React.Component {
 	}
 
 
-	onClick () {
+	getBlankPart () {}
 
+
+	getBlankQuestion () {
+		const part = this.getBlankPart();
+
+		if (part) {
+			return {
+				MimeType: QuestionMimeType,
+				content: this.defaultQuestionContent,
+				parts: [part]
+			};
+		}
+	}
+
+
+	onClick () {
+		const {assignment, activeQuestion} = this.props;
+		const question = this.getBlankQuestion();
+
+		if (question) {
+			appendQuestionTo(assignment, question, activeQuestion);
+		}
 	}
 
 

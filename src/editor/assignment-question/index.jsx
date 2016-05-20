@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'classnames';
 import Selectable from '../utils/Selectable';
 import Content from './Content';
 import Parts from './Parts';
@@ -43,9 +44,10 @@ export default class QuestionComponent extends React.Component {
 	render () {
 		const {question} = this.props;
 		const {selectableId, selectableValue} = this.state;
+		const cls = cx('question', {saving: question.isSaving});
 
 		return (
-			<Selectable className="question" id={selectableId} value={selectableValue}>
+			<Selectable className={cls} id={selectableId} value={selectableValue}>
 				<Content question={question} onFocus={this.onContentFocus} onBlur={this.onContentBlur}/>
 				<Parts question={question} />
 			</Selectable>

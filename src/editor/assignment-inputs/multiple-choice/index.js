@@ -3,6 +3,7 @@ import Button from './Button';
 
 export default class MultipleChoicePart {
 	//TODO: get this mime type from the model
+	//The first mimeType in the array is what gets created by default
 	static handles = [
 		'application/vnd.nextthought.assessment.multiplechoicepart',
 		'application/vnd.nextthought.assessment.randomizedmultiplechoicepart'

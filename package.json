@@ -36,6 +36,7 @@
     "classnames": "^2.0.0",
     "invariant": "^2.1.1",
     "node-uuid": "^1.4.3",
+    "nti-commons": "^1.0.1",
     "nti-lib-dispatcher": "^1.0.0",
     "nti-lib-store": "^1.0.0",
     "nti-util-logger": "^1.0.0",

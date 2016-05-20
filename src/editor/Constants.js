@@ -4,7 +4,8 @@ export const SAVING = 'assignment:editor:Saving';
 export const SAVE_ENDED = 'assignment:editor:SaveEnded';
 export const ASSIGNMENT_UPDATED = 'assignment:editor:AssignmentUpdated';
 export const ASSIGNMENT_ERROR = 'assignment:editor:AssignmentError';
+export const QUESTION_SET_UPDATED = 'assignment:editor:QuestionSetUpdated';
+export const QUESTION_SET_ERROR = 'assignment:editor:QuestionError';
 export const QUESTION_UPDATED = 'assignment:editor:QuestionUpdated';
 export const QUESTION_ERROR = 'assignment:editor:QuestionError';
-export const PART_UPDATED = 'assignment:editor:PartUpdated';
-export const PART_ERROR = 'assignment:editor:PartError';
+

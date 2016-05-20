@@ -12,6 +12,27 @@ export default class QuestionSetComponent extends React.Component {
 		super(props);
 
 		this.state = {};
+
+		this.onQuestionSetChange = this.onQuestionSetChange.bind(this);
+	}
+
+
+	componentDidMount () {
+		const {questionSet} = this.props;
+
+		questionSet.addListener('change', this.onQuestionSetChange);
+	}
+
+
+	componentWillUnmount () {
+		const {questionSet} = this.props;
+
+		questionSet.removeListener('change', this.onQuestionSetChange);
+	}
+
+
+	onQuestionSetChange () {
+		this.forceUpdate();
 	}
 
 
