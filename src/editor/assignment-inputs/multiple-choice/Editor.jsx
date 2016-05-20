@@ -1,6 +1,6 @@
 import React from 'react';
 import Choices from './Choices';
-import {savePart} from './Actions';
+import {savePartToQuestion} from './Actions';
 
 export default class MultipleChoiceEditor extends React.Component {
 	static propTypes = {
@@ -19,7 +19,9 @@ export default class MultipleChoiceEditor extends React.Component {
 
 
 	choicesChanged (choices, solution) {
-		savePart(this.props.part, choices, solution);
+		const {part, question} = this.props;
+
+		savePartToQuestion(question, part, '', choices, solution);
 	}
 
 

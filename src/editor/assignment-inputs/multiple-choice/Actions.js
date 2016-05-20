@@ -1,10 +1,10 @@
 import {dispatch} from 'nti-lib-dispatcher';
 import Logger from 'nti-util-logger';
-import {SAVING, SAVE_ENDED, PART_UPDATED, PART_ERROR} from '../../Constants';
+import {SAVING, SAVE_ENDED, QUESTION_UPDATED, QUESTION_ERROR} from '../../Constants';
 
 const logger = Logger.get('assignment-question:multichoicepart');
 
-function choicesEqual (choicesA, choicesB) {
+export function choicesEqual (choicesA, choicesB) {
 	if (choicesA.length !== choicesB.length) {
 		return false;
 	}
@@ -18,40 +18,73 @@ function choicesEqual (choicesA, choicesB) {
 	return true;
 }
 
+export function solutionsEqual (solutionA, solutionB) {
+	if (solutionA.length !== solutionB.length) {
+		return false;
+	}
 
-function generateSolutionFor (value) {
+	for (let i = 0; i < solutionA.length; i++) {
+		if (solutionA[i].value !== solutionB[i].value) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+
+export function partsEqual (partA, partB) {
+	let equal = true;
+
+	if (partA.content !== partB.content) {
+		equal = false;
+	} else if (!choicesEqual(partA.choices, partB.choices)) {
+		equal = false;
+	} else if (!solutionsEqual(partA.solutions, partB.solutions)) {
+		equal = false;
+	}
+
+	return equal;
+}
+
+
+export function generateSolutionFor (value) {
 	return {
+		Class: 'MultipleChoiceSolution',
 		MimeType: 'application/vnd.nextthought.assessment.multiplechoicesolution',
 		value: value
 	};
 }
 
-export function savePart (part, choices, solution) {
-	const oldChoices = part.choices;
-	const oldSolutions = part.solutions;
-	const oldSolution = oldSolutions[0];
-	let values = {};
 
-	if (!choicesEqual(choices, oldChoices)) {
-		values.choices = choices;
+export function generatePartFor (mimeType, content, choices, solution, hints) {
+	return {
+		MimeType: mimeType,
+		content: content || '',
+		choices: choices,
+		solutions: [generateSolutionFor(solution)],
+		hints: hints || []
+	};
+}
+
+
+export function savePartToQuestion (question, part, content, choices, solution, hints) {
+	const newPart = generatePartFor(part.MimeType, content, choices, solution, hints);
+
+	if (partsEqual(part, newPart)) {
+		return;
 	}
 
-	if (oldSolution.value !== solution) {
-		values.solutions = [generateSolutionFor(solution)];
-	}
+	dispatch(SAVING, question);
 
-	if (!values.choices && !values.solutions) { return; }
-
-	dispatch(SAVING, part);
-
-	part.save(values)
-		.then(() => {
-			dispatch(SAVE_ENDED);
-			dispatch(PART_UPDATED, part);
-		})
-		.catch((reason) => {
-			logger.error('Failed to update part: ', reason);
-			dispatch(SAVE_ENDED);
-			dispatch(PART_ERROR, reason);
-		});
+	question.save({
+		parts: [newPart]
+	}).then(() => {
+		dispatch(SAVE_ENDED, question);
+		dispatch(QUESTION_UPDATED, question);
+	}).catch((reason) => {
+		logger.error('Failed to update question: ', reason);
+		dispatch(SAVE_ENDED);
+		dispatch(QUESTION_ERROR, reason);
+	});
 }
