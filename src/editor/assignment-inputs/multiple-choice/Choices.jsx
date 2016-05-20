@@ -1,5 +1,5 @@
 import React from 'react';
-import Selectable from '../../utils/Selectable';
+import Choice from './Choice';
 
 export default class Choices extends React.Component {
 	static propTypes = {
@@ -19,45 +19,28 @@ export default class Choices extends React.Component {
 			solution: solution
 		};
 
-		this.renderChoice = this.renderChoice.bind(this);
-		this.renderSolution = this.renderSolution.bind(this);
 		this.onChoiceChanged = this.onChoiceChanged.bind(this);
 		this.onSolutionChanged = this.onSolutionChanged.bind(this);
-		this.onChoiceBlur = this.onChoiceBlur.bind(this);
+		this.renderChoice = this.renderChoice.bind(this);
 	}
 
 
-	onChoiceChanged (e) {
-		let {choices} = this.state;
-		const index = e.target.getAttribute('data-index');
-		const value = e.target.value;
+	onChoiceChanged (index, value) {
+		const {onChange} = this.props;
+		let {choices, solution} = this.state;
 
 		choices[index] = value;
-
-		this.setState({
-			choices: choices
-		});
-	}
-
-
-	onSolutionChanged (e) {
-		let value = e.target.value;
-
-		value = parseInt(value, 10);
-
-		this.setState({
-			solution: value
-		});
-	}
-
-
-	onChoiceBlur () {
-		const {onChange} = this.props;
-		const {choices, solution} = this.state;
 
 		if (onChange) {
 			onChange(choices, solution);
 		}
+	}
+
+
+	onSolutionChanged (correct) {
+		this.setState({
+			solution: correct
+		});
 	}
 
 
@@ -73,28 +56,22 @@ export default class Choices extends React.Component {
 
 
 	renderChoice (choice, index) {
-		const {partId} = this.props;
-		const id = partId + '--' + index;
-
-		return (
-			<li key={index}>
-				<Selectable className="choice" id={id} value={choice} onUnselect={this.onChoiceBlur}>
-					{this.renderSolution(choice, index)}
-					<input type="text" data-index={index} value={choice} onChange={this.onChoiceChanged} />
-				</Selectable>
-			</li>
-		);
-	}
-
-
-	renderSolution (choice, index) {
 		const {solution} = this.state;
 		const {partId} = this.props;
-		const radioGroup = partId + '-solution-group';
+		const group = partId + '--solution-group';
 		const selected = solution === index;
 
 		return (
-			<input type="radio" value={index} name={radioGroup} selected={selected} onChange={this.onSolutionChanged} checked={selected} />
+			<li key={index}>
+				<Choice
+					index={index}
+					value={choice}
+					isCorrect={selected}
+					group={group}
+					onChange={this.onChoiceChanged}
+					onSolutionChanged={this.onSolutionChanged}
+				/>
+			</li>
 		);
 	}
 }
