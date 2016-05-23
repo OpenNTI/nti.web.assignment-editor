@@ -1,8 +1,10 @@
 import React from 'react';
+import Base from '../multiple-choice/Editor';
 
 export default class MultipleChoiceMultipleAnswerEditor extends React.Component {
 	static propTypes = {
-		part: React.PropTypes.object.isRequired
+		part: React.PropTypes.object.isRequired,
+		question: React.PropTypes.object.isRequired
 	}
 
 
@@ -14,8 +16,10 @@ export default class MultipleChoiceMultipleAnswerEditor extends React.Component 
 
 
 	render () {
+		const {part, question} = this.props;
+
 		return (
-			<div>TODO: Fill Out Multiple Choice Multiple Answer Type</div>
+			<Base part={part} question={question} multipleAnswers />
 		);
 	}
 }
