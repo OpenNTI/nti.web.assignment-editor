@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import Choice from './Choice';
+import Add from './AddButton';
 
 
 //If the index isn't already in the solutions add it
@@ -50,6 +51,7 @@ export default class SingleChoices extends React.Component {
 		this.onChoiceChanged = this.onChoiceChanged.bind(this);
 		this.onSolutionChanged = this.onSolutionChanged.bind(this);
 		this.renderChoice = this.renderChoice.bind(this);
+		this.onAdd = this.onAdd.bind(this);
 	}
 
 
@@ -96,6 +98,17 @@ export default class SingleChoices extends React.Component {
 	}
 
 
+	onAdd () {
+		const {choices} = this.state;
+
+		choices.push('');
+
+		this.setState({
+			choices: choices
+		});
+	}
+
+
 	render () {
 		const {multipleAnswers} = this.props;
 		const {choices} = this.state;
@@ -104,6 +117,7 @@ export default class SingleChoices extends React.Component {
 		return (
 			<ul className={cls}>
 				{choices.map(this.renderChoice)}
+				{this.renderAddButton()}
 			</ul>
 		);
 	}
@@ -125,6 +139,17 @@ export default class SingleChoices extends React.Component {
 					onSolutionChanged={this.onSolutionChanged}
 					multipleAnswers={multipleAnswers}
 				/>
+			</li>
+		);
+	}
+
+
+	renderAddButton () {
+		const {multipleAnswers} = this.props;
+
+		return (
+			<li>
+				<Add multipleAnswers={multipleAnswers} onAdd={this.onAdd} />
 			</li>
 		);
 	}
