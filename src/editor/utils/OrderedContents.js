@@ -98,7 +98,7 @@ export default class OrderedContents {
 				obj[orderedContentsField] = orderedContents;
 				obj.onChange();
 			})
-			.fail((reason) => {
+			.catch((reason) => {
 				delete item.isSaving;
 
 				//if there is an error, replace the optimistic placeholder with an error case
