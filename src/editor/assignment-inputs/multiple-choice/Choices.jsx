@@ -79,7 +79,6 @@ export default class SingleChoices extends React.Component {
 
 
 	onSolutionChanged (index, correct) {
-		debugger;
 		const {multipleAnswers} = this.props;
 		let {solution} = this.state;
 
