@@ -4,6 +4,7 @@ import Button from './Button';
 export default class OrderingPart {
 	//TODO: get this mime type from the model
 	static handles = [
+		'application/vnd.nextthought.assessment.randomizedorderingpart',
 		'application/vnd.nextthought.assessment.orderingpart'
 	]
 
