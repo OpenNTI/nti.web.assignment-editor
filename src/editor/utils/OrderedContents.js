@@ -1,5 +1,6 @@
 import {getService} from  'nti-web-client';
 import uuid from 'node-uuid';
+import path from 'path';
 import minWait, {SHORT} from 'nti-commons/lib/wait-min';
 
 const linkName = 'ordered-contents';
@@ -50,6 +51,20 @@ export default class OrderedContents {
 
 	get canEdit () {
 		return !!this.link;
+	}
+
+
+	indexOf (item) {
+		let {orderedContents} = this;
+		let NTIID = item.NTIID ? item.NTIID : item;
+
+		for (let i = 0; i < orderedContents.length; i++) {
+			if (orderedContents[i].NTIID === NTIID) {
+				return i;
+			}
+		}
+
+		return -1;
 	}
 
 	/**
@@ -118,5 +133,84 @@ export default class OrderedContents {
 
 				return Promise.reject(reason);
 			});
+	}
+
+
+	/**
+	 * Given an item, if its in the ordered contents mark it for deletion, and try to delete it from the server.
+	 * If it's successful, remove the item from the ordered contents.
+	 * If it fails, add an error to the existing item and leave it there.
+	 *
+	 * If the item isn't in the ordered contents there's nothing to do so just resolve
+	 *
+	 * @param  {Object} item the item to delete
+	 * @return {Promise}     fulfills or rejects if the item is successfully deleted or not
+	 */
+	remove (item) {
+		const obj = this.backingObject;
+		let {orderedContents, orderedContentsField, link} = this;
+		let index = this.indexOf(item);
+
+		if (!link) {
+			return Promise.reject('No Ordered Contents Link');
+		}
+
+		//If the item isn't in the ordered contents there's nothing to do
+		if (index < 0) {
+			return Promise.resolve();
+		}
+
+		item = orderedContents[index];
+
+		//Mark Item as deleting
+		Object.defineProperty(item, 'isDeleting', {
+			enumerable: false,
+			value: true
+		});
+
+		obj[orderedContentsField] = orderedContents;
+		obj.onChange();
+
+		let deleteRequest;
+
+		if (!item.NTIID) {
+			deleteRequest = Promise.reject('No NTIID on the item to delete');
+		} else {
+			let deleteLink = path.join(link, 'ntiid', item.NTIID);
+
+			deleteRequest = getService()
+								.then((service) => {
+									return service.delete(deleteLink);
+								});
+		}
+
+		return deleteRequest
+				.then(minWait(SHORT))
+				.then(() => {
+					//After its removed from the server, remove it from the ordered contents
+					orderedContents = orderedContents.filter(a => a.NTIID !== item.NTIID);
+					obj[orderedContentsField] = orderedContents;
+					obj.onChange();
+				})
+				.catch((reason) => {
+					delete item.isDeleting;
+
+					//If the server fails, leave it in the ordered contents and mark it with an error
+					item.defineProperty(item, 'isNotDeleted', {
+						enumerable: false,
+						value: true
+					});
+
+
+					item.defineProperty(item, 'error', {
+						enumerable: false,
+						value: reason
+					});
+
+					obj.onChange();
+
+					return Promise.reject(reason);
+				});
+
 	}
 }
