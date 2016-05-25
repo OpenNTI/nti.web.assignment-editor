@@ -3,6 +3,7 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Editor} from '../../src/index';
+import Dnd from '../../src/dnd/';
 
 import 'normalize.css';
 
