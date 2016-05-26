@@ -1,14 +1,18 @@
 import React from 'react';
+import cx from 'classnames';
+
 import DataTransfer from './DataTransfer';
 import DnDInfo from './Info';
+import {getDomNodeProps, DROPZONE} from './DomNodeProps';
 
 export default class Draggable extends React.Component {
 	static propTypes = {
 		data: React.PropTypes.any.isRequired,
-		onDragStart: React.PropTypes.fn,
-		onDragEnd: React.PropTypes.fn,
+		onDragStart: React.PropTypes.func,
+		onDragEnd: React.PropTypes.func,
 		handleClassName: React.PropTypes.bool,
-		children: React.PropTypes.any
+		children: React.PropTypes.any,
+		className: React.PropTypes.string
 	}
 
 	constructor (props) {
@@ -98,14 +102,16 @@ export default class Draggable extends React.Component {
 
 
 	render () {
-		const {children, handleClassName} = this.props;
+		const {children, handleClassName, className} = this.props;
 		const {draggable, isDragging} = this.state;
 		const child = React.Children.only(children);
+		const cls = cx(className || '', 'draggable', {dragging: isDragging});
 
-		const props = {
-			onDragStart: this.onDragStart,
-			onDragEnd: this.onDragEnd
-		};
+		const props = getDomNodeProps(this.props, DROPZONE);
+
+		props.onDragStart = this.onDragStart;
+		props.onDragEnd = this.onDragEnd;
+		props.className = cls;
 
 		if (handleClassName) {
 			props.onMouseDown = this.onMouseDown;
@@ -116,9 +122,6 @@ export default class Draggable extends React.Component {
 			props.draggable = true;
 		}
 
-		if (isDragging) {
-			props.className = 'dragging';
-		}
 
 		return (
 			React.cloneElement(child, props)

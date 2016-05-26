@@ -1,4 +1,6 @@
 import React from 'react';
+import cx from 'classnames';
+
 import DnDInfo from './Info';
 import DataTransfer from './DataTransfer';
 
@@ -36,17 +38,20 @@ export function doHandleDataTransfer (handlers, dataTransfer) {
 export default class Dropzone extends React.Component {
 	static propTypes = {
 		dropHandlers: React.PropTypes.object,
-		onDrop: React.PropTypes.fn,
-		onInvalidDrop: React.PropTypes.fn,
-		onDragEnter: React.PropTypes.fn,
-		onDragLeave: React.PropTypes.fn,
-		onDragOver: React.PropTypes.fn,
-		children: React.PropTypes.any
+		onDrop: React.PropTypes.func,
+		onInvalidDrop: React.PropTypes.func,
+		onDragEnter: React.PropTypes.func,
+		onDragLeave: React.PropTypes.func,
+		onDragOver: React.PropTypes.func,
+		children: React.PropTypes.any,
+		className: React.PropTypes.string
 	}
 
 
 	constructor (props) {
 		super(props);
+
+		this.state = {};
 
 		let {dropHandlers} = props;
 
@@ -78,6 +83,11 @@ export default class Dropzone extends React.Component {
 				onDrop(e, data);
 			}
 		}
+
+		this.setState({
+			dragOver: false,
+			isValid: null
+		});
 	}
 
 
@@ -136,6 +146,7 @@ export default class Dropzone extends React.Component {
 		const {onDragOver} = this.props;
 		const {dataTransfer} = e;
 
+		//TODO: pass wHether or not there is data it could handle
 		if (onDragOver) {
 			onDragOver(e, new DataTransfer(dataTransfer));
 		}
@@ -143,14 +154,17 @@ export default class Dropzone extends React.Component {
 
 
 	render () {
-		const {children} = this.props;
+		const {children, className} = this.props;
+		const {dragOver, isValid} = this.state;
 		const child = React.Children.only(children);
+		const cls = cx(className || '', {'drag-over': dragOver, 'valid-drag': dragOver && isValid, 'invalid-drag': dragOver && !isValid});
 
 		const props = {
 			onDrop: this.onDrop,
 			onDragEnter: this.onDragEnter,
 			onDragLeave: this.onDragLeave,
-			onDragOver: this.onDragOver
+			onDragOver: this.onDragOver,
+			className: cls
 		};
 
 

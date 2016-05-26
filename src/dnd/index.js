@@ -2,12 +2,10 @@ import React from 'react';
 
 import Draggable from './Draggable';
 import Dropzone from './Dropzone';
-import Ordering from './Ordering';
 
 export {
 	Draggable,
-	Dropzone,
-	Ordering
+	Dropzone
 };
 
 export default function testDND () {
