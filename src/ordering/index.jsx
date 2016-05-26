@@ -1,6 +1,5 @@
 import React from 'react';
 import Ordering from './Ordering';
-import Draggable from '../dnd/Draggable';
 
 export default class Test extends React.Component {
 	constructor (props) {
@@ -12,7 +11,7 @@ export default class Test extends React.Component {
 		this.onChange = this.onChange.bind(this);
 
 		this.state = {
-			items: [
+			itemsA: [
 				{MimeType, NTIID: '1', label: 'Choice 1'},
 				{MimeType, NTIID: '2', label: 'Choice 2'},
 				{MimeType, NTIID: '3', label: 'Choice 3'},
@@ -23,6 +22,18 @@ export default class Test extends React.Component {
 				{MimeType, NTIID: '8', label: 'Choice 8'},
 				{MimeType, NTIID: '9', label: 'Choice 9'},
 				{MimeType, NTIID: '10', label: 'Choice 10'}
+			],
+			itemsB: [
+				{MimeType, NTIID: '11', label: 'Choice 11'},
+				{MimeType, NTIID: '12', label: 'Choice 12'},
+				{MimeType, NTIID: '13', label: 'Choice 13'},
+				{MimeType, NTIID: '14', label: 'Choice 14'},
+				{MimeType, NTIID: '15', label: 'Choice 15'},
+				{MimeType, NTIID: '16', label: 'Choice 16'},
+				{MimeType, NTIID: '17', label: 'Choice 17'},
+				{MimeType, NTIID: '18', label: 'Choice 18'},
+				{MimeType, NTIID: '19', label: 'Choice 19'},
+				{MimeType, NTIID: '20', label: 'Choice 20'}
 			]
 		};
 	}
@@ -34,10 +45,14 @@ export default class Test extends React.Component {
 
 
 	render () {
-		const {items} = this.state;
+		const {itemsA, itemsB} = this.state;
 
 		return (
-			<Ordering items={items} renderItem={this.renderItem} accepts={['application/vnd.nextthought.test']} onChange={this.onChange} />
+			<div>
+				<Ordering items={itemsA} renderItem={this.renderItem} accepts={['application/vnd.nextthought.test']} onChange={this.onChange} />
+				<div style={{height:'30px'}}></div>
+				<Ordering items={itemsB} renderItem={this.renderItem} accepts={['application/vnd.nextthought.test']} onChange={this.onChange} />
+			</div>
 		);
 	}
 

@@ -1,19 +1,15 @@
 ul.ordering-container {
 	list-style: none;
-	padding: 0;
+	padding: 5px;
 	margin: 0;
 	border: 1px solid black;
 
-	li.spacer {
-		height: 3px;
+	li.is-dragging {
+		height: 0;
+		overflow: hidden;
 	}
 
 	.placeholder {
 		height: 10px;
-
-		&.hide {
-			max-height: 0;
-			overflow: hidden;
-		}
 	}
 }
