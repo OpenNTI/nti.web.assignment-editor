@@ -92,6 +92,9 @@ export default class Dropzone extends React.Component {
 
 
 	onDragEnter (e) {
+		e.preventDefault();
+		e.stopPropagation();
+
 		const {onDragEnter} = this.props;
 		const {dataTransfer} = e;
 		const data = new DataTransfer(dataTransfer);
@@ -119,6 +122,9 @@ export default class Dropzone extends React.Component {
 
 
 	onDragLeave (e) {
+		e.preventDefault();
+		e.stopPropagation();
+
 		const {onDragLeave} = this.props;
 
 		this.dragEnterCounter = this.dragEnterCounter || 1;

@@ -42,12 +42,12 @@ export default class Ordering extends React.Component {
 
 		this.renderItem = this.renderItem.bind(this);
 		this.onContainerDrop = this.onContainerDrop.bind(this);
+		this.onContainerDragLeave = this.onContainerDragLeave.bind(this);
 		this.onItemDrop = this.onItemDrop.bind(this);
 
 		items = items.slice(0);
 
 		items = items.map((item) => {
-
 			return {
 				item: item,
 				ID: item.NTIID || item.ID,
@@ -58,7 +58,8 @@ export default class Ordering extends React.Component {
 		});
 
 		this.state = {
-			items: items
+			items: items,
+			originalOrder: items
 		};
 	}
 
@@ -82,6 +83,8 @@ export default class Ordering extends React.Component {
 
 		if (!placeholder) { return; }
 
+		placeholder.hide = false;
+
 		items = insertPlaceholderByItem(items, id, placeholder, true);
 
 		this.setState({
@@ -96,6 +99,8 @@ export default class Ordering extends React.Component {
 
 		if (!placeholder) { return; }
 
+		placeholder.hide = false;
+
 		items = insertPlaceholderByItem(items, id, placeholder, false);
 
 		this.setState({
@@ -106,6 +111,29 @@ export default class Ordering extends React.Component {
 
 	onContainerDrop () {
 		// debugger;
+	}
+
+
+	onContainerDragLeave () {
+		let {items} = this.state;
+
+		//For html5 drag and drop to work correctly the node that is dragging needs to still be in the dom,
+		//since we are using the same node for the placeholder, if it originated from here we need to keep the node
+		//and just hide it, if its not we can get rid of it.
+		items = items.reduce((acc, item) => {
+			if (item.isPlaceholder && !item.isExternalPlaceholder) {
+				item.hide = true;
+				acc.push(item);
+			} else if (!item.isPlaceholder) {
+				acc.push(item);
+			}
+
+			return acc;
+		}, []);
+
+		this.setState({
+			items: items
+		});
 	}
 
 
@@ -139,8 +167,34 @@ export default class Ordering extends React.Component {
 	}
 
 
-	onItemDragEnd (item) {
-		// debugger;
+	onItemDragEnd (dragItem, e) {
+		let {items, originalOrder} = this.state;
+		const dragId = dragItem.NTIID || dragItem.ID;
+		const {dataTransfer} = e;
+		const wasHandled = dataTransfer.dropEffect !== 'none';
+
+		if (!wasHandled) {
+			items = originalOrder.map((item) => {
+				let itemId = item.NTIID || item.ID;
+
+				if (item.isPlaceholder && itemId === dragId) {
+					item.item.isPlaceholder = false;
+					item.isPlaceholder = false;
+				}
+
+				return item;
+			});
+		} else {
+			items = items.filter((item) => {
+				let itemId = item.NTIID || item.ID;
+
+				return !item.isPlaceholder || itemId !== dragId;
+			});
+		}
+
+		this.setState({
+			items: items
+		});
 	}
 
 
@@ -154,8 +208,6 @@ export default class Ordering extends React.Component {
 		const dragOverRect = dragOverRef && dragOverRef.getBoundingClientRect();
 		const midPoint = dragOverRect && (dragOverRect.top + (dragOverRect.height / 2));
 		const clientY = e.clientY;
-		let newPlaceholderIndex;
-
 
 		if (!dragOverRef) { return; }
 
@@ -185,9 +237,11 @@ export default class Ordering extends React.Component {
 		const cls = cx('ordering-container', className || '');
 
 		return (
-			<Dropzone className={cls} dropHandlers={this.getDropHandlers(this.onContainerDrop)}>
+			<Dropzone className={cls} dropHandlers={this.getDropHandlers(this.onContainerDrop)} onDragLeave={this.onContainerDragLeave}>
 				<ul>
+					<li className="spacer"></li>
 					{items.map(this.renderItem)}
+					<li className="spacer"></li>
 				</ul>
 			</Dropzone>
 		);
@@ -196,12 +250,12 @@ export default class Ordering extends React.Component {
 
 	renderItem (item, index) {
 		const {renderItem, handleClassName} = this.props;
-		const cls = cx('ordering-item', {placeholder: item.isPlaceholder});
+		const cls = cx('ordering-item', {placeholder: item.isPlaceholder, hide: item.hide});
 
 
 		return (
-			<Dropzone key={item.ID} onDragOver={item.onDragOver}>
-				<Draggable className={cls} data={item.item} handleClassName={handleClassName} onDragStart={item.onDragStart} onDragEnd={item.onDragEnd}>
+			<Dropzone className={cls} key={item.ID} onDragOver={item.onDragOver}>
+				<Draggable data={item.item} handleClassName={handleClassName} onDragStart={item.onDragStart} onDragEnd={item.onDragEnd}>
 					<li ref={x => this.componentRefs[item.ID] = x}>
 						{ !item.isPlaceholder ?
 							renderItem(item.item, index, item.isPlaceholder) :

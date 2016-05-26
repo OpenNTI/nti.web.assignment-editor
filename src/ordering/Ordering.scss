@@ -1,0 +1,19 @@
+ul.ordering-container {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	border: 1px solid black;
+
+	li.spacer {
+		height: 3px;
+	}
+
+	.placeholder {
+		height: 10px;
+
+		&.hide {
+			max-height: 0;
+			overflow: hidden;
+		}
+	}
+}

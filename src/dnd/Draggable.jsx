@@ -107,7 +107,7 @@ export default class Draggable extends React.Component {
 		const child = React.Children.only(children);
 		const cls = cx(className || '', 'draggable', {dragging: isDragging});
 
-		const props = getDomNodeProps(this.props, DROPZONE);
+		const props = getDomNodeProps(this.props, [DROPZONE]);
 
 		props.onDragStart = this.onDragStart;
 		props.onDragEnd = this.onDragEnd;

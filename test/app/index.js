@@ -9,7 +9,7 @@ import Ordering from '../../src/ordering';
 import 'normalize.css';
 
 ReactDOM.render(
-	<Editor />,
+	<Ordering />,
 	document.getElementById('content')
 );
 

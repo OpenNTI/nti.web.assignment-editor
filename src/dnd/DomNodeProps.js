@@ -1,5 +1,6 @@
-const DRAGGABLE = 'draggable';
-const DROPZONE = 'dropzone';
+export const DRAGGABLE = 'draggable';
+export const DROPZONE = 'dropzone';
+export const CLASSNAME = 'classname';
 
 const WHITE_LIST = {};
 
@@ -14,6 +15,8 @@ WHITE_LIST[DROPZONE] = [
 	'onDragOver',
 	'onDrop'
 ];
+
+WHITE_LIST[CLASSNAME] = ['className'];
 
 export function getDomNodeProps (props, limitTo) {
 	limitTo = limitTo || Object.keys(WHITE_LIST);
@@ -34,8 +37,3 @@ export function getDomNodeProps (props, limitTo) {
 		return acc;
 	}, {});
 }
-
-export {
-	DRAGGABLE,
-	DROPZONE
-};
