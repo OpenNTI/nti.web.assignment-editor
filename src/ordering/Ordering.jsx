@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDom from 'react-dom';
+import FlipMove from 'react-flip-move';
 import cx from 'classnames';
 import Logger from 'nti-util-logger';
 
@@ -226,6 +227,17 @@ export default class Ordering extends React.Component {
 	}
 
 
+	getActiveDragging () {
+		const {items} = this.state;
+
+		for (let item of items) {
+			if (item.isDragging) {
+				return item;
+			}
+		}
+	}
+
+
 	lockRects () {
 		if (this.lockedRects) {
 			return;
@@ -294,15 +306,17 @@ export default class Ordering extends React.Component {
 		const placeholder = this.getPlaceholder();
 		const index = this.getIndexOfPoint(clientX, clientY);
 		let {items} = this.state;
+		let toInsert = [placeholder];
 
 		items = items.filter((item) => {
-			return !item.isPlaceholder;
+			return !item.isPlaceholder && !item.isDragging;
 		});
 
-		items = [...items.slice(0, index), placeholder, ...items.slice(index)];
+		items = [...items.slice(0, index), ...toInsert, ...items.slice(index)];
 
 		this.setState({
-			items: items
+			items: items,
+			disableAnimation: false
 		});
 	}
 
@@ -310,10 +324,11 @@ export default class Ordering extends React.Component {
 	onContainerDragLeave () {
 		this.unlockRects();
 
+		// const placeholder = this.getPlaceholder();
 		let {items} = this.state;
 
 		items = items.reduce((acc, item) => {
-			if (!item.isPlaceholder) {
+			if (!item.isPlaceholder && !item.isDragging) {
 				acc.push(item);
 			}
 
@@ -321,7 +336,8 @@ export default class Ordering extends React.Component {
 		}, []);
 
 		this.setState({
-			items: items
+			items: items,
+			disableAnimation: false
 		});
 	}
 
@@ -349,7 +365,8 @@ export default class Ordering extends React.Component {
 						}
 
 						return item;
-					})
+					}).filter(item => !item.isPlaceholder),
+					disableAnimation: false
 				});
 			});
 	}
@@ -376,7 +393,8 @@ export default class Ordering extends React.Component {
 			});
 
 			this.setState({
-				items: items
+				items: items,
+				disableAnimation: false
 			});
 		} else {
 			items = items.filter((item) => {
@@ -406,14 +424,16 @@ export default class Ordering extends React.Component {
 
 	render () {
 		const {className} = this.props;
-		const {items} = this.state;
+		const {items, disableAnimation} = this.state;
 		const cls = cx('ordering-container', className || '');
 
 		return (
 			<Dropzone className={cls} dropHandlers={this.dropHandlers} onDragLeave={this.onContainerDragLeave} onDragOver={this.onContainerDragOver}>
-				<ul>
-					{items.map(this.renderItem)}
-				</ul>
+				<div>
+					<FlipMove enterAnimation="fade" leaveAnimation="fade" duration={150} easing="ease-in" disableAllAnimations={disableAnimation}>
+						{items.map(this.renderItem)}
+					</FlipMove>
+				</div>
 			</Dropzone>
 		);
 	}
@@ -422,16 +442,17 @@ export default class Ordering extends React.Component {
 	renderItem (item, index) {
 		const {renderItem, handleClassName} = this.props;
 		const cls = cx('ordering-item', {placeholder: item.isPlaceholder, 'is-dragging': item.isDragging});
+		const key = item.ID;
 
 
 		return (
-			<Draggable key={item.ID} className={cls} data={item.item} handleClassName={handleClassName} onDragStart={item.onDragStart} onDragEnd={item.onDragEnd}>
-				<li ref={x => this.componentRefs[item.ID] = x}>
+			<Draggable key={key} className={cls} data={item.item} handleClassName={handleClassName} onDragStart={item.onDragStart} onDragEnd={item.onDragEnd}>
+				<div ref={x => this.componentRefs[item.ID] = x} data-ordering-key={key}>
 					{ !item.isPlaceholder && !item.isDragging ?
 						renderItem(item.item, index, item.isPlaceholder) :
 						null
 					}
-				</li>
+				</div>
 			</Draggable>
 		);
 	}
