@@ -309,7 +309,7 @@ export default class Ordering extends React.Component {
 		let toInsert = [placeholder];
 
 		items = items.filter((item) => {
-			return !item.isPlaceholder && !item.isDragging;
+			return !item.isPlaceholder;
 		});
 
 		items = [...items.slice(0, index), ...toInsert, ...items.slice(index)];
@@ -328,7 +328,7 @@ export default class Ordering extends React.Component {
 		let {items} = this.state;
 
 		items = items.reduce((acc, item) => {
-			if (!item.isPlaceholder && !item.isDragging) {
+			if (!item.isPlaceholder) {
 				acc.push(item);
 			}
 
