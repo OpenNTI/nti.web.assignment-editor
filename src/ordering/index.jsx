@@ -8,7 +8,8 @@ export default class Test extends React.Component {
 		const MimeType = 'application/vnd.nextthought.test';
 
 		this.renderItem = this.renderItem.bind(this);
-		this.onChange = this.onChange.bind(this);
+		this.onChangeA = this.onChangeA.bind(this);
+		this.onChangeB = this.onChangeB.bind(this);
 
 		this.state = {
 			itemsA: [
@@ -39,8 +40,17 @@ export default class Test extends React.Component {
 	}
 
 
-	onChange (newOrder) {
-		debugger;
+	onChangeA (newOrder) {
+		this.setState({
+			itemsA: newOrder
+		});
+	}
+
+
+	onChangeB (newOrder) {
+		this.setState({
+			itemsB: newOrder
+		});
 	}
 
 
@@ -49,9 +59,9 @@ export default class Test extends React.Component {
 
 		return (
 			<div>
-				<Ordering items={itemsA} renderItem={this.renderItem} accepts={['application/vnd.nextthought.test']} onChange={this.onChange} />
+				<Ordering items={itemsA} renderItem={this.renderItem} accepts={['application/vnd.nextthought.test']} onChange={this.onChangeA} />
 				<div style={{height:'30px'}}></div>
-				<Ordering items={itemsB} renderItem={this.renderItem} accepts={['application/vnd.nextthought.test']} onChange={this.onChange} />
+				<Ordering items={itemsB} renderItem={this.renderItem} accepts={['application/vnd.nextthought.test']} onChange={this.onChangeB} />
 			</div>
 		);
 	}

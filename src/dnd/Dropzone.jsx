@@ -19,7 +19,7 @@ export function hasAcceptedType (types, dataTransfer) {
 }
 
 
-export function doHandleDataTransfer (handlers, dataTransfer) {
+export function doHandleDataTransfer (handlers, dataTransfer, e) {
 	const types = Object.keys(handlers);
 
 	//TODO: look at what to do when there is more than one handler for a drop...
@@ -27,7 +27,7 @@ export function doHandleDataTransfer (handlers, dataTransfer) {
 		let data = dataTransfer.findDataFor(t);
 
 		if (data) {
-			handlers[t](data);
+			handlers[t](data, e);
 			return true;
 		}
 	}
@@ -77,7 +77,7 @@ export default class Dropzone extends React.Component {
 				onInvalidDrop();
 			}
 		} else {
-			doHandleDataTransfer(dropHandlers, data);
+			doHandleDataTransfer(dropHandlers, data, e);
 
 			if (onDrop) {
 				onDrop(e, data);

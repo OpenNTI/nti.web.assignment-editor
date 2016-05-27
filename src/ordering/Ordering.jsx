@@ -53,7 +53,8 @@ export default class Ordering extends React.Component {
 		renderPlaceholder: React.PropTypes.func,
 		handleClassName: React.PropTypes.string,
 		accepts: React.PropTypes.array,
-		className: React.PropTypes.string
+		className: React.PropTypes.string,
+		onChange: React.PropTypes.func
 	}
 
 
@@ -73,19 +74,52 @@ export default class Ordering extends React.Component {
 
 		items = items.slice(0);
 
-		items = items.map((item) => {
-			return {
-				item: item,
-				ID: item.NTIID || item.ID,
-				onDragStart: this.onItemDragStart.bind(this, item),
-				onDragEnd: this.onItemDragEnd.bind(this, item)
-			};
-		});
+		items = items.map(this.mapItem.bind(this));
 
 		this.state = {
 			items: items,
 			originalOrder: items
 		};
+	}
+
+
+	mapItem (item) {
+		return {
+			item: item,
+			ID: item.NTIID || item.ID,
+			onDragStart: this.onItemDragStart.bind(this, item),
+			onDragEnd: this.onItemDragEnd.bind(this, item)
+		};
+	}
+
+
+	componentWillReceiveProps (nextProps) {
+		const {items:oldItems} = this.state;
+		let {items} = nextProps;
+		let activeDrag;
+
+		for (let item of oldItems) {
+			if (item.isDragging) {
+				activeDrag = item;
+			}
+		}
+
+		items = items.slice(0);
+
+		items = items.map((item) => {
+			item = this.mapItem(item);
+
+			if (activeDrag && activeDrag.ID === item.ID) {
+				item.isDragging = true;
+			}
+
+			return item;
+		});
+
+		this.setState({
+			items: items,
+			originalOrder: items
+		});
 	}
 
 
@@ -177,6 +211,21 @@ export default class Ordering extends React.Component {
 	}
 
 
+	getIndexOfId (id) {
+		const {items} = this.state;
+		let index = -1;
+
+		for (let i = 0; i < items.length; i++) {
+			if (items[i].ID === id) {
+				index = i;
+				break;
+			}
+		}
+
+		return index;
+	}
+
+
 	lockRects () {
 		if (this.lockedRects) {
 			return;
@@ -205,13 +254,41 @@ export default class Ordering extends React.Component {
 	}
 
 
-	onContainerDrop () {
-		// debugger;
+	onContainerDrop (data, e) {
+		const {onChange} = this.props;
+		const {clientX, clientY} = e;
+		const dropId = data.NTIID || data.ID;
+		let newIndex = this.getIndexOfPoint(clientX, clientY);
+		let oldIndex = this.getIndexOfId(dropId);
+		let {items} = this.state;
+
+		this.lastDroppedId = dropId;
+
+		//If the item dropped is already in the list, and we are dropping it lower.
+		//The existing item will push the index down one more than it needs to, so push
+		//it back up;
+		if (oldIndex >= 0 && newIndex > oldIndex) {
+			newIndex -= 1;
+		}
+
+		items = items.reduce((acc, item) => {
+			if (!item.isPlaceholder && item.ID !== dropId && item.item) {
+				acc.push(item.item);
+			}
+
+			return acc;
+		}, []);
+
+		items = [...items.slice(0, newIndex), data, ...items.slice(newIndex)];
+
+		if (onChange) {
+			onChange(items);
+		}
 	}
 
 
 	onContainerDragOver (e) {
-		this.lockRects();
+		// this.lockRects();
 
 		const {clientX, clientY} = e;
 		const placeholder = this.getPlaceholder();
@@ -253,6 +330,9 @@ export default class Ordering extends React.Component {
 		//For html5 drag and drop to work correctly the node that is dragging needs to still be in the dom,
 		//since we are using the same node for the placeholder, if it originated from here we need to keep the node
 		//and just hide it, if its not we can get rid of it.
+
+		this.lastDroppedId = null;
+
 		wait(100)
 			.then(() => {
 				const dragId = dragItem.NTIID || dragItem.ID;
@@ -276,12 +356,15 @@ export default class Ordering extends React.Component {
 
 
 	onItemDragEnd (dragItem, e) {
+		const {onChange} = this.props;
 		let {items, originalOrder} = this.state;
 		const dragId = dragItem.NTIID || dragItem.ID;
 		const {dataTransfer} = e;
 		const wasHandled = dataTransfer.dropEffect !== 'none';
 
-		if (!wasHandled) {
+		items = items.slice(0);
+
+		if (!wasHandled || this.lastDroppedId === dragId) {
 			items = originalOrder.map((item) => {
 				let itemId = item.NTIID || item.ID;
 
@@ -291,17 +374,21 @@ export default class Ordering extends React.Component {
 
 				return item;
 			});
+
+			this.setState({
+				items: items
+			});
 		} else {
 			items = items.filter((item) => {
 				let itemId = item.NTIID || item.ID;
 
-				return !item.isDragging || itemId !== dragId;
+				return itemId !== dragId;
 			});
-		}
 
-		this.setState({
-			items: items
-		});
+			if (onChange) {
+				onChange(items.map(item => item.item));
+			}
+		}
 	}
 
 
