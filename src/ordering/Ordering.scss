@@ -7,14 +7,18 @@
 		border: 1px solid pink;
 		margin: 5px 0;
 
-		&:not(.placeholder).is-dragging {
+		&.is-dragging {
 			height: 0;
 			overflow: hidden;
+			border: none;
+			margin: 0;
 		}
 
 		&.placeholder {
 			height: 40px;
 			background: rgba(0, 0, 0, 0.2);
+			border: none;
+			margin: 0;
 		}
 	}
 }

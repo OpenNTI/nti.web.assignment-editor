@@ -59,9 +59,9 @@ export default class Test extends React.Component {
 
 		return (
 			<div>
-				<Ordering items={itemsA} renderItem={this.renderItem} accepts={['application/vnd.nextthought.test']} onChange={this.onChangeA} />
+				<Ordering containerId="itemsA" items={itemsA} renderItem={this.renderItem} accepts={['application/vnd.nextthought.test']} onChange={this.onChangeA} />
 				<div style={{height:'30px'}}></div>
-				<Ordering items={itemsB} renderItem={this.renderItem} accepts={['application/vnd.nextthought.test']} onChange={this.onChangeB} />
+				<Ordering containerId="itemsB" items={itemsB} renderItem={this.renderItem} accepts={['application/vnd.nextthought.test']} onChange={this.onChangeB} />
 			</div>
 		);
 	}

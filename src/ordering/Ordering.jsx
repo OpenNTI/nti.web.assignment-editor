@@ -3,10 +3,13 @@ import ReactDom from 'react-dom';
 import FlipMove from 'react-flip-move';
 import cx from 'classnames';
 import Logger from 'nti-util-logger';
+import wait from 'nti-commons/lib/wait';
 
 import Draggable from '../dnd/Draggable';
 import Dropzone from '../dnd/Dropzone';
-import wait from 'nti-commons/lib/wait';
+import Store from './Store';
+import {DRAG_OVER, DRAG_LEAVE} from './Constants';
+import {dragOverOrdering, dragLeaveOrdering} from './Actions';
 
 const logger = Logger.get('ordering');
 
@@ -49,6 +52,7 @@ function isPointAfterRect (x, y, rect) {
 
 export default class Ordering extends React.Component {
 	static propTypes = {
+		containerId: React.PropTypes.string,
 		items: React.PropTypes.array.isRequired,
 		renderItem: React.PropTypes.func.isRequired,
 		renderPlaceholder: React.PropTypes.func,
@@ -70,6 +74,7 @@ export default class Ordering extends React.Component {
 		this.onContainerDrop = this.onContainerDrop.bind(this);
 		this.onContainerDragLeave = this.onContainerDragLeave.bind(this);
 		this.onContainerDragOver = this.onContainerDragOver.bind(this);
+		this.onStoreChange = this.onStoreChange.bind(this);
 
 		this.dropHandlers = this.getDropHandlers(this.onContainerDrop.bind(this));
 
@@ -124,11 +129,37 @@ export default class Ordering extends React.Component {
 	}
 
 
+	componentDidMount () {
+		Store.addChangeListener(this.onStoreChange);
+	}
+
+
+	componentWillUnmount () {
+		Store.addChangeListener(this.onStoreChange);
+	}
+
+
+	onStoreChange (e) {
+		if (e.type === DRAG_OVER || e.type === DRAG_LEAVE) {
+			this.maybeRemovePlaceholder();
+		}
+	}
+
+
+	maybeRemovePlaceholder () {
+		if (Store.activeOrdering !== this) {
+			this.removePlaceholder();
+		}
+	}
+
+
 	getPlaceholder () {
+		const {containerId} = this.props;
 		const {items} = this.state;
 
 		for (let item of items) {
-			if (item.isPlaceholder) {
+			if (item.isPlaceholder || item.isDragging) {
+				item.isPlaceholder = true;
 				return item;
 			}
 		}
@@ -137,9 +168,35 @@ export default class Ordering extends React.Component {
 			item: {
 				MimeType: 'application/vnd.nextthought.app.placeholder'
 			},
-			ID: 'Placeholder',
+			ID: 'Placeholder-' + containerId,
 			isPlaceholder: true
 		};
+	}
+
+
+	removePlaceholder () {
+		let {items} = this.state;
+		let hadPlaceholder = false;
+
+		items = items.reduce((acc, item) => {
+			hadPlaceholder = item.isPlaceholder || hadPlaceholder;
+
+			if (item.isPlaceholder && item.isDragging) {
+				item.isPlaceholder = null;
+				acc.push(item);
+			} else if (!item.isPlaceholder) {
+				acc.push(item);
+			}
+
+			return acc;
+		}, []);
+
+		if (hadPlaceholder) {
+			this.setState({
+				items: items,
+				disableAnimation: true
+			});
+		}
 	}
 
 
@@ -197,7 +254,7 @@ export default class Ordering extends React.Component {
 		for (let item of items) {
 			let cmpRect = this.getRectForId(item.ID);
 
-			if (item.isPlaceholder) { continue; }
+			if (item.isPlaceholder || item.isDragging) { continue; }
 
 			if (!cmpRect) {
 				logger.error('Now component for item: ', item);
@@ -238,34 +295,6 @@ export default class Ordering extends React.Component {
 	}
 
 
-	lockRects () {
-		if (this.lockedRects) {
-			return;
-		}
-
-		const {componentRefs} = this;
-		const {items} = this.state;
-		const parentRect = this.getContainerRect();
-
-		if (parentRect) {
-			this.lockedRects = items.reduce((acc, item) => {
-				let cmp = componentRefs[item.ID];
-
-				if (cmp && !item.isPlaceholder) {
-					acc[item.ID] = makeRectRelativeTo(cmp.getBoundingClientRect(), parentRect);
-				}
-
-				return acc;
-			}, {});
-		}
-	}
-
-
-	unlockRects () {
-		this.lockedRects = null;
-	}
-
-
 	onContainerDrop (data, e) {
 		const {onChange} = this.props;
 		const {clientX, clientY} = e;
@@ -273,6 +302,8 @@ export default class Ordering extends React.Component {
 		let newIndex = this.getIndexOfPoint(clientX, clientY);
 		let oldIndex = this.getIndexOfId(dropId);
 		let {items} = this.state;
+
+		items = items.slice(0);
 
 		this.lastDroppedId = dropId;
 
@@ -299,8 +330,11 @@ export default class Ordering extends React.Component {
 	}
 
 
+
 	onContainerDragOver (e) {
-		// this.lockRects();
+		dragOverOrdering(this);
+
+		if (this.isInternalDrag) { return; }
 
 		const {clientX, clientY} = e;
 		const placeholder = this.getPlaceholder();
@@ -308,8 +342,10 @@ export default class Ordering extends React.Component {
 		let {items} = this.state;
 		let toInsert = [placeholder];
 
+		items = items.slice(0);
+
 		items = items.filter((item) => {
-			return !item.isPlaceholder;
+			return !(item.isPlaceholder || item.isDragging);
 		});
 
 		items = [...items.slice(0, index), ...toInsert, ...items.slice(index)];
@@ -322,24 +358,11 @@ export default class Ordering extends React.Component {
 
 
 	onContainerDragLeave () {
-		this.unlockRects();
+		dragLeaveOrdering(this);
 
-		// const placeholder = this.getPlaceholder();
-		let {items} = this.state;
-
-		items = items.reduce((acc, item) => {
-			if (!item.isPlaceholder) {
-				acc.push(item);
-			}
-
-			return acc;
-		}, []);
-
-		this.setState({
-			items: items,
-			disableAnimation: false
-		});
+		this.removePlaceholder();
 	}
+
 
 	onItemDragStart (dragItem) {
 		//wait a little bit so the ghost image will be there
@@ -348,9 +371,12 @@ export default class Ordering extends React.Component {
 		//and just hide it, if its not we can get rid of it.
 
 		this.lastDroppedId = null;
+		this.isInternalDrag = true;
 
 		wait(100)
 			.then(() => {
+				this.isInternalDrag = null;
+
 				const dragId = dragItem.NTIID || dragItem.ID;
 				let {items} = this.state;
 
@@ -362,10 +388,11 @@ export default class Ordering extends React.Component {
 
 						if (itemId === dragId) {
 							item.isDragging = true;
+							item.isPlaceholder = true;
 						}
 
 						return item;
-					}).filter(item => !item.isPlaceholder),
+					}),
 					disableAnimation: false
 				});
 			});
@@ -381,12 +408,20 @@ export default class Ordering extends React.Component {
 
 		items = items.slice(0);
 
+		let itemMap = items.reduce((acc, item) => {
+			acc[item.NTIID || item.ID] = item;
+
+			return acc;
+		}, {});
+
 		if (!wasHandled || this.lastDroppedId === dragId) {
-			items = originalOrder.map((item) => {
-				let itemId = item.NTIID || item.ID;
+			items = originalOrder.map((originalItem) => {
+				let itemId = originalItem.NTIID || originalItem.ID;
+				let item = itemMap[itemId];
 
 				if (itemId === dragId) {
 					item.isDragging = false;
+					item.isPlaceholder = false;
 				}
 
 				return item;
@@ -394,7 +429,7 @@ export default class Ordering extends React.Component {
 
 			this.setState({
 				items: items,
-				disableAnimation: false
+				disableAnimation: true
 			});
 		} else {
 			items = items.filter((item) => {
@@ -428,7 +463,12 @@ export default class Ordering extends React.Component {
 		const cls = cx('ordering-container', className || '');
 
 		return (
-			<Dropzone className={cls} dropHandlers={this.dropHandlers} onDragLeave={this.onContainerDragLeave} onDragOver={this.onContainerDragOver}>
+			<Dropzone
+				className={cls}
+				dropHandlers={this.dropHandlers}
+				onDragLeave={this.onContainerDragLeave}
+				onDragOver={this.onContainerDragOver}
+			>
 				<div>
 					<FlipMove enterAnimation="fade" leaveAnimation="fade" duration={150} easing="ease-in" disableAllAnimations={disableAnimation}>
 						{items.map(this.renderItem)}

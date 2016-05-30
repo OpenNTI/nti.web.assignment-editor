@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import cx from 'classnames';
 
 import DnDInfo from './Info';
@@ -67,10 +68,17 @@ export default class Dropzone extends React.Component {
 	}
 
 
+	getDOMNode () {
+		return ReactDOM.findDOMNode(this);
+	}
+
+
 	onDrop (e) {
 		const {onDrop, onInvalidDrop, dropHandlers} = this.props;
 		const {dataTransfer} = e;
 		const data = new DataTransfer(dataTransfer);
+
+		this.dragEnterCounter = 0;
 
 		if (!isValidTransfer(data)) {
 			if (onInvalidDrop) {
@@ -95,13 +103,14 @@ export default class Dropzone extends React.Component {
 		e.preventDefault();
 		e.stopPropagation();
 
+		if (e.target !== this.getDOMNode()) {
+			return;
+		}
+
 		const {onDragEnter} = this.props;
 		const {dataTransfer} = e;
 		const data = new DataTransfer(dataTransfer);
 
-		this.dragEnterCounter = this.dragEnterCounter || 0;
-
-		this.dragEnterCounter += 1;
 
 		if (isValidTransfer(data) && hasAcceptedType(this.acceptedTypes, data)) {
 			this.setState({
@@ -127,19 +136,17 @@ export default class Dropzone extends React.Component {
 
 		const {onDragLeave} = this.props;
 
-		this.dragEnterCounter = this.dragEnterCounter || 1;
+		if (e.target !== this.getDOMNode()) {
+			return;
+		}
 
-		this.dragEnterCounter -= 1;
+		this.setState({
+			dragOver: false,
+			isValid: null
+		});
 
-		if (this.dragEnterCounter === 0) {
-			this.setState({
-				dragOver: false,
-				isValid: null
-			});
-
-			if (onDragLeave) {
-				onDragLeave(e);
-			}
+		if (onDragLeave) {
+			onDragLeave(e);
 		}
 	}
 
