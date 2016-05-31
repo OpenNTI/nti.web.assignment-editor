@@ -2,6 +2,8 @@ import React from 'react';
 import Choices from './Choices';
 import {savePartToQuestion} from './Actions';
 
+const CHOICE_TYPE = 'application/vnd.nextthought.app.multiplecchoiceanswer';
+
 export default class MultipleChoiceEditor extends React.Component {
 	static propTypes = {
 		part: React.PropTypes.object.isRequired,
@@ -13,42 +15,82 @@ export default class MultipleChoiceEditor extends React.Component {
 	constructor (props) {
 		super(props);
 
-		this.state = {};
+		const {part} = this.props;
+		const {choices, solutions} = part;
+
+		this.state = {
+			choices: this.mapChoices(choices, solutions, part.NTIID)
+		};
 
 		this.choicesChanged = this.choicesChanged.bind(this);
 	}
 
 
-	choicesChanged (choices, solution) {
-		const {part, question, multipleAnswers} = this.props;
+	componentWillReceiveProps (nextProps) {
+		const {part} = nextProps;
+		const {choices, solutions} = part;
 
-		if (!multipleAnswers) {
-			solution = solution[0];
-		}
-
-		savePartToQuestion(question, part, '', choices, solution);
+		this.setState({
+			choices: this.mapChoices(choices, solutions, part.NTIID)
+		});
 	}
 
 
-	render () {
-		const {part, multipleAnswers} = this.props;
-		let {choices, solutions} = part;
+	mapChoices (choices, solutions, partId) {
 		let solution = solutions[0];//For now just handle the first solution
 
 		solution = solution && solution.value;
-		choices = choices.slice(0);
 
 		if (!Array.isArray(solution)) {
 			solution = [solution];
 		}
 
-		solution = solution.slice(0);
+		solution = solution.reduce((acc, s) => {
+			acc[s] = true;
+
+			return acc;
+		}, {});
+
+		return choices.map((choice, index) => {
+			return {
+				MimeType: CHOICE_TYPE,
+				ID: partId + '-' + index,
+				label: choice,
+				correct: solution[index]
+			};
+		});
+	}
+
+
+	choicesChanged (choices) {
+		const {part, question, multipleAnswers} = this.props;
+
+		let values = choices.reduce((acc, choice, index) => {
+			acc.choices.push(choice.label);
+
+			if (choice.correct) {
+				acc.solutions.push(index);
+			}
+
+			return acc;
+		}, {choices: [], solutions: []});
+
+		if (!multipleAnswers) {
+			values.solutions = values.solutions[0];
+		}
+
+		savePartToQuestion(question, part, '', values.choices, values.solutions);
+	}
+
+
+	render () {
+		const {part, multipleAnswers} = this.props;
+		const {choices} = this.state;
 
 		return (
 			<Choices
 				partId={part.NTIID}
 				choices={choices}
-				solution={solution}
 				onChange={this.choicesChanged}
 				multipleAnswers={multipleAnswers}
 			/>

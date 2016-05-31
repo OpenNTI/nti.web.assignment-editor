@@ -6,35 +6,9 @@ import {Ordering} from '../../../dnd';
 
 const CHOICE_TYPE = 'application/vnd.nextthought.app.multiplecchoiceanswer';
 
-//If the index isn't already in the solutions add it
-function setSolutionCorrect (index, solutions) {
-	for (let solution of solutions) {
-		if (solution === index) {
-			return;
-		}
-	}
-
-	solutions.push(index);
-
-	return solutions;
-}
-
-
-function removeSolution (index, solutions) {
-	return solutions.reduce((acc, solution) => {
-		if (solution !== index) {
-			acc.push(solution);
-		}
-
-		return acc;
-	}, []);
-}
-
-
 export default class SingleChoices extends React.Component {
 	static propTypes = {
 		choices: React.PropTypes.array.isRequired,
-		solution: React.PropTypes.array,
 		partId: React.PropTypes.string,
 		onChange: React.PropTypes.func,
 		multipleAnswers: React.PropTypes.bool
@@ -43,17 +17,12 @@ export default class SingleChoices extends React.Component {
 	constructor (props) {
 		super(props);
 
-		let {choices, solution} = props;
+		let {choices} = props;
 
 		choices = choices.slice(0);
 
-		choices = this.mapChoices(choices);
-
-		//TODO: track the correctness on the choice, so if they are re-ordered the solution follows it
-
 		this.state = {
-			choices: choices,
-			solution: solution
+			choices: choices
 		};
 
 		this.onChoiceChanged = this.onChoiceChanged.bind(this);
@@ -65,53 +34,22 @@ export default class SingleChoices extends React.Component {
 
 
 	componentWillReceiveProps (nextProps) {
-		let {choices, solution} = nextProps;
+		let {choices} = nextProps;
 
 		choices = choices.slice(0);
 
-		choices = this.mapChoices(choices);
-
 		this.setState({
-			choices: choices,
-			solution: solution
+			choices: choices
 		});
-	}
-
-
-	mapChoices (choices) {
-		const {partId} = this.props;
-
-		return choices.map((choice, index) => {
-			return {
-				MimeType: CHOICE_TYPE,
-				label: choice,
-				ID: partId + '-' + index
-			};
-		});
-	}
-
-
-	isChoiceCorrect (choice, index) {
-		const {solution} = this.state;
-
-		for (let s of solution) {
-			if (s === index) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 
 	onChange () {
 		const {onChange} = this.props;
-		let {choices, solution} = this.state;
-
-		choices = choices.map(choice => choice.label);
+		const {choices} = this.state;
 
 		if (onChange) {
-			onChange(choices, solution);
+			onChange(choices);
 		}
 	}
 
@@ -125,12 +63,19 @@ export default class SingleChoices extends React.Component {
 	}
 
 
-	onChoiceChanged (index, value) {
+	onChoiceChanged (id, label, correct) {
 		let {choices} = this.state;
 
-		choices = choices.slice(0);
+		choices = choices.map((choice) => {
+			let choiceId = choice.NTIID || choice.ID;
 
-		choices[index].label = value;
+			if (choiceId === id) {
+				choice.label = label;
+				choice.correct = correct;
+			}
+
+			return choice;
+		});
 
 		this.setState({
 			choices: choices
@@ -140,22 +85,45 @@ export default class SingleChoices extends React.Component {
 	}
 
 
-	onSolutionChanged (index, correct) {
+	onSolutionChanged (id, correct) {
 		const {multipleAnswers} = this.props;
-		let {solution} = this.state;
+		let {choices} = this.state;
 
-		if (!multipleAnswers) {
-			solution = correct ? [index] : solution;
-		} else if (correct) {
-			solution = setSolutionCorrect(index, solution);
-		} else {
-			solution = removeSolution(index, solution);
-		}
+		choices = choices.map((choice) => {
+			let choiceId = choice.NTIID || choice.ID;
+
+			if (choiceId === id) {
+				choice.correct = correct;
+			} else if (choice.correct && !multipleAnswers) {
+				choice.correct = !correct;
+			}
+
+			return choice;
+		});
 
 		this.setState({
-			solution: solution
+			choices: choices
 		});
 	}
+
+
+	// xonSolutionChanged (index, correct) {
+	// 	debugger;
+	// 	const {multipleAnswers} = this.props;
+	// 	let {solution} = this.state;
+
+	// 	if (!multipleAnswers) {
+	// 		solution = correct ? [index] : solution;
+	// 	} else if (correct) {
+	// 		solution = setSolutionCorrect(index, solution);
+	// 	} else {
+	// 		solution = removeSolution(index, solution);
+	// 	}
+
+	// 	this.setState({
+	// 		solution: solution
+	// 	});
+	// }
 
 
 	onAdd () {
@@ -186,16 +154,14 @@ export default class SingleChoices extends React.Component {
 	renderChoice (choice, index) {
 		const {partId, multipleAnswers} = this.props;
 		const group = partId + '--solution-group';
-		const selected = this.isChoiceCorrect(choice, index);
 
 		return (
 			<Choice
 				index={index}
-				value={choice.label}
-				isCorrect={selected}
+				choice={choice}
 				group={group}
 				onChange={this.onChoiceChanged}
-				onSolutionChanged={this.onSolutionChanged}
+				onSolutionChange={this.onSolutionChanged}
 				multipleAnswers={multipleAnswers}
 			/>
 		);
@@ -206,9 +172,7 @@ export default class SingleChoices extends React.Component {
 		const {multipleAnswers} = this.props;
 
 		return (
-			<li>
-				<Add multipleAnswers={multipleAnswers} onAdd={this.onAdd} />
-			</li>
+			<Add multipleAnswers={multipleAnswers} onAdd={this.onAdd} />
 		);
 	}
 }

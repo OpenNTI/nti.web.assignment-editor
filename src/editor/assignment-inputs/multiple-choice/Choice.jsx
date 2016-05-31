@@ -2,14 +2,13 @@ import React from 'react';
 import cx from 'classnames';
 import Selectable from '../../utils/Selectable';
 
-export default class SingleChoice extends React.Component {
+export default class Choice extends React.Component {
 	static propTypes = {
 		index: React.PropTypes.number,
-		value: React.PropTypes.string,
+		choice: React.PropTypes.object,
 		group: React.PropTypes.string,
-		isCorrect: React.PropTypes.bool,
 		onChange: React.PropTypes.func,
-		onSolutionChanged: React.PropTypes.func,
+		onSolutionChange: React.PropTypes.func,
 		multipleAnswers: React.PropTypes.bool
 	}
 
@@ -17,82 +16,79 @@ export default class SingleChoice extends React.Component {
 	constructor (props) {
 		super(props);
 
-		const {index, value} = this.props;
+		const {choice} = this.props;
 
 		this.state = {
-			value: value,
-			index: index,
-			selectableValue: value
+			label: choice.label,
+			correct: choice.correct
 		};
 
 		this.onBlur = this.onBlur.bind(this);
-		this.onChoiceChange = this.onChoiceChange.bind(this);
+		this.onLabelChange = this.onLabelChange.bind(this);
 		this.onSolutionChange = this.onSolutionChange.bind(this);
 	}
 
 
 	componentWillReceiveProps (nextProps) {
-		const {value} = nextProps;
+		const {choice} = nextProps;
 
 		this.setState({
-			value: value
+			label: choice.label,
+			correct: choice.correct
 		});
 	}
 
 
-	onChoiceChange (e) {
+	onBlur () {
+		const {choice, onChange} = this.props;
+		const {label, correct} = this.state;
+
+		if (onChange) {
+			onChange(choice.NTIID || choice.ID, label, correct);
+		}
+	}
+
+
+	onLabelChange (e) {
 		this.setState({
-			value: e.target.value
+			label: e.target.value
 		});
 	}
 
 
 	onSolutionChange (e) {
-		const {onSolutionChanged} = this.props;
-		const {index} = this.state;
+		const {onSolutionChange, choice} = this.props;
 
-		if (onSolutionChanged) {
-			onSolutionChanged(index, e.target.checked);
-		}
-	}
-
-
-	onBlur () {
-		const {onChange} = this.props;
-		const {index, value} = this.state;
-
-		if (onChange) {
-			onChange(index, value);
+		if (onSolutionChange) {
+			onSolutionChange(choice.NTIID || choice.ID, e.target.checked);
 		}
 	}
 
 
 	render () {
-		const {isCorrect, group, multipleAnswers} = this.props;
-		const {index, value, selectableValue} = this.state;
+		const {index, group, multipleAnswers} = this.props;
+		const {label, correct} = this.state;
 		const id = group + ':' + index;
-		const cls = cx('choice', {correct: isCorrect, 'multiple-answers': multipleAnswers});
+		const cls = cx('choice', {correct: correct, 'multiple-answers': multipleAnswers});
 
 		return (
-			<Selectable className={cls} id={id} value={selectableValue} onUnselect={this.onBlur}>
-				{this.renderSolution(group, isCorrect)}
-				<input type="text" value={value} onChange={this.onChoiceChange} />
+			<Selectable className={cls} id={id} value={label} onUnselect={this.onBlur}>
+				{this.renderSolution(group, correct, multipleAnswers)}
+				<input type="text" value={label} onChange={this.onLabelChange} />
 			</Selectable>
 		);
 	}
 
 
-	renderSolution (group, isCorrect) {
-		const {multipleAnswers} = this.props;
-
+	renderSolution (group, correct, multipleAnswers) {
 		if (multipleAnswers) {
 			return (
-				<input type="checkbox" checked={isCorrect} onChange={this.onSolutionChange} />
+				<input type="checkbox" checked={correct} onChange={this.onSolutionChange} />
 			);
 		}
 
 		return (
-			<input type="radio" name={group} checked={isCorrect} onChange={this.onSolutionChange} />
+			<input type="radio" name={group} checked={correct} onChange={this.onSolutionChange} />
 		);
 	}
 }
