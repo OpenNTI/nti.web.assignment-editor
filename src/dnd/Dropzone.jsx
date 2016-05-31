@@ -103,10 +103,6 @@ export default class Dropzone extends React.Component {
 		e.preventDefault();
 		e.stopPropagation();
 
-		if (e.target !== this.getDOMNode()) {
-			return;
-		}
-
 		const {onDragEnter} = this.props;
 		const {dataTransfer} = e;
 		const data = new DataTransfer(dataTransfer);

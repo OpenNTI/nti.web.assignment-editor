@@ -2,7 +2,9 @@ import React from 'react';
 import cx from 'classnames';
 import Choice from './Choice';
 import Add from './AddButton';
+import {Ordering} from '../../../dnd';
 
+const CHOICE_TYPE = 'application/vnd.nextthought.app.multiplecchoiceanswer';
 
 //If the index isn't already in the solutions add it
 function setSolutionCorrect (index, solutions) {
@@ -41,7 +43,13 @@ export default class SingleChoices extends React.Component {
 	constructor (props) {
 		super(props);
 
-		const {choices, solution} = props;
+		let {choices, solution} = props;
+
+		choices = choices.slice(0);
+
+		choices = this.mapChoices(choices);
+
+		//TODO: track the correctness on the choice, so if they are re-ordered the solution follows it
 
 		this.state = {
 			choices: choices,
@@ -52,6 +60,34 @@ export default class SingleChoices extends React.Component {
 		this.onSolutionChanged = this.onSolutionChanged.bind(this);
 		this.renderChoice = this.renderChoice.bind(this);
 		this.onAdd = this.onAdd.bind(this);
+		this.onOrderChange = this.onOrderChange.bind(this);
+	}
+
+
+	componentWillReceiveProps (nextProps) {
+		let {choices, solution} = nextProps;
+
+		choices = choices.slice(0);
+
+		choices = this.mapChoices(choices);
+
+		this.setState({
+			choices: choices,
+			solution: solution
+		});
+	}
+
+
+	mapChoices (choices) {
+		const {partId} = this.props;
+
+		return choices.map((choice, index) => {
+			return {
+				MimeType: CHOICE_TYPE,
+				label: choice,
+				ID: partId + '-' + index
+			};
+		});
 	}
 
 
@@ -68,15 +104,39 @@ export default class SingleChoices extends React.Component {
 	}
 
 
-	onChoiceChanged (index, value) {
+	onChange () {
 		const {onChange} = this.props;
 		let {choices, solution} = this.state;
 
-		choices[index] = value;
+		choices = choices.map(choice => choice.label);
 
 		if (onChange) {
 			onChange(choices, solution);
 		}
+	}
+
+
+	onOrderChange (newOrder) {
+		this.setState({
+			choices: newOrder
+		}, () => {
+			this.onChange();
+		});
+	}
+
+
+	onChoiceChanged (index, value) {
+		let {choices} = this.state;
+
+		choices = choices.slice(0);
+
+		choices[index].label = value;
+
+		this.setState({
+			choices: choices
+		}, () => {
+			this.onChange();
+		});
 	}
 
 
@@ -110,15 +170,15 @@ export default class SingleChoices extends React.Component {
 
 
 	render () {
-		const {multipleAnswers} = this.props;
+		const {multipleAnswers, partId} = this.props;
 		const {choices} = this.state;
 		const cls = cx('multiple-choice', {'multiple-answer': multipleAnswers});
 
 		return (
-			<ul className={cls}>
-				{choices.map(this.renderChoice)}
+			<div className={cls}>
+				<Ordering containerId={partId} items={choices} renderItem={this.renderChoice} accepts={[CHOICE_TYPE]} onChange={this.onOrderChange}/>
 				{this.renderAddButton()}
-			</ul>
+			</div>
 		);
 	}
 
@@ -129,17 +189,15 @@ export default class SingleChoices extends React.Component {
 		const selected = this.isChoiceCorrect(choice, index);
 
 		return (
-			<li key={index}>
-				<Choice
-					index={index}
-					value={choice}
-					isCorrect={selected}
-					group={group}
-					onChange={this.onChoiceChanged}
-					onSolutionChanged={this.onSolutionChanged}
-					multipleAnswers={multipleAnswers}
-				/>
-			</li>
+			<Choice
+				index={index}
+				value={choice.label}
+				isCorrect={selected}
+				group={group}
+				onChange={this.onChoiceChanged}
+				onSolutionChanged={this.onSolutionChanged}
+				multipleAnswers={multipleAnswers}
+			/>
 		);
 	}
 

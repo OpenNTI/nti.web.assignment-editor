@@ -1,12 +1,5 @@
 .ordering-container {
-	border: 1px solid black;
-
 	.ordering-item {
-		height: 40px;
-		line-height: 40px;
-		border: 1px solid pink;
-		margin: 5px 0;
-
 		&.is-dragging {
 			height: 0;
 			overflow: hidden;

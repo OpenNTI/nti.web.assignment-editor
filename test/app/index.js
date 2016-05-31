@@ -4,12 +4,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Editor} from '../../src/index';
 import Dnd from '../../src/dnd/';
-import Ordering from '../../src/ordering';
+import Ordering from '../../src/dnd/ordering';
 
 import 'normalize.css';
 
 ReactDOM.render(
-	<Ordering />,
+	<Editor />,
 	document.getElementById('content')
 );
 

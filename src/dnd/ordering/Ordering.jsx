@@ -5,8 +5,8 @@ import cx from 'classnames';
 import Logger from 'nti-util-logger';
 import wait from 'nti-commons/lib/wait';
 
-import Draggable from '../dnd/Draggable';
-import Dropzone from '../dnd/Dropzone';
+import Draggable from '../Draggable';
+import Dropzone from '../Dropzone';
 import Store from './Store';
 import {DRAG_OVER, DRAG_LEAVE} from './Constants';
 import {dragOverOrdering, dragLeaveOrdering} from './Actions';
