@@ -1,6 +1,9 @@
+@import "~nti-style-common";
+
 .assignment-editor-container {
 	max-width: 1024px;
 	margin: 0 auto;
+	font-family: $body-font-family;
 
 	.assignment-editor {
 		float: left;
