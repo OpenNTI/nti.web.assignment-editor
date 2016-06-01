@@ -21,5 +21,5 @@ export function saveTitle (assignment, value) {
 
 
 export function saveDescription (assignment, value) {
-	saveField(assignment, 'description', value);
+	saveField(assignment, 'content', value);
 }
