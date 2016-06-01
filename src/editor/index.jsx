@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 import AssignmentEditor from './assignment-editor';
 import Controls from './controls';
@@ -33,20 +34,38 @@ export default class Editor extends React.Component {
 	constructor (props) {
 		super(props);
 
-		this.state = {};
+		this.state = {
+			sidebarTransform: 'none'
+		};
 
 		this.onStoreChange = this.onStoreChange.bind(this);
+		this.onWindowScroll = this.onWindowScroll.bind(this);
 	}
 
 
 	componentDidMount () {
 		Store.addChangeListener(this.onStoreChange);
 		loadAssignment(this.props.NTIID);
+
+		this.sidebarDOM = ReactDOM.findDOMNode(this.sidebar);
+
+		// window.addEventListener('scroll', this.onWindowScroll);
 	}
 
 
 	componenWillUnmount () {
 		Store.removeChangeListener(this.onStoreChange);
+
+		// window.removeEventListener('scroll', this.onWindowScroll);
+	}
+
+
+	onWindowScroll () {
+		const top = window.scrollY;
+
+		if (this.sidebarDOM) {
+			this.sidebarDOM.style.transform = `translate3d(0, ${top}px, 0)`;
+		}
 	}
 
 
@@ -78,9 +97,9 @@ export default class Editor extends React.Component {
 
 		return (
 			<div className={cls}>
-				<AssignmentEditor assignment={assignment} schema={schema}/>
-				<Sidebar assignment={assignment} schema={schema}/>
-				<Controls/>
+				<AssignmentEditor assignment={assignment} schema={schema} />
+				<Sidebar ref={x => this.sidebar = x} assignment={assignment} schema={schema} />
+				<Controls />
 			</div>
 		);
 	}

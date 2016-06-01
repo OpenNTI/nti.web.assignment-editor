@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class PointValue extends React.Component {
+export default class DescriptionEditor extends React.Component {
 	constructor (props) {
 		super(props);
 
@@ -10,9 +10,7 @@ export default class PointValue extends React.Component {
 
 	render () {
 		return (
-			<div className="field point-value">
-				Point Value
-			</div>
+			<div>Description</div>
 		);
 	}
 }

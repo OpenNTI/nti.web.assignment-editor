@@ -1,16 +1,17 @@
 import React from 'react';
-import Field from './Field';
 
-export default class AvailableEnding extends Field {
-	get fieldName () { return 'available_for_submission_ending'; }
+export default class AvailableEnding extends React.Component {
+	constructor (props) {
+		super(props);
 
-	getSelectableValue () {
-		return 'Available Submission Ending';
+		this.state = {};
 	}
 
-	renderInput () {
+	render () {
 		return (
-			<span>{this.fieldName}</span>
+			<div className="field available-ending">
+				Available Ending
+			</div>
 		);
 	}
 }

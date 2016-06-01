@@ -1,16 +1,17 @@
 import React from 'react';
-import Field from './Field';
 
-export default class AvailableBeginning extends Field {
-	get fieldName () { return 'available_for_submission_beginning'; }
+export default class AvailableBeginning extends React.Component {
+	constructor (props) {
+		super(props);
 
-	getSelectableValue () {
-		return 'Available Submission Beginning';
+		this.state = {};
 	}
 
-	renderInput () {
+	render () {
 		return (
-			<span>{this.fieldName}</span>
+			<div className="field available-beginning">
+				Available Beginning
+			</div>
 		);
 	}
 }

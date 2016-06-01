@@ -1,16 +1,17 @@
 import React from 'react';
-import Field from './Field';
 
-export default class TimeLimit extends Field {
-	get fieldName () { return 'TimeLimit'; }
+export default class TimeLimit extends React.Component {
+	constructor (props) {
+		super(props);
 
-	getSelectableValue () {
-		return 'Time Limit';
+		this.state = {};
 	}
 
-	renderInput () {
+	render () {
 		return (
-			<span>{this.fieldName}</span>
+			<div className="field time-limit">
+				Time Limit
+			</div>
 		);
 	}
 }

@@ -1,4 +1,11 @@
 .assignment-info {
-	background: white;
-	box-shadow: 0 0 1px 0 #e9e9e9;
+	overflow: hidden;
+	box-shadow: inset 0 0 0 1px #e2e2e2;
+
+	.field {
+		height: 50px;
+		width: 25%;
+		float: left;
+		box-shadow: 1px 0 0 0 #e2e2e2;
+	}
 }

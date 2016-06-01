@@ -19,12 +19,14 @@ export default class Editor extends React.Component {
 
 		if (!assignment) {
 			return (
-				<div className="sidebar loading"></div>
+				<div className="assignment-editing-sidebar loading"></div>
 			);
 		}
 
 		return (
-			<QuestionTypes assignment={assignment} schema={schema} />
+			<div className="assignment-editing-sidebar">
+				<QuestionTypes assignment={assignment} schema={schema} />
+			</div>
 		);
 	}
 }

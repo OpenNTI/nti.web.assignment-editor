@@ -107,25 +107,6 @@ export default class SingleChoices extends React.Component {
 	}
 
 
-	// xonSolutionChanged (index, correct) {
-	// 	debugger;
-	// 	const {multipleAnswers} = this.props;
-	// 	let {solution} = this.state;
-
-	// 	if (!multipleAnswers) {
-	// 		solution = correct ? [index] : solution;
-	// 	} else if (correct) {
-	// 		solution = setSolutionCorrect(index, solution);
-	// 	} else {
-	// 		solution = removeSolution(index, solution);
-	// 	}
-
-	// 	this.setState({
-	// 		solution: solution
-	// 	});
-	// }
-
-
 	onAdd () {
 		const {choices} = this.state;
 
@@ -151,13 +132,12 @@ export default class SingleChoices extends React.Component {
 	}
 
 
-	renderChoice (choice, index) {
+	renderChoice (choice) {
 		const {partId, multipleAnswers} = this.props;
 		const group = partId + '--solution-group';
 
 		return (
 			<Choice
-				index={index}
 				choice={choice}
 				group={group}
 				onChange={this.onChoiceChanged}

@@ -4,7 +4,6 @@ import Selectable from '../../utils/Selectable';
 
 export default class Choice extends React.Component {
 	static propTypes = {
-		index: React.PropTypes.number,
 		choice: React.PropTypes.object,
 		group: React.PropTypes.string,
 		onChange: React.PropTypes.func,
@@ -66,9 +65,9 @@ export default class Choice extends React.Component {
 
 
 	render () {
-		const {index, group, multipleAnswers} = this.props;
+		const {group, multipleAnswers, choice} = this.props;
 		const {label, correct} = this.state;
-		const id = group + ':' + index;
+		const id = choice.NTIID || choice.ID;
 		const cls = cx('choice', {correct: correct, 'multiple-answers': multipleAnswers});
 
 		return (
