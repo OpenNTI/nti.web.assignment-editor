@@ -6,6 +6,7 @@ import AssignmentInfo from '../assignment-info';
 import AssignmentParts from '../assignment-parts';
 import AssignmentContent from '../assignment-content';
 import AssignmentOptions from '../assignment-options';
+import NavBar from '../nav-bar';
 
 const CONTENT_VIEW = 'content';
 const OPTIONS_VIEW = 'options';
@@ -50,15 +51,10 @@ export default class AssignmentEditor extends React.Component {
 
 		return (
 			<div className={cls}>
+				<NavBar />
 				<AssignmentInfo assignment={assignment} schema={schema} />
 				<div className="content">
-					<div className="control">
-						{active === CONTENT_VIEW ?
-							(<div className="show-options" onClick={this.showOptions}>Options</div>) :
-							(<div className="show-content" onClick={this.showContent}>Content</div>)
-						}
-					</div>
-					<ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
+					<ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={250}>
 						{active === CONTENT_VIEW ?
 							this.renderContent(assignment, schema) :
 							this.renderOptions(assignment, schema)
@@ -73,6 +69,7 @@ export default class AssignmentEditor extends React.Component {
 	renderOptions (assignment, schema) {
 		return (
 			<div key="options" className="option-container">
+				<div className="show-content toggle" onClick={this.showContent}>Content</div>
 				<AssignmentOptions assignment={assignment} schema={schema} />
 			</div>
 		);
@@ -82,6 +79,7 @@ export default class AssignmentEditor extends React.Component {
 	renderContent (assignment, schema) {
 		return (
 			<div key="content" className="content-container">
+				<div className="show-options toggle" onClick={this.showOptions}>Options</div>
 				<AssignmentContent assignment={assignment} schema={schema} />
 				<AssignmentParts assignment={assignment} schema={schema} />
 			</div>

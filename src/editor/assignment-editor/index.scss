@@ -1,3 +1,79 @@
 .assignment-editor {
 	background: white;
+
+	.content {
+		position: relative;
+		min-height: 200px;
+	}
+
+	.toggle {
+		position: absolute;
+		top: 21px;
+		right: 30px;
+	}
+
+	.option-container, .content-container {
+		background: white;
+		padding: 22px 30px;
+	}
+
+	.option-container {
+		height: 700px;
+	}
+
+	.fadeInOut-enter {
+		&.option-container {
+			opacity: 0;
+			transform: scale(0.8);
+			background: none;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			z-index: 1;
+
+			&.fadeInOut-enter-active {
+				opacity: 1;
+				transform: scale(1);
+				transition: opacity 400ms, transform 400ms cubic-bezier(0.5, 0.01, 0.02, 1.35);
+			}
+		}
+
+		&.content-container {
+			opacity: 0;
+
+			&.fadeInOut-enter-active {
+				opacity: 1;
+				transition: opacity 400ms;
+			}
+		}
+	}
+
+	.fadeInOut-leave {
+		&.option-container {
+			opacity: 1;
+			transform: scale(1);
+			background: none;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			z-index: 1;
+
+			&.fadeInOut-leave-active {
+				opacity: 0;
+				transform: scale(0.8);
+				transition: opacity 250ms, transform 250ms;
+			}
+		}
+
+		&.content-container {
+			opacity: 1;
+
+			&.fadeInOut-leave-active {
+				opacity: 0;
+				transition: opacity 250ms;
+			}
+		}
+	}
 }
