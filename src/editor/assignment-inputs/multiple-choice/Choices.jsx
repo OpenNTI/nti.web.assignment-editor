@@ -4,12 +4,11 @@ import Choice from './Choice';
 import Add from './AddButton';
 import {Ordering} from '../../../dnd';
 
-const CHOICE_TYPE = 'application/vnd.nextthought.app.multiplecchoiceanswer';
-
 export default class SingleChoices extends React.Component {
 	static propTypes = {
 		choices: React.PropTypes.array.isRequired,
 		partId: React.PropTypes.string,
+		partType: React.PropTypes.string,
 		onChange: React.PropTypes.func,
 		multipleAnswers: React.PropTypes.bool
 	}
@@ -17,13 +16,15 @@ export default class SingleChoices extends React.Component {
 	constructor (props) {
 		super(props);
 
-		let {choices} = props;
+		let {choices, partType} = props;
 
 		choices = choices.slice(0);
 
 		this.state = {
 			choices: choices
 		};
+
+		this.acceptTypes = [partType];
 
 		this.onChoiceChanged = this.onChoiceChanged.bind(this);
 		this.onSolutionChanged = this.onSolutionChanged.bind(this);
@@ -125,7 +126,7 @@ export default class SingleChoices extends React.Component {
 
 		return (
 			<div className={cls}>
-				<Ordering containerId={partId} items={choices} renderItem={this.renderChoice} accepts={[CHOICE_TYPE]} onChange={this.onOrderChange}/>
+				<Ordering containerId={partId} items={choices} renderItem={this.renderChoice} accepts={this.acceptTypes} onChange={this.onOrderChange}/>
 				{this.renderAddButton()}
 			</div>
 		);

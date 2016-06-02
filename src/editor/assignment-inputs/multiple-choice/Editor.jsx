@@ -2,7 +2,6 @@ import React from 'react';
 import Choices from './Choices';
 import {savePartToQuestion} from './Actions';
 
-const CHOICE_TYPE = 'application/vnd.nextthought.app.multiplecchoiceanswer';
 
 export default class MultipleChoiceEditor extends React.Component {
 	static propTypes = {
@@ -16,7 +15,9 @@ export default class MultipleChoiceEditor extends React.Component {
 		super(props);
 
 		const {part} = this.props;
-		const {choices, solutions} = part;
+		const {choices, solutions, NTIID:partId} = part;
+
+		this.partType = (partId + '-answer').toLowerCase();
 
 		this.state = {
 			choices: this.mapChoices(choices, solutions, part.NTIID)
@@ -53,7 +54,7 @@ export default class MultipleChoiceEditor extends React.Component {
 
 		return choices.map((choice, index) => {
 			return {
-				MimeType: CHOICE_TYPE,
+				MimeType: this.partType,
 				ID: partId + '-' + index,
 				label: choice,
 				correct: solution[index]
@@ -90,6 +91,7 @@ export default class MultipleChoiceEditor extends React.Component {
 		return (
 			<Choices
 				partId={part.NTIID}
+				partType={this.partType}
 				choices={choices}
 				onChange={this.choicesChanged}
 				multipleAnswers={multipleAnswers}
