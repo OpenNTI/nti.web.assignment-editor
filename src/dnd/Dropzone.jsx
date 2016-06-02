@@ -16,7 +16,7 @@ export function hasAcceptedType (types, dataTransfer) {
 		}
 	}
 
-	return true;
+	return false;
 }
 
 
@@ -154,10 +154,11 @@ export default class Dropzone extends React.Component {
 
 		const {onDragOver} = this.props;
 		const {dataTransfer} = e;
+		const data = new DataTransfer(dataTransfer);
 
 		//TODO: pass wHether or not there is data it could handle
 		if (onDragOver) {
-			onDragOver(e, new DataTransfer(dataTransfer));
+			onDragOver(e, hasAcceptedType(this.acceptedTypes, data), data);
 		}
 	}
 

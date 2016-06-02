@@ -18,12 +18,12 @@ export default class Draggable extends React.Component {
 	constructor (props) {
 		super(props);
 
-		const {data, handleClassName} = props;
+		const {data} = props;
 
 		this.setDataForTransfer(data);
 
 		this.state = {
-			draggable: !handleClassName
+			draggable: false
 		};
 
 		this.onDragStart = this.onDragStart.bind(this);
@@ -54,6 +54,8 @@ export default class Draggable extends React.Component {
 
 
 	onDragStart (e) {
+		e.stopPropagation();
+
 		const {onDragStart} = this.props;
 		const {dataTransfer} = e;
 
@@ -91,9 +93,11 @@ export default class Draggable extends React.Component {
 
 
 	onMouseDown (e) {
+		e.stopPropagation();
+
 		const {handleClassName} = this.props;
 
-		if (e.target.classList.contains(handleClassName)) {
+		if (!handleClassName || e.target.classList.contains(handleClassName)) {
 			this.setState({
 				draggable: true
 			});
@@ -109,24 +113,21 @@ export default class Draggable extends React.Component {
 
 
 	render () {
-		const {children, handleClassName, className} = this.props;
+		const {children, className} = this.props;
 		const {draggable, isDragging} = this.state;
 		const child = React.Children.only(children);
 		const cls = cx(className || '', 'draggable', {dragging: isDragging});
 
 		const props = getDomNodeProps(this.props, [DROPZONE]);
 
-		props.onDragStart = this.onDragStart;
-		props.onDragEnd = this.onDragEnd;
 		props.className = cls;
-
-		if (handleClassName) {
-			props.onMouseDown = this.onMouseDown;
-			props.onMouseUp = this.onMouseUp;
-		}
+		props.onMouseDown = this.onMouseDown;
+		props.onMouseUp = this.onMouseUp;
 
 		if (draggable) {
 			props.draggable = true;
+			props.onDragStart = this.onDragStart;
+			props.onDragEnd = this.onDragEnd;
 		}
 
 

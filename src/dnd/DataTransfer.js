@@ -161,7 +161,7 @@ export default class DataTransfer {
 			if (types.contains) {
 				contains = types.contains(key);
 			} else if (types.indexOf) {
-				return types.indexOf(key) >= 0;
+				contains = types.indexOf(key) >= 0;
 			}
 		}
 

@@ -331,7 +331,10 @@ export default class Ordering extends React.Component {
 
 
 
-	onContainerDragOver (e) {
+	onContainerDragOver (e, canHandle) {
+		if (!canHandle) { return; }
+
+
 		dragOverOrdering(this);
 
 		if (this.isInternalDrag) { return; }
@@ -339,8 +342,12 @@ export default class Ordering extends React.Component {
 		const {clientX, clientY} = e;
 		const placeholder = this.getPlaceholder();
 		const index = this.getIndexOfPoint(clientX, clientY);
+		const oldIndex = placeholder && this.getIndexOfId(placeholder.ID);
 		let {items} = this.state;
 		let toInsert = [placeholder];
+
+		//If the placeholder hasn't moved, don't set state
+		if (oldIndex === index) { return; }
 
 		items = items.slice(0);
 
@@ -456,6 +463,24 @@ export default class Ordering extends React.Component {
 	}
 
 
+	getAttachRef (key) {
+		this.attachFns = this.attchFns || {};
+
+		if (!this.attachFns[key]) {
+			this.attachFns[key] = (ref) => {
+				if (!ref) {
+					delete this.attachFns[key];
+					delete this.componentRefs[key];
+				} else {
+					this.componentRefs[key] = ref;
+				}
+			};
+		}
+
+		return this.attachFns[key];
+	}
+
+
 
 	render () {
 		const {className} = this.props;
@@ -484,10 +509,9 @@ export default class Ordering extends React.Component {
 		const cls = cx('ordering-item', {placeholder: item.isPlaceholder, 'is-dragging': item.isDragging});
 		const key = item.ID;
 
-
 		return (
 			<Draggable key={key} className={cls} data={item.item} handleClassName={handleClassName} onDragStart={item.onDragStart} onDragEnd={item.onDragEnd}>
-				<div ref={x => this.componentRefs[item.ID] = x} data-ordering-key={key}>
+				<div ref={this.getAttachRef(key)} data-ordering-key={key}>
 					{ !item.isPlaceholder && !item.isDragging ?
 						renderItem(item.item, index, item.isPlaceholder) :
 						null

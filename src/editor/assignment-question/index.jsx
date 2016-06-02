@@ -3,12 +3,13 @@ import cx from 'classnames';
 import Selectable from '../utils/Selectable';
 import Content from './Content';
 import Parts from './Parts';
-import {deleteQuestionFrom} from './Actions';
+import Controls from './Controls';
 
 export default class QuestionComponent extends React.Component {
 	static propTypes = {
 		question: React.PropTypes.object.isRequired,
-		questionSet: React.PropTypes.object.isRequired
+		questionSet: React.PropTypes.object.isRequired,
+		index: React.PropTypes.number
 	}
 
 	constructor (props) {
@@ -21,7 +22,6 @@ export default class QuestionComponent extends React.Component {
 
 		this.onContentFocus = this.onContentFocus.bind(this);
 		this.onContentBlur = this.onContentBlur.bind(this);
-		this.onDelete = this.onDelete.bind(this);
 	}
 
 
@@ -43,24 +43,19 @@ export default class QuestionComponent extends React.Component {
 	}
 
 
-	onDelete () {
-		const {question, questionSet} = this.props;
-
-		deleteQuestionFrom(question, questionSet);
-	}
-
-
 	render () {
 		const {question} = this.props;
 		const {selectableId, selectableValue} = this.state;
-		const cls = cx('question', {saving: question.isSaving});
+		const cls = cx('question-editor', {saving: question.isSaving});
 
 		return (
-			<Selectable className={cls} id={selectableId} value={selectableValue}>
-				<div onClick={this.onDelete}>Delete</div>
-				<Content question={question} onFocus={this.onContentFocus} onBlur={this.onContentBlur}/>
-				<Parts question={question} />
-			</Selectable>
+			<div className="question-container">
+				<Selectable className={cls} id={selectableId} value={selectableValue}>
+					<Content question={question} onFocus={this.onContentFocus} onBlur={this.onContentBlur}/>
+					<Parts question={question} />
+				</Selectable>
+				<Controls question={question} />
+			</div>
 		);
 	}
 }

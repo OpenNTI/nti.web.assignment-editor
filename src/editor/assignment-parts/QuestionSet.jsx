@@ -1,5 +1,9 @@
 import React from 'react';
+
+import Ordering from '../../dnd/ordering/Ordering';
 import Question from '../assignment-question';
+
+const QUESTION_TYPE = 'application/vnd.nextthought.naquestion';
 
 export default class QuestionSetComponent extends React.Component {
 
@@ -11,9 +15,16 @@ export default class QuestionSetComponent extends React.Component {
 	constructor (props) {
 		super(props);
 
-		this.state = {};
+		const {questionSet} = props;
+		const {questions} = questionSet;
+
+		this.state = {
+			questions: questions
+		};
 
 		this.onQuestionSetChange = this.onQuestionSetChange.bind(this);
+		this.onQuestionOrderChange = this.onQuestionOrderChange.bind(this);
+		this.renderQuestion = this.renderQuestion.bind(this);
 	}
 
 
@@ -36,16 +47,32 @@ export default class QuestionSetComponent extends React.Component {
 	}
 
 
+	onQuestionOrderChange (newOrder) {
+		debugger;
+	}
+
+
 	render () {
-		const {questionSet} = this.props;
-		const {questions} = questionSet;
+		const {questions} = this.state;
 
 		return (
-			<div className="questions">
-				{questions.map((question) => {
-					return (<Question key={question.NTIID} question={question} questionSet={questionSet}/>);
-				})}
-			</div>
+			<Ordering
+				containerId={this.props.questionSet.NTIID}
+				className="question-set-editor"
+				items={questions}
+				renderItem={this.renderQuestion}
+				accepts={[QUESTION_TYPE]}
+				onChange={this.onQuestionOrderChange}
+			/>
+		);
+	}
+
+
+	renderQuestion (question, index) {
+		const {questionSet} = this.props;
+
+		return (
+			<Question index={index} question={question} questionSet={questionSet} />
 		);
 	}
 }
