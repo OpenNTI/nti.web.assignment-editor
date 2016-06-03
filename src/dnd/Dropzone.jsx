@@ -28,7 +28,7 @@ export function doHandleDataTransfer (handlers, dataTransfer, e) {
 		let data = dataTransfer.findDataFor(t);
 
 		if (data) {
-			handlers[t](data, e);
+			handlers[t](data, dataTransfer, e);
 			return true;
 		}
 	}

@@ -54,6 +54,14 @@ export default class OrderedContents {
 	}
 
 
+	isSameContainer (record) {
+		const myId = this.backingObject.NTIID;
+		const theirId = record.NTIID ? record.NTIID : record;
+
+		return myId === theirId;
+	}
+
+
 	indexOf (item) {
 		let {orderedContents} = this;
 		let NTIID = item.NTIID ? item.NTIID : item;
@@ -65,6 +73,20 @@ export default class OrderedContents {
 		}
 
 		return -1;
+	}
+
+
+	findItem (item) {
+		let {orderedContents} = this;
+		let NTIID = item.NTIID ? item.NTIID : item;
+
+		for (let i = 0; i < orderedContents.length; i++) {
+			if (orderedContents[i].NTIID === NTIID) {
+				return orderedContents[i];
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -212,5 +234,83 @@ export default class OrderedContents {
 					return Promise.reject(reason);
 				});
 
+	}
+
+
+	/**
+	 * Given an item, try to move it to the given index
+	 *
+	 * If the item is already in the list, optimistically move it to the new spot and mark it as saving
+	 * If the item is not already in the list, optimistically add it to the new sport and mark it as saving
+	 *
+	 * If there is an error saving, either move it back to the old index or remove it, and mark it with an error
+	 *
+	 * @param  {Object|String} item    the record or NTIID to move
+	 * @param  {Number} newIndex     the index to move to
+	 * @param  {Number} oldIndex  the original index
+	 * @param  {Object|String} oldParent the original parent
+	 * @param  {Object} moveRoot  the root to move items between
+	 * @return {Promise}           fulfills or rejects if the move was successful
+	 */
+	move (item, newIndex, oldIndex, oldParent, moveRoot) {
+		const obj = this.backingObject;
+		let {orderedContents, orderedContentsField} = this;
+		let currentIndex = this.indexOf(item);
+
+		if (!moveRoot) {
+			return Promise.reject('No moving root provided');
+		}
+
+		//If its in the same position in the same container there is nothing to do
+		if (newIndex === currentIndex && this.isSameContainer(oldParent)) {
+			return Promise.resolve();
+		}
+
+		orderedContents = orderedContents.slice(0);
+
+		if (currentIndex >= 0) {
+			item = orderedContents[currentIndex];
+			orderedContents.splice(currentIndex, 1);
+		}
+
+		//Mark the Item as saving
+		Object.defineProperty(item, 'isSaving', {
+			enumerable: false,
+			value: true
+		});
+
+		//Optimistically insert the record at the new index
+		orderedContents = [...orderedContents.slice(0, newIndex), item, ...orderedContents.slice(newIndex)];
+
+		obj[orderedContentsField] = orderedContents;
+		obj.onChange();
+
+		return moveRoot.moveRecord(item, newIndex, oldIndex, obj, oldParent)
+			.then(minWait(SHORT))
+			.then((savedItem) => {
+				//after save, replace the optimistic placeholder with the real thing
+				orderedContents[newIndex] = savedItem;
+
+				obj[orderedContentsField] = orderedContents;
+				obj.onChange();
+			})
+			.catch((reason) => {
+				delete item.isSaving;
+
+				Object.defineProperty(item, 'isNotSaved', {
+					enumerable: false,
+					value: true
+				});
+
+				Object.defineProperty(item, 'error', {
+					enumerable: false,
+					value: reason
+				});
+
+				obj.onChange();
+
+				//continue the failure
+				return Promise.reject(reason);
+			});
 	}
 }

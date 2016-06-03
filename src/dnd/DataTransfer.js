@@ -28,7 +28,7 @@ export default class DataTransfer {
 	 *
 	 * If no value is passed assume that the key is the value to store and the key is either:
 	 *
-	 * 1) if the value implements getKeyForTransfer call it
+	 * 1) if the value implements dataForTransfer use it
 	 * 2) if the value has a mimeType use it
 	 * 3) if the value is a string use it
 	 *
@@ -66,8 +66,8 @@ export default class DataTransfer {
 			logger.warn('Overriding transfer data: ', key, ' from ', this.transferData[key], ' with ', value);
 		}
 
-		if (value.getDataTransferValue) {
-			value = value.getDataTransferValue();
+		if (value.dataForTransfer) {
+			value = value.dataForTransfer;
 		} else {
 			value = JSON.stringify(value);
 		}
@@ -91,7 +91,7 @@ export default class DataTransfer {
 		let keys = Object.keys(data);
 
 		for (let key of keys) {
-			fn(key, data[keys]);
+			fn(key, data[key]);
 		}
 	}
 

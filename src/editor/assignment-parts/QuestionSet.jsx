@@ -2,6 +2,7 @@ import React from 'react';
 
 import Ordering from '../../dnd/ordering/Ordering';
 import Question from '../assignment-question';
+import {moveQuestion} from './Actions';
 
 const QUESTION_TYPE = 'application/vnd.nextthought.naquestion';
 
@@ -11,6 +12,14 @@ export default class QuestionSetComponent extends React.Component {
 		questionSet: React.PropTypes.object.isRequired,
 		assignment: React.PropTypes.object.isRequired
 	}
+
+
+	static contextTypes = {
+		MoveRoot: React.PropTypes.shape({
+			moveRecordFrom: React.PropTypes.func
+		})
+	}
+
 
 	constructor (props) {
 		super(props);
@@ -42,22 +51,30 @@ export default class QuestionSetComponent extends React.Component {
 	}
 
 
-	onQuestionSetChange () {
-		this.forceUpdate();
+	onQuestionSetChange (questionSet) {
+		const {questions} = questionSet;
+
+		this.setState({
+			questions: questions
+		});
 	}
 
 
-	onQuestionOrderChange (newOrder) {
-		debugger;
+	onQuestionOrderChange (newOrder, item, newIndex, moveInfo) {
+		const {questionSet} = this.props;
+		const {MoveRoot} = this.context;
+
+		moveQuestion(item, questionSet, newIndex, moveInfo, MoveRoot);
 	}
 
 
 	render () {
+		const {questionSet} = this.props;
 		const {questions} = this.state;
 
 		return (
 			<Ordering
-				containerId={this.props.questionSet.NTIID}
+				containerId={questionSet.NTIID}
 				className="question-set-editor"
 				items={questions}
 				renderItem={this.renderQuestion}

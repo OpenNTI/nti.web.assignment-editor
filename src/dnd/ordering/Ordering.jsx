@@ -7,6 +7,7 @@ import wait from 'nti-commons/lib/wait';
 
 import Draggable from '../Draggable';
 import Dropzone from '../Dropzone';
+import MoveInfo from './MoveInfo';
 import Store from './Store';
 import {DRAG_OVER, DRAG_LEAVE} from './Constants';
 import {dragOverOrdering, dragLeaveOrdering} from './Actions';
@@ -89,10 +90,15 @@ export default class Ordering extends React.Component {
 	}
 
 
-	mapItem (item) {
+	mapItem (item, index) {
+		const {containerId} = this.props;
+		const moveInfo = new MoveInfo({OriginContainer: containerId, OriginIndex: index});
+
 		return {
 			item: item,
 			ID: item.NTIID || item.ID,
+			MoveData: [item, moveInfo],
+			MoveInfo: moveInfo,
 			onDragStart: this.onItemDragStart.bind(this, item),
 			onDragEnd: this.onItemDragEnd.bind(this, item)
 		};
@@ -112,8 +118,8 @@ export default class Ordering extends React.Component {
 
 		items = items.slice(0);
 
-		items = items.map((item) => {
-			item = this.mapItem(item);
+		items = items.map((item, index) => {
+			item = this.mapItem(item, index);
 
 			if (activeDrag && activeDrag.ID === item.ID) {
 				item.isDragging = true;
@@ -295,9 +301,10 @@ export default class Ordering extends React.Component {
 	}
 
 
-	onContainerDrop (data, e) {
+	onContainerDrop (data, dataTransfer, e) {
 		const {onChange} = this.props;
 		const {clientX, clientY} = e;
+		const moveInfo = dataTransfer.findDataFor(MoveInfo.MimeType);
 		const dropId = data.NTIID || data.ID;
 		let newIndex = this.getIndexOfPoint(clientX, clientY);
 		let oldIndex = this.getIndexOfId(dropId);
@@ -325,7 +332,7 @@ export default class Ordering extends React.Component {
 		items = [...items.slice(0, newIndex), data, ...items.slice(newIndex)];
 
 		if (onChange) {
-			onChange(items);
+			onChange(items, data, newIndex, new MoveInfo(moveInfo));
 		}
 	}
 
@@ -510,7 +517,7 @@ export default class Ordering extends React.Component {
 		const key = item.ID;
 
 		return (
-			<Draggable key={key} className={cls} data={item.item} handleClassName={handleClassName} onDragStart={item.onDragStart} onDragEnd={item.onDragEnd}>
+			<Draggable key={key} className={cls} data={item.MoveData} handleClassName={handleClassName} onDragStart={item.onDragStart} onDragEnd={item.onDragEnd}>
 				<div ref={this.getAttachRef(key)} data-ordering-key={key}>
 					{ !item.isPlaceholder && !item.isDragging ?
 						renderItem(item.item, index, item.isPlaceholder) :
