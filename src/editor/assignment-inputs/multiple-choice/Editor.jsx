@@ -24,7 +24,10 @@ export default class MultipleChoiceEditor extends React.Component {
 		};
 
 		this.choicesChanged = this.choicesChanged.bind(this);
+		this.addNewChoice = this.addNewChoice.bind(this);
 	}
+
+	//TODO: listen for changes on the question to update the choices
 
 
 	componentWillReceiveProps (nextProps) {
@@ -84,6 +87,27 @@ export default class MultipleChoiceEditor extends React.Component {
 	}
 
 
+	addNewChoice () {
+		const {part} = this.props;
+		const {NTIID:partId} = part;
+		let {choices} = this.state;
+
+		choices = choices.slice(0);
+
+		choices.push({
+			MimeType: this.partType,
+			ID: partId + '-' + choices.length,
+			label: '',
+			correct: false,
+			isNew: true
+		});
+
+		this.setState({
+			choices: choices
+		});
+	}
+
+
 	render () {
 		const {part, multipleAnswers} = this.props;
 		const {choices} = this.state;
@@ -94,6 +118,7 @@ export default class MultipleChoiceEditor extends React.Component {
 				partType={this.partType}
 				choices={choices}
 				onChange={this.choicesChanged}
+				addNewChoice={this.addNewChoice}
 				multipleAnswers={multipleAnswers}
 			/>
 		);

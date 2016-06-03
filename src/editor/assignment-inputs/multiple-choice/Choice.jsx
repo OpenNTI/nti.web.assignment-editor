@@ -7,6 +7,7 @@ export default class Choice extends React.Component {
 		choice: React.PropTypes.object,
 		group: React.PropTypes.string,
 		onChange: React.PropTypes.func,
+		onRemove: React.PropTypes.func,
 		onSolutionChange: React.PropTypes.func,
 		multipleAnswers: React.PropTypes.bool
 	}
@@ -17,14 +18,19 @@ export default class Choice extends React.Component {
 
 		const {choice} = this.props;
 
+		this.isNew = choice.isNew;
+
 		this.state = {
 			label: choice.label,
 			correct: choice.correct
 		};
 
+		this.setLabelRef = x => this.labelInput = x;
+
 		this.onBlur = this.onBlur.bind(this);
 		this.onLabelChange = this.onLabelChange.bind(this);
 		this.onSolutionChange = this.onSolutionChange.bind(this);
+		this.onRemove = this.onRemove.bind(this);
 	}
 
 
@@ -35,6 +41,16 @@ export default class Choice extends React.Component {
 			label: choice.label,
 			correct: choice.correct
 		});
+	}
+
+
+	componentDidMount () {
+		const {isNew} = this;
+
+		if (isNew && this.labelInput) {
+			this.labelInput.focus();
+			delete this.isNew;
+		}
 	}
 
 
@@ -64,6 +80,15 @@ export default class Choice extends React.Component {
 	}
 
 
+	onRemove () {
+		const {onRemove, choice} = this.props;
+
+		if (onRemove) {
+			onRemove(choice.NTIID || choice.ID);
+		}
+	}
+
+
 	render () {
 		const {group, multipleAnswers, choice} = this.props;
 		const {label, correct} = this.state;
@@ -73,7 +98,8 @@ export default class Choice extends React.Component {
 		return (
 			<Selectable className={cls} id={id} value={label} onUnselect={this.onBlur}>
 				{this.renderSolution(group, correct, multipleAnswers)}
-				<input type="text" value={label} onChange={this.onLabelChange} />
+				<input ref={this.setLabelRef} type="text" value={label} onChange={this.onLabelChange} />
+				<div className="remove" onClick={this.onRemove}>X</div>
 			</Selectable>
 		);
 	}
