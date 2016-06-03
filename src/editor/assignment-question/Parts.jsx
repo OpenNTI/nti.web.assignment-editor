@@ -13,7 +13,7 @@ function questionParts (props) {
 	}
 
 	return (
-		<div className="question-parts">
+		<div className="question-editor-parts">
 			{parts.map((part, index) => {
 				return getEditorWidget(part, index, question);
 			})}

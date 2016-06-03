@@ -5,6 +5,10 @@
 	margin: 0 auto;
 	font-family: $body-font-family;
 
+	&, * {
+		box-sizing: border-box;
+	}
+
 	.assignment-editor {
 		float: left;
 		width: 75%;

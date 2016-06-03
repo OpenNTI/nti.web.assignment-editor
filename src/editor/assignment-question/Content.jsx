@@ -1,4 +1,5 @@
 import React from 'react';
+import TextArea from '../inputs/TextArea';
 
 import {saveQuestionContent} from './Actions';
 
@@ -36,7 +37,7 @@ export default class QuestionContent extends React.Component {
 
 	onBlur () {
 		const {onBlur, question} = this.props;
-		const {content} = this.state;
+		const content = this.textarea.getValue();
 
 		if (onBlur) {
 			onBlur();
@@ -46,10 +47,8 @@ export default class QuestionContent extends React.Component {
 	}
 
 
-	onChange (e) {
-		this.setState({
-			content: e.target.value
-		});
+	onChange () {
+		//TODO: start save timer?
 	}
 
 
@@ -57,7 +56,7 @@ export default class QuestionContent extends React.Component {
 		const {content} = this.state;
 
 		return (
-			<textarea onChange={this.onChange} onFocus={this.onFocus} onBlur={this.onBlur} value={content}></textarea>
+			<TextArea className="question-content-editor" ref={x => this.textarea = x}onChange={this.onChange} onFocus={this.onFocus} onBlur={this.onBlur} value={content} />
 		);
 	}
 }

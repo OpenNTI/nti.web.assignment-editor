@@ -5,6 +5,7 @@
 
 	.question-editor {
 		margin-right: 90px;
+		box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
 	}
 
 	.controls {
@@ -14,7 +15,10 @@
 	}
 }
 
-.question-editor {
-	position: relative;
-	box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+.dragging .question-container {
+	position: static;
+
+	.controls {
+		display: none;
+	}
 }
