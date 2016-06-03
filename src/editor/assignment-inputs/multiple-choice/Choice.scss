@@ -1,0 +1,36 @@
+@import "~nti-style-common";
+
+.multiple-choice .choice {
+	position: relative;
+	margin-bottom: 9px;
+
+	input[type=text] {
+		font: normal 400 0.875rem/40px $body-font-family;
+		color: $primary-grey;
+		background-color: white;
+		width: 100%;
+		padding: 0 10px 0 34px;
+		border: 1px solid $border-grey-light;
+	}
+
+	input[type="checkbox"], input[type="radio"] {
+		position: absolute;
+		top: 15px;
+		left: 15px;
+	}
+
+	&.correct {
+		input[type=text] {
+			background-color: $light-green;
+			border: 1px solid $border-green-light;
+		}
+	}
+}
+
+.dragging .multiple-choice .choice {
+	position: static;
+
+	input[type="checkbox"], input[type="radio"] {
+		display: none;
+	}
+}

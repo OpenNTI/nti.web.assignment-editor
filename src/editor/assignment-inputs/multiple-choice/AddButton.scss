@@ -1,0 +1,19 @@
+@import "~nti-style-common";
+
+.multiple-choice .choice.add-new {
+	position: relative;
+	background-color: white;
+	font: normal 400 0.875rem/40px $body-font-family;
+	color: $secondary-grey;
+	padding: 0 10px 0 34px;
+	border: 1px solid $border-grey-light;
+	cursor: pointer;
+
+	&::before {
+		content: '+';
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 15px;
+	}
+}
