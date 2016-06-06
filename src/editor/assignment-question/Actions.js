@@ -1,21 +1,15 @@
 import {dispatch} from 'nti-lib-dispatcher';
 import OrderedContents from '../utils/OrderedContents';
-import {SAVING, QUESTION_UPDATED, QUESTION_DELETED, QUESTION_ERROR} from '../Constants';
+import {saveFieldOn} from '../Actions';
+import {SAVING, SAVE_ENDED, QUESTION_UPDATED, QUESTION_ERROR, QUESTION_SET_UPDATED, QUESTION_SET_ERROR} from '../Constants';
 
 export function saveQuestionContent (question, content) {
-	const oldValue = question.content;
-
-	if (oldValue === content) { return; }
-
-	dispatch(SAVING, question);
-
-	question.save({
-		content: content
-	}).then(() => {
-		dispatch(QUESTION_UPDATED, question);
-	}).catch((reason) => {
-		dispatch(QUESTION_ERROR, reason);
-	});
+	saveFieldOn(question, 'content', content)
+		.then(() => {
+			dispatch(QUESTION_UPDATED, question);
+		}).catch((reason) => {
+			dispatch(QUESTION_ERROR, reason);
+		});
 }
 
 
@@ -26,9 +20,11 @@ export function deleteQuestionFrom (question, questionSet) {
 
 	orderedContents.remove(question)
 		.then(() => {
-			dispatch(QUESTION_DELETED, question);
+			dispatch(SAVE_ENDED);
+			dispatch(QUESTION_SET_UPDATED, questionSet);
 		})
 		.catch((reason) => {
-			dispatch(QUESTION_ERROR, reason);
+			dispatch(SAVE_ENDED);
+			dispatch(QUESTION_SET_ERROR, reason);
 		});
 }
