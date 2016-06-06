@@ -119,7 +119,7 @@ export default class MultipleChoiceEditor extends React.Component {
 		choices = choices.filter((choice) => {
 			let choiceId = choice.NTIID || choice.ID;
 
-			return choiceId !== id
+			return choiceId !== id;
 		});
 
 		this.setState({
