@@ -3,6 +3,7 @@ import React from 'react';
 import Ordering from '../../dnd/ordering/Ordering';
 import Question from '../assignment-question';
 import {moveQuestion} from './Actions';
+import MoveRoot from '../utils/MoveRoot';
 
 const QUESTION_TYPE = 'application/vnd.nextthought.naquestion';
 
@@ -14,22 +15,23 @@ export default class QuestionSetComponent extends React.Component {
 	}
 
 
-	static contextTypes = {
-		MoveRoot: React.PropTypes.shape({
-			moveRecordFrom: React.PropTypes.func
-		})
-	}
-
-
 	constructor (props) {
 		super(props);
 
 		const {questionSet} = props;
 		const {questions} = questionSet;
+		const moveLink = questionSet.getLink('AssessmentMove');
 
 		this.state = {
 			questions: questions
 		};
+
+		if (moveLink) {
+			this.moveRoot = new MoveRoot(moveLink);
+		} else {
+			//TODO: disable moving
+		}
+
 
 		this.onQuestionSetChange = this.onQuestionSetChange.bind(this);
 		this.onQuestionOrderChange = this.onQuestionOrderChange.bind(this);
@@ -62,9 +64,8 @@ export default class QuestionSetComponent extends React.Component {
 
 	onQuestionOrderChange (newOrder, item, newIndex, moveInfo) {
 		const {questionSet} = this.props;
-		const {MoveRoot} = this.context;
 
-		moveQuestion(item, questionSet, newIndex, moveInfo, MoveRoot);
+		moveQuestion(item, questionSet, newIndex, moveInfo, this.moveRoot);
 	}
 
 

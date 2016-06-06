@@ -5,7 +5,6 @@ import AssignmentEditor from './assignment-editor';
 import Controls from './controls';
 import Sidebar from './sidebar';
 import SelectionManager from './utils/SelectionManager';
-import MoveRoot from './utils/MoveRoot';
 import {LOADED} from './Constants';
 import Store from './Store';
 import {loadAssignment} from './Actions';
@@ -15,14 +14,12 @@ const selectionManager = new SelectionManager();
 
 export default class Editor extends React.Component {
 	static propTypes = {
-		NTIID: React.PropTypes.string.isRequired,
-		moveLink: React.PropTypes.string.isRequired
+		NTIID: React.PropTypes.string.isRequired
 	}
 
 
 	static defaultProps = {
-		NTIID: 'tag:nextthought.com,2011-10:NTI-NAQ-assignment_andrew_ligon_4743925595936104722_d30688a3',
-		moveLink: '/dataserver2/%2B%2Betc%2B%2Bhostsites/platform.ou.edu/%2B%2Betc%2B%2Bsite/Courses/Summer2015/NTI-1000/@@AssessmentMove'
+		NTIID: 'tag:nextthought.com,2011-10:NTI-NAQ-assignment_andrew_ligon_4743925595936104722_d30688a3'
 	}
 
 
@@ -30,9 +27,6 @@ export default class Editor extends React.Component {
 		SelectionManager: React.PropTypes.shape({
 			select: React.PropTypes.fn,
 			unseleft: React.PropTypes.fn
-		}),
-		MoveRoot: React.PropTypes.shape({
-			moveRecordFrom: React.PropTypes.func
 		})
 	}
 
@@ -86,11 +80,8 @@ export default class Editor extends React.Component {
 
 
 	getChildContext () {
-		const {moveLink} = this.props;
-
 		return {
-			SelectionManager: selectionManager,
-			MoveRoot: new MoveRoot(moveLink)
+			SelectionManager: selectionManager
 		};
 	}
 
