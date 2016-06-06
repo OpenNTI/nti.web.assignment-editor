@@ -11,6 +11,7 @@ export default class SingleChoices extends React.Component {
 		partType: React.PropTypes.string,
 		onChange: React.PropTypes.func,
 		addNewChoice: React.PropTypes.func,
+		removeChoice: React.PropTypes.func,
 		multipleAnswers: React.PropTypes.bool
 	}
 
@@ -28,9 +29,9 @@ export default class SingleChoices extends React.Component {
 		this.acceptTypes = [partType];
 
 		this.onChoiceChanged = this.onChoiceChanged.bind(this);
-		this.onChoiceRemoved = this.onChoiceRemoved.bind(this);
 		this.onSolutionChanged = this.onSolutionChanged.bind(this);
 		this.renderChoice = this.renderChoice.bind(this);
+		this.onRemove = this.onRemove.bind(this);
 		this.onAdd = this.onAdd.bind(this);
 		this.onOrderChange = this.onOrderChange.bind(this);
 	}
@@ -88,23 +89,6 @@ export default class SingleChoices extends React.Component {
 	}
 
 
-	onChoiceRemoved (id) {
-		let {choices} = this.state;
-
-		choices = choices.filter((choice) => {
-			let choiceId = choice.NTIID || choice.ID;
-
-			return choiceId !== id;
-		});
-
-		this.setState({
-			choices: choices
-		}, () => {
-			this.onChange();
-		});
-	}
-
-
 	onSolutionChanged (id, correct) {
 		const {multipleAnswers} = this.props;
 		let {choices} = this.state;
@@ -136,6 +120,15 @@ export default class SingleChoices extends React.Component {
 	}
 
 
+	onRemove (id) {
+		const {removeChoice} = this.props;
+
+		if (removeChoice) {
+			removeChoice(id);
+		}
+	}
+
+
 	render () {
 		const {multipleAnswers, partId} = this.props;
 		const {choices} = this.state;
@@ -160,7 +153,7 @@ export default class SingleChoices extends React.Component {
 				group={group}
 				onChange={this.onChoiceChanged}
 				onSolutionChange={this.onSolutionChanged}
-				onRemove={this.onChoiceRemoved}
+				onRemove={this.onRemove}
 				multipleAnswers={multipleAnswers}
 			/>
 		);
