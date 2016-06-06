@@ -1,0 +1,28 @@
+.control-bar {
+	position: fixed;
+	bottom: 0;
+	left: 0; right: 0;
+	min-height: 60px;
+	max-width: 1060px;
+	margin: 0 auto;
+	background: white;
+	border-radius: 3px 3px 0 0;
+
+	&.slideUp-enter {
+		bottom: -60px;
+
+		&.slideUp-enter-active {
+			bottom: 0px;
+			transition: bottom 500ms;
+		}
+	}
+
+	&.slideUp-leave {
+		bottom: 0px;
+
+		&.slideUp-leave-active {
+			bottom: -60px;
+			transition: bottom 500ms;
+		}
+	}
+}

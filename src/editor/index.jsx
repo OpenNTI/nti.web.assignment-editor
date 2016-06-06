@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import ControlBar from '../control-bar';
 import AssignmentEditor from './assignment-editor';
 import Controls from './controls';
 import Sidebar from './sidebar';
@@ -40,6 +41,7 @@ export default class Editor extends React.Component {
 
 		this.onStoreChange = this.onStoreChange.bind(this);
 		this.onWindowScroll = this.onWindowScroll.bind(this);
+		this.selectionChanged = this.selectionChanged.bind(this);
 	}
 
 
@@ -49,12 +51,17 @@ export default class Editor extends React.Component {
 
 		this.sidebarDOM = ReactDOM.findDOMNode(this.sidebar);
 
+		selectionManager.addListener('selection-changed', this.selectionChanged);
+		this.selectionChanged(selectionManager.getSelection());
+
 		// window.addEventListener('scroll', this.onWindowScroll);
 	}
 
 
 	componenWillUnmount () {
 		Store.removeChangeListener(this.onStoreChange);
+
+		selectionManager.removeListener('selection-changed', this.selectionChanged);
 
 		// window.removeEventListener('scroll', this.onWindowScroll);
 	}
@@ -86,8 +93,16 @@ export default class Editor extends React.Component {
 	}
 
 
+	selectionChanged (selection) {
+		this.setState({
+			controlBarVisible: selection.length > 0,
+			selection: selection.map(x => x.value).join(' ')
+		});
+	}
+
+
 	render () {
-		let {error, assignment, schema} = this.state;
+		let {error, assignment, schema, selection} = this.state;
 
 		if (error) {
 			return this.renderError(error);
@@ -99,7 +114,9 @@ export default class Editor extends React.Component {
 			<div className={cls}>
 				<AssignmentEditor assignment={assignment} schema={schema} />
 				<Sidebar ref={x => this.sidebar = x} assignment={assignment} schema={schema} />
-				<Controls />
+				<ControlBar visible >
+					<Controls assignment={assignment} selection={selection} />
+				</ControlBar>
 			</div>
 		);
 	}
