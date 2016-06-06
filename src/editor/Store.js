@@ -1,9 +1,27 @@
-import {LOADED, LOADED_SCHEMA} from './Constants';
+import {LOADED, LOADED_SCHEMA, ASSIGNMENT_ERROR} from './Constants';
 import StorePrototype from 'nti-lib-store';
 
 const PRIVATE = new WeakMap();
 const SetAssignment = Symbol('Set Assignment');
 const SetSchema = Symbol('Set Assignment Schema');
+const SetError = Symbol('Set Error');
+const RemoveError = Symbol('Remove Error');
+
+
+function findErrorsForId (id, errors) {
+	return errors[id];
+}
+
+
+function findErrorForField (field, errors) {
+	for (let error of errors) {
+		if (error.field === field) {
+			return error;
+		}
+	}
+
+	return null;
+}
 
 
 class Store extends StorePrototype {
@@ -13,12 +31,15 @@ class Store extends StorePrototype {
 		PRIVATE.set(this, {
 			assignment: null,
 			schema: null,
-			error: null
+			errors: {}
 		});
+
+		this.setAssignmentError = this[SetError].bind(this, ASSIGNMENT_ERROR);
 
 		this.registerHandlers({
 			[LOADED]: SetAssignment,
-			[LOADED_SCHEMA]: SetSchema
+			[LOADED_SCHEMA]: SetSchema,
+			[ASSIGNMENT_ERROR]: 'setAssignmentError'
 		});
 	}
 
@@ -56,6 +77,46 @@ class Store extends StorePrototype {
 	}
 
 
+	[SetError] (type, e) {
+		const error = e.action.response;
+		const {NTIID, field, reason} = error;
+		let p = PRIVATE.get(this);
+
+		p.errors = p.errors || {};
+
+		if (!p.errors[NTIID]) {
+			p.errors[NTIID] = [];
+		}
+
+		if (!this.getErrorFor(NTIID, field)) {
+			p.errors[NTIID].push({
+				NTIID,
+				field,
+				reason,
+				clear: () => this[RemoveError](NTIID, field, type)
+			});
+
+			this.emitChange({type: type});
+		}
+	}
+
+
+	[RemoveError] (id, field, type) {
+		let p = PRIVATE.get(this);
+		let {errors} = p;
+
+		errors = errors || {};
+
+		if (!field) {
+			delete errors[id];
+		} else if (errors[id]) {
+			errors[id] = errors[id].filter(error => error.field !== field);
+		}
+
+		this.emitChange({type: type});
+	}
+
+
 	get isLoaded () {
 		let p = PRIVATE.get(this);
 
@@ -77,10 +138,22 @@ class Store extends StorePrototype {
 	}
 
 
-	get error () {
+	getErrorFor (id, field) {
 		let p = PRIVATE.get(this);
+		let {errors} = p;
+		let error;
 
-		return p.error;
+		errors = errors || {};
+
+		let errorsForId = findErrorsForId(id, errors);
+
+		if (field) {
+			error = findErrorForField(field, errorsForId);
+		} else {
+			error = errorsForId[0];
+		}
+
+		return error;
 	}
 }
 

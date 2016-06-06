@@ -10,7 +10,11 @@ function saveField (assignment, field, value) {
 			dispatch(ASSIGNMENT_UPDATED, assignment);
 		})
 		.catch((reason) => {
-			dispatch(ASSIGNMENT_ERROR, reason);
+			dispatch(ASSIGNMENT_ERROR, {
+				NTIID: assignment.NTIID,
+				field: field,
+				reason: reason
+			});
 		});
 	}
 }
@@ -20,6 +24,6 @@ export function saveTitle (assignment, value) {
 }
 
 
-export function saveDescription (assignment, value) {
+export function saveContent (assignment, value) {
 	saveField(assignment, 'content', value);
 }

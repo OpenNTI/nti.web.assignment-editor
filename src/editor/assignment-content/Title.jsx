@@ -1,25 +1,28 @@
 import React from 'react';
+import cx from 'classnames';
 
 import Selectable from '../utils/Selectable';
-import {saveTitle} from './Actions';
 
 const PLACEHOLDER = 'Title';
 
 export default class TitleEditor extends React.Component {
 	static propTypes = {
-		assignment: React.PropTypes.object.isRequired,
-		schema: React.PropTypes.object
+		value: React.PropTypes.string.isRequired,
+		schema: React.PropTypes.object,
+		error: React.PropTypes.any,
+		onChange: React.PropTypes.func
 	}
 
 	constructor (props) {
 		super(props);
 
-		const {assignment} = props;
+		const {value, error} = props;
 
 		this.state = {
-			selectableId: assignment.NTIID + '-title',
-			selectableValue: assignment.title,
-			value: assignment.title
+			selectableId: 'title',
+			selectableValue: 'Title',
+			value: value,
+			error: error
 		};
 
 		this.onBlur = this.onBlur.bind(this);
@@ -29,44 +32,56 @@ export default class TitleEditor extends React.Component {
 	}
 
 
-	onBlur () {
-		const {assignment} = this.props;
-		const {value} = this.state;
-
-		saveTitle(assignment, value);
-	}
-
-
-	onChange (e) {
+	componentWillReceiveProps (nextProps) {
 		this.setState({
-			value: e.target.value
+			error: nextProps.error
 		});
 	}
 
 
-	onInputFocus () {
-		const {assignment} = this.props;
+	onBlur () {
+		const {onChange} = this.props;
+		const {value} = this.state;
+
+		if (onChange) {
+			onChange(value);
+		}
+	}
+
+
+	onChange (e) {
+		const {error} = this.state;
 
 		this.setState({
-			selectableValue: assignment.title + ' FOCUSED'
+			value: e.target.value
+		});
+
+		if (error && error.clear) {
+			error.clear();
+		}
+	}
+
+
+	onInputFocus () {
+		this.setState({
+			selectableValue:'Title FOCUSED'
 		});
 	}
 
 
 	onInputBlur () {
-		const {assignment} = this.props;
-
 		this.setState({
-			selectableValue: assignment.title
+			selectableValue: 'Title'
 		});
 	}
 
 
 	render () {
-		const {selectableId, selectableValue, value} = this.state;
+		const {selectableId, selectableValue, value, error} = this.state;
+		const cls = cx('assignment-title-editor', {error});
 
 		return (
-			<Selectable className="assignment-title-editor" id={selectableId} value={selectableValue} onUnselect={this.onBlur}>
+			<Selectable className={cls} id={selectableId} value={selectableValue} onUnselect={this.onBlur}>
 				<input
 					type="text"
 					placeholder={PLACEHOLDER}

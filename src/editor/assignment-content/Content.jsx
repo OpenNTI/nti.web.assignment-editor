@@ -1,25 +1,28 @@
 import React from 'react';
+import cx from 'classnames';
 
 import Selectable from '../utils/Selectable';
-import {saveDescription} from './Actions';
 
 const PLACEHOLDER = 'Write a description...';
 
 export default class TitleEditor extends React.Component {
 	static propTypes = {
-		assignment: React.PropTypes.object.isRequired,
-		schema: React.PropTypes.object
+		value: React.PropTypes.string.isRequired,
+		schema: React.PropTypes.object,
+		error: React.PropTypes.any,
+		onChange: React.PropTypes.func
 	}
 
 	constructor (props) {
 		super(props);
 
-		const {assignment} = props;
+		const {value, error} = props;
 
 		this.state = {
-			selectableId: assignment.NTIID + '-description',
+			selectableId: 'description',
 			selectableValue: 'Description',
-			value: assignment.content
+			value: value,
+			error: error
 		};
 
 		this.onBlur = this.onBlur.bind(this);
@@ -28,19 +31,33 @@ export default class TitleEditor extends React.Component {
 		this.onInputBlur = this.onInputBlur.bind(this);
 	}
 
+	componentWillReceiveProps (nextProps) {
+		this.setState({
+			error: nextProps.error
+		});
+	}
+
 
 	onBlur () {
-		const {assignment} = this.props;
+		const {onChange} = this.props;
 		const {value} = this.state;
 
-		saveDescription(assignment, value);
+		if (onChange) {
+			onChange(value);
+		}
 	}
 
 
 	onChange (e) {
+		const {error} = this.state;
+
 		this.setState({
 			value: e.target.value
 		});
+
+		if (error && error.clear) {
+			error.clear();
+		}
 	}
 
 
@@ -59,10 +76,11 @@ export default class TitleEditor extends React.Component {
 
 
 	render () {
-		const {selectableId, selectableValue, value} = this.state;
+		const {selectableId, selectableValue, value, error} = this.state;
+		const cls = cx('assignment-content-editor', {error});
 
 		return (
-			<Selectable className="assignment-description-editor" id={selectableId} value={selectableValue} onUnselect={this.onBlur}>
+			<Selectable className={cls} id={selectableId} value={selectableValue} onUnselect={this.onBlur}>
 				<textarea placeholder={PLACEHOLDER} value={value} onChange={this.onChange} onFocus={this.onInputFocus} onBlur={this.onInputBlur}>
 				</textarea>
 			</Selectable>
