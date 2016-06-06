@@ -4,12 +4,15 @@ import {saveFieldOn} from '../Actions';
 import {SAVING, SAVE_ENDED, QUESTION_UPDATED, QUESTION_ERROR, QUESTION_SET_UPDATED, QUESTION_SET_ERROR} from '../Constants';
 
 export function saveQuestionContent (question, content) {
-	saveFieldOn(question, 'content', content)
-		.then(() => {
+	const save = saveFieldOn(question, 'content', content);
+
+	if (save && save.then) {
+		save.then(() => {
 			dispatch(QUESTION_UPDATED, question);
 		}).catch((reason) => {
 			dispatch(QUESTION_ERROR, reason);
 		});
+	}
 }
 
 
