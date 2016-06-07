@@ -1,4 +1,5 @@
 import React from 'react';
+import Placeholder from '../modeled-content/Placeholder';
 
 export default class FreeResponseEditor extends React.Component {
 	static propTypes = {
@@ -15,7 +16,7 @@ export default class FreeResponseEditor extends React.Component {
 
 	render () {
 		return (
-			<div>TODO: Fill Out Free Response Type</div>
+			<Placeholder singleLine />
 		);
 	}
 }

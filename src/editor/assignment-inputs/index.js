@@ -1,7 +1,7 @@
 import React from 'react';
 import Logger from 'nti-util-logger';
 
-import Essay from './essay';
+import ModeledContent from './modeled-content';
 import FileUpload from './file-upload';
 import FreeResponse from './free-response';
 import MultipleChoice from './multiple-choice';
@@ -10,7 +10,7 @@ import Ordering from './ordering';
 
 const logger = Logger.get('assignment-inputs:index');
 const KINDS = [
-	Essay,
+	ModeledContent,
 	FileUpload,
 	FreeResponse,
 	MultipleChoice,

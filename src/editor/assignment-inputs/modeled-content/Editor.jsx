@@ -1,4 +1,5 @@
 import React from 'react';
+import Placeholder from './Placeholder';
 
 export default class EssayEditor extends React.Component {
 	static propTypes = {
@@ -15,7 +16,7 @@ export default class EssayEditor extends React.Component {
 
 	render () {
 		return (
-			<div>TODO: Fill Out Essay Type</div>
+			<Placeholder/>
 		);
 	}
 }
