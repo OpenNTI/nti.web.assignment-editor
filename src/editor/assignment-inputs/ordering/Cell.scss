@@ -1,0 +1,32 @@
+@import "~nti-style-common";
+
+.ordering-editing-cell {
+	margin-bottom: 1px;
+	padding: 0 1px;
+
+	&:not(.selected) {
+		&.label {
+			box-shadow: 0 1px 0 0 $border-grey-light, inset 1px 0 0 0 $border-grey-light;
+		}
+
+		&.value {
+			box-shadow: 0 1px 0 0 $border-green-light, inset 1px 0 0 0 $border-green-light, inset -1px 0 0 0 $border-green-light;
+		}
+	}
+
+	&.selected {
+		position: relative;
+		z-index: 1;
+	}
+
+	&.value input {
+		background: $light-green;
+	}
+
+	input[type=text] {
+		width: 100%;
+		border: none;
+		line-height: 40px;
+		padding: 0 13px;
+	}
+}

@@ -1,0 +1,21 @@
+@import "~nti-style-common";
+
+.ordering-editor-rows {
+	@include clearfix();
+
+	.rows {
+		float: left;
+		width: 90%;
+		box-shadow: 0 -1px 0 0 $border-grey-light;
+
+		.ordering-container {
+			width: 50%;
+			float: left;
+		}
+	}
+
+	.delete {
+		float: left;
+		width: 10%;
+	}
+}

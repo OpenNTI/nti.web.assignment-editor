@@ -1,5 +1,5 @@
 import React from 'react';
-import Pairs from './Pairs';
+import Rows from './Rows';
 
 export default class OrderingEditor extends React.Component {
 	static propTypes = {
@@ -24,18 +24,27 @@ export default class OrderingEditor extends React.Component {
 
 	render () {
 		const {part} = this.props;
-		let {labels, values, solutions} = part;
+		let {labels, values, solutions, NTIID} = part;
 		let solution = solutions[0];//For now just take the first solution
+		let rows = [];
 
 		solution = solution && solution.value;
 		labels = labels.slice(0);
 		values = values.slice(0);
 
+		rows = labels.reduce((acc, label, index) => {
+			acc.push({
+				label,
+				value: values[solution[index]]
+			});
+
+			return acc;
+		}, []);
+
 		return (
-			<Pairs
-				labels={labels}
-				values={values}
-				solution={solution}
+			<Rows
+				rows={rows}
+				partId={NTIID}
 				onChange={this.onPairsChanged}
 			/>
 		);
