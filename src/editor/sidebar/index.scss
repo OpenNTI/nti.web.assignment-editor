@@ -1,3 +1,9 @@
+@import "~nti-style-common";
+
 .assignment-editing-sidebar {
-	background: white;
+	background-color: $panel-background;
+
+	.question-types {
+		padding-top: 30px;
+	}
 }

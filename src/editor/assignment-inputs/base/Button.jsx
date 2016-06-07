@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import {appendQuestionTo} from '../Actions';
+import Draggable from '../../../dnd/Draggable';
 
 const QuestionMimeType = 'application/vnd.nextthought.naquestion';
 
@@ -29,17 +30,12 @@ function getCountInPart (part, types) {
 export default class BaseButton extends React.Component {
 	static propTypes = {
 		assignment: React.PropTypes.object.isRequired,
-		activeQuestion: React.PropTypes.object
+		part: React.PropTypes.object.isRequired,
+		handles: React.PropTypes.array,
+		activeQuestion: React.PropTypes.object,
+		defaultQuestionContent: React.PropTypes.string,
+		label: React.PropTypes.string
 	}
-
-	static set handles (handles) {
-		this.handledMimetypes = handles;
-	}
-
-	static get handles () {
-		return this.handledMimetypes;
-	}
-
 
 	iconCls = ''
 	label = 'Add Question'
@@ -55,11 +51,8 @@ export default class BaseButton extends React.Component {
 	}
 
 
-	getBlankPart () {}
-
-
 	getBlankQuestion () {
-		const part = this.getBlankPart();
+		const {part} = this.props;
 
 		if (part) {
 			return {
@@ -82,8 +75,8 @@ export default class BaseButton extends React.Component {
 
 
 	getUsedCount () {
-		const {assignment} = this.props;
-		let types = this.constructor.handles;
+		const {assignment, handles} = this.props;
+		let types = handles || [];
 
 		types = types.reduce((acc, type) => {
 			acc[type] = true;
@@ -97,18 +90,36 @@ export default class BaseButton extends React.Component {
 	}
 
 
+	onDragStart () {
+		console.log('Button on Drag start', arguments);
+	}
+
+
+	onDragEnd () {
+		console.log('Button on Drag end', arguments);
+	}
+
+
 	render () {
 		const iconCls = cx('icon', this.iconCls);
-		const {label} = this;
+		let {label} = this.props;
 		const usedCount = this.getUsedCount();
 		const usedCls = cx('used', {isUsed: usedCount > 0});
+		const data = this.getBlankQuestion() || {};
+		const cls = 'button';
+
+		if (!label) {
+			label = this.label;
+		}
 
 		return (
-			<div className="button" onClick={this.onClick}>
-				<span className={iconCls}></span>
-				<span className="label">{label}</span>
-				<span className={usedCls}>{usedCount} used</span>
-			</div>
+			<Draggable data={data} className={cls} onDragStart={this.onDragStart} onDragEnd={this.onDragEnd}>
+				<div className={cls} onClick={this.onClick}>
+					<span className={iconCls}></span>
+					<span className="label">{label}</span>
+					<span className={usedCls}>{usedCount} used</span>
+				</div>
+			</Draggable>
 		);
 	}
 }
