@@ -1,6 +1,10 @@
 import React from 'react';
 import cx from 'classnames';
+
+import Store from '../Store';
+import {QUESTION_ERROR} from '../Constants';
 import Selectable from '../utils/Selectable';
+
 import Content from './Content';
 import Parts from './Parts';
 import Controls from './Controls';
@@ -22,6 +26,37 @@ export default class QuestionComponent extends React.Component {
 
 		this.onContentFocus = this.onContentFocus.bind(this);
 		this.onContentBlur = this.onContentBlur.bind(this);
+		this.onStoreChange = this.onStoreChange.bind(this);
+	}
+
+
+	componentDidMount () {
+		Store.addChangeListener(this.onStoreChange);
+	}
+
+
+	componentWillUnmount () {
+		Store.removeChangeListener(this.onStoreChange);
+	}
+
+
+	onStoreChange (data) {
+		if (data.type === QUESTION_ERROR) {
+			this.onQuestionError();
+		}
+	}
+
+
+	onQuestionError () {
+		const {question} = this.props;
+		const {NTIID} = question;
+		const contentError = Store.getErrorFor(NTIID, 'content');
+		const partError = Store.getErrorFor(NTIID, 'part');
+
+		this.setState({
+			contentError,
+			partError
+		});
 	}
 
 
@@ -45,13 +80,13 @@ export default class QuestionComponent extends React.Component {
 
 	render () {
 		const {question} = this.props;
-		const {selectableId, selectableValue} = this.state;
+		const {selectableId, selectableValue, contentError, partError} = this.state;
 		const cls = cx('question-editor', {saving: question.isSaving});
 
 		return (
 			<div className="question-container">
 				<Selectable className={cls} id={selectableId} value={selectableValue}>
-					<Content question={question} onFocus={this.onContentFocus} onBlur={this.onContentBlur}/>
+					<Content question={question} onFocus={this.onContentFocus} onBlur={this.onContentBlur} error={contentError}/>
 					<Parts question={question} />
 				</Selectable>
 				<Controls question={question} />

@@ -43,9 +43,16 @@ export default class TextArea extends React.Component {
 
 
 	onChange (e) {
+		const {onChange} = this.props;
+		const value = e.target.value;
+
 		this.setState({
-			value: e.target.value
+			value: value
 		});
+
+		if (onChange) {
+			onChange(value);
+		}
 	}
 
 

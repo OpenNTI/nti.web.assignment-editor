@@ -10,7 +10,11 @@ export function saveQuestionContent (question, content) {
 		save.then(() => {
 			dispatch(QUESTION_UPDATED, question);
 		}).catch((reason) => {
-			dispatch(QUESTION_ERROR, reason);
+			dispatch(QUESTION_ERROR, {
+				NTIID: question.NTIID,
+				field: 'content',
+				reason
+			});
 		});
 	}
 }

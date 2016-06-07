@@ -1,4 +1,4 @@
-import {LOADED, LOADED_SCHEMA, ASSIGNMENT_ERROR} from './Constants';
+import {LOADED, LOADED_SCHEMA, ASSIGNMENT_ERROR, QUESTION_ERROR} from './Constants';
 import StorePrototype from 'nti-lib-store';
 
 const PRIVATE = new WeakMap();
@@ -9,7 +9,7 @@ const RemoveError = Symbol('Remove Error');
 
 
 function findErrorsForId (id, errors) {
-	return errors[id];
+	return errors[id] || [];
 }
 
 
@@ -35,11 +35,13 @@ class Store extends StorePrototype {
 		});
 
 		this.setAssignmentError = this[SetError].bind(this, ASSIGNMENT_ERROR);
+		this.setQuestionError = this[SetError].bind(this, QUESTION_ERROR);
 
 		this.registerHandlers({
 			[LOADED]: SetAssignment,
 			[LOADED_SCHEMA]: SetSchema,
-			[ASSIGNMENT_ERROR]: 'setAssignmentError'
+			[ASSIGNMENT_ERROR]: 'setAssignmentError',
+			[QUESTION_ERROR]: 'setQuestionError'
 		});
 	}
 
