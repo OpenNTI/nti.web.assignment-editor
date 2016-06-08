@@ -10,6 +10,8 @@ exports = module.exports = Object.assign(require('./webpack.config'), {
 	}
 });
 
+delete exports.node;
+
 exports.plugins.push(new webpack.DefinePlugin({
 	'SERVER': false
 }));
