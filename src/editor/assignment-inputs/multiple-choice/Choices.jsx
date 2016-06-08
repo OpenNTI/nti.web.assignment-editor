@@ -38,12 +38,13 @@ export default class SingleChoices extends React.Component {
 
 
 	componentWillReceiveProps (nextProps) {
-		let {choices} = nextProps;
+		let {choices:newChoices} = nextProps;
+		const {choices:oldChoices} = this.props;
 
-		choices = choices.slice(0);
+		if (newChoices === oldChoices) { return; }
 
 		this.setState({
-			choices: choices
+			choices: newChoices
 		});
 	}
 

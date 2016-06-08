@@ -10,6 +10,7 @@ export default class OrderingRows extends React.Component {
 		rows: React.PropTypes.array.isRequired,
 		onChange: React.PropTypes.func,
 		addRow: React.PropTypes.func,
+		deleteRow: React.PropTypes.func,
 		partId: React.PropTypes.string
 	}
 
@@ -24,7 +25,7 @@ export default class OrderingRows extends React.Component {
 		this.labelAccepts = [this.labelType];
 		this.valueAccepts = [this.valueType];
 
-		const parts = this.mapRows(rows, partId);
+		const parts = this.mapRows(rows);
 		const {labels, values} = parts;
 
 		if (labels.length !== values.length) {
@@ -47,9 +48,12 @@ export default class OrderingRows extends React.Component {
 
 
 	componentWillReceiveProps (nextProps) {
-		const {rows, partId:newId} = nextProps;
-		const {partId:oldId} = this.props;
-		const parts = this.mapRows(rows, newId || oldId);
+		const {rows:newRows} = nextProps;
+		const {rows:oldRows} = this.props;
+
+		if (newRows === oldRows) { return; }
+
+		const parts = this.mapRows(newRows);
 		const {labels, values} = parts;
 
 		this.setState({
@@ -59,7 +63,7 @@ export default class OrderingRows extends React.Component {
 	}
 
 
-	mapRows (rows, partId) {
+	mapRows (rows) {
 		let labels = [];
 		let values = [];
 
@@ -68,7 +72,8 @@ export default class OrderingRows extends React.Component {
 
 			labels.push({
 				label: row.label,
-				ID: partId + '-label-' + i,
+				ID: row.ID + '-label',
+				rowId: row.ID,
 				MimeType: this.labelType,
 				isLabel: true,
 				isNew: row.isNew
@@ -76,7 +81,8 @@ export default class OrderingRows extends React.Component {
 
 			values.push({
 				label: row.value,
-				ID: partId + '-value-' + i,
+				ID: row.ID + '-value',
+				rowId: row.ID,
 				MimeType: this.valueType,
 				isValue: true
 			});
@@ -88,15 +94,20 @@ export default class OrderingRows extends React.Component {
 		};
 	}
 
+
 	onChange () {
 		const {onChange} = this.props;
 		const {labels, values} = this.state;
 		let rows = [];
 
 		for (let i = 0; i < labels.length; i++) {
+			let label = labels[i];
+			let value = values[i];
+
 			rows.push({
-				label: labels[i].label,
-				value: values[i].label
+				label: label.label,
+				value: value.label,
+				ID: label.rowId
 			});
 		}
 
@@ -111,11 +122,7 @@ export default class OrderingRows extends React.Component {
 
 		function updateValue (rows, id, value) {
 			return rows.map((row) => {
-				if (row.ID === id) {
-					row.label = value;
-				}
-
-				return row;
+				return row.ID === id ? {...row, label: value} : row;
 			});
 		}
 
@@ -152,8 +159,13 @@ export default class OrderingRows extends React.Component {
 	}
 
 
-	deleteRow (index) {
-		// debugger;
+	deleteRow (e) {
+		const {deleteRow} = this.props;
+		const id = e.target && e.target.getAttribute('data-row');
+
+		if (deleteRow && id) {
+			deleteRow(id);
+		}
 	}
 
 
@@ -201,7 +213,7 @@ export default class OrderingRows extends React.Component {
 
 	renderDelete (label, index) {
 		return (
-			<span key={index} data-index={index} onClick={this.deleteRow}>X</span>
+			<div key={index} data-row={label.rowId} onClick={this.deleteRow}>X</div>
 		);
 	}
 

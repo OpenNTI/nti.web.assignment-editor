@@ -14,8 +14,8 @@ export default class OrderingEditor extends React.Component {
 		super(props);
 
 		const {part} = props;
-		const {labels, values, solutions} = part;
-		const rows = this.mapRows(labels, values, solutions);
+		const {labels, values, solutions, NTIID:partId} = part;
+		const rows = this.mapRows(labels, values, solutions, partId);
 
 		this.state = {
 			rows
@@ -23,10 +23,11 @@ export default class OrderingEditor extends React.Component {
 
 		this.onRowsChanged = this.onRowsChanged.bind(this);
 		this.addNewRow = this.addNewRow.bind(this);
+		this.deleteRow = this.deleteRow.bind(this);
 	}
 
 
-	mapRows (labels, values, solutions) {
+	mapRows (labels, values, solutions, partId) {
 		let rows = [];
 		let solution = solutions[0];//For now just take the first solution
 
@@ -40,7 +41,8 @@ export default class OrderingEditor extends React.Component {
 
 			rows.push({
 				label,
-				value
+				value,
+				ID: partId + '-row-' + i
 			});
 		}
 
@@ -63,6 +65,10 @@ export default class OrderingEditor extends React.Component {
 		}
 
 		savePartToQuestion(question, part, '', labels, values, solution, []);
+
+		this.setState({
+			rows: rows
+		});
 	}
 
 
@@ -77,9 +83,16 @@ export default class OrderingEditor extends React.Component {
 			isNew: true
 		});
 
-		this.setState({
-			rows
-		});
+		this.onRowsChanged(rows);
+	}
+
+
+	deleteRow (id) {
+		let {rows} = this.state;
+
+		rows = rows.filter(row => row.ID !== id);
+
+		this.onRowsChanged(rows);
 	}
 
 
@@ -94,6 +107,7 @@ export default class OrderingEditor extends React.Component {
 				partId={NTIID}
 				onChange={this.onRowsChanged}
 				addRow={this.addNewRow}
+				deleteRow={this.deleteRow}
 			/>
 		);
 	}
