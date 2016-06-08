@@ -13,9 +13,38 @@ export default class OrderingEditor extends React.Component {
 	constructor (props) {
 		super(props);
 
-		this.state = {};
+		const {part} = props;
+		const {labels, values, solutions} = part;
+		const rows = this.mapRows(labels, values, solutions);
+
+		this.state = {
+			rows
+		};
 
 		this.onRowsChanged = this.onRowsChanged.bind(this);
+		this.addNewRow = this.addNewRow.bind(this);
+	}
+
+
+	mapRows (labels, values, solutions) {
+		let rows = [];
+		let solution = solutions[0];//For now just take the first solution
+
+		solution = solution && solution.value;
+		labels = labels.slice(0);
+		values = values.slice(0);
+
+		for (let i = 0; i < labels.length; i++) {
+			let label = labels[i];
+			let value = values[solution[i]];
+
+			rows.push({
+				label,
+				value
+			});
+		}
+
+		return rows;
 	}
 
 
@@ -37,30 +66,34 @@ export default class OrderingEditor extends React.Component {
 	}
 
 
+	addNewRow () {
+		let {rows} = this.state;
+
+		rows = rows.slice(0);
+
+		rows.push({
+			label: '',
+			value: '',
+			isNew: true
+		});
+
+		this.setState({
+			rows
+		});
+	}
+
+
 	render () {
 		const {part} = this.props;
-		let {labels, values, solutions, NTIID} = part;
-		let solution = solutions[0];//For now just take the first solution
-		let rows = [];
-
-		solution = solution && solution.value;
-		labels = labels.slice(0);
-		values = values.slice(0);
-
-		rows = labels.reduce((acc, label, index) => {
-			acc.push({
-				label,
-				value: values[solution[index]]
-			});
-
-			return acc;
-		}, []);
+		const {NTIID} = part;
+		const {rows} = this.state;
 
 		return (
 			<Rows
 				rows={rows}
 				partId={NTIID}
 				onChange={this.onRowsChanged}
+				addRow={this.addNewRow}
 			/>
 		);
 	}

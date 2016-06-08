@@ -2,12 +2,14 @@ import React from 'react';
 
 import Ordering from '../../../dnd/ordering/Ordering';
 import Cell from './Cell';
+import AddButton from './AddButton';
 
 export default class OrderingRows extends React.Component {
 
 	static propTypes = {
 		rows: React.PropTypes.array.isRequired,
 		onChange: React.PropTypes.func,
+		addRow: React.PropTypes.func,
 		partId: React.PropTypes.string
 	}
 
@@ -38,8 +40,22 @@ export default class OrderingRows extends React.Component {
 		this.onLabelsChange = this.onLabelsChange.bind(this);
 		this.onValuesChange = this.onValuesChange.bind(this);
 		this.deleteRow = this.deleteRow.bind(this);
+		this.addRow = this.addRow.bind(this);
 		this.renderDelete = this.renderDelete.bind(this);
 		this.renderCell = this.renderCell.bind(this);
+	}
+
+
+	componentWillReceiveProps (nextProps) {
+		const {rows, partId:newId} = nextProps;
+		const {partId:oldId} = this.props;
+		const parts = this.mapRows(rows, newId || oldId);
+		const {labels, values} = parts;
+
+		this.setState({
+			labels,
+			values
+		});
 	}
 
 
@@ -54,7 +70,8 @@ export default class OrderingRows extends React.Component {
 				label: row.label,
 				ID: partId + '-label-' + i,
 				MimeType: this.labelType,
-				isLabel: true
+				isLabel: true,
+				isNew: row.isNew
 			});
 
 			values.push({
@@ -140,6 +157,15 @@ export default class OrderingRows extends React.Component {
 	}
 
 
+	addRow () {
+		const {addRow} = this.props;
+
+		if (addRow) {
+			addRow();
+		}
+	}
+
+
 	render () {
 		const {partId} = this.props;
 		const {labels, values} = this.state;
@@ -163,6 +189,7 @@ export default class OrderingRows extends React.Component {
 						renderItem={this.renderCell}
 						onChange={this.onValuesChange}
 					/>
+					<AddButton onAdd={this.addRow} />
 				</div>
 				<div className="delete">
 					{labels.map(this.renderDelete)}
