@@ -15,16 +15,29 @@ export default class OrderingCell extends React.Component {
 		const {cell} = this.props;
 		const {label, ID} = cell;
 
+		this.isNew = cell.isNew;
+
 		this.state = {
 			label,
 			selectableId: ID,
 			selectableValue: label
 		};
 
+		this.setInputRef = x => this.inputRef = x;
+
 		this.onChange = this.onChange.bind(this);
 		this.onInputFocus = this.onInputFocus.bind(this);
 		this.onInputBlur = this.onInputBlur.bind(this);
 		this.onUnselect = this.onUnselect.bind(this);
+		this.onSelect = this.onSelect.bind(this);
+	}
+
+
+	componentDidMount () {
+		if (this.isNew && this.inputRef) {
+			delete this.isNew;
+			this.inputRef.focus();
+		}
 	}
 
 
@@ -43,12 +56,20 @@ export default class OrderingCell extends React.Component {
 		});
 	}
 
+
 	onInputBlur () {
 		const {label} = this.state;
 
 		this.setState({
 			selectableValue: label
 		});
+	}
+
+
+	onSelect () {
+		if (this.inputRef) {
+			this.inputRef.focus();
+		}
 	}
 
 
@@ -68,8 +89,8 @@ export default class OrderingCell extends React.Component {
 		const cls = cx('ordering-editing-cell', {label: cell.isLabel, value: cell.isValue});
 
 		return (
-			<Selectable className={cls} id={selectableId} value={selectableValue} onUnselect={this.onUnselect}>
-				<input type="text" value={label} onFocus={this.onInputFocus} onBlur={this.onInputBlur} onChange={this.onChange} />
+			<Selectable className={cls} id={selectableId} value={selectableValue} onSelect={this.onSelect} onUnselect={this.onUnselect}>
+				<input type="text" ref={this.setInputRef} value={label} onFocus={this.onInputFocus} onBlur={this.onInputBlur} onChange={this.onChange} />
 			</Selectable>
 		);
 	}
