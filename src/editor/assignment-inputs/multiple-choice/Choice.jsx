@@ -22,7 +22,9 @@ export default class Choice extends React.Component {
 
 		this.state = {
 			label: choice.label,
-			correct: choice.correct
+			correct: choice.correct,
+			selectableId: choice.NTIID || choice.ID,
+			selectableValue: choice.label
 		};
 
 		this.setLabelRef = x => this.labelInput = x;
@@ -35,12 +37,15 @@ export default class Choice extends React.Component {
 
 
 	componentWillReceiveProps (nextProps) {
-		const {choice} = nextProps;
+		const {choice:newChoice} = nextProps;
+		const {choice:oldChoice} = this.props;
 
-		this.setState({
-			label: choice.label,
-			correct: choice.correct
-		});
+		if (newChoice !== oldChoice) {
+			this.setState({
+				label: newChoice.label,
+				correct: newChoice.correct
+			});
+		}
 	}
 
 
@@ -90,13 +95,12 @@ export default class Choice extends React.Component {
 
 
 	render () {
-		const {group, multipleAnswers, choice} = this.props;
-		const {label, correct} = this.state;
-		const id = choice.NTIID || choice.ID;
+		const {group, multipleAnswers} = this.props;
+		const {label, correct, selectableValue, selectableId} = this.state;
 		const cls = cx('choice', {correct: correct, 'multiple-answers': multipleAnswers});
 
 		return (
-			<Selectable className={cls} id={id} value={label} onUnselect={this.onBlur}>
+			<Selectable className={cls} id={selectableId} value={selectableValue} onUnselect={this.onBlur}>
 				{this.renderSolution(group, correct, multipleAnswers)}
 				<input ref={this.setLabelRef} type="text" value={label} onChange={this.onLabelChange} />
 				<div className="remove" onClick={this.onRemove}>X</div>

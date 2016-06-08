@@ -32,12 +32,15 @@ export default class MultipleChoiceEditor extends React.Component {
 
 
 	componentWillReceiveProps (nextProps) {
-		const {part} = nextProps;
-		const {choices, solutions} = part;
+		const {part:newPart} = nextProps;
+		const {part:oldPart} = this.props;
+		const {choices, solutions} = newPart;
 
-		this.setState({
-			choices: this.mapChoices(choices, solutions, part.NTIID)
-		});
+		if (newPart !== oldPart) {
+			this.setState({
+				choices: this.mapChoices(choices, solutions, newPart.NTIID)
+			});
+		}
 	}
 
 
@@ -107,9 +110,7 @@ export default class MultipleChoiceEditor extends React.Component {
 			isNew: true
 		});
 
-		this.setState({
-			choices: choices
-		});
+		this.choicesChanged(choices);
 	}
 
 
@@ -122,11 +123,7 @@ export default class MultipleChoiceEditor extends React.Component {
 			return choiceId !== id;
 		});
 
-		this.setState({
-			choices: choices
-		}, () => {
-			this.choicesChanged(choices);
-		});
+		this.choicesChanged(choices);
 	}
 
 
