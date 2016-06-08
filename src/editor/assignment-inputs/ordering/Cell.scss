@@ -26,7 +26,8 @@
 	input[type=text] {
 		width: 100%;
 		border: none;
-		line-height: 40px;
 		padding: 0 13px;
+		font: normal 400 0.875rem/40px $body-font-family;
+		color: $primary-grey;
 	}
 }

@@ -74,6 +74,9 @@ export default class Dropzone extends React.Component {
 
 
 	onDrop (e) {
+		e.preventDefault();
+		e.stopPropagation();
+
 		const {onDrop, onInvalidDrop, dropHandlers} = this.props;
 		const {dataTransfer} = e;
 		const data = new DataTransfer(dataTransfer);

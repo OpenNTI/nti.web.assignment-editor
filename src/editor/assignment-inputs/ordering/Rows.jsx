@@ -16,13 +16,13 @@ export default class OrderingRows extends React.Component {
 
 		const {rows, partId} = props;
 
-		this.labelType = partId + '-label';
-		this.valueType = partId + '-value';
+		this.labelType = (partId + '-label').toLowerCase();
+		this.valueType = (partId + '-value').toLowerCase();
 
 		this.labelAccepts = [this.labelType];
 		this.valueAccepts = [this.valueType];
 
-		const parts = this.mapRows(rows);
+		const parts = this.mapRows(rows, partId);
 		const {labels, values} = parts;
 
 		if (labels.length !== values.length) {
@@ -34,6 +34,7 @@ export default class OrderingRows extends React.Component {
 			values
 		};
 
+		this.onCellChange = this.onCellChange.bind(this);
 		this.onLabelsChange = this.onLabelsChange.bind(this);
 		this.onValuesChange = this.onValuesChange.bind(this);
 		this.deleteRow = this.deleteRow.bind(this);
@@ -70,19 +71,67 @@ export default class OrderingRows extends React.Component {
 		};
 	}
 
+	onChange () {
+		const {onChange} = this.props;
+		const {labels, values} = this.state;
+		let rows = [];
+
+		for (let i = 0; i < labels.length; i++) {
+			rows.push({
+				label: labels[i].label,
+				value: values[i].label
+			});
+		}
+
+		if (onChange) {
+			onChange(rows);
+		}
+	}
+
 
 	onCellChange (newValue, cell) {
-		// debugger;
+		let {labels, values} = this.state;
+
+		function updateValue (rows, id, value) {
+			return rows.map((row) => {
+				if (row.ID === id) {
+					row.label = value;
+				}
+
+				return row;
+			});
+		}
+
+		if (cell.isLabel) {
+			labels = updateValue(labels, cell.ID, newValue);
+		} else {
+			values = updateValue(values, cell.ID, newValue);
+		}
+
+		this.setState({
+			labels,
+			values
+		}, () => {
+			this.onChange();
+		});
 	}
 
 
 	onLabelsChange (labels) {
-		// debugger;
+		this.setState({
+			labels
+		}, () => {
+			this.onChange();
+		});
 	}
 
 
 	onValuesChange (values) {
-		// debugger;
+		this.setState({
+			values
+		}, () => {
+			this.onChange();
+		});
 	}
 
 
@@ -116,7 +165,7 @@ export default class OrderingRows extends React.Component {
 					/>
 				</div>
 				<div className="delete">
-					{labels.forEach(this.renderDelete)}
+					{labels.map(this.renderDelete)}
 				</div>
 			</div>
 		);

@@ -1,4 +1,6 @@
 import React from 'react';
+
+import {savePartToQuestion} from './Actions';
 import Rows from './Rows';
 
 export default class OrderingEditor extends React.Component {
@@ -13,12 +15,25 @@ export default class OrderingEditor extends React.Component {
 
 		this.state = {};
 
-		this.onPairsChanged = this.onPairsChanged.bind(this);
+		this.onRowsChanged = this.onRowsChanged.bind(this);
 	}
 
 
-	onPairsChanged (/*labels, value, solution*/) {
+	onRowsChanged (rows) {
+		const {question, part} = this.props;
+		let labels = [];
+		let values = [];
+		let solution = {};
 
+		for (let i = 0; i < rows.length; i++) {
+			let row = rows[i];
+
+			labels.push(row.label);
+			values.push(row.value);
+			solution[i] = i;
+		}
+
+		savePartToQuestion(question, part, '', labels, values, solution, []);
 	}
 
 
@@ -45,7 +60,7 @@ export default class OrderingEditor extends React.Component {
 			<Rows
 				rows={rows}
 				partId={NTIID}
-				onChange={this.onPairsChanged}
+				onChange={this.onRowsChanged}
 			/>
 		);
 	}
