@@ -1,9 +1,9 @@
 @import "~nti-style-common";
 
-.ordering-editor-rows {
+.ordering-editor-choices {
 	@include clearfix();
 
-	.rows {
+	.choices {
 		float: left;
 		width: 90%;
 		box-shadow: 0 -1px 0 0 $border-grey-light;

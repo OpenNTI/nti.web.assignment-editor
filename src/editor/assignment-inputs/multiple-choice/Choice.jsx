@@ -63,7 +63,7 @@ export default class Choice extends React.Component {
 		const {choice, onChange} = this.props;
 		const {label, correct} = this.state;
 
-		if (onChange) {
+		if (onChange && (choice.label !== label || choice.correct !== correct)) {
 			onChange(choice.NTIID || choice.ID, label, correct);
 		}
 	}

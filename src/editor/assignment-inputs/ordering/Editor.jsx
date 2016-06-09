@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {savePartToQuestion} from './Actions';
-import Rows from './Rows';
+import Choices from './Choices';
 
 export default class OrderingEditor extends React.Component {
 	static propTypes = {
@@ -14,100 +14,132 @@ export default class OrderingEditor extends React.Component {
 		super(props);
 
 		const {part} = props;
-		const {labels, values, solutions, NTIID:partId} = part;
-		const rows = this.mapRows(labels, values, solutions, partId);
+		const parts = this.getParts(part);
 
 		this.state = {
-			rows
+			labels: parts.labels,
+			values: parts.values,
+			labelType: parts.labelType,
+			valueType: parts.valueType
 		};
 
-		this.onRowsChanged = this.onRowsChanged.bind(this);
-		this.addNewRow = this.addNewRow.bind(this);
-		this.deleteRow = this.deleteRow.bind(this);
+		this.onChoicesChanged = this.onChoicesChanged.bind(this);
+		this.addNewChoice = this.addNewChoice.bind(this);
+		this.removeChoice = this.removeChoice.bind(this);
 	}
 
 
-	mapRows (labels, values, solutions, partId) {
-		let rows = [];
+	getParts (part) {
+		const {labels:partLabels, values:partValues, solutions, NTIID} = part;
+		const labelType = (NTIID + '-label').toLowerCase();
+		const valueType = (NTIID + '-value').toLowerCase();
 		let solution = solutions[0];//For now just take the first solution
+		let labels = [];
+		let values = [];
 
 		solution = solution && solution.value;
-		labels = labels.slice(0);
-		values = values.slice(0);
 
-		for (let i = 0; i < labels.length; i++) {
-			let label = labels[i];
-			let value = values[solution[i]];
+		for (let i = 0; i < partLabels.length; i++) {
+			let label = partLabels[i];
+			let value = partValues[solution[i]];
 
-			rows.push({
-				label,
-				value,
-				ID: partId + '-row-' + i
+			labels.push({
+				label: label,
+				MimeType: labelType,
+				ID: NTIID + '-label-' + i,
+				isLabel: true
+			});
+
+			values.push({
+				label: value,
+				MimeType: valueType,
+				ID: NTIID + '-value-' + i,
+				isValue: true
 			});
 		}
 
-		return rows;
+		return {
+			labels,
+			values,
+			labelType,
+			valueType
+		};
 	}
 
 
-	onRowsChanged (rows) {
+	onChoicesChanged (newLabels, newValues) {
 		const {question, part} = this.props;
 		let labels = [];
 		let values = [];
-		let solution = {};
+		let solutions = {};
 
-		for (let i = 0; i < rows.length; i++) {
-			let row = rows[i];
-
-			labels.push(row.label);
-			values.push(row.value);
-			solution[i] = i;
+		for (let i = 0; i < newLabels.length; i++) {
+			labels.push(newLabels[i].label);
+			values.push(newValues[i].label);
+			solutions[i] = i;
 		}
 
-		savePartToQuestion(question, part, '', labels, values, solution, []);
+		savePartToQuestion(question, part, '', labels, values, solutions, []);
 
 		this.setState({
-			rows: rows
+			labels: newLabels,
+			values: newValues
 		});
 	}
 
 
-	addNewRow () {
-		let {rows} = this.state;
+	addNewChoice () {
+		const {part} = this.props;
+		const {NTIID:partId} = part;
+		let {labels, values, labelType, valueType} = this.state;
 
-		rows = rows.slice(0);
+		labels = labels.slice(0);
+		values = values.slice(0);
 
-		rows.push({
+		labels.push({
 			label: '',
-			value: '',
+			MimeType: labelType,
+			ID: partId + '-label-' + labels.length,
+			isLabel: true,
 			isNew: true
 		});
 
-		this.onRowsChanged(rows);
+		values.push({
+			label: '',
+			MimeType: valueType,
+			ID: partId + '-value-' + values.length,
+			isValue: true
+		});
+
+		this.onChoicesChanged(labels, values);
 	}
 
 
-	deleteRow (id) {
-		let {rows} = this.state;
+	removeChoice (labelId, valueId) {
+		let {labels, values} = this.state;
 
-		rows = rows.filter(row => row.ID !== id);
+		labels = labels.filter(x => x.ID !== labelId);
+		values = values.filter(x => x.ID !== valueId);
 
-		this.onRowsChanged(rows);
+		this.onChoicesChanged(labels, values);
 	}
 
 
 	render () {
 		const {part} = this.props;
-		const {NTIID} = part;
-		const {rows} = this.state;
+		const {NTIID:partId} = part;
+		const {labels, values, labelType, valueType} = this.state;
 
 		return (
-			<Rows
-				rows={rows}
-				partId={NTIID}
-				onChange={this.onRowsChanged}
-				addRow={this.addNewRow}
-				deleteRow={this.deleteRow}
+			<Choices
+				labels={labels}
+				values={values}
+				partId={partId}
+				labelType={labelType}
+				valueType={valueType}
+				onChange={this.onChoicesChanged}
+				addNew={this.addNewChoice}
+				remove={this.removeChoice}
 			/>
 		);
 	}
