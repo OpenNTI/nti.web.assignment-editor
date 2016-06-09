@@ -18,6 +18,7 @@ export default class FreeResponseButton extends React.Component {
 
 	label = 'Free Response'
 	defaultQuestionContent = 'Essay Question'
+	iconCls = 'freeresponse';
 
 	constructor (props) {
 		super(props);
@@ -36,7 +37,8 @@ export default class FreeResponseButton extends React.Component {
 				activeQuestion={activeQuestion}
 				label={this.label}
 				defaultQuestionContent={this.defaultQuestionContent}
-				handles={handles} />
+				handles={handles}
+				iconCls={this.iconCls} />
 		);
 	}
 

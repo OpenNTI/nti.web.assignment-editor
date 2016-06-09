@@ -1,10 +1,68 @@
 @import "~nti-style-common";
 
+%icon-upload-link {background-image: url(./assets/icn-upload.png); }
+%icon-essay-link {background-image: url(./assets/icn-essay.png); }
+%icon-checkboxes-link {background-image: url(./assets/icn-checkboxes.png); }
+%icon-freeresponse-link {background-image: url(./assets/icn-freeresponse.png); }
+%icon-ordering-link {background-image: url(./assets/icn-reorder.png); }
+%icon-textblock-link {background-image: url(./assets/icn-textblock.png); }
+%icon-multiplechoice-link {background-image: url(./assets/icn-multiplechoice.png); }
+
+
 .button {
-	width: 44%;
-	height: 70px;
+	width: 110px;
+	height: 110px;
 	float: left;
 	margin: 5px 4px 5px 8px;
 	border: 1px solid $border-grey-light;
 	background: #fff;
+
+	.icon-wrapper {
+		height: 68px;
+		position: relative;
+		transform-style: preserve-3d;
+
+		.icon {
+			position: relative;
+			top: 50%;
+			transform: translateY(-50%);
+			width: 22px;
+			height: 26px;
+			background-size: cover;
+			background-position: center center;
+			margin: 0 auto;
+
+			  &.essay {
+				  @extend %icon-essay-link;
+			  }
+			  &.freeresponse {
+				  @extend %icon-freeresponse-link;
+			  }
+			  &.file-upload {
+				  @extend %icon-upload-link;
+			  }
+			  &.multiple-choice {
+				  @extend %icon-multiplechoice-link;
+			  }
+			  &.ordering {
+				  @extend %icon-ordering-link;
+			  }
+			  &.modeled-content {
+				  @extend %icon-textblock-link;
+			  }
+		}
+	}
+
+	.label,.used {
+		color: $secondary-grey;
+		font-family: $header-font-family;
+		text-transform: uppercase;
+		font-size: 10px;
+		text-align: center;
+		font-weight: bold;
+	}
+
+	.used {
+  		color: $tertiary-grey;
+	}
 }

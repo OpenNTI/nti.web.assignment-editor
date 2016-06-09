@@ -17,6 +17,7 @@ export default class FileUploadButton extends React.Component {
 
 	label = 'File Upload'
 	defaultQuestionContent = 'File Upload Question'
+	iconCls = 'file-upload'
 
 	constructor (props) {
 		super(props);
@@ -34,7 +35,8 @@ export default class FileUploadButton extends React.Component {
 				activeQuestion={activeQuestion}
 				label={this.label}
 				defaultQuestionContent={this.defaultQuestionContent}
-				handles={handles} />
+				handles={handles}
+				iconCls={this.iconCls} />
 		);
 	}
 

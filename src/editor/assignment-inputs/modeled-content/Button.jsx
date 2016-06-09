@@ -18,6 +18,7 @@ export default class EssayButton extends React.Component {
 
 	label = 'Essay'
 	defaultQuestionContent = 'Essay Question'
+	iconCls = 'essay';
 
 	constructor (props) {
 		super(props);
@@ -35,7 +36,8 @@ export default class EssayButton extends React.Component {
 				activeQuestion={activeQuestion}
 				label={this.label}
 				defaultQuestionContent={this.defaultQuestionContent}
-				handles={handles} />
+				handles={handles}
+				iconCls={this.iconCls} />
 		);
 	}
 

@@ -14,6 +14,7 @@ export default class MultipleChoiceMultipleAnswerButton extends React.Component 
 
 	label = 'Multiple Choice Multiple Answer'
 	defaultQuestionContent = 'Multiple Choice Multiple Answer Question'
+	iconCls = 'multiple-choice'
 
 	constructor (props) {
 		super(props);
@@ -30,7 +31,8 @@ export default class MultipleChoiceMultipleAnswerButton extends React.Component 
 				activeQuestion={activeQuestion}
 				label={this.label}
 				defaultQuestionContent={this.defaultQuestionContent}
-				handles={this.handles} />
+				handles={this.handles}
+				iconCls={this.iconCls} />
 		);
 	}
 

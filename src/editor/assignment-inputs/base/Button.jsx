@@ -34,10 +34,10 @@ export default class BaseButton extends React.Component {
 		handles: React.PropTypes.array,
 		activeQuestion: React.PropTypes.object,
 		defaultQuestionContent: React.PropTypes.string,
-		label: React.PropTypes.string
+		label: React.PropTypes.string,
+		iconCls: React.PropTypes.string
 	}
 
-	iconCls = ''
 	label = 'Add Question'
 	defaultQuestionContent = 'Blank Question'
 
@@ -56,8 +56,8 @@ export default class BaseButton extends React.Component {
 
 		if (part) {
 			return {
-				MimeType: QuestionMimeType,
-				content: this.defaultQuestionContent,
+				MimeType: part.MimeType || this.QuestionMimeType,
+				content: part.content || this.defaultQuestionContent,
 				parts: [part]
 			};
 		}
@@ -101,23 +101,25 @@ export default class BaseButton extends React.Component {
 
 
 	render () {
-		const iconCls = cx('icon', this.iconCls);
-		let {label} = this.props;
+		let {label,iconCls} = this.props;
+		const icnCls = cx('icon', iconCls);
 		const usedCount = this.getUsedCount();
 		const usedCls = cx('used', {isUsed: usedCount > 0});
 		const data = this.getBlankQuestion() || {};
-		const cls = 'button';
+		const cls = cx('button');
 
 		if (!label) {
 			label = this.label;
 		}
 
 		return (
-			<Draggable data={data} className={cls} onDragStart={this.onDragStart} onDragEnd={this.onDragEnd}>
+			<Draggable data={data} className={cls}>
 				<div className={cls} onClick={this.onClick}>
-					<span className={iconCls}></span>
-					<span className="label">{label}</span>
-					<span className={usedCls}>{usedCount} used</span>
+					<div className="icon-wrapper">
+						<div className={icnCls}></div>
+					</div>
+					<div className="label">{label}</div>
+					<div className={usedCls}>{usedCount} used</div>
 				</div>
 			</Draggable>
 		);
