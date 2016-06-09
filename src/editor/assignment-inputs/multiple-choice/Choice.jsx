@@ -5,6 +5,7 @@ import Selectable from '../../utils/Selectable';
 export default class Choice extends React.Component {
 	static propTypes = {
 		choice: React.PropTypes.object,
+		error: React.PropTypes.any,
 		group: React.PropTypes.string,
 		onChange: React.PropTypes.func,
 		onRemove: React.PropTypes.func,
@@ -16,7 +17,7 @@ export default class Choice extends React.Component {
 	constructor (props) {
 		super(props);
 
-		const {choice} = this.props;
+		const {choice, error} = this.props;
 
 		this.isNew = choice.isNew;
 
@@ -24,7 +25,8 @@ export default class Choice extends React.Component {
 			label: choice.label,
 			correct: choice.correct,
 			selectableId: choice.NTIID || choice.ID,
-			selectableValue: choice.label
+			selectableValue: choice.label,
+			error
 		};
 
 		this.setLabelRef = x => this.labelInput = x;
@@ -37,14 +39,23 @@ export default class Choice extends React.Component {
 
 
 	componentWillReceiveProps (nextProps) {
-		const {choice:newChoice} = nextProps;
-		const {choice:oldChoice} = this.props;
+		const {choice:newChoice, error:newError} = nextProps;
+		const {choice:oldChoice, error:oldError} = this.props;
+		let state = null;
 
 		if (newChoice !== oldChoice) {
-			this.setState({
-				label: newChoice.label,
-				correct: newChoice.correct
-			});
+			state = state || {};
+			state.label = newChoice.label;
+			state.correct = newChoice.correct;
+		}
+
+		if (newError !== oldError) {
+			state = state || {};
+			state.error = newError;
+		}
+
+		if (state) {
+			this.setState(state);
 		}
 	}
 
@@ -59,7 +70,7 @@ export default class Choice extends React.Component {
 	}
 
 
-	onBlur () {
+	onChange () {
 		const {choice, onChange} = this.props;
 		const {label, correct} = this.state;
 
@@ -69,9 +80,21 @@ export default class Choice extends React.Component {
 	}
 
 
+	onBlur () {
+		this.onChange();
+	}
+
+
 	onLabelChange (e) {
+		const {error} = this.state;
+
 		this.setState({
 			label: e.target.value
+		}, () => {
+			if (error && error.clear) {
+				this.onChange();
+				error.clear();
+			}
 		});
 	}
 
@@ -96,8 +119,8 @@ export default class Choice extends React.Component {
 
 	render () {
 		const {group, multipleAnswers} = this.props;
-		const {label, correct, selectableValue, selectableId} = this.state;
-		const cls = cx('choice', {correct: correct, 'multiple-answers': multipleAnswers});
+		const {label, correct, error, selectableValue, selectableId} = this.state;
+		const cls = cx('choice', {correct: correct, 'multiple-answers': multipleAnswers, error});
 
 		return (
 			<Selectable className={cls} id={selectableId} value={selectableValue} onUnselect={this.onBlur}>

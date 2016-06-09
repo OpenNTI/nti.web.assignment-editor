@@ -4,6 +4,17 @@ import Choice from './Choice';
 import Add from './AddButton';
 import {Ordering} from '../../../dnd';
 
+const errorField = 'choices';
+
+function getErrorForIndex (error, choiceIndex) {
+	const reason = error && error.reason;
+	let {field, index} = reason || {};
+
+	index = index || [];
+
+	return field === errorField && index.indexOf(choiceIndex) >= 0 ? error : null;
+}
+
 export default class SingleChoices extends React.Component {
 	static propTypes = {
 		choices: React.PropTypes.array.isRequired,
@@ -12,18 +23,18 @@ export default class SingleChoices extends React.Component {
 		onChange: React.PropTypes.func,
 		addNewChoice: React.PropTypes.func,
 		removeChoice: React.PropTypes.func,
-		multipleAnswers: React.PropTypes.bool
+		multipleAnswers: React.PropTypes.bool,
+		error: React.PropTypes.any
 	}
 
 	constructor (props) {
 		super(props);
 
-		let {choices, partType} = props;
-
-		choices = choices.slice(0);
+		let {choices, partType, error} = props;
 
 		this.state = {
-			choices: choices
+			choices,
+			error
 		};
 
 		this.acceptTypes = [partType];
@@ -38,14 +49,23 @@ export default class SingleChoices extends React.Component {
 
 
 	componentWillReceiveProps (nextProps) {
-		let {choices:newChoices} = nextProps;
-		const {choices:oldChoices} = this.props;
+		const {choices:newChoices, error:newError} = nextProps;
+		const {choices:oldChoices, error: oldError} = this.props;
+		let state = null;
 
-		if (newChoices === oldChoices) { return; }
+		if (newChoices !== oldChoices) {
+			state = state || {};
+			state.choices = newChoices;
+		}
 
-		this.setState({
-			choices: newChoices
-		});
+		if (newError !== oldError) {
+			state = state || {};
+			state.error = newError;
+		}
+
+		if (state) {
+			this.setState(state);
+		}
 	}
 
 
@@ -144,14 +164,16 @@ export default class SingleChoices extends React.Component {
 	}
 
 
-	renderChoice (choice) {
+	renderChoice (choice, index) {
 		const {partId, multipleAnswers} = this.props;
+		const {error} = this.state;
 		const group = partId + '--solution-group';
 
 		return (
 			<Choice
 				choice={choice}
 				group={group}
+				error={getErrorForIndex(error, index)}
 				onChange={this.onChoiceChanged}
 				onSolutionChange={this.onSolutionChanged}
 				onRemove={this.onRemove}

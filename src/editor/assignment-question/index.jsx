@@ -27,16 +27,23 @@ export default class QuestionComponent extends React.Component {
 		this.onContentFocus = this.onContentFocus.bind(this);
 		this.onContentBlur = this.onContentBlur.bind(this);
 		this.onStoreChange = this.onStoreChange.bind(this);
+		this.onQuestionChange = this.onQuestionChange.bind(this);
 	}
 
 
 	componentDidMount () {
+		const {question} = this.props;
+
 		Store.addChangeListener(this.onStoreChange);
+		question.addListener('change', this.onQuestionChange);
 	}
 
 
 	componentWillUnmount () {
+		const {question} = this.props;
+
 		Store.removeChangeListener(this.onStoreChange);
+		question.removeListener('change', this.onQuestionChange);
 	}
 
 
@@ -47,11 +54,16 @@ export default class QuestionComponent extends React.Component {
 	}
 
 
+	onQuestionChange () {
+		this.forceUpdate();
+	}
+
+
 	onQuestionError () {
 		const {question} = this.props;
 		const {NTIID} = question;
 		const contentError = Store.getErrorFor(NTIID, 'content');
-		const partError = Store.getErrorFor(NTIID, 'part');
+		const partError = Store.getErrorFor(NTIID, 'parts');
 
 		this.setState({
 			contentError,
@@ -87,7 +99,7 @@ export default class QuestionComponent extends React.Component {
 			<div className="question-container">
 				<Selectable className={cls} id={selectableId} value={selectableValue}>
 					<Content question={question} onFocus={this.onContentFocus} onBlur={this.onContentBlur} error={contentError}/>
-					<Parts question={question} />
+					<Parts question={question} error={partError} />
 				</Selectable>
 				<Controls question={question} />
 			</div>

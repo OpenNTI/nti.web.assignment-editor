@@ -30,7 +30,7 @@ function canHandle (cmp, type) {
 }
 
 
-export function getEditorWidget (part, index, question) {
+export function getEditorWidget (part, index, question, error) {
 	const mimeType = part && part.MimeType && part.MimeType.toLowerCase();
 	let cmp;
 
@@ -46,9 +46,10 @@ export function getEditorWidget (part, index, question) {
 		return '<span>Unsupported Question Type</span>';
 	}
 
+
 	return React.createElement(cmp, {
 		key: part.NTIID,
-		index, part, question
+		index, part, question, error
 	});
 }
 

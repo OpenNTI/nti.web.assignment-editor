@@ -7,20 +7,22 @@ export default class MultipleChoiceEditor extends React.Component {
 	static propTypes = {
 		part: React.PropTypes.object.isRequired,
 		question: React.PropTypes.object.isRequired,
-		multipleAnswers: React.PropTypes.bool
+		multipleAnswers: React.PropTypes.bool,
+		error: React.PropTypes.any
 	}
 
 
 	constructor (props) {
 		super(props);
 
-		const {part} = this.props;
+		const {part, error} = this.props;
 		const {choices, solutions, NTIID:partId} = part;
 
 		this.partType = (partId + '-answer').toLowerCase();
 
 		this.state = {
-			choices: this.mapChoices(choices, solutions, part.NTIID)
+			choices: this.mapChoices(choices, solutions, part.NTIID),
+			error
 		};
 
 		this.choicesChanged = this.choicesChanged.bind(this);
@@ -32,14 +34,23 @@ export default class MultipleChoiceEditor extends React.Component {
 
 
 	componentWillReceiveProps (nextProps) {
-		const {part:newPart} = nextProps;
-		const {part:oldPart} = this.props;
+		const {part:newPart, error:newError} = nextProps;
+		const {part:oldPart, error:oldError} = this.props;
 		const {choices, solutions} = newPart;
+		let state = null;
 
 		if (newPart !== oldPart) {
-			this.setState({
-				choices: this.mapChoices(choices, solutions, newPart.NTIID)
-			});
+			state = state || {};
+			state.choices = this.mapChoices(choices, solutions, newPart.NTIID);
+		}
+
+		if (newError !== oldError) {
+			state = state || {};
+			state.error = newError;
+		}
+
+		if (state) {
+			this.setState(state);
 		}
 	}
 
@@ -129,13 +140,14 @@ export default class MultipleChoiceEditor extends React.Component {
 
 	render () {
 		const {part, multipleAnswers} = this.props;
-		const {choices} = this.state;
+		const {choices, error} = this.state;
 
 		return (
 			<Choices
 				partId={part.NTIID}
 				partType={this.partType}
 				choices={choices}
+				error={error}
 				onChange={this.choicesChanged}
 				addNewChoice={this.addNewChoice}
 				removeChoice={this.removeChoice}

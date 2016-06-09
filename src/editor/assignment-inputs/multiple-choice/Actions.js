@@ -137,6 +137,10 @@ export function savePartToQuestion (question, part, content, choices, solution, 
 	}).catch((reason) => {
 		logger.error('Failed to update question: ', reason);
 		dispatch(SAVE_ENDED);
-		dispatch(QUESTION_ERROR, reason);
+		dispatch(QUESTION_ERROR, {
+			NTIID: question.NTIID,
+			field: 'parts',
+			reason
+		});
 	});
 }

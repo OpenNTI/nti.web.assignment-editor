@@ -3,7 +3,7 @@ import React from 'react';
 import {getEditorWidget} from '../assignment-inputs';
 
 function questionParts (props) {
-	const {question} = props;
+	const {question, error} = props;
 	const {parts} = question;
 
 	if (parts.length === 0) {
@@ -15,14 +15,15 @@ function questionParts (props) {
 	return (
 		<div className="question-editor-parts">
 			{parts.map((part, index) => {
-				return getEditorWidget(part, index, question);
+				return getEditorWidget(part, index, question, error);
 			})}
 		</div>
 	);
 }
 
 questionParts.propTypes = {
-	question: React.PropTypes.object.isRequired
+	question: React.PropTypes.object.isRequired,
+	error: React.PropTypes.any
 };
 
 
