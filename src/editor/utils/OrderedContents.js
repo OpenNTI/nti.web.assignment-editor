@@ -90,13 +90,13 @@ export default class OrderedContents {
 	}
 
 	/**
-	 * Given an item optimistically add it to the items, and try to save it to the server.
+	 * Given an item and an index, insert it at the right place and try to save it to the server.
 	 * If it's successful, replace the optimistic placeholder with the item from the server.
 	 * If it fails, add an error to the optimistic placeholder and trigger a change
 	 * @param  {Object} item the item to append
 	 * @return {Promise}      fulfills or rejects if the item is successfully added or not
 	 */
-	append (item) {
+	insertAt (item, index) {
 		const obj = this.backingObject;
 		let {orderedContents, orderedContentsField, link} = this;
 
@@ -118,7 +118,14 @@ export default class OrderedContents {
 			});
 		}
 
-		orderedContents.push(item);
+		if (index === Infinity || index === undefined) {
+			index = orderedContents.length;
+		}
+		if (index < 0) {
+			index = 0;
+		}
+
+		orderedContents = [...orderedContents.slice(0, index), item, ...orderedContents.slice(index)];
 
 		obj[orderedContentsField] = orderedContents;
 		obj.onChange();
@@ -155,6 +162,17 @@ export default class OrderedContents {
 
 				return Promise.reject(reason);
 			});
+	}
+
+	/**
+	 * Given an item optimistically add it to the items, and try to save it to the server.
+	 * If it's successful, replace the optimistic placeholder with the item from the server.
+	 * If it fails, add an error to the optimistic placeholder and trigger a change
+	 * @param  {Object} item the item to append
+	 * @return {Promise}      fulfills or rejects if the item is successfully added or not
+	 */
+	append (item) {
+		this.insertAt(item, Infinity);
 	}
 
 
@@ -285,7 +303,10 @@ export default class OrderedContents {
 		obj[orderedContentsField] = orderedContents;
 		obj.onChange();
 
-		return moveRoot.moveRecord(item, newIndex, oldIndex, obj, oldParent)
+		let p = oldIndex ? moveRoot.moveRecord(item, newIndex, oldIndex, obj, oldParent)
+							: this.insertAt(item, newIndex);
+
+		return p
 			.then(minWait(SHORT))
 			.then((savedItem) => {
 				//after save, replace the optimistic placeholder with the real thing

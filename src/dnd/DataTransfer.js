@@ -39,7 +39,7 @@ export default class DataTransfer {
 	 * @return {void}
 	 */
 	setData (key, value) {
-		if (!value) {
+		if (!value && key) {
 			value = key;
 			key = '';
 
