@@ -4,13 +4,23 @@
 	margin-bottom: 1px;
 	padding: 0 1px;
 
-	&:not(.selected) {
+	&:not(.selected):not(.error) {
 		&.label {
 			box-shadow: 0 1px 0 0 $border-grey-light, inset 1px 0 0 0 $border-grey-light;
 		}
 
 		&.value {
 			box-shadow: 0 1px 0 0 $border-green-light, inset 1px 0 0 0 $border-green-light, inset -1px 0 0 0 $border-green-light;
+		}
+	}
+
+	&.error {
+		position: relative;
+		z-index: 1;
+		box-shadow: 0 0 0 1px $border-red;
+
+		&.selected {
+			box-shadow: 0 0 1px 1px $border-red;
 		}
 	}
 

@@ -4,6 +4,24 @@ import Ordering from '../../../dnd/ordering/Ordering';
 import Choice from './Choice';
 import AddButton from './AddButton';
 
+const labelsField = 'labels';
+const valuesField = 'values';
+
+
+function getErrorForChoice (error, choice, choiceIndex) {
+	const {reason} = error || {};
+	let {field, index} = reason || {};
+
+	index = index || [];
+
+	if (field === labelsField && choice.isLabel) {
+		return index.indexOf(choiceIndex) >= 0 ? error : null;
+	} else if (field === valuesField && choice.isValue) {
+		return index.indexOf(choiceIndex) >= 0 ? error : null;
+	}
+}
+
+
 export default class OrderingChoices extends React.Component {
 	static propTypes = {
 		labels: React.PropTypes.array.isRequired,
@@ -13,7 +31,8 @@ export default class OrderingChoices extends React.Component {
 		valueType: React.PropTypes.string,
 		onChange: React.PropTypes.func,
 		addNew: React.PropTypes.func,
-		remove: React.PropTypes.func
+		remove: React.PropTypes.func,
+		error: React.PropTypes.any
 	}
 
 
@@ -44,14 +63,27 @@ export default class OrderingChoices extends React.Component {
 
 
 	componentWillReceiveProps (nextProps) {
-		const {labels:newLabels, values:newValues} = nextProps;
-		const {labels:oldLabels, values:oldValues} = this.props;
+		const {labels:newLabels, values:newValues, error:newError} = nextProps;
+		const {labels:oldLabels, values:oldValues, error:oldError} = this.props;
+		let state = null;
 
-		if (oldLabels !== newLabels || oldValues !== newValues) {
-			this.setState({
-				labels: newLabels,
-				values: newValues
-			});
+		if (oldLabels !== newLabels) {
+			state = state || {};
+			state.labels = newLabels;
+		}
+
+		if (oldValues !== newValues) {
+			state = state || {};
+			state.values = newValues;
+		}
+
+		if (oldError !== newError) {
+			state = state || {};
+			state.error = newError;
+		}
+
+		if (state) {
+			this.setState(state);
 		}
 	}
 
@@ -176,9 +208,11 @@ export default class OrderingChoices extends React.Component {
 	}
 
 
-	renderChoice (choice) {
+	renderChoice (choice, index) {
+		const {error} = this.state;
+
 		return (
-			<Choice key={choice.ID} choice={choice} onChange={this.onChoiceChange} />
+			<Choice key={choice.ID} choice={choice} onChange={this.onChoiceChange} error={getErrorForChoice(error, choice, index)} />
 		);
 	}
 
@@ -191,193 +225,3 @@ export default class OrderingChoices extends React.Component {
 		);
 	}
 }
-
-// export default class OrderingRows extends React.Component {
-
-// 	componentWillReceiveProps (nextProps) {
-// 		const {rows:newRows} = nextProps;
-// 		const {rows:oldRows} = this.props;
-
-// 		if (newRows === oldRows) { return; }
-
-// 		const parts = this.mapRows(newRows);
-// 		const {labels, values} = parts;
-
-// 		this.setState({
-// 			labels,
-// 			values
-// 		});
-// 	}
-
-
-// 	mapRows (rows) {
-// 		let labels = [];
-// 		let values = [];
-
-// 		for (let i = 0; i < rows.length; i++) {
-// 			let row = rows[i];
-
-// 			labels.push({
-// 				label: row.label,
-// 				ID: row.ID + '-label',
-// 				rowId: row.ID,
-// 				MimeType: this.labelType,
-// 				isLabel: true,
-// 				isNew: row.isNew
-// 			});
-
-// 			values.push({
-// 				label: row.value,
-// 				ID: row.ID + '-value',
-// 				rowId: row.ID,
-// 				MimeType: this.valueType,
-// 				isValue: true
-// 			});
-// 		}
-
-// 		return {
-// 			labels,
-// 			values
-// 		};
-// 	}
-
-
-// 	onChange () {
-// 		const {onChange} = this.props;
-// 		const {labels, values} = this.state;
-// 		let rows = [];
-
-// 		for (let i = 0; i < labels.length; i++) {
-// 			let label = labels[i];
-// 			let value = values[i];
-
-// 			rows.push({
-// 				label: label.label,
-// 				value: value.label,
-// 				ID: label.rowId
-// 			});
-// 		}
-
-// 		if (onChange) {
-// 			onChange(rows);
-// 		}
-// 	}
-
-
-// 	onCellChange (newValue, cell) {
-// 		let {labels, values} = this.state;
-
-// 		function updateValue (rows, id, value) {
-// 			return rows.map((row) => {
-// 				return row.ID === id ? {...row, label: value} : row;
-// 			});
-// 		}
-
-// 		if (cell.isLabel) {
-// 			labels = updateValue(labels, cell.ID, newValue);
-// 		} else {
-// 			values = updateValue(values, cell.ID, newValue);
-// 		}
-
-// 		this.setState({
-// 			labels,
-// 			values
-// 		}, () => {
-// 			this.onChange();
-// 		});
-// 	}
-
-
-// 	onLabelsChange (labels) {
-// 		this.setState({
-// 			labels
-// 		}, () => {
-// 			this.onChange();
-// 		});
-// 	}
-
-
-// 	onValuesChange (values) {
-// 		this.setState({
-// 			values
-// 		}, () => {
-// 			this.onChange();
-// 		});
-// 	}
-
-
-// 	deleteRow (e) {
-// 		const {deleteRow} = this.props;
-// 		const id = e.target && e.target.getAttribute('data-row');
-
-// 		if (deleteRow && id) {
-// 			deleteRow(id);
-// 		}
-// 	}
-
-
-// 	addRow () {
-// 		const {addRow} = this.props;
-
-// 		if (addRow) {
-// 			addRow();
-// 		}
-// 	}
-
-
-// 	render () {
-// 		const {partId} = this.props;
-// 		const {labels, values} = this.state;
-
-// 		console.log(labels.reduce((acc, label, index) => {
-// 			acc.push(label.label + ':' + values[index].label);
-
-// 			return acc;
-// 		}, []).join('\n'));
-
-// 		console.log(values);
-
-// 		return (
-// 			<div className="ordering-editor-rows">
-// 				<div className="rows">
-// 					<Ordering
-// 						className="ordering-editor-column labels"
-// 						containerId={partId}
-// 						accepts={this.labelAccepts}
-// 						items={labels}
-// 						renderItem={this.renderCell}
-// 						onChange={this.onLabelsChange}
-// 					/>
-// 					<Ordering
-// 						className="ordering-editor-column values"
-// 						containerId={partId}
-// 						accepts={this.valueAccepts}
-// 						items={values}
-// 						renderItem={this.renderCell}
-// 						onChange={this.onValuesChange}
-// 					/>
-// 					<AddButton onAdd={this.addRow} />
-// 				</div>
-// 				<div className="delete">
-// 					{labels.map(this.renderDelete)}
-// 				</div>
-// 			</div>
-// 		);
-// 	}
-
-
-// 	renderDelete (label, index) {
-// 		return (
-// 			<div key={index} data-row={label.rowId} onClick={this.deleteRow}>X</div>
-// 		);
-// 	}
-
-
-// 	renderCell (cell) {
-// 		console.log(cell.label);
-// 		return (
-// 			<Cell key={cell.ID} cell={cell} onChange={this.onCellChange} />
-// 		);
-// 	}
-
-// }

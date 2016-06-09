@@ -6,26 +6,52 @@ import Choices from './Choices';
 export default class OrderingEditor extends React.Component {
 	static propTypes = {
 		part: React.PropTypes.object.isRequired,
-		question: React.PropTypes.object.isRequired
+		question: React.PropTypes.object.isRequired,
+		error: React.PropTypes.any
 	}
 
 
 	constructor (props) {
 		super(props);
 
-		const {part} = props;
+		const {part, error} = props;
 		const parts = this.getParts(part);
 
 		this.state = {
 			labels: parts.labels,
 			values: parts.values,
 			labelType: parts.labelType,
-			valueType: parts.valueType
+			valueType: parts.valueType,
+			error
 		};
 
 		this.onChoicesChanged = this.onChoicesChanged.bind(this);
 		this.addNewChoice = this.addNewChoice.bind(this);
 		this.removeChoice = this.removeChoice.bind(this);
+	}
+
+	componentWillReceiveProps (nextProps) {
+		const {part:newPart, error:newError} = nextProps;
+		const {part:oldPart, error:oldError} = this.props;
+		const parts = this.getParts(newPart);
+		let state = null;
+
+		if (newPart !== oldPart) {
+			state = state || {};
+			state.labels = parts.labels;
+			state.values = parts.values;
+			state.labelType = parts.labelType;
+			state.valueType = parts.valueType;
+		}
+
+		if (newError !== oldError) {
+			state = state || {};
+			state.error = newError;
+		}
+
+		if (state) {
+			this.setState(state);
+		}
 	}
 
 
@@ -128,7 +154,8 @@ export default class OrderingEditor extends React.Component {
 	render () {
 		const {part} = this.props;
 		const {NTIID:partId} = part;
-		const {labels, values, labelType, valueType} = this.state;
+		const {labels, values, error, labelType, valueType} = this.state;
+
 
 		return (
 			<Choices
@@ -140,6 +167,7 @@ export default class OrderingEditor extends React.Component {
 				onChange={this.onChoicesChanged}
 				addNew={this.addNewChoice}
 				remove={this.removeChoice}
+				error={error}
 			/>
 		);
 	}

@@ -7,7 +7,7 @@ import {Ordering} from '../../../dnd';
 const errorField = 'choices';
 
 function getErrorForIndex (error, choiceIndex) {
-	const reason = error && error.reason;
+	const {reason} = error || {};
 	let {field, index} = reason || {};
 
 	index = index || [];

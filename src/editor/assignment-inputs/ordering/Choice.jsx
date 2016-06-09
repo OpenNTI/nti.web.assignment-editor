@@ -6,26 +6,28 @@ import Selectable from '../../utils/Selectable';
 export default class OrderingChoice extends React.Component {
 	static propTypes = {
 		choice: React.PropTypes.object.isRequired,
-		onChange: React.PropTypes.func
+		onChange: React.PropTypes.func,
+		error: React.PropTypes.any
 	}
 
 	constructor (props) {
 		super(props);
 
-		const {choice} = this.props;
+		const {choice, error} = this.props;
 		const {label, ID} = choice;
 
 		this.isNew = choice.isNew;
 
 		this.state = {
 			label,
+			error,
 			selectableId: ID,
 			selectableValue: label
 		};
 
 		this.setInputRef = x => this.inputRef = x;
 
-		this.onChange = this.onChange.bind(this);
+		this.onInputChange = this.onInputChange.bind(this);
 		this.onInputFocus = this.onInputFocus.bind(this);
 		this.onInputBlur = this.onInputBlur.bind(this);
 		this.onUnselect = this.onUnselect.bind(this);
@@ -33,9 +35,38 @@ export default class OrderingChoice extends React.Component {
 	}
 
 
-	onChange (e) {
+	componentWillReceiveProps (nextProps) {
+		const {error: newError} = nextProps;
+		const {error: oldError} = this.props;
+
+		if (newError !== oldError) {
+			this.setState({
+				error: newError
+			});
+		}
+	}
+
+
+	onChange () {
+		const {onChange, choice} = this.props;
+		const {label} = this.state;
+
+		if (onChange && choice.label !== label) {
+			onChange(choice.NTIID || choice.ID, label, choice.isLabel);
+		}
+	}
+
+
+	onInputChange (e) {
+		const {error} = this.state;
+
 		this.setState({
 			label: e.target.value
+		}, () => {
+			if (error && error.clear) {
+				error.clear();
+				this.onChange();
+			}
 		});
 	}
 
@@ -66,116 +97,19 @@ export default class OrderingChoice extends React.Component {
 
 
 	onUnselect () {
-		const {onChange, choice} = this.props;
-		const {label} = this.state;
-
-		if (onChange && choice.label !== label) {
-			onChange(choice.NTIID || choice.ID, label, choice.isLabel);
-		}
+		this.onChange();
 	}
 
 	render () {
 		const {choice} = this.props;
-		const {label, selectableId, selectableValue} = this.state;
-		const cls = cx('ordering-editing-choice', {label: choice.isLabel, value: choice.isValue});
+		const {label, error, selectableId, selectableValue} = this.state;
+		const cls = cx('ordering-editing-choice', {label: choice.isLabel, value: choice.isValue, error});
 
 		return (
 			<Selectable className={cls} id={selectableId} value={selectableValue} onSelect={this.onSelect} onUnselect={this.onUnselect}>
-				<input type="text" ref={this.setInputRef} value={label} onFocus={this.onInputFocus} onBlur={this.onInputBlur} onChange={this.onChange} />
+				<input type="text" ref={this.setInputRef} value={label} onFocus={this.onInputFocus} onBlur={this.onInputBlur} onChange={this.onInputChange} />
 			</Selectable>
 		);
 	}
 }
 
-// export default class OrderingChoice extends React.Component {
-// 	static propTypes = {
-// 		cell: React.PropTypes.object.isRequired,
-// 		onChange: React.PropTypes.func
-// 	}
-
-// 	constructor (props) {
-// 		super(props);
-
-// 		const {cell} = this.props;
-// 		const {label, ID} = cell;
-
-// 		this.isNew = cell.isNew;
-
-// 		this.state = {
-// 			label,
-// 			selectableId: ID,
-// 			selectableValue: label
-// 		};
-
-// 		this.setInputRef = x => this.inputRef = x;
-
-// 		this.onChange = this.onChange.bind(this);
-// 		this.onInputFocus = this.onInputFocus.bind(this);
-// 		this.onInputBlur = this.onInputBlur.bind(this);
-// 		this.onUnselect = this.onUnselect.bind(this);
-// 		this.onSelect = this.onSelect.bind(this);
-// 	}
-
-
-// 	componentDidMount () {
-// 		if (this.isNew && this.inputRef) {
-// 			delete this.isNew;
-// 			this.inputRef.focus();
-// 		}
-// 	}
-
-
-// 	onChange (e) {
-// 		this.setState({
-// 			label: e.target.value
-// 		});
-// 	}
-
-
-// 	onInputFocus () {
-// 		const {label} = this.state;
-
-// 		this.setState({
-// 			selectableValue: label + ' FOCUSED'
-// 		});
-// 	}
-
-
-// 	onInputBlur () {
-// 		const {label} = this.state;
-
-// 		this.setState({
-// 			selectableValue: label
-// 		});
-// 	}
-
-
-// 	onSelect () {
-// 		if (this.inputRef) {
-// 			this.inputRef.focus();
-// 		}
-// 	}
-
-
-// 	onUnselect () {
-// 		const {onChange, cell} = this.props;
-// 		const {label} = this.state;
-
-// 		if (onChange) {
-// 			onChange(label, cell);
-// 		}
-// 	}
-
-
-// 	render () {
-// 		const {cell} = this.props;
-// 		const {label, selectableId, selectableValue} = this.state;
-// 		const cls = cx('ordering-editing-cell', {label: cell.isLabel, value: cell.isValue});
-
-// 		return (
-// 			<Selectable className={cls} id={selectableId} value={selectableValue} onSelect={this.onSelect} onUnselect={this.onUnselect}>
-// 				<input type="text" ref={this.setInputRef} value={label} onFocus={this.onInputFocus} onBlur={this.onInputBlur} onChange={this.onChange} />
-// 			</Selectable>
-// 		);
-// 	}
-// }

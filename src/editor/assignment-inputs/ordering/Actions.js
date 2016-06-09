@@ -111,7 +111,7 @@ export function savePartToQuestion (question, part, content, labels, values, sol
 		dispatch(SAVE_ENDED, question);
 		dispatch(QUESTION_ERROR, {
 			NTIID: question.NTIID,
-			field: part,
+			field: 'parts',
 			reason: reason
 		});
 	});
