@@ -14,7 +14,7 @@ export default class MultipleChoiceMultipleAnswerButton extends React.Component 
 
 	label = 'Multiple Choice Multiple Answer'
 	defaultQuestionContent = 'Multiple Choice Multiple Answer Question'
-	iconCls = 'multiple-choice'
+	iconCls = 'multiple-choice multiple-answer'
 
 	render () {
 		const {assignment, activeQuestion} = this.props;
