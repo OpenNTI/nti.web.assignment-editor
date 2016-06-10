@@ -331,6 +331,7 @@ export default class Ordering extends React.Component {
 
 		items = [...items.slice(0, newIndex), data, ...items.slice(newIndex)];
 
+		this.removePlaceholder();
 		if (onChange) {
 			onChange(items, data, newIndex, new MoveInfo(moveInfo));
 		}

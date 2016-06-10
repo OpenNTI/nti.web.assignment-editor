@@ -130,9 +130,11 @@ export default class OrderedContents {
 		obj[orderedContentsField] = orderedContents;
 		obj.onChange();
 
+		let insertLink = path.join(link, 'index', index.toString(10));
+
 		return getService()
 			.then(service =>
-				service.postParseResponse(link, item)
+				service.postParseResponse(insertLink, item)
 			)
 			//Make sure we wait at least a little bit
 			.then(minWait(SHORT))
