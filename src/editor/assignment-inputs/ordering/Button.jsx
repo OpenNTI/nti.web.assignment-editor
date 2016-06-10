@@ -19,11 +19,6 @@ export default class OrderingButton extends React.Component {
 	label = 'Ordering'
 	iconCls = 'ordering'
 
-	constructor (props) {
-		super(props);
-
-		this.state = {};
-	}
 
 	render () {
 		const {assignment, activeQuestion} = this.props;

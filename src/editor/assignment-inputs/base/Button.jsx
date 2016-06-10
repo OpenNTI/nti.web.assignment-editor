@@ -45,8 +45,6 @@ export default class BaseButton extends React.Component {
 	constructor (props) {
 		super(props);
 
-		this.state = {};
-
 		this.onClick = this.onClick.bind(this);
 	}
 

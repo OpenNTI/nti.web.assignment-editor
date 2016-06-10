@@ -20,12 +20,6 @@ export default class FreeResponseButton extends React.Component {
 	defaultQuestionContent = 'Essay Question'
 	iconCls = 'freeresponse';
 
-	constructor (props) {
-		super(props);
-
-		this.state = {};
-	}
-
 
 	render () {
 		const {assignment, activeQuestion} = this.props;

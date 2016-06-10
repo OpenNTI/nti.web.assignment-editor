@@ -20,11 +20,6 @@ export default class EssayButton extends React.Component {
 	defaultQuestionContent = 'Essay Question'
 	iconCls = 'essay';
 
-	constructor (props) {
-		super(props);
-
-		this.state = {};
-	}
 
 	render () {
 		const {assignment, activeQuestion} = this.props;
