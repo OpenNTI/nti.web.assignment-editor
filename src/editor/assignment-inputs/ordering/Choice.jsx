@@ -36,13 +36,23 @@ export default class OrderingChoice extends React.Component {
 
 
 	componentWillReceiveProps (nextProps) {
-		const {error: newError} = nextProps;
-		const {error: oldError} = this.props;
+		const {choice: newChoice, error: newError} = nextProps;
+		const {choice: oldChoice, error: oldError} = this.props;
+		const {label, ID} = newChoice;
+		let state = null;
+
+		if (newChoice !== oldChoice) {
+			state = state || {};
+
+			state.label = label;
+			state.selectableId = ID;
+			state.selectableValue = label;
+		}
 
 		if (newError !== oldError) {
-			this.setState({
-				error: newError
-			});
+			state = state || {};
+
+			state.error = newError;
 		}
 	}
 
