@@ -45,7 +45,9 @@ export default class QuestionComponent extends React.Component {
 		const {question} = this.props;
 
 		Store.removeChangeListener(this.onStoreChange);
-		question.removeListener('change', this.onQuestionChange);
+		if (question && question.removeListener) {
+			question.removeListener('change', this.onQuestionChange);
+		}
 	}
 
 

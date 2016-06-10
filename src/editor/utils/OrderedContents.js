@@ -67,7 +67,7 @@ export default class OrderedContents {
 		let NTIID = item.NTIID ? item.NTIID : item;
 
 		for (let i = 0; i < orderedContents.length; i++) {
-			if (orderedContents[i].NTIID === NTIID) {
+			if (orderedContents[i] && orderedContents[i].NTIID === NTIID) {
 				return i;
 			}
 		}
@@ -138,7 +138,7 @@ export default class OrderedContents {
 			.then(minWait(SHORT))
 			.then((savedItem) => {
 				//after it has saved, replace the optimistic placeholder with the real thing
-				orderedContents[orderedContents.length - 1] = savedItem;
+				orderedContents[index] = savedItem;
 				obj[orderedContentsField] = orderedContents;
 				obj.onChange();
 			})
@@ -284,6 +284,10 @@ export default class OrderedContents {
 			return Promise.resolve();
 		}
 
+		if (currentIndex === -1 || !oldIndex) {
+			return this.insertAt(item, newIndex);
+		}
+
 		orderedContents = orderedContents.slice(0);
 
 		if (currentIndex >= 0) {
@@ -303,10 +307,7 @@ export default class OrderedContents {
 		obj[orderedContentsField] = orderedContents;
 		obj.onChange();
 
-		let p = oldIndex ? moveRoot.moveRecord(item, newIndex, oldIndex, obj, oldParent)
-							: this.insertAt(item, newIndex);
-
-		return p
+		return moveRoot.moveRecord(item, newIndex, oldIndex, obj, oldParent)
 			.then(minWait(SHORT))
 			.then((savedItem) => {
 				//after save, replace the optimistic placeholder with the real thing
