@@ -72,14 +72,14 @@ export default class OrderingEditor extends React.Component {
 			labels.push({
 				label: label,
 				MimeType: labelType,
-				ID: NTIID + '-label-' + i,
+				ID: NTIID + '-label-' + label.replace(/\s+/g, '-'),
 				isLabel: true
 			});
 
 			values.push({
 				label: value,
 				MimeType: valueType,
-				ID: NTIID + '-value-' + i,
+				ID: NTIID + '-value-' + value.replace(/\s+/g, '-'),
 				isValue: true
 			});
 		}

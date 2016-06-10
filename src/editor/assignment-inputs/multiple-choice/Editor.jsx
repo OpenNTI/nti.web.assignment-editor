@@ -73,7 +73,7 @@ export default class MultipleChoiceEditor extends React.Component {
 		return choices.map((choice, index) => {
 			return {
 				MimeType: this.partType,
-				ID: partId + '-' + index,
+				ID: partId + '-' + choice.replace(/\s+/g, '-'),
 				label: choice,
 				correct: solution[index]
 			};
