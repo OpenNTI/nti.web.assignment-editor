@@ -7,6 +7,10 @@ const logger = Logger.get('assignment-question:OrderingActions');
 const solutionMimeType = 'application/vnd.nextthought.assessment.orderingsolution';
 const solutionClass = 'OrderingSolution';
 
+
+//These are  not "Actions"... these are simply utility functions
+
+
 export function arrayEqual (a, b) {
 	if (a.length !== b.length) {
 		return false;
