@@ -38,9 +38,10 @@ export default class BaseButton extends React.Component {
 		iconCls: React.PropTypes.string
 	}
 
-	label = 'Add Question'
-	defaultQuestionContent = 'Blank Question'
-
+	static defaultProps = {
+		label: 'Add Question',
+		defaultQuestionContent: 'Blank Question'
+	}
 
 	constructor (props) {
 		super(props);
@@ -50,12 +51,12 @@ export default class BaseButton extends React.Component {
 
 
 	getBlankQuestion () {
-		const {part} = this.props;
+		const {part, defaultQuestionContent} = this.props;
 
 		if (part) {
 			return {
-				MimeType: part.MimeType || this.QuestionMimeType,
-				content: part.content || this.defaultQuestionContent,
+				MimeType: QuestionMimeType,
+				content: defaultQuestionContent,
 				parts: [part]
 			};
 		}
@@ -99,16 +100,12 @@ export default class BaseButton extends React.Component {
 
 
 	render () {
-		let {label,iconCls} = this.props;
+		let {label, iconCls} = this.props;
 		const icnCls = cx('icon', iconCls);
 		const usedCount = this.getUsedCount();
 		const usedCls = cx('used', {isUsed: usedCount > 0});
 		const data = this.getBlankQuestion() || {};
-		const cls = cx('button');
-
-		if (!label) {
-			label = this.label;
-		}
+		const cls = cx('assigment-editor-sidebar-button');
 
 		return (
 			<Draggable data={data} className={cls}>

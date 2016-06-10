@@ -1,6 +1,10 @@
 import React from 'react';
 import Button from '../base/Button';
+import {generatePartFor} from './Actions';
 
+const defaultLabels = ['Label 1', 'Label 2', 'Label 3'];
+const defaultValues = ['Value 1', 'Value 2', 'Value 3'];
+const defaultSolution = {'0': 2, '1': 1, '2': 0};
 
 export default class OrderingButton extends React.Component {
 	static propTypes = {
@@ -36,7 +40,12 @@ export default class OrderingButton extends React.Component {
 	}
 
 	getBlankPart () {
-		// TODO: Not Implemented
+		const {handles} = this.constructor;
+		let mimeType = handles && handles[0];
+
+		if (mimeType) {
+			return generatePartFor(mimeType, this.defaultQuestionContent, defaultLabels, defaultValues, defaultSolution);
+		}
 		return {};
 	}
 }

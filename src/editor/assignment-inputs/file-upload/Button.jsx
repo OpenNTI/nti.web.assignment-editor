@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '../base/Button';
+import {generatePartFor} from './Actions';
 
 export default class FileUploadButton extends React.Component {
 	static propTypes = {
@@ -36,6 +37,12 @@ export default class FileUploadButton extends React.Component {
 
 
 	getBlankPart () {
+		const {handles} = this.constructor;
+		let mimeType = handles && handles[0];
+
+		if (mimeType) {
+			return generatePartFor(mimeType, this.defaultQuestionContent);
+		}
 		return {};
 	}
 }

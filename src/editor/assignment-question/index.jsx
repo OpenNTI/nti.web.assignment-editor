@@ -35,7 +35,9 @@ export default class QuestionComponent extends React.Component {
 		const {question} = this.props;
 
 		Store.addChangeListener(this.onStoreChange);
-		question.addListener('change', this.onQuestionChange);
+		if (question && question.addListener) {
+			question.addListener('change', this.onQuestionChange);
+		}
 	}
 
 
