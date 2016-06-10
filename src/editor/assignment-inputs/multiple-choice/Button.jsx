@@ -1,5 +1,5 @@
 import React from 'react';
-import Base from '../base/Button';
+import Button from '../base/Button';
 import {generatePartFor} from './Actions';
 
 const defaultChoices = ['Choice 1'];
@@ -29,7 +29,7 @@ export default class MultipleChoiceButton extends React.Component {
 		const {assignment, activeQuestion} = this.props;
 		const {handles} = this.constructor;
 		return (
-			<Base
+			<Button
 				part={this.getBlankPart()}
 				assignment={assignment}
 				activeQuestion={activeQuestion}

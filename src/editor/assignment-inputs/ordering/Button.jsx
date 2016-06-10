@@ -1,5 +1,5 @@
 import React from 'react';
-import Base from '../base/Button';
+import Button from '../base/Button';
 
 
 export default class OrderingButton extends React.Component {
@@ -24,7 +24,7 @@ export default class OrderingButton extends React.Component {
 		const {assignment, activeQuestion} = this.props;
 		const {handles} = this.constructor;
 		return (
-			<Base
+			<Button
 				part={this.getBlankPart()}
 				assignment={assignment}
 				activeQuestion={activeQuestion}
