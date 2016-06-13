@@ -1,6 +1,10 @@
 .assignment-editor {
 	background: white;
 
+	.sticky {
+		z-index: 1;
+	}
+
 	.content {
 		position: relative;
 		min-height: 200px;

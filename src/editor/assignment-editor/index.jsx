@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import cx from 'classnames';
+import {StickyContainer, Sticky} from 'react-sticky';
 
 import AssignmentInfo from '../assignment-info';
 import AssignmentParts from '../assignment-parts';
@@ -50,8 +51,10 @@ export default class AssignmentEditor extends React.Component {
 		const cls = cx('assignment-editor', {loading: !!assignment});
 
 		return (
-			<div className={cls}>
-				<NavBar />
+			<StickyContainer className={cls}>
+				<Sticky>
+					<NavBar />
+				</Sticky>
 				<AssignmentInfo assignment={assignment} schema={schema} />
 				<div className="content">
 					<ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={250}>
@@ -61,7 +64,7 @@ export default class AssignmentEditor extends React.Component {
 						}
 					</ReactCSSTransitionGroup>
 				</div>
-			</div>
+			</StickyContainer>
 		);
 	}
 

@@ -9,7 +9,9 @@ export default class NavBar extends React.Component {
 
 	render () {
 		return (
-			<div>Navigation Bar</div>
+			<div className="assignment-editor-nav-bar">
+				Navigation Bar
+			</div>
 		);
 	}
 }

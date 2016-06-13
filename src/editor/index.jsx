@@ -1,7 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import ControlBar from '../control-bar';
+import FixedElement from './utils/FixedElement';
 import AssignmentEditor from './assignment-editor';
 import Controls from './controls';
 import Sidebar from './sidebar';
@@ -36,7 +36,8 @@ export default class Editor extends React.Component {
 		super(props);
 
 		this.state = {
-			sidebarTransform: 'none'
+			assignment: null,
+			schema: null
 		};
 
 		this.onStoreChange = this.onStoreChange.bind(this);
@@ -49,12 +50,8 @@ export default class Editor extends React.Component {
 		Store.addChangeListener(this.onStoreChange);
 		loadAssignment(this.props.NTIID);
 
-		this.sidebarDOM = ReactDOM.findDOMNode(this.sidebar);
-
 		selectionManager.addListener('selection-changed', this.selectionChanged);
 		this.selectionChanged(selectionManager.getSelection());
-
-		// window.addEventListener('scroll', this.onWindowScroll);
 	}
 
 
@@ -62,8 +59,6 @@ export default class Editor extends React.Component {
 		Store.removeChangeListener(this.onStoreChange);
 
 		selectionManager.removeListener('selection-changed', this.selectionChanged);
-
-		// window.removeEventListener('scroll', this.onWindowScroll);
 	}
 
 
@@ -113,7 +108,9 @@ export default class Editor extends React.Component {
 		return (
 			<div className={cls}>
 				<AssignmentEditor assignment={assignment} schema={schema} />
-				<Sidebar ref={x => this.sidebar = x} assignment={assignment} schema={schema} />
+				<FixedElement className="assignment-editing-sidebar-fixed">
+					<Sidebar ref={x => this.sidebar = x} assignment={assignment} schema={schema} />
+				</FixedElement>
 				<ControlBar visible >
 					<Controls assignment={assignment} selection={selection} />
 				</ControlBar>
