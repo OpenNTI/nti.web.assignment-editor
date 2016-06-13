@@ -94,6 +94,7 @@ export default class OrderedContents {
 	 * If it's successful, replace the optimistic placeholder with the item from the server.
 	 * If it fails, add an error to the optimistic placeholder and trigger a change
 	 * @param  {Object} item the item to append
+	 * @param {Number} index the index to insert the item at
 	 * @return {Promise}      fulfills or rejects if the item is successfully added or not
 	 */
 	insertAt (item, index) {
@@ -174,7 +175,7 @@ export default class OrderedContents {
 	 * @return {Promise}      fulfills or rejects if the item is successfully added or not
 	 */
 	append (item) {
-		this.insertAt(item, Infinity);
+		return this.insertAt(item, Infinity);
 	}
 
 

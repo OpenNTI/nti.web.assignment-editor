@@ -1,6 +1,7 @@
 import React from 'react';
 import Choices from './Choices';
-import {savePartToQuestion} from './Actions';
+import {savePartToQuestion} from '../Actions';
+import {generatePartFor} from './utils';
 
 
 export default class MultipleChoiceEditor extends React.Component {
@@ -8,7 +9,8 @@ export default class MultipleChoiceEditor extends React.Component {
 		part: React.PropTypes.object.isRequired,
 		question: React.PropTypes.object.isRequired,
 		multipleAnswers: React.PropTypes.bool,
-		error: React.PropTypes.any
+		error: React.PropTypes.any,
+		generatePart: React.PropTypes.func
 	}
 
 
@@ -81,8 +83,20 @@ export default class MultipleChoiceEditor extends React.Component {
 	}
 
 
+	generatePart (content, choices, solutions) {
+		const {part, generatePart} = this.props;
+		const mimeType = part && part.MimeType;
+
+		if (!mimeType) {
+			//TOOD: see if we ever need to handle this case
+		}
+
+		return generatePart ? generatePart(content, choices, solutions) : generatePartFor(mimeType, content, choices, solutions);
+	}
+
+
 	choicesChanged (choices) {
-		const {part, question, multipleAnswers} = this.props;
+		const {question, multipleAnswers} = this.props;
 
 		let values = choices.reduce((acc, choice, index) => {
 			acc.choices.push(choice.label);
@@ -98,7 +112,7 @@ export default class MultipleChoiceEditor extends React.Component {
 			values.solutions = values.solutions[0];
 		}
 
-		savePartToQuestion(question, part, '', values.choices, values.solutions);
+		savePartToQuestion(question, this.generatePart('', values.choices, values.solutions));
 
 		this.setState({
 			choices: choices

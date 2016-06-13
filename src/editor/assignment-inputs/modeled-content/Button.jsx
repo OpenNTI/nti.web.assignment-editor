@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '../base/Button';
-import {generatePartFor} from './Actions';
+import {generatePartFor} from './utils';
 
 
 export default class EssayButton extends React.Component {

@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '../base/Button';
-import {generatePartFor} from '../multiple-choice/Actions';
+import {generatePartFor} from './utils';
 
 const defaultChoices = ['Choice 1'];
 const defaultSolution = [0];

@@ -1,6 +1,7 @@
 import React from 'react';
 
-import {savePartToQuestion} from './Actions';
+import {savePartToQuestion} from '../Actions';
+import {generatePartFor} from './utils';
 import Choices from './Choices';
 
 export default class OrderingEditor extends React.Component {
@@ -93,8 +94,20 @@ export default class OrderingEditor extends React.Component {
 	}
 
 
+	generatePart (content, labels, values, solutions) {
+		const {part} = this.props;
+		const mimeType = part && part.MimeType;
+
+		if (!mimeType) {
+			//TODO: see if we ever hit this case
+		}
+
+		return generatePartFor(mimeType, content, labels, values, solutions);
+	}
+
+
 	onChoicesChanged (newLabels, newValues) {
-		const {question, part} = this.props;
+		const {question} = this.props;
 		let labels = [];
 		let values = [];
 		let solutions = {};
@@ -105,7 +118,7 @@ export default class OrderingEditor extends React.Component {
 			solutions[i] = i;
 		}
 
-		savePartToQuestion(question, part, '', labels, values, solutions, []);
+		savePartToQuestion(question, this.generatePart('', labels, values, solutions));
 
 		this.setState({
 			labels: newLabels,

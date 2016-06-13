@@ -1,4 +1,4 @@
-import {partsEqual, generatePartFor} from '../Actions';
+import {partsEqual, generatePartFor} from '../utils';
 
 describe('Ordering Action Tests', () => {
 	it('Same parts are marked as equal', () => {

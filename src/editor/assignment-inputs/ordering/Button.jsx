@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '../base/Button';
-import {generatePartFor} from './Actions';
+import {generatePartFor} from './utils';
 
 const defaultLabels = ['Label 1', 'Label 2', 'Label 3'];
 const defaultValues = ['Value 1', 'Value 2', 'Value 3'];

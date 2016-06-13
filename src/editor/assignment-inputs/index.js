@@ -65,3 +65,22 @@ export function getButtons (mimeTypes, assignment) {
 		});
 	}
 }
+
+
+export function getEqualityCheck (mimeType) {
+	let equal;
+
+	for (let Type of KINDS) {
+		if (canHandle(Type, mimeType)) {
+			equal = Type.partsEqual;
+		}
+	}
+
+	if (!equal) {
+		logger.error('There is no equality check for type: ', mimeType, ' always say its not equal.');
+
+		equal = () => { return false; };
+	}
+
+	return equal;
+}

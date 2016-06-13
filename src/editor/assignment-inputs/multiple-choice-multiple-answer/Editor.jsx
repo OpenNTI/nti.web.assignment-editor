@@ -1,5 +1,6 @@
 import React from 'react';
-import Base from '../multiple-choice/Editor';
+import MultipleChoiceEditor from '../multiple-choice/Editor';
+import {generatePartFor} from './utils';
 
 export default class MultipleChoiceMultipleAnswerEditor extends React.Component {
 	static propTypes = {
@@ -17,6 +18,8 @@ export default class MultipleChoiceMultipleAnswerEditor extends React.Component 
 		this.state = {
 			error
 		};
+
+		this.generatePart = this.generatePart.bind(this);
 	}
 
 
@@ -32,12 +35,24 @@ export default class MultipleChoiceMultipleAnswerEditor extends React.Component 
 	}
 
 
+	generatePart (content, choices, solutions) {
+		const {part} = this.props;
+		const mimeType = part && part.MimeType;
+
+		if (!mimeType) {
+			//TOOD: see if we ever need to handle this case
+		}
+
+		return generatePartFor(mimeType, content, choices, solutions);
+	}
+
+
 	render () {
 		const {part, question} = this.props;
 		const {error} = this.state;
 
 		return (
-			<Base part={part} question={question} multipleAnswers error={error} />
+			<MultipleChoiceEditor part={part} question={question} multipleAnswers error={error} generatePart={this.generatePart} />
 		);
 	}
 }

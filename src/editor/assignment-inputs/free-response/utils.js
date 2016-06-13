@@ -23,3 +23,8 @@ export function generatePartFor (mimeType, content, choices, solution, hints) {
 		hints: hints || []
 	};
 }
+
+
+export function isPartEqual (/*partA, partB*/) {
+	return false;
+}

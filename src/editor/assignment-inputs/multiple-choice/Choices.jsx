@@ -116,18 +116,21 @@ export default class SingleChoices extends React.Component {
 
 		choices = choices.map((choice) => {
 			let choiceId = choice.NTIID || choice.ID;
+			let newChoice = {...choice};
 
 			if (choiceId === id) {
-				choice.correct = correct;
-			} else if (choice.correct && !multipleAnswers) {
-				choice.correct = !correct;
+				newChoice.correct = correct;
+			} else if (newChoice.correct && !multipleAnswers) {
+				newChoice.correct = !correct;
 			}
 
-			return choice;
+			return newChoice;
 		});
 
 		this.setState({
 			choices: choices
+		}, () => {
+			this.onChange();
 		});
 	}
 
