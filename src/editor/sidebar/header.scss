@@ -1,0 +1,17 @@
+@import "~nti-style-common";
+
+.assignment-editing-sidebar-tabbar {
+	height: 50px;
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: bold;
+
+	.tab {
+		top: 50%;
+		transform: translateY(-50%);
+		position: relative;
+		width: 50%;
+		float: left;
+		text-align: center;
+	}
+}

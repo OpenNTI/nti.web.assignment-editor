@@ -1,5 +1,6 @@
 import React from 'react';
 import QuestionTypes from './QuestionTypes';
+import TabBar from './header';
 
 export default class Editor extends React.Component {
 	static propTypes = {
@@ -25,6 +26,7 @@ export default class Editor extends React.Component {
 
 		return (
 			<div className="assignment-editing-sidebar">
+				<TabBar />
 				<QuestionTypes assignment={assignment} schema={schema} />
 			</div>
 		);
