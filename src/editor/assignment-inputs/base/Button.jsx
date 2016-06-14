@@ -89,16 +89,6 @@ export default class BaseButton extends React.Component {
 	}
 
 
-	onDragStart () {
-		console.log('Button on Drag start', arguments);
-	}
-
-
-	onDragEnd () {
-		console.log('Button on Drag end', arguments);
-	}
-
-
 	render () {
 		let {label, iconCls} = this.props;
 		const icnCls = cx('icon', iconCls);
