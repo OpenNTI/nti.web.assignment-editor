@@ -1,5 +1,21 @@
+import {solutionsEqual} from '../multiple-choice/utils';
+
 const solutionType = 'application/vnd.nextthought.assessment.freeresponsesolution';
 const classType = 'FreeResponseSolution';
+
+export function partsEqual (partA, partB) {
+	let equal = true;
+
+	if (partA.mimeType !== partB.mimeType) {
+		equal = false;
+	} else if (partA.content !== partB.content) {
+		equal = false;
+	} else if (!solutionsEqual(partA.solutions, partB.solutions)) {
+		equal = false;
+	}
+
+	return equal;
+}
 
 
 export function generateSolutionFor (value) {
@@ -14,17 +30,13 @@ export function generateSolutionFor (value) {
 }
 
 
-export function generatePartFor (mimeType, content, choices, solution, hints) {
+export function generatePartFor (mimeType, content, solutions, hints) {
+	solutions = solutions || [];
+
 	return {
 		MimeType: mimeType,
 		content: content || '',
-		choices: choices,
-		solutions: [generateSolutionFor(solution)],
+		solutions: solutions.map(solution => generateSolutionFor(solution)),
 		hints: hints || []
 	};
-}
-
-
-export function isPartEqual (/*partA, partB*/) {
-	return false;
 }

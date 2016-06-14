@@ -1,17 +1,23 @@
 import React from 'react';
 import cx from 'classnames';
 
+const defaultLabel = 'Add Choice';
+
 export default class AddButton extends React.Component {
 	static propTypes = {
 		onAdd: React.PropTypes.func.isRequired,
-		multipleAnswers: React.PropTypes.bool
+		multipleAnswers: React.PropTypes.bool,
+		label: React.PropTypes.string
+	}
+
+
+	static defaultProps = {
+		label: defaultLabel
 	}
 
 
 	constructor (props) {
 		super(props);
-
-		this.state = {};
 
 		this.onClick = this.onClick.bind(this);
 	}
@@ -27,12 +33,12 @@ export default class AddButton extends React.Component {
 
 
 	render () {
-		const {multipleAnswers} = this.props;
-		const cls = cx('choice', 'add-new', {'multiple-answer': multipleAnswers});
+		const {multipleAnswers, label} = this.props;
+		const cls = cx('multiple-choice-add-new', {'multiple-answer': multipleAnswers});
 
 		return (
 			<div className={cls} onClick={this.onClick}>
-				<span>Add Choice</span>
+				<span>{label}</span>
 			</div>
 		);
 	}

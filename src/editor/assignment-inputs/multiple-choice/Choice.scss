@@ -1,6 +1,6 @@
 @import "~nti-style-common";
 
-.multiple-choice .choice {
+.multiple-choice-choice {
 	position: relative;
 	margin-bottom: 9px;
 
@@ -11,6 +11,12 @@
 
 		&.selected {
 			box-shadow: 0 0 1px 1px $border-red;
+		}
+	}
+
+	&.hide-solution {
+		input[type=text] {
+			padding: 0 10px;
 		}
 	}
 

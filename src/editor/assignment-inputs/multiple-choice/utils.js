@@ -41,7 +41,7 @@ function solutionEqual (solutionA, solutionB) {
 }
 
 
-function solutionsEqual (solutionsA, solutionsB) {
+export function solutionsEqual (solutionsA, solutionsB) {
 	if (solutionsA.length !== solutionsB.length) {
 		return false;
 	}

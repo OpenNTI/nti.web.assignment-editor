@@ -10,7 +10,9 @@ export default class Choice extends React.Component {
 		onChange: React.PropTypes.func,
 		onRemove: React.PropTypes.func,
 		onSolutionChange: React.PropTypes.func,
-		multipleAnswers: React.PropTypes.bool
+		multipleAnswers: React.PropTypes.bool,
+		hideSolution: React.PropTypes.bool,
+		plainText: React.PropTypes.bool
 	}
 
 
@@ -118,13 +120,13 @@ export default class Choice extends React.Component {
 
 
 	render () {
-		const {group, multipleAnswers} = this.props;
+		const {group, multipleAnswers, hideSolution} = this.props;
 		const {label, correct, error, selectableValue, selectableId} = this.state;
-		const cls = cx('choice', {correct: correct, 'multiple-answers': multipleAnswers, error});
+		const cls = cx('multiple-choice-choice', {correct: correct, 'multiple-answers': multipleAnswers, error, 'hide-solution': hideSolution});
 
 		return (
 			<Selectable className={cls} id={selectableId} value={selectableValue} onUnselect={this.onBlur}>
-				{this.renderSolution(group, correct, multipleAnswers)}
+				{hideSolution ? null : this.renderSolution(group, correct, multipleAnswers)}
 				<input ref={this.setLabelRef} type="text" value={label} onChange={this.onLabelChange} />
 				<div className="remove" onClick={this.onRemove}>X</div>
 			</Selectable>
