@@ -2,7 +2,14 @@ import React from 'react';
 
 import {savePartToQuestion} from '../Actions';
 import {generatePartFor} from './utils';
-import Choices from './Choices';
+import ChoiceFactory from '../choices/Factory';
+import Choices from '../choices';
+
+const labelsError = 'labels';
+const valuesError = 'values';
+
+const addLabel = 'Add a Row';
+
 
 export default class OrderingEditor extends React.Component {
 	static propTypes = {
@@ -11,86 +18,50 @@ export default class OrderingEditor extends React.Component {
 		error: React.PropTypes.any
 	}
 
-
 	constructor (props) {
 		super(props);
 
-		const {part, error} = props;
-		const parts = this.getParts(part);
+		const {part, error} = this.props;
+		const {labels, values, solutions, NTIID:partId} = part;
+
+		this.labelType = (partId + '-label').toLowerCase();
+		this.valueType = (partId + '-value').toLowerCase();
+
+		this.partTypes = [this.labelType, this.valueType];
+
+		this.labelFactory = new ChoiceFactory (this.labelType, partId + '-label', labelsError);
+		this.valueFactory = new ChoiceFactory (this.valueType, partId + '-value', valuesError);
+
+		const choices = this.mapChoices(labels, values, solutions);
 
 		this.state = {
-			labels: parts.labels,
-			values: parts.values,
-			labelType: parts.labelType,
-			valueType: parts.valueType,
+			choices,
 			error
 		};
 
-		this.onChoicesChanged = this.onChoicesChanged.bind(this);
+		this.choicesChanged = this.choicesChanged.bind(this);
 		this.addNewChoice = this.addNewChoice.bind(this);
 		this.removeChoice = this.removeChoice.bind(this);
 	}
 
-	componentWillReceiveProps (nextProps) {
-		const {part:newPart, error:newError} = nextProps;
-		const {part:oldPart, error:oldError} = this.props;
-		const parts = this.getParts(newPart);
-		let state = null;
 
-		if (newPart !== oldPart) {
-			state = state || {};
-			state.labels = parts.labels;
-			state.values = parts.values;
-			state.labelType = parts.labelType;
-			state.valueType = parts.valueType;
-		}
-
-		if (newError !== oldError) {
-			state = state || {};
-			state.error = newError;
-		}
-
-		if (state) {
-			this.setState(state);
-		}
-	}
-
-
-	getParts (part) {
-		const {labels:partLabels, values:partValues, solutions, NTIID} = part;
-		const labelType = (NTIID + '-label').toLowerCase();
-		const valueType = (NTIID + '-value').toLowerCase();
-		let solution = solutions[0];//For now just take the first solution
-		let labels = [];
-		let values = [];
+	mapChoices (labels, values, solutions) {
+		let solution = solutions[0];//For now just use the first solution
+		let choices = [];
 
 		solution = solution && solution.value;
 
-		for (let i = 0; i < partLabels.length; i++) {
-			let label = partLabels[i];
-			let value = partValues[solution[i]];
+		for (let i = 0; i < labels.length; i++) {
+			let label = labels[i];
+			let value = values[solution[i]];
 
-			labels.push({
-				label: label,
-				MimeType: labelType,
-				ID: NTIID + '-label-' + label.replace(/\s+/g, '-'),
-				isLabel: true
-			});
-
-			values.push({
-				label: value,
-				MimeType: valueType,
-				ID: NTIID + '-value-' + value.replace(/\s+/g, '-'),
-				isValue: true
-			});
+			choices.push([
+				this.labelFactory.make(label, false, i),
+				this.valueFactory.make(value, true, i)
+			]);
 		}
 
-		return {
-			labels,
-			values,
-			labelType,
-			valueType
-		};
+		return choices;
 	}
 
 
@@ -106,81 +77,75 @@ export default class OrderingEditor extends React.Component {
 	}
 
 
-	onChoicesChanged (newLabels, newValues) {
+	choicesChanged (choices) {
 		const {question} = this.props;
 		let labels = [];
 		let values = [];
 		let solutions = {};
 
-		for (let i = 0; i < newLabels.length; i++) {
-			labels.push(newLabels[i].label);
-			values.push(newValues[i].label);
+		for (let i = 0; i < choices.length; i++) {
+			let label = choices[i][0];
+			let value = choices[i][1];
+
+			labels.push(label.label);
+			values.push(value.label);
 			solutions[i] = i;
 		}
 
 		savePartToQuestion(question, this.generatePart('', labels, values, solutions));
 
 		this.setState({
-			labels: newLabels,
-			values: newValues
+			choices
 		});
 	}
 
 
 	addNewChoice () {
-		const {part} = this.props;
-		const {NTIID:partId} = part;
-		let {labels, values, labelType, valueType} = this.state;
+		let {choices} = this.state;
 
-		labels = labels.slice(0);
-		values = values.slice(0);
+		choices = choices.slice(0);
 
-		labels.push({
-			label: '',
-			MimeType: labelType,
-			ID: partId + '-label-' + labels.length,
-			isLabel: true,
-			isNew: true
-		});
+		choices.push([
+			this.labelFactory.make('', false, choices.length, true),
+			this.valueFactory.make('', true, choices.length)
+		]);
 
-		values.push({
-			label: '',
-			MimeType: valueType,
-			ID: partId + '-value-' + values.length,
-			isValue: true
-		});
-
-		this.onChoicesChanged(labels, values);
+		this.choicesChanged(choices);
 	}
 
 
 	removeChoice (labelId, valueId) {
-		let {labels, values} = this.state;
+		let {choices} = this.state;
 
-		labels = labels.filter(x => x.ID !== labelId);
-		values = values.filter(x => x.ID !== valueId);
+		choices = choices.slice(0);
 
-		this.onChoicesChanged(labels, values);
+		choices = choices.filter((choice) => {
+			let label = choice[0];
+			let value = choice[1];
+
+			return label.ID !== labelId || value.ID !== valueId;
+		});
+
+		this.choicesChanged(choices);
 	}
 
 
 	render () {
 		const {part} = this.props;
-		const {NTIID:partId} = part;
-		const {labels, values, error, labelType, valueType} = this.state;
-
+		const {choices, error} =  this.state;
 
 		return (
 			<Choices
-				labels={labels}
-				values={values}
-				partId={partId}
-				labelType={labelType}
-				valueType={valueType}
-				onChange={this.onChoicesChanged}
-				addNew={this.addNewChoice}
-				remove={this.removeChoice}
+				className="ordering-editor-choices"
+				containerId={part.NTIID}
+				accepts={this.partTypes}
+				choices={choices}
 				error={error}
+				onChange={this.choicesChanged}
+				add={this.addNewChoice}
+				remove={this.removeChoice}
+				addLabel={addLabel}
+				reorderable
 			/>
 		);
 	}

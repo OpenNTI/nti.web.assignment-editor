@@ -1,0 +1,46 @@
+@import "~nti-style-common";
+
+.ordering-editor-choices {
+	padding-right: 30px;
+
+	.choices {
+		box-shadow: 0 0 0 1px $border-grey-light;
+	}
+
+	.assignment-input-choice {
+		margin-bottom: 1px;
+
+		&:not(.selected) {
+			box-shadow: 0 1px 0 0 $border-grey-light;
+
+			&.correct {
+				box-shadow: 0 1px 0 0 $border-green-light, -1px 0 0 0 $border-green-light;
+			}
+		}
+
+		input {
+			border: none;
+		}
+
+		&.correct {
+			input {
+				border: none;
+			}
+		}
+
+		&.selected {
+			position: relative;
+			z-index: 1;
+		}
+	}
+
+	.choice-column {
+		width: 50%;
+		float: left;
+	}
+
+	.add-choice {
+		clear: both;
+		border: none;
+	}
+}
