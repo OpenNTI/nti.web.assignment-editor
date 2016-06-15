@@ -2,7 +2,11 @@ import React from 'react';
 
 import {savePartToQuestion} from '../Actions';
 import {generatePartFor} from './utils';
+import ChoiceFactory from '../choices/Factory';
 import Choices from '../choices';
+
+const choiceType = 'FreeResponseSolution';
+const errorField = 'solutions';
 
 const disclaimer = 'Short answer questions are auto graded, but the responses must be a 100% match. List as many possible answers as you\'re willing to accept including common misspellings.';
 const addLabel = 'Add a Possible Answer';
@@ -20,8 +24,10 @@ export default class FreeResponseEditor extends React.Component {
 
 		const {part} = this.props;
 
+		this.choiceFactory = new ChoiceFactory (choiceType, part.NTIID, errorField);
+
 		this.state = {
-			choices: this.mapChoices(part.solutions, part.NTIID)
+			choices: this.mapChoices(part.solutions)
 		};
 
 		this.onChange = this.onChange.bind(this);
@@ -30,23 +36,18 @@ export default class FreeResponseEditor extends React.Component {
 	}
 
 
-	mapChoices (solutions, partId) {
+	mapChoices (solutions) {
 		if (!Array.isArray(solutions)) {
 			solutions = [solutions];
 		}
 
 		return solutions.map((solution, index) => {
-			return {
-				ID: partId + '-' + index,
-				label: solution.value,
-				correct: true
-			};
+			return this.choiceFactory.make(solution.value, true, index);
 		});
 	}
 
 
 	onChange (choices) {
-		debugger;
 		const {question, part} = this.props;
 		let solutions = choices.map(choice => choice.label);
 
@@ -59,18 +60,11 @@ export default class FreeResponseEditor extends React.Component {
 
 
 	addChoice () {
-		const {part} = this.props;
-		const {NTIID:partId} = part;
 		let {choices} = this.state;
 
 		choices = choices.slice(0);
 
-		choices.push({
-			ID: partId + '-' + choices.length,
-			label: '',
-			correct: true,
-			isNew: true
-		});
+		choices.push(this.choiceFactory.make('', true, choices.length, true));
 
 		this.setState({
 			choices

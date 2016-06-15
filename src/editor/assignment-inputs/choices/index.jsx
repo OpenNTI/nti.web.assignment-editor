@@ -14,6 +14,7 @@ export default class Choices extends React.Component {
 	static propTypes = {
 		choices: React.PropTypes.array.isRequired,
 		accepts: React.PropTypes.any,
+		error: React.PropTypes.object,
 		className: React.PropTypes.string,
 		containerId: React.PropTypes.string,
 		onChange: React.PropTypes.func,
@@ -36,18 +37,19 @@ export default class Choices extends React.Component {
 	constructor (props) {
 		super(props);
 
-		const {choices, accepts, add, remove} = this.props;
+		const {choices, accepts, add, remove, error} = this.props;
 		let {columns, deletes} = this.mapColumns(choices);
 
 		this.state = {
 			columns,
 			deletes,
 			accepts,
+			error,
 			canAdd: !!add,
 			canRemove: !!remove
 		};
 
-		this.setUpHandlers();
+		this.setUpHandlers(columns, deletes);
 
 		this.add = this.add.bind(this);
 		this.remove = this.remove.bind(this);
@@ -59,16 +61,30 @@ export default class Choices extends React.Component {
 
 
 	componentWillReceiveProps (nextProps) {
-		const {choices:newChoices} = nextProps;
-		const {choices:oldChoices} = this.props;
+		const {choices:newChoices, error:newError} = nextProps;
+		const {choices:oldChoices, error:oldError} = this.props;
 		const {columns, deletes} = this.mapColumns(newChoices);
+		let state = null;
 
 		if (newChoices !== oldChoices) {
-			let state = {columns, deletes};
+			state = state || {};
 
+			state.columns = columns;
+			state.deletes = deletes;
+
+			this.setUpHandlers(columns, deletes);
+		}
+
+
+		if (newError !== oldError) {
+			state = state || {};
+
+			state.error = newError;
+		}
+
+
+		if (state) {
 			this.setState(state);
-
-			this.setUpHandlers(state);
 		}
 	}
 
@@ -106,7 +122,7 @@ export default class Choices extends React.Component {
 	}
 
 
-	setUpHandlers ({columns, deletes} = this.state) {
+	setUpHandlers (columns, deletes) {
 		this.orderChangeHandlers = [];
 		this.choiceChangeHandlers = [];
 		this.choiceRenders = [];
@@ -277,12 +293,14 @@ export default class Choices extends React.Component {
 
 
 	renderChoice (column, choice) {
+		const {error} = this.state;
+
 		return (
 			<Choice
 				key={choice.NTIID || choice.ID}
 				choice={choice}
 				onChange={this.choiceChangeHandlers[column]}
-				error={choice.error}
+				error={choice.isErrorFor(error)}
 			/>
 		);
 	}

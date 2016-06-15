@@ -1,19 +1,11 @@
 import React from 'react';
 
 import Choices from './choices';
+import ChoiceFactory from '../choices/Factory';
 import {savePartToQuestion} from '../Actions';
 import {generatePartFor} from './utils';
 
 const errorField = 'choices';
-
-function getErrorForIndex (error, choiceIndex) {
-	const {reason} = error || {};
-	let {field, index} = reason || {};
-
-	index = index || [];
-
-	return field === errorField && index.indexOf(choiceIndex) >= 0 ? error : null;
-}
 
 
 export default class MultipleChoiceEditor extends React.Component {
@@ -21,7 +13,7 @@ export default class MultipleChoiceEditor extends React.Component {
 		part: React.PropTypes.object.isRequired,
 		question: React.PropTypes.object.isRequired,
 		multipleAnswers: React.PropTypes.bool,
-		error: React.PropTypes.any,
+		error: React.PropTypes.object,
 		generatePart: React.PropTypes.func
 	}
 
@@ -35,8 +27,10 @@ export default class MultipleChoiceEditor extends React.Component {
 		this.partType = (partId + '-answer').toLowerCase();
 		this.partTypes = [this.partType];
 
+		this.choiceFactory = new ChoiceFactory (this.partType, partId, errorField);
+
 		this.state = {
-			choices: this.mapChoices(choices, solutions, part.NTIID),
+			choices: this.mapChoices(choices, solutions),
 			error
 		};
 
@@ -56,7 +50,7 @@ export default class MultipleChoiceEditor extends React.Component {
 
 		if (newPart !== oldPart) {
 			state = state || {};
-			state.choices = this.mapChoices(choices, solutions, newPart.NTIID);
+			state.choices = this.mapChoices(choices, solutions);
 		}
 
 		if (newError !== oldError) {
@@ -70,7 +64,7 @@ export default class MultipleChoiceEditor extends React.Component {
 	}
 
 
-	mapChoices (choices, solutions, partId) {
+	mapChoices (choices, solutions) {
 		let solution = solutions[0];//For now just handle the first solution
 
 		solution = solution && solution.value;
@@ -86,12 +80,7 @@ export default class MultipleChoiceEditor extends React.Component {
 		}, {});
 
 		return choices.map((choice, index) => {
-			return {
-				MimeType: this.partType,
-				ID: partId + '-' + choice.replace(/\s+/g, '-'),
-				label: choice,
-				correct: solution[index]
-			};
+			return this.choiceFactory.make(choice, solution[index], index);
 		});
 	}
 
@@ -134,19 +123,11 @@ export default class MultipleChoiceEditor extends React.Component {
 
 
 	addNewChoice () {
-		const {part} = this.props;
-		const {NTIID:partId} = part;
 		let {choices} = this.state;
 
 		choices = choices.slice(0);
 
-		choices.push({
-			MimeType: this.partType,
-			ID: partId + '-' + choices.length,
-			label: '',
-			correct: false,
-			isNew: true
-		});
+		choices.push(this.choiceFactory.make('', false, choices.length, true));
 
 		this.choicesChanged(choices);
 	}
@@ -167,13 +148,18 @@ export default class MultipleChoiceEditor extends React.Component {
 
 	render () {
 		const {part, multipleAnswers} = this.props;
-		const {choices} = this.state;
+		const {choices, error} = this.state;
+
+		// if (error) {
+		// 	debugger;
+		// }
 
 		return (
 			<Choices
 				containerId={part.NTIID}
 				accepts={this.partTypes}
 				choices={choices}
+				error={error}
 				onChange={this.choicesChanged}
 				add={this.addNewChoice}
 				remove={this.removeChoice}

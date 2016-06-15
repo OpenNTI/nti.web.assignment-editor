@@ -25,6 +25,10 @@ function solutionEqual (solutionA, solutionB) {
 		solutionB = [solutionB];
 	}
 
+	if (solutionA.length !== solutionB.length) {
+		return false;
+	}
+
 	let mapA = solutionA.reduce((acc, s) => {
 		acc[s] = true;
 		return acc;

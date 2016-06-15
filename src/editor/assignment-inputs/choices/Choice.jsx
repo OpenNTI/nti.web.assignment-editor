@@ -16,6 +16,7 @@ import Selectable from '../../utils/Selectable';
 export default class Choice extends React.Component {
 	static propTypes = {
 		choice: React.PropTypes.object,
+		error: React.PropTypes.object,
 		className: React.PropTypes.string,
 		onChange: React.PropTypes,
 		plainText: React.PropTypes.bool
@@ -25,7 +26,7 @@ export default class Choice extends React.Component {
 	constructor (props) {
 		super(props);
 
-		const {choice} = this.props;
+		const {choice, error} = this.props;
 
 		this.isNew = choice.isNew;
 
@@ -33,7 +34,7 @@ export default class Choice extends React.Component {
 			label: choice.label,
 			selectableId: choice.NTIID || choice.ID,
 			selectableValue: choice.label,
-			error: choice.error
+			error
 		};
 
 		this.setInputRef = x => this.inputRef = x;
@@ -48,8 +49,8 @@ export default class Choice extends React.Component {
 
 
 	componentWillReceiveProps (nextProps) {
-		const {choice: newChoice} = nextProps;
-		const {choice: oldChoice} = this.props;
+		const {choice: newChoice, error:newError} = nextProps;
+		const {choice: oldChoice, error:oldError} = this.props;
 		let state = null;
 
 		if (newChoice !== oldChoice) {
@@ -58,7 +59,12 @@ export default class Choice extends React.Component {
 			state.label = newChoice.label;
 			state.selectableId = newChoice.NTIID || newChoice.ID;
 			state.selectableValue = newChoice.label;
-			state.error = newChoice.error;
+		}
+
+		if (newError !== oldError) {
+			state = state || {};
+
+			state.error = newError;
 		}
 
 		if (state) {

@@ -6,6 +6,7 @@ import Choice from '../../choices/Choice';
 export default class MultipleChoiceChoice extends React.Component {
 	static propTypes = {
 		choice: React.PropTypes.object,
+		error: React.PropTypes.object,
 		group: React.PropTypes.string,
 		onChange: React.PropTypes.func,
 		multipleAnswers: React.PropTypes.bool,
@@ -60,14 +61,14 @@ export default class MultipleChoiceChoice extends React.Component {
 
 
 	render () {
-		const {choice, plainText, multipleAnswers, group} = this.props;
+		const {choice, plainText, multipleAnswers, group, error} = this.props;
 		const {correct} = this.state;
 		const cls = cx('multiple-choice-choice', {correct});
 
 		return (
 			<div className={cls}>
 				{this.renderSolution(correct, multipleAnswers, group)}
-				<Choice choice={choice} onChange={this.onChoiceChange} plainText={plainText} />
+				<Choice choice={choice} onChange={this.onChoiceChange} error={error} plainText={plainText} />
 			</div>
 		);
 	}
