@@ -2,9 +2,11 @@ import React from 'react';
 
 import {savePartToQuestion} from '../Actions';
 import {generatePartFor} from './utils';
-import Choices from './Choices';
+import Choices from '../choices';
 
 const disclaimer = 'Short answer questions are auto graded, but the responses must be a 100% match. List as many possible answers as you\'re willing to accept including common misspellings.';
+const addLabel = 'Add a Possible Answer';
+
 
 export default class FreeResponseEditor extends React.Component {
 	static propTypes = {
@@ -44,6 +46,7 @@ export default class FreeResponseEditor extends React.Component {
 
 
 	onChange (choices) {
+		debugger;
 		const {question, part} = this.props;
 		let solutions = choices.map(choice => choice.label);
 
@@ -94,7 +97,13 @@ export default class FreeResponseEditor extends React.Component {
 		return (
 			<div className="free-response-editor">
 				<div className="disclaimer">{disclaimer}</div>
-				<Choices choices={choices} onChange={this.onChange} onAdd={this.addChoice} onRemove={this.removeChoice} />
+				<Choices
+					choices={choices}
+					onChange={this.onChange}
+					add={this.addChoice}
+					remove={this.removeChoice}
+					addLabel={addLabel}
+				/>
 			</div>
 		);
 	}

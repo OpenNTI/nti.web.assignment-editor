@@ -25,7 +25,7 @@
 		color: $primary-grey;
 		background-color: white;
 		width: 100%;
-		padding: 0 10px 0 34px;
+		padding-left: 34px;
 		border: 1px solid $border-grey-light;
 	}
 
@@ -40,13 +40,6 @@
 		top: 15px;
 		right: 15px;
 		cursor: pointer;
-	}
-
-	&.correct {
-		input[type=text] {
-			background-color: $light-green;
-			border: 1px solid $border-green-light;
-		}
 	}
 }
 

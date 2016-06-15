@@ -6,4 +6,10 @@
 		color: $secondary-grey;
 		margin-bottom: 20px;
 	}
+
+	.assignment-input-choices {
+		.delete div, .assignment-input-choice {
+			margin-bottom: 9px;
+		}
+	}
 }

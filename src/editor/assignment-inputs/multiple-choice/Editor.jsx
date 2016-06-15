@@ -1,7 +1,19 @@
 import React from 'react';
-import Choices from './Choices';
+
+import Choices from './choices';
 import {savePartToQuestion} from '../Actions';
 import {generatePartFor} from './utils';
+
+const errorField = 'choices';
+
+function getErrorForIndex (error, choiceIndex) {
+	const {reason} = error || {};
+	let {field, index} = reason || {};
+
+	index = index || [];
+
+	return field === errorField && index.indexOf(choiceIndex) >= 0 ? error : null;
+}
 
 
 export default class MultipleChoiceEditor extends React.Component {
@@ -21,6 +33,7 @@ export default class MultipleChoiceEditor extends React.Component {
 		const {choices, solutions, NTIID:partId} = part;
 
 		this.partType = (partId + '-answer').toLowerCase();
+		this.partTypes = [this.partType];
 
 		this.state = {
 			choices: this.mapChoices(choices, solutions, part.NTIID),
@@ -154,18 +167,18 @@ export default class MultipleChoiceEditor extends React.Component {
 
 	render () {
 		const {part, multipleAnswers} = this.props;
-		const {choices, error} = this.state;
+		const {choices} = this.state;
 
 		return (
 			<Choices
-				partId={part.NTIID}
-				partType={this.partType}
+				containerId={part.NTIID}
+				accepts={this.partTypes}
 				choices={choices}
-				error={error}
 				onChange={this.choicesChanged}
-				addNewChoice={this.addNewChoice}
-				removeChoice={this.removeChoice}
+				add={this.addNewChoice}
+				remove={this.removeChoice}
 				multipleAnswers={multipleAnswers}
+				reorderable
 			/>
 		);
 	}

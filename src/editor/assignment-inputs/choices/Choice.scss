@@ -1,0 +1,35 @@
+@import "~nti-style-common";
+
+.assignment-input-choice {
+	&.error {
+		input[type=text] {
+			border: 1px solid $border-red;
+		}
+
+		&.selected {
+			box-shadow: 0 0 1px 1px $border-red;
+		}
+	}
+
+	&.correct {
+		input[type=text] {
+			background-color: $light-green;
+			border: 1px solid $border-green-light;
+		}
+	}
+
+	input[type=text] {
+		font: normal 400 0.875rem/40px $body-font-family;
+		color: $primary-grey;
+		background-color: white;
+		width: 100%;
+		padding: 0 10px;
+		border: 1px solid $border-grey-light;
+	}
+}
+
+.assignment-input-choices.can-delete {
+	input[type=text] {
+		padding-right: 30px;
+	}
+}
