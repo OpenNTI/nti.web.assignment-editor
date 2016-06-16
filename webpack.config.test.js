@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const path = require('path');
 
 exports = module.exports = Object.assign(require('./webpack.config'), {
 	entry: './test/app/index.js',
@@ -12,8 +13,9 @@ exports = module.exports = Object.assign(require('./webpack.config'), {
 
 delete exports.node;
 
-const {loaders} = exports.module;
+exports.resolveLoader = { root: [path.join(__dirname, 'node_modules') ] };
 
+const {loaders} = exports.module;
 const imgLoader = loaders.find(x => 'test.png'.match(x.test));
 imgLoader.query.limit = Number.MAX_VALUE;
 
