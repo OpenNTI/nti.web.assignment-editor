@@ -10,7 +10,7 @@
 	.assignment-input-choice {
 		margin-bottom: 1px;
 
-		&:not(.selected) {
+		&:not(.selected):not(.error) {
 			box-shadow: 0 1px 0 0 $border-grey-light;
 
 			&.correct {
@@ -28,9 +28,24 @@
 			}
 		}
 
-		&.selected {
+		&.error {
 			position: relative;
 			z-index: 1;
+			box-shadow: 0 0 0 1px $border-red;
+
+			input {
+				border: none;
+			}
+
+			&.selected {
+				box-shadow: 0 0 1px 1px $border-red;
+			}
+		}
+
+
+		&.selected {
+			position: relative;
+			z-index: 2;
 		}
 	}
 

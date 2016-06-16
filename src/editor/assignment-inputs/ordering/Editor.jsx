@@ -45,6 +45,28 @@ export default class OrderingEditor extends React.Component {
 	}
 
 
+	componentWillReceiveProps (nextProps) {
+		const {part:newPart, error:newError} = nextProps;
+		const {part:oldPart, error:oldError} = this.props;
+		const {labels, values, solutions} = newPart;
+		let state = null;
+
+		if (newPart !== oldPart) {
+			state = state || {};
+			state.choices = this.mapChoices(labels, values, solutions);
+		}
+
+		if (newError !== oldError) {
+			state = state || {};
+			state.error = newError;
+		}
+
+		if (state) {
+			this.setState(state);
+		}
+	}
+
+
 	mapChoices (labels, values, solutions) {
 		let solution = solutions[0];//For now just use the first solution
 		let choices = [];
