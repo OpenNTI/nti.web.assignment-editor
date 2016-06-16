@@ -7,9 +7,11 @@
 	margin: 5px 4px 5px 8px;
 	border: 1px solid $border-grey-light;
 	background: #fff;
+	position: relative;
+	overflow: hidden;
 
 	.icon-wrapper {
-		height: 68px;
+		height: 82px;
 		position: relative;
 		transform-style: preserve-3d;
 
@@ -17,8 +19,8 @@
 			position: relative;
 			top: 50%;
 			transform: translateY(-50%);
-			width: 22px;
-			height: 26px;
+			width: 70px;
+			height: 70px;
 			background-size: cover;
 			background-position: center center;
 			margin: 0 auto;
@@ -27,7 +29,6 @@
 
 	.label,.used {
 		color: $secondary-grey;
-		font-family: $header-font-family;
 		text-transform: uppercase;
 		font-size: 10px;
 		text-align: center;
@@ -35,6 +36,11 @@
 	}
 
 	.used {
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		left: auto;
+		bottom: auto;
   		color: $tertiary-grey;
 	}
 }

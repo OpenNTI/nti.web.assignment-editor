@@ -12,7 +12,7 @@ export default class MultipleChoiceMultipleAnswerButton extends React.Component 
 		activeQuestion: React.PropTypes.object
 	}
 
-	label = 'Multiple Choice Multiple Answer'
+	label = 'Multiple Answer'
 	defaultQuestionContent = 'Multiple Choice Multiple Answer Question'
 	iconCls = 'multiple-choice multiple-answer'
 

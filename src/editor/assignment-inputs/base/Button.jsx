@@ -104,7 +104,7 @@ export default class BaseButton extends React.Component {
 						<div className={icnCls}></div>
 					</div>
 					<div className="label">{label}</div>
-					<div className={usedCls}>{usedCount} used</div>
+					<div className={usedCls}>{usedCount}</div>
 				</div>
 			</Draggable>
 		);
