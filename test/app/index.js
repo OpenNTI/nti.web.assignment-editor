@@ -7,9 +7,10 @@ import Dnd from '../../src/dnd/';
 import Ordering from '../../src/dnd/ordering';
 
 import 'normalize.css';
+import 'nti-style-common/fonts.scss';
+import 'nti-web-commons/lib/index.css';
 
 ReactDOM.render(
 	<Editor />,
 	document.getElementById('content')
 );
-
