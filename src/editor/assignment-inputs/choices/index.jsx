@@ -3,6 +3,7 @@ import cx from 'classnames';
 
 import Ordering from '../../../dnd/ordering/Ordering';
 import Choice from './Choice';
+import {isErrorForChoice} from './Factory';
 
 const defaultLabel = 'Add a choice';
 
@@ -300,7 +301,7 @@ export default class Choices extends React.Component {
 				key={choice.NTIID || choice.ID}
 				choice={choice}
 				onChange={this.choiceChangeHandlers[column]}
-				error={choice.isErrorFor(error)}
+				error={isErrorForChoice(error, choice)}
 			/>
 		);
 	}

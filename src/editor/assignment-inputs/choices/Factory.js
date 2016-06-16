@@ -1,3 +1,13 @@
+export function isErrorForChoice (error, choice) {
+	const {reason} = error || {};
+	let {field, index} = reason || {};
+
+	index = index || [];
+
+	return field === choice.errorField && index.indexOf(choice.index) >= 0 ? error : null;
+}
+
+
 export default class ChoiceFactory {
 
 	constructor (type, containerId, errorField) {
@@ -14,23 +24,13 @@ export default class ChoiceFactory {
 		const choice = {
 			MimeType: this.choiceType,
 			ID: this.containerId + '-' + this.counter,
+			errorField: this.errorField,
+			index,
 			label,
 			correct,
-			isNew,
-			isErrorFor: error => this.isErrorFor(error, index)
+			isNew
 		};
 
-
 		return choice;
-	}
-
-
-	isErrorFor (error, choiceIndex) {
-		const {reason} = error || {};
-		let {field, index} = reason || {};
-
-		index = index || [];
-
-		return field === this.errorField && index.indexOf(choiceIndex) >= 0 ? error : null;
 	}
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Choices from '../../choices';
+import {isErrorForChoice} from '../../choices/Factory';
 import Choice from './Choice';
 
 export default class MultipleChoiceChoices extends Choices {
@@ -65,7 +66,7 @@ export default class MultipleChoiceChoices extends Choices {
 				choice={choice}
 				group={containerId + '-choice'}
 				onChange={this.choiceChangeHandlers[column]}
-				error={choice.isErrorFor(error)}
+				error={isErrorForChoice(error, choice)}
 				multipleAnswers={multipleAnswers}
 			/>
 		);
