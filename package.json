@@ -38,6 +38,7 @@
     "node-uuid": "^1.4.3",
     "nti-commons": "^1.0.1",
     "nti-lib-dispatcher": "^1.0.0",
+    "nti-lib-dom": "^1.4.0",
     "nti-lib-store": "^1.0.0",
     "nti-util-logger": "^1.0.0",
     "nti-web-client": "^1.0.0",

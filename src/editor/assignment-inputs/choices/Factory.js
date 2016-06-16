@@ -1,10 +1,23 @@
-export function isErrorForChoice (error, choice) {
-	const {reason} = error || {};
-	let {field, index} = reason || {};
+import {getFragmentFromString} from 'nti-lib-dom';
+import uuid from 'node-uuid';
 
-	index = index || [];
+function parseLabel (label) {
+	let frag = getFragmentFromString(label);
+	let idAnchor = frag && frag.querySelector('a[data-id]');
+	let id = idAnchor ? idAnchor.getAttribute('data-id') : uuid.v4();
 
-	return field === choice.errorField && index.indexOf(choice.index) >= 0 ? error : null;
+	if (idAnchor) {
+		frag.removeChild(idAnchor);
+	}
+
+	let tempDiv = document.createElement('div');
+
+	tempDiv.appendChild(frag.cloneNode(true));
+
+	return {
+		ID: id,
+		label: tempDiv.innerHTML
+	};
 }
 
 
@@ -13,24 +26,40 @@ export default class ChoiceFactory {
 	constructor (type, containerId, errorField) {
 		this.choiceType = type;
 		this.containerId = containerId;
-		this.counter = 0;
 		this.errorField = errorField;
 	}
 
 
 	make (label, correct, index, isNew) {
-		this.counter += 1;
+		const parts = parseLabel(label);
 
 		const choice = {
 			MimeType: this.choiceType,
-			ID: this.containerId + '-' + this.counter,
+			ID: parts.ID,
 			errorField: this.errorField,
 			index,
-			label,
+			label: parts.label,
 			correct,
 			isNew
 		};
 
 		return choice;
 	}
+
+
+	getLabelWithIdFor (choice) {
+		const {ID, label} = choice;
+
+		return `<a data-id="${ID}"></a>${label}`;
+	}
+}
+
+
+export function isErrorForChoice (error, choice) {
+	const {reason} = error || {};
+	let {field, index} = reason || {};
+
+	index = index || [];
+
+	return field === choice.errorField && index.indexOf(choice.index) >= 0 ? error : null;
 }

@@ -101,7 +101,9 @@ export default class MultipleChoiceEditor extends React.Component {
 		const {question, multipleAnswers} = this.props;
 
 		let values = choices.reduce((acc, choice, index) => {
-			acc.choices.push(choice.label);
+			let label = this.choiceFactory.getLabelWithIdFor(choice);
+
+			acc.choices.push(label);
 
 			if (choice.correct) {
 				acc.solutions.push(index);

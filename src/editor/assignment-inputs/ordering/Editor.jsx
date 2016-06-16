@@ -106,11 +106,11 @@ export default class OrderingEditor extends React.Component {
 		let solutions = {};
 
 		for (let i = 0; i < choices.length; i++) {
-			let label = choices[i][0];
-			let value = choices[i][1];
+			let label = this.labelFactory.getLabelWithIdFor(choices[i][0]);
+			let value = this.valueFactory.getLabelWithIdFor(choices[i][1]);
 
-			labels.push(label.label);
-			values.push(value.label);
+			labels.push(label);
+			values.push(value);
 			solutions[i] = i;
 		}
 
