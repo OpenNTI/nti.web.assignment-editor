@@ -12,7 +12,12 @@ exports = module.exports = Object.assign(require('./webpack.config'), {
 
 delete exports.node;
 
-exports.module.loaders.push({
+const {loaders} = exports.module;
+
+const imgLoader = loaders.find(x => 'test.png'.match(x.test));
+imgLoader.query.limit = Number.MAX_VALUE;
+
+loaders.push({
 	test: /\.(eot|ttf|woff)$/,
 	loader: 'file-loader',
 	query: {
