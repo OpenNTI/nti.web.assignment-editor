@@ -12,7 +12,7 @@ exports = module.exports = Object.assign(require('./webpack.config'), {
 
 delete exports.node;
 
-exports.modules.loaders.push({
+exports.module.loaders.push({
 	test: /\.(eot|ttf|woff)$/,
 	loader: 'file-loader',
 	query: {
