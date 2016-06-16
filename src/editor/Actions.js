@@ -8,7 +8,7 @@ const defaultSchema = {};
 
 export function loadAssignment (ntiid) {
 	//TODO: ABSOLUTELY GET RID OF THIS BEFORE IT GOES OUT ANYWHERE
-	window.$AppConfig = window.$AppConfig || {server: 'http://janux.dev:8082/dataserver2/'};
+	window.$AppConfig = window.$AppConfig || {server: '/dataserver2/'};
 
 	getService()
 		.then((service) => {
