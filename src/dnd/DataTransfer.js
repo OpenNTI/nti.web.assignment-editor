@@ -62,10 +62,6 @@ export default class DataTransfer {
 			return;
 		}
 
-		if (this.transferData[key]) {
-			logger.warn('Overriding transfer data: ', key, ' from ', this.transferData[key], ' with ', value);
-		}
-
 		if (value.dataForTransfer) {
 			value = value.dataForTransfer;
 		} else {

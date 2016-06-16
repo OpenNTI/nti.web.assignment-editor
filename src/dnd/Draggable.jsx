@@ -34,9 +34,12 @@ export default class Draggable extends React.Component {
 
 
 	componentWillReceiveProps (nextProps) {
-		const {data} = nextProps;
+		const {data:newData} = nextProps;
+		const {data:oldData} = this.props;
 
-		this.setDataForTransfer(data);
+		if (newData !== oldData) {
+			this.setDataForTransfer(newData);
+		}
 	}
 
 
