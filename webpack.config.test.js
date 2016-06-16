@@ -12,6 +12,14 @@ exports = module.exports = Object.assign(require('./webpack.config'), {
 
 delete exports.node;
 
+exports.modules.loaders.push({
+	test: /\.(eot|ttf|woff)$/,
+	loader: 'file-loader',
+	query: {
+		name: 'resources/fonts/[name].[ext]'
+	}
+});
+
 exports.plugins.push(new webpack.DefinePlugin({
 	'SERVER': false
 }));
