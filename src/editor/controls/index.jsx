@@ -1,5 +1,7 @@
 import React from 'react';
 
+import FormatControls from './FormatControls';
+
 export default class Controls extends React.Component {
 	static propTypes = {
 		assignment: React.PropTypes.object,
@@ -23,8 +25,12 @@ export default class Controls extends React.Component {
 
 
 	render () {
+		const {selection} = this.state;
+
 		return (
-			<span>{this.state.selection}</span>
+			<div className="assignment-editor-controls">
+				<FormatControls selection={selection} />
+			</div>
 		);
 	}
 }

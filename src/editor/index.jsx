@@ -91,7 +91,7 @@ export default class Editor extends React.Component {
 	selectionChanged (selection) {
 		this.setState({
 			controlBarVisible: selection.length > 0,
-			selection: selection.map(x => x.value).join(' ')
+			selection: selection
 		});
 	}
 

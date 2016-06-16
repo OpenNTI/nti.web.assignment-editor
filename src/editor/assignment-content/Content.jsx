@@ -1,7 +1,9 @@
 import React from 'react';
 import cx from 'classnames';
+import {TextEditor} from 'nti-modeled-content';
 
 import Selectable from '../utils/Selectable';
+import ControlsConfig from '../controls/ControlsConfig';
 
 const PLACEHOLDER = 'Write a description...';
 
@@ -18,42 +20,61 @@ export default class TitleEditor extends React.Component {
 
 		const {value, error} = props;
 
+		this.setEditorRef = x => this.editorRef = x;
+
 		this.state = {
 			selectableId: 'description',
-			selectableValue: 'Description',
-			value: value,
-			error: error
+			selectableValue: new ControlsConfig(),
+			initialValue: value,
+			value,
+			error
 		};
 
-		this.onBlur = this.onBlur.bind(this);
-		this.onChange = this.onChange.bind(this);
-		this.onInputFocus = this.onInputFocus.bind(this);
-		this.onInputBlur = this.onInputBlur.bind(this);
+		this.onUnselect = this.onUnselect.bind(this);
+		this.onEditorChange = this.onEditorChange.bind(this);
+		this.onEditorFocus = this.onEditorFocus.bind(this);
+		this.onEditorBlur = this.onEditorBlur.bind(this);
 	}
 
 	componentWillReceiveProps (nextProps) {
-		this.setState({
-			error: nextProps.error
-		});
-	}
+		const {value:newValue, error:newError} = nextProps;
+		const {value:oldValue, error:oldError} = this.props;
+		let state = null;
 
+		if (newValue !== oldValue) {
+			state = state || {};
 
-	onBlur () {
-		const {onChange} = this.props;
-		const {value} = this.state;
+			state.value = newValue;
+		}
 
-		if (onChange) {
-			onChange(value);
+		if (newError !== oldError) {
+			state = state || {};
+
+			state.error = newError;
+		}
+
+		if (state) {
+			this.setState(state);
 		}
 	}
 
 
-	onChange (e) {
-		const {error} = this.state;
+	onChange () {
+		const {onChange} = this.props;
 
-		this.setState({
-			value: e.target.value
-		});
+		if (onChange && this.editorRef) {
+			onChange(this.editorRef.getValue());
+		}
+	}
+
+
+	onUnselect () {
+		this.onChange();
+	}
+
+
+	onEditorChange () {
+		const {error} = this.state;
 
 		if (error && error.clear) {
 			error.clear();
@@ -61,29 +82,44 @@ export default class TitleEditor extends React.Component {
 	}
 
 
-	onInputFocus () {
-		this.setState({
-			selectableValue: 'Description FOCUSED'
-		});
+	onEditorFocus () {
+		if (this.editorRef) {
+			this.setState({
+				selectableValue: new ControlsConfig(this.editorRef)
+			});
+		}
 	}
 
 
-	onInputBlur () {
+	onEditorBlur () {
 		this.setState({
-			selectableValue: 'Description'
+			selectableValue: new ControlsConfig()
 		});
 	}
 
 
 	render () {
-		const {selectableId, selectableValue, value, error} = this.state;
+		const {selectableId, selectableValue, initialValue, error} = this.state;
 		const cls = cx('assignment-content-editor', {error});
 
 		return (
-			<Selectable className={cls} id={selectableId} value={selectableValue} onUnselect={this.onBlur}>
-				<textarea placeholder={PLACEHOLDER} value={value} onChange={this.onChange} onFocus={this.onInputFocus} onBlur={this.onInputBlur}>
-				</textarea>
+			<Selectable className={cls} id={selectableId} value={selectableValue} onUnselect={this.onUnselect}>
+				<TextEditor
+					charLimit={1000}
+					ref={this.setEditorRef}
+					initialValue={initialValue}
+					onFocus={this.onEditorFocus}
+					onBlur={this.onEditorFocus}
+					onChange={this.onEditorChange}
+				/>
 			</Selectable>
 		);
+
+		// return (
+		// 	<Selectable className={cls} id={selectableId} value={selectableValue} onUnselect={this.onBlur}>
+		// 		<textarea placeholder={PLACEHOLDER} value={value} onChange={this.onChange} onFocus={this.onEditorFocus} onBlur={this.onEditorBlur}>
+		// 		</textarea>
+		// 	</Selectable>
+		// );
 	}
 }
