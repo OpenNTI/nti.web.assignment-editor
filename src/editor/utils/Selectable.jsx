@@ -109,6 +109,8 @@ export default class Selectable extends React.Component {
 		const item = this.getSelectionItem();
 		const {onSelect} = this.props;
 
+		clearTimeout(this.doUnselectTimeout);
+
 		if (selectionManager) {
 			selectionManager.select(item);
 			e.stopPropagation();
@@ -125,14 +127,19 @@ export default class Selectable extends React.Component {
 		const item = this.getSelectionItem();
 		const {onUnselect} = this.props;
 
-		if (selectionManager) {
-			selectionManager.unselect(item);
-			e.stopPropagation();
-		}
+		e.stopPropagation();
 
-		if (onUnselect) {
-			onUnselect(item);
-		}
+		//Wait to do the unselect actions to see if something is adding focus
+		//in the same event cycle. For example: a format button for an editor
+		this.doUnselectTimeout = setTimeout(() => {
+			if (selectionManager) {
+				selectionManager.unselect(item);
+			}
+
+			if (onUnselect) {
+				onUnselect(item);
+			}
+		}, 100);
 	}
 
 

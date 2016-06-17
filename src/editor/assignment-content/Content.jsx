@@ -7,7 +7,7 @@ import ControlsConfig from '../controls/ControlsConfig';
 
 const PLACEHOLDER = 'Write a description...';
 
-export default class TitleEditor extends React.Component {
+export default class ContentEditor extends React.Component {
 	static propTypes = {
 		value: React.PropTypes.string.isRequired,
 		schema: React.PropTypes.object,
@@ -25,7 +25,6 @@ export default class TitleEditor extends React.Component {
 		this.state = {
 			selectableId: 'description',
 			selectableValue: new ControlsConfig(),
-			initialValue: value,
 			value,
 			error
 		};
@@ -33,7 +32,6 @@ export default class TitleEditor extends React.Component {
 		this.onUnselect = this.onUnselect.bind(this);
 		this.onEditorChange = this.onEditorChange.bind(this);
 		this.onEditorFocus = this.onEditorFocus.bind(this);
-		this.onEditorBlur = this.onEditorBlur.bind(this);
 	}
 
 	componentWillReceiveProps (nextProps) {
@@ -83,7 +81,9 @@ export default class TitleEditor extends React.Component {
 
 
 	onEditorFocus () {
-		if (this.editorRef) {
+		const {selectableValue} = this.state;
+
+		if (this.editorRef && selectableValue.editor !== this.editorRef) {
 			this.setState({
 				selectableValue: new ControlsConfig(this.editorRef)
 			});
@@ -91,15 +91,8 @@ export default class TitleEditor extends React.Component {
 	}
 
 
-	onEditorBlur () {
-		this.setState({
-			selectableValue: new ControlsConfig()
-		});
-	}
-
-
 	render () {
-		const {selectableId, selectableValue, initialValue, error} = this.state;
+		const {selectableId, selectableValue, value, error} = this.state;
 		const cls = cx('assignment-content-editor', {error});
 
 		return (
@@ -107,9 +100,9 @@ export default class TitleEditor extends React.Component {
 				<TextEditor
 					charLimit={1000}
 					ref={this.setEditorRef}
-					initialValue={initialValue}
+					initialValue={value}
+					placeholder={PLACEHOLDER}
 					onFocus={this.onEditorFocus}
-					onBlur={this.onEditorFocus}
 					onChange={this.onEditorChange}
 				/>
 			</Selectable>

@@ -4,20 +4,25 @@
 	margin-right: 110px;
 	margin-bottom: 0.5rem;
 
-	input {
-		width: 100%;
-		font: normal 300 1.93rem/1.93rem $body-font-family;
-		color: $primary-grey;
-		padding: 2px 3px;
-		background: none;
-		border: none;
+	&.error {
+		box-shadow: 0 0 1px 1px $primary-red;
+	}
 
-		&::placeholder {
-			font-style: italic;
+	.nti-rich-text {
+		border: none;
+		background: none;
+		overflow-x: visible;
+		overflow-y: visible;
+
+		.DraftEditor-root {
+			font: normal 300 1.75rem/2.25rem $body-font-family;
+			min-height: 0;
+			padding: 0.1rem 0.6rem;
+			padding-bottom: 0.1rem;
 		}
 	}
 
-	&.error {
-		box-shadow: 0 0 1px 1px $primary-red;
+	.character-count {
+		display: none;
 	}
 }

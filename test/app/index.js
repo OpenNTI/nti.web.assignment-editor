@@ -9,6 +9,7 @@ import Ordering from '../../src/dnd/ordering';
 import 'normalize.css';
 import 'nti-style-common/fonts.scss';
 import 'nti-web-commons/lib/index.css';
+import 'nti-modeled-content/lib/index.css';
 
 ReactDOM.render(
 	<Editor />,
