@@ -16,6 +16,10 @@
 			background-color: $light-green;
 			border: 1px solid $border-green-light;
 		}
+
+		&.selected {
+			box-shadow: 0 0 1px 1px $border-green-light;
+		}
 	}
 
 	input[type=text] {
