@@ -95,13 +95,14 @@ export default class QuestionComponent extends React.Component {
 
 
 	render () {
-		const {question} = this.props;
+		const {question, index} = this.props;
 		const {selectableId, selectableValue, contentError, partError} = this.state;
 		const cls = cx('question-editor', {saving: question.isSaving});
 
 		return (
 			<div className="question-container">
 				<Selectable className={cls} id={selectableId} value={selectableValue}>
+					<div className="index">{index + 1}</div>
 					<Content question={question} onFocus={this.onContentFocus} onBlur={this.onContentBlur} error={contentError}/>
 					<Parts question={question} error={partError} />
 				</Selectable>
