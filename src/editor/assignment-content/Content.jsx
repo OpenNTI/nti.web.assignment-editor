@@ -5,7 +5,7 @@ import {TextEditor} from 'nti-modeled-content';
 import Selectable from '../utils/Selectable';
 import ControlsConfig from '../controls/ControlsConfig';
 
-const PLACEHOLDER = 'Write a description...';
+const PLACEHOLDER = 'Write an assignment description here...';
 
 export default class ContentEditor extends React.Component {
 	static propTypes = {
