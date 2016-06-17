@@ -295,12 +295,13 @@ export default class Choices extends React.Component {
 
 	renderChoice (column, choice) {
 		const {error} = this.state;
+		const onChange = this.choiceChangeHandlers[column];
 
 		return (
 			<Choice
 				key={choice.NTIID || choice.ID}
 				choice={choice}
-				onChange={this.choiceChangeHandlers[column]}
+				onChange={onChange}
 				error={isErrorForChoice(error, choice)}
 			/>
 		);

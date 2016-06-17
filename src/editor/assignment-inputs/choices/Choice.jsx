@@ -18,7 +18,7 @@ export default class Choice extends React.Component {
 		choice: React.PropTypes.object,
 		error: React.PropTypes.object,
 		className: React.PropTypes.string,
-		onChange: React.PropTypes,
+		onChange: React.PropTypes.func,
 		plainText: React.PropTypes.bool
 	}
 

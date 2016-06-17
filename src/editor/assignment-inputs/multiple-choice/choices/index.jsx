@@ -59,13 +59,14 @@ export default class MultipleChoiceChoices extends Choices {
 	renderChoice (column, choice) {
 		const {multipleAnswers, containerId} = this.props;
 		const {error} = this.state;
+		const onChange = this.choiceChangeHandlers[column];
 
 		return (
 			<Choice
 				key={choice.NTIID || choice.ID}
 				choice={choice}
 				group={containerId + '-choice'}
-				onChange={this.choiceChangeHandlers[column]}
+				onChange={onChange}
 				error={isErrorForChoice(error, choice)}
 				multipleAnswers={multipleAnswers}
 			/>

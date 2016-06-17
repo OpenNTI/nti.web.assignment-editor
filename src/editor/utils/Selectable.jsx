@@ -4,7 +4,7 @@ import {SelectionItem} from './SelectionManager';
 
 export default class Selectable extends React.Component {
 	static propTypes = {
-		value: React.PropTypes.string,
+		value: React.PropTypes.any,
 		id: React.PropTypes.string,
 		className: React.PropTypes.string,
 		children: React.PropTypes.any,
