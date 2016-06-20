@@ -1,4 +1,5 @@
 import React from 'react';
+import {HOC} from 'nti-web-commons';
 import autobind from 'nti-commons/lib/autobind';
 
 import Ordering from '../../dnd/ordering/Ordering';
@@ -7,6 +8,7 @@ import {moveQuestion} from './Actions';
 import MoveRoot from '../utils/MoveRoot';
 
 const QUESTION_TYPE = 'application/vnd.nextthought.naquestion';
+const {ItemChanges} = HOC;
 
 export default class QuestionSetComponent extends React.Component {
 
@@ -41,21 +43,8 @@ export default class QuestionSetComponent extends React.Component {
 	}
 
 
-	componentDidMount () {
+	onQuestionSetChange () {
 		const {questionSet} = this.props;
-
-		questionSet.addListener('change', this.onQuestionSetChange);
-	}
-
-
-	componentWillUnmount () {
-		const {questionSet} = this.props;
-
-		questionSet.removeListener('change', this.onQuestionSetChange);
-	}
-
-
-	onQuestionSetChange (questionSet) {
 		const {questions} = questionSet;
 
 		this.setState({
@@ -76,14 +65,16 @@ export default class QuestionSetComponent extends React.Component {
 		const {questions} = this.state;
 
 		return (
-			<Ordering
-				containerId={questionSet.NTIID}
-				className="question-set-editor"
-				items={questions}
-				renderItem={this.renderQuestion}
-				accepts={[QUESTION_TYPE]}
-				onChange={this.onQuestionOrderChange}
-			/>
+			<ItemChanges item={questionSet} onItemChanged={this.onQuestionSetChange}>
+				<Ordering
+					containerId={questionSet.NTIID}
+					className="question-set-editor"
+					items={questions}
+					renderItem={this.renderQuestion}
+					accepts={[QUESTION_TYPE]}
+					onChange={this.onQuestionOrderChange}
+				/>
+			</ItemChanges>
 		);
 	}
 
