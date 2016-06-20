@@ -5,6 +5,7 @@ import autobind from 'nti-commons/lib/autobind';
 import Store from '../Store';
 import {QUESTION_ERROR} from '../Constants';
 import Selectable from '../utils/Selectable';
+import ControlsConfig from '../controls/ControlsConfig';
 
 import Content from './Content';
 import Parts from './Parts';
@@ -20,9 +21,11 @@ export default class QuestionComponent extends React.Component {
 	constructor (props) {
 		super(props);
 
+		const {question} = this.props;
+
 		this.state = {
-			selectableId: this.props.question.NTIID,
-			selectableValue: this.props.question.content
+			selectableId: question.NTIID,
+			selectableValue: new ControlsConfig(null, question)
 		};
 
 		autobind(this,
@@ -38,6 +41,7 @@ export default class QuestionComponent extends React.Component {
 		const {question} = this.props;
 
 		Store.addChangeListener(this.onStoreChange);
+
 		if (question && question.addListener) {
 			question.addListener('change', this.onQuestionChange);
 		}
@@ -48,6 +52,7 @@ export default class QuestionComponent extends React.Component {
 		const {question} = this.props;
 
 		Store.removeChangeListener(this.onStoreChange);
+
 		if (question && question.removeListener) {
 			question.removeListener('change', this.onQuestionChange);
 		}
@@ -80,20 +85,20 @@ export default class QuestionComponent extends React.Component {
 
 
 	onContentFocus () {
-		const {question} = this.props;
+		// const {question} = this.props;
 
-		this.setState({
-			selectableValue: question.content + ' FOCUSED'
-		});
+		// this.setState({
+		// 	selectableValue: question.content + ' FOCUSED'
+		// });
 	}
 
 
 	onContentBlur () {
-		const {question} = this.props;
+		// const {question} = this.props;
 
-		this.setState({
-			selectableValue: question.content
-		});
+		// this.setState({
+		// 	selectableValue: question.content
+		// });
 	}
 
 

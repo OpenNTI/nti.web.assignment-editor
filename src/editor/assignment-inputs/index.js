@@ -54,13 +54,14 @@ export function getEditorWidget (part, index, question, error) {
 }
 
 
-export function getButtons (mimeTypes, assignment) {
+export function getButtons (mimeTypes, assignment, activeQuestion) {
 	//TODO: filter this down to whats accepted by the schema
 	if (!mimeTypes) {
 		return KINDS.map((cmp) => {
 			return React.createElement(cmp.button, {
 				key: cmp.handles,
-				assignment
+				assignment,
+				activeQuestion
 			});
 		});
 	}

@@ -4,7 +4,8 @@ import {getButtons} from '../assignment-inputs';
 export default class QuestionTypes extends React.Component {
 	static propTypes = {
 		assignment: React.PropTypes.object.isRequired,
-		schema: React.PropTypes.object
+		schema: React.PropTypes.object,
+		activeQuestion: React.PropTypes.object
 	}
 
 
@@ -16,11 +17,11 @@ export default class QuestionTypes extends React.Component {
 
 
 	render () {
-		const {assignment} = this.props;
+		const {assignment, activeQuestion} = this.props;
 
 		return (
 			<div className="question-types">
-				{getButtons(null, assignment)}
+				{getButtons(null, assignment, activeQuestion)}
 			</div>
 		);
 	}

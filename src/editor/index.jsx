@@ -113,7 +113,7 @@ export default class Editor extends React.Component {
 			<div className={cls}>
 				<AssignmentEditor assignment={assignment} schema={schema} />
 				<FixedElement className="assignment-editing-sidebar-fixed">
-					<Sidebar ref={x => this.sidebar = x} assignment={assignment} schema={schema} />
+					<Sidebar ref={x => this.sidebar = x} assignment={assignment} schema={schema} selection={selection} />
 				</FixedElement>
 				<ControlBar visible >
 					<Controls assignment={assignment} selection={selection} />
