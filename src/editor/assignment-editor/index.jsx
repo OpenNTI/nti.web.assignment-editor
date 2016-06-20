@@ -72,7 +72,7 @@ export default class AssignmentEditor extends React.Component {
 	renderOptions (assignment, schema) {
 		return (
 			<div key="options" className="option-container">
-				<div className="show-content toggle" onClick={this.showContent}>Content</div>
+				<div className="show-content toggle" onClick={this.showContent}>Done</div>
 				<AssignmentOptions assignment={assignment} schema={schema} />
 			</div>
 		);
