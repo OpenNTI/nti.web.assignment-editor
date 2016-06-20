@@ -4,6 +4,12 @@ import {scoped} from 'nti-lib-locale';
 import OptionGroup from '../OptionGroup';
 import Option from '../Option';
 
+const DEFAULT_TEXT = {
+	content: 'Save time with auto grading.',
+	label: 'Enable Auto Grading'
+};
+
+const t = scoped('OPTIONS_GRADING', DEFAULT_TEXT);
 
 export default class Grading extends React.Component {
 	static propTypes = {
@@ -24,14 +30,13 @@ export default class Grading extends React.Component {
 	}
 
 	render () {
-		const gradingContent = 'Save time with auto grading.';
 		const {assignment} = this.props;
 		const {isAutoGraded} = assignment;
 		const disabled = !assignment.hasLink('edit');
 
 		return (
-			<OptionGroup name="grading" content={gradingContent}>
-				<Option label="Enable Auto Grading" name="auto-grading" value={isAutoGraded} onChange={this.onChange} disabled={disabled}/>
+			<OptionGroup name="grading" content={t('content')}>
+				<Option label={t('label')} name="auto-grading" value={isAutoGraded} onChange={this.onChange} disabled={disabled}/>
 			</OptionGroup>
 		);
 	}

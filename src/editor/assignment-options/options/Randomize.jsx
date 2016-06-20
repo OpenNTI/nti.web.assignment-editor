@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import {scoped} from 'nti-lib-locale';
 import OptionGroup from '../OptionGroup';
 import Option from '../Option';
 
@@ -7,6 +8,17 @@ const RANDOMIZE_ANSWERS = 'randomize-answers';
 
 const getQuestionSet = (props) =>
 	((((props || {}).assignment || {}).parts || [])[0] || {}).question_set;
+
+
+const DEFAULT_TEXT = {
+	content: 'Randomizing will override the order of the questions and answers you created.',
+	labels: {
+		randomizeQuestions: 'Randomize Question Order',
+		randomizeAnswers: 'Randomize Answer Order'
+	}
+};
+
+const t = scoped('OPTIONS_RANDOMIZE', DEFAULT_TEXT);
 
 
 export default class Randomize extends React.Component {
@@ -36,15 +48,14 @@ export default class Randomize extends React.Component {
 	}
 
 	render () {
-		const orderingContent = 'Randomizing will override the order of the questions and answers you created.';
 		const qset = getQuestionSet(this.props);
 		const {isRandomized, isPartTypeRandomized} = qset;
 		const editable = qset.hasLink('edit');
 
 		return (
-			<OptionGroup name="ordering" header="Randomize Ordering" content={orderingContent}>
-				<Option label="Randomize Question Order" name={RANDOMIZE_QUESTIONS} value={isRandomized} onChange={this.onChange} disabled={!editable}/>
-				<Option label="Randomize Answer Order" name={RANDOMIZE_ANSWERS} value={isPartTypeRandomized} onChange={this.onChange} disabled={!editable}/>
+			<OptionGroup name="ordering" header="Randomize Ordering" content={t('content')}>
+				<Option label={t('labels.randomizeQuestions')} name={RANDOMIZE_QUESTIONS} value={isRandomized} onChange={this.onChange} disabled={!editable}/>
+				<Option label={t('labels.randomizeAnswers')} name={RANDOMIZE_ANSWERS} value={isPartTypeRandomized} onChange={this.onChange} disabled={!editable}/>
 			</OptionGroup>
 		);
 	}
