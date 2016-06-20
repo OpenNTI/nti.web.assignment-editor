@@ -4,6 +4,7 @@ import FlipMove from 'react-flip-move';
 import cx from 'classnames';
 import Logger from 'nti-util-logger';
 import wait from 'nti-commons/lib/wait';
+import autobind from 'nti-commons/lib/autobind';
 
 import Draggable from '../Draggable';
 import Dropzone from '../Dropzone';
@@ -71,11 +72,13 @@ export default class Ordering extends React.Component {
 
 		this.componentRefs = {};
 
-		this.renderItem = this.renderItem.bind(this);
-		this.onContainerDrop = this.onContainerDrop.bind(this);
-		this.onContainerDragLeave = this.onContainerDragLeave.bind(this);
-		this.onContainerDragOver = this.onContainerDragOver.bind(this);
-		this.onStoreChange = this.onStoreChange.bind(this);
+		autobind(this,
+			'renderItem',
+			'onContainerDrop',
+			'onContainerDragLeave',
+			'onContainerDragOver',
+			'onStoreChange'
+		);
 
 		this.dropHandlers = this.getDropHandlers(this.onContainerDrop.bind(this));
 
