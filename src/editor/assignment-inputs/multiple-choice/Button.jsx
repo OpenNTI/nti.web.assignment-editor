@@ -28,6 +28,7 @@ export default class MultipleChoiceButton extends React.Component {
 	render () {
 		const {assignment, activeQuestion} = this.props;
 		const {handles} = this.constructor;
+
 		return (
 			<Button
 				part={this.getBlankPart()}
