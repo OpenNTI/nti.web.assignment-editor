@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import {TextEditor} from 'nti-modeled-content';
+import autobind from 'nti-commons/lib/autobind';
 
 import Selectable from '../utils/Selectable';
 import ControlsConfig from '../controls/ControlsConfig';
@@ -29,9 +30,11 @@ export default class ContentEditor extends React.Component {
 			error
 		};
 
-		this.onUnselect = this.onUnselect.bind(this);
-		this.onEditorChange = this.onEditorChange.bind(this);
-		this.onEditorFocus = this.onEditorFocus.bind(this);
+		autobind(this,
+			'onUnselect',
+			'onEditorChange',
+			'onEditorFocus'
+		);
 	}
 
 	componentWillReceiveProps (nextProps) {

@@ -1,5 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
+import autobind from 'nti-commons/lib/autobind';
+
 import {appendQuestionTo} from '../Actions';
 import Draggable from '../../../dnd/Draggable';
 
@@ -46,7 +48,7 @@ export default class BaseButton extends React.Component {
 	constructor (props) {
 		super(props);
 
-		this.onClick = this.onClick.bind(this);
+		autobind(this, 'onClick');
 	}
 
 

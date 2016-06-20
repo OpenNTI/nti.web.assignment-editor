@@ -1,5 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
+import autobind from 'nti-commons/lib/autobind';
 
 import Store from '../Store';
 import {QUESTION_ERROR} from '../Constants';
@@ -24,10 +25,12 @@ export default class QuestionComponent extends React.Component {
 			selectableValue: this.props.question.content
 		};
 
-		this.onContentFocus = this.onContentFocus.bind(this);
-		this.onContentBlur = this.onContentBlur.bind(this);
-		this.onStoreChange = this.onStoreChange.bind(this);
-		this.onQuestionChange = this.onQuestionChange.bind(this);
+		autobind(this,
+			'onContentFocus',
+			'onContentBlur',
+			'onStoreChange',
+			'onQuestionChange'
+		);
 	}
 
 

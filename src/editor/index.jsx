@@ -1,6 +1,9 @@
 import React from 'react';
+import cx from 'classnames';
+import autobind from 'nti-commons/lib/autobind';
 
 import ControlBar from '../control-bar';
+
 import FixedElement from './utils/FixedElement';
 import AssignmentEditor from './assignment-editor';
 import Controls from './controls';
@@ -9,7 +12,6 @@ import SelectionManager from './utils/SelectionManager';
 import {LOADED} from './Constants';
 import Store from './Store';
 import {loadAssignment} from './Actions';
-import cx from 'classnames';
 
 const selectionManager = new SelectionManager();
 
@@ -40,9 +42,11 @@ export default class Editor extends React.Component {
 			schema: null
 		};
 
-		this.onStoreChange = this.onStoreChange.bind(this);
-		this.onWindowScroll = this.onWindowScroll.bind(this);
-		this.selectionChanged = this.selectionChanged.bind(this);
+		autobind(this,
+			'onStoreChange',
+			'onWindowScroll',
+			'selectionChanged'
+		);
 	}
 
 

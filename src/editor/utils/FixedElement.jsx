@@ -1,5 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
+import autobind from 'nti-commons/lib/autobind';
 
 const SCROLL_STOP_TIMEOUT = 500;
 
@@ -14,7 +15,8 @@ export default class FixedEelement extends React.Component {
 		super(props);
 
 		this.setCmpRef = x => this.cmpRef = x;
-		this.onWindowScroll = this.onWindowScroll.bind(this);
+
+		autobind(this, 'onWindowScroll');
 
 		this.state = {
 			styles: {

@@ -1,4 +1,5 @@
 import React from 'react';
+import autobind from 'nti-commons/lib/autobind';
 
 import Ordering from '../../dnd/ordering/Ordering';
 import Question from '../assignment-question';
@@ -32,10 +33,11 @@ export default class QuestionSetComponent extends React.Component {
 			//TODO: disable moving
 		}
 
-
-		this.onQuestionSetChange = this.onQuestionSetChange.bind(this);
-		this.onQuestionOrderChange = this.onQuestionOrderChange.bind(this);
-		this.renderQuestion = this.renderQuestion.bind(this);
+		autobind(this,
+			'onQuestionSetChange',
+			'onQuestionOrderChange',
+			'renderQuestion'
+		);
 	}
 
 

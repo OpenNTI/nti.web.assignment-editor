@@ -1,5 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
+import autobind from 'nti-commons/lib/autobind';
 
 import TextArea from '../inputs/TextArea';
 
@@ -24,9 +25,11 @@ export default class QuestionContent extends React.Component {
 			error
 		};
 
-		this.onFocus = this.onFocus.bind(this);
-		this.onBlur = this.onBlur.bind(this);
-		this.onChange = this.onChange.bind(this);
+		autobind(this,
+			'onFocus',
+			'onBlur',
+			'onChange'
+		);
 	}
 
 

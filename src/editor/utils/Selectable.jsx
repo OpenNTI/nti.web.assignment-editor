@@ -1,5 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
+import autobind from 'nti-commons/lib/autobind';
+
 import {SelectionItem} from './SelectionManager';
 
 export default class Selectable extends React.Component {
@@ -34,15 +36,11 @@ export default class Selectable extends React.Component {
 			selected: false
 		};
 
-		const bindList = [
+		autobind(this,
 			'onSelectionChanged',
 			'select',
 			'unselect'
-		];
-
-		for (let fn of bindList) {
-			this[fn] = this[fn].bind(this);
-		}
+		);
 	}
 
 

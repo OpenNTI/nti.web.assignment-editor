@@ -1,5 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
+import autobind from 'nti-commons/lib/autobind';
+
 import Selectable from '../../utils/Selectable';
 
 /**
@@ -39,12 +41,13 @@ export default class Choice extends React.Component {
 
 		this.setInputRef = x => this.inputRef = x;
 
-		this.onUnselect = this.onUnselect.bind(this);
-		this.onSelect = this.onSelect.bind(this);
-
-		this.onInputFocus = this.onInputFocus.bind(this);
-		this.onInputBlur = this.onInputBlur.bind(this);
-		this.onInputChange = this.onInputChange.bind(this);
+		autobind(this,
+			'onUnselect',
+			'onSelect',
+			'onInputFocus',
+			'onInputBlur',
+			'onInputChange'
+		);
 	}
 
 

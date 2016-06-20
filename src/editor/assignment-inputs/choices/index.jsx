@@ -1,5 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
+import autobind from 'nti-commons/lib/autobind';
 
 import Ordering from '../../../dnd/ordering/Ordering';
 import Choice from './Choice';
@@ -52,12 +53,13 @@ export default class Choices extends React.Component {
 
 		this.setUpHandlers(columns, deletes);
 
-		this.add = this.add.bind(this);
-		this.remove = this.remove.bind(this);
-
-		this.renderColumn = this.renderColumn.bind(this);
-		this.renderDelete = this.renderDelete.bind(this);
-		this.renderAdd = this.renderAdd.bind(this);
+		autobind(this,
+			'add',
+			'remove',
+			'renderColumn',
+			'renderDelete',
+			'renderAdd'
+		);
 	}
 
 

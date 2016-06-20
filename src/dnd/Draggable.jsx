@@ -1,5 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
+import autobind from 'nti-commons/lib/autobind';
 
 import DataTransfer from './DataTransfer';
 import DnDInfo from './Info';
@@ -26,10 +27,12 @@ export default class Draggable extends React.Component {
 			draggable: false
 		};
 
-		this.onDragStart = this.onDragStart.bind(this);
-		this.onDragEnd = this.onDragEnd.bind(this);
-		this.onMouseDown = this.onMouseDown.bind(this);
-		this.onMouseUp = this.onMouseUp.bind(this);
+		autobind(this,
+			'onDragStart',
+			'onDragEnd',
+			'onMouseDown',
+			'onMouseUp'
+		);
 	}
 
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import cx from 'classnames';
+import autobind from 'nti-commons/lib/autobind';
 
 import DnDInfo from './Info';
 import DataTransfer from './DataTransfer';
@@ -61,10 +62,12 @@ export default class Dropzone extends React.Component {
 		this.acceptedTypes = Object.keys(dropHandlers);
 		this.acceptsOrder = dropHandlers.priority || this.acceptedTypes;
 
-		this.onDrop = this.onDrop.bind(this);
-		this.onDragEnter = this.onDragEnter.bind(this);
-		this.onDragLeave = this.onDragLeave.bind(this);
-		this.onDragOver = this.onDragOver.bind(this);
+		autobind(this,
+			'onDrop',
+			'onDragEnter',
+			'onDragLeave',
+			'onDragOver'
+		);
 	}
 
 

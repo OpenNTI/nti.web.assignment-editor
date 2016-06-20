@@ -1,4 +1,6 @@
 import React from 'react';
+import autobind from 'nti-commons/lib/autobind';
+
 import MultipleChoiceEditor from '../multiple-choice/Editor';
 import {generatePartFor} from './utils';
 
@@ -19,7 +21,7 @@ export default class MultipleChoiceMultipleAnswerEditor extends React.Component 
 			error
 		};
 
-		this.generatePart = this.generatePart.bind(this);
+		autobind(this, 'generatePart');
 	}
 
 

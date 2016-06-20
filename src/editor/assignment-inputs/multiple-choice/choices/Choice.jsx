@@ -1,5 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
+import autobind from 'nti-commons/lib/autobind';
 
 import Choice from '../../choices/Choice';
 
@@ -22,8 +23,10 @@ export default class MultipleChoiceChoice extends React.Component {
 			correct: choice.correct
 		};
 
-		this.onSolutionChange = this.onSolutionChange.bind(this);
-		this.onChoiceChange = this.onChoiceChange.bind(this);
+		autobind(this,
+			'onSolutionChange',
+			'onChoiceChange'
+		);
 	}
 
 

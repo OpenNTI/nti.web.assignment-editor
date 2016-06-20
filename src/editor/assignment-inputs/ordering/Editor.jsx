@@ -1,4 +1,5 @@
 import React from 'react';
+import autobind from 'nti-commons/lib/autobind';
 
 import {savePartToQuestion} from '../Actions';
 import {generatePartFor} from './utils';
@@ -39,9 +40,11 @@ export default class OrderingEditor extends React.Component {
 			error
 		};
 
-		this.choicesChanged = this.choicesChanged.bind(this);
-		this.addNewChoice = this.addNewChoice.bind(this);
-		this.removeChoice = this.removeChoice.bind(this);
+		autobind(this,
+			'choicesChanged',
+			'addNewChoice',
+			'removeChoice'
+		);
 	}
 
 

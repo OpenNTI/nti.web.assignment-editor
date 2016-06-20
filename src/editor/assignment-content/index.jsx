@@ -1,4 +1,5 @@
 import React from 'react';
+import autobind from 'nti-commons/lib/autobind';
 
 import Store from '../Store';
 import {ASSIGNMENT_ERROR} from '../Constants';
@@ -32,10 +33,12 @@ export default class AssignmentContent extends React.Component {
 			errors: {}
 		};
 
-		this.onStoreChange = this.onStoreChange.bind(this);
-		this.onAssignmentChange = this.onAssignmentChange.bind(this);
-		this.onTitleChange = this.onTitleChange.bind(this);
-		this.onContentChange = this.onContentChange.bind(this);
+		autobind(this,
+			'onStoreChange',
+			'onAssignmentChange',
+			'onTitleChange',
+			'onContentChange'
+		);
 	}
 
 

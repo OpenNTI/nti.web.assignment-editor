@@ -1,4 +1,5 @@
 import React from 'react';
+import autobind from 'nti-commons/lib/autobind';
 
 import Choices from './choices';
 import ChoiceFactory from '../choices/Factory';
@@ -34,9 +35,11 @@ export default class MultipleChoiceEditor extends React.Component {
 			error
 		};
 
-		this.choicesChanged = this.choicesChanged.bind(this);
-		this.addNewChoice = this.addNewChoice.bind(this);
-		this.removeChoice = this.removeChoice.bind(this);
+		autobind(this,
+			'choicesChanged',
+			'addNewChoice',
+			'removeChoice'
+		);
 	}
 
 	//TODO: listen for changes on the question to update the choices

@@ -1,4 +1,5 @@
 import React from 'react';
+import autobind from 'nti-commons/lib/autobind';
 
 import {savePartToQuestion} from '../Actions';
 import {generatePartFor} from './utils';
@@ -30,9 +31,11 @@ export default class FreeResponseEditor extends React.Component {
 			choices: this.mapChoices(part.solutions)
 		};
 
-		this.onChange = this.onChange.bind(this);
-		this.addChoice = this.addChoice.bind(this);
-		this.removeChoice = this.removeChoice.bind(this);
+		autobind(this,
+			'onChange',
+			'addChoice',
+			'removeChoice'
+		);
 	}
 
 

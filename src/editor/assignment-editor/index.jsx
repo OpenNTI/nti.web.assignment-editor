@@ -2,6 +2,7 @@ import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import cx from 'classnames';
 import {StickyContainer, Sticky} from 'react-sticky';
+import autobind from 'nti-commons/lib/autobind';
 
 import AssignmentInfo from '../assignment-info';
 import AssignmentParts from '../assignment-parts';
@@ -26,8 +27,10 @@ export default class AssignmentEditor extends React.Component {
 			active: CONTENT_VIEW
 		};
 
-		this.showContent = this.showContent.bind(this);
-		this.showOptions = this.showOptions.bind(this);
+		autobind(this,
+			'showContent',
+			'showOptions'
+		);
 	}
 
 
