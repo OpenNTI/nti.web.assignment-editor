@@ -1,4 +1,4 @@
-.assignment-single-option {
+.assignment-option-group {
 	display: flex;
 	width: 100%;
 	height: auto;
@@ -18,4 +18,16 @@
 		color: #494949;
 	}
 
+	.options {
+		width: 50%;
+	}
+
+	.assignment-option-content {
+		width: 50%;
+		p {
+			margin: 0;
+			font-size: .875rem;
+			color: #757474;
+		}
+	}
 }

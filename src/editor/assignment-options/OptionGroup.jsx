@@ -27,7 +27,7 @@ class OptionGroup extends React.Component {
 				<div className="options">
 					{this.props.children}
 				</div>
-				<div className="option-content">
+				<div className="assignment-option-content">
 					<p>{content}</p>
 				</div>
 			</div>

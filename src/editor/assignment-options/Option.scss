@@ -1,32 +1,8 @@
-.options {
-	width: 50%;
-
+.assignment-single-option {
 	.option-input {
 		label {
 			font-size: .875rem;
 			color: #757474;
 		}
-	}
-
-	.porition-max-input {
-		width: 85%;
-		height: 39px;
-		background-color: #ffffff;
-		border: solid 1px #dcdcdc;
-		font-size: .875rem;
-		font-weight: normal;
-		font-style: italic;
-		color: #b8b8b8;
-		padding-left: 1rem;
-		margin-left: 1.625rem;
-		margin-top: .625rem;
-	}
-}
-.option-content {
-	width: 50%;
-	p {
-		margin: 0;
-		font-size: .875rem;
-		color: #757474;
 	}
 }
