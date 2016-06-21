@@ -1,19 +1,5 @@
 @import "~nti-style-common";
 
-.option-container {
-	.show-content.toggle {
-		width: 103px;
-		height: 39px;
-		border-radius: .125rem;
-		background-color: #3fb3f6;
-		text-align: center;
-		color: white;
-		line-height: 39px;
-		font-size: .875rem;
-		font-weight: 300;
-	}
-}
-
 .assignment-options {
 	font-family: $body-font-family;
     margin-left: 1.875rem;

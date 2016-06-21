@@ -16,18 +16,35 @@
 		position: absolute;
 		top: 1.375rem;
 		right: 1.875rem;
-		line-height: 2.5rem;
-		box-shadow: 0 0 0 1px $border-grey-light;
-		background: white;
-		padding: 0 0.5rem;
+		cursor: pointer;
 	}
 
 	.option-container, .content-container {
 		background: white;
 	}
 
+	.content-container {
+		.show-options.toggle {
+			line-height: 2.5rem;
+			box-shadow: 0 0 0 1px $border-grey-light;
+			background: white;
+			padding: 0 0.5rem;
+		}
+	}
+
+
 	.option-container {
-		height: 700px;
+		.show-content.toggle {
+			width: 103px;
+			height: 39px;
+			border-radius: .125rem;
+			background-color: #3fb3f6;
+			text-align: center;
+			color: white;
+			line-height: 39px;
+			font-size: .875rem;
+			font-weight: 300;
+		}
 	}
 
 	.fadeInOut-enter {

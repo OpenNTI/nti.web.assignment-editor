@@ -60,7 +60,7 @@ export default class AssignmentEditor extends React.Component {
 				</Sticky>
 				<AssignmentInfo assignment={assignment} schema={schema} />
 				<div className="content">
-					<ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={250}>
+					<ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
 						{active === CONTENT_VIEW ?
 							this.renderContent(assignment, schema) :
 							this.renderOptions(assignment, schema)
@@ -85,7 +85,9 @@ export default class AssignmentEditor extends React.Component {
 	renderContent (assignment, schema) {
 		return (
 			<div key="content" className="content-container">
-				<div className="show-options toggle" onClick={this.showOptions}>Options</div>
+				<div className="show-options toggle" onClick={this.showOptions}>
+					<span>Options</span>
+				</div>
 				<AssignmentContent assignment={assignment} schema={schema} />
 				<AssignmentParts assignment={assignment} schema={schema} />
 			</div>
