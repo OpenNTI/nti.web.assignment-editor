@@ -5,6 +5,8 @@
 		font-size: 1rem;
 		color: $secondary-grey;
 		cursor: pointer;
+		display: block;
+		margin-bottom: 2rem;
 
 		&:hover {
 			color: $primary-grey;
