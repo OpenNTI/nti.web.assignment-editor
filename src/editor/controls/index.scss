@@ -1,3 +1,16 @@
+@import "~nti-style-common";
+
 .assignment-editor-controls {
 	display: flex;
+	align-items: center;
+	height: 60px;
+	padding: 0 rem-calc(10px);
+
+	.editor-format-controls {
+		flex: 1 1 auto;
+	}
+
+	.assignment-publish-controls {
+		flex: 0 0 auto;
+	}
 }

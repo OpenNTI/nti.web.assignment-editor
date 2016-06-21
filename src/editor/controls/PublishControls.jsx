@@ -5,7 +5,7 @@ export default class PublishControls extends React.Component {
 
 	render () {
 		return (
-			<div className="publish-controls">
+			<div className="assignment-publish-controls">
 				<Publish alignment="top-right" enableDelete={true} />
 			</div>
 		);
