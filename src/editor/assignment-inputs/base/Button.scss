@@ -9,6 +9,11 @@
 	background: #fff;
 	position: relative;
 	overflow: hidden;
+	transition: transform 250ms;
+
+	&.mousedown {
+		transform: scale(0.9);
+	}
 
 	.icon-wrapper {
 		height: 82px;

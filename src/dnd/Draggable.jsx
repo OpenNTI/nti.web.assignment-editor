@@ -11,6 +11,8 @@ export default class Draggable extends React.Component {
 		data: React.PropTypes.any.isRequired,
 		onDragStart: React.PropTypes.func,
 		onDragEnd: React.PropTypes.func,
+		onMouseDown: React.PropTypes.func,
+		onMouseUp: React.PropTypes.func,
 		handleClassName: React.PropTypes.bool,
 		children: React.PropTypes.any,
 		className: React.PropTypes.string
@@ -101,7 +103,11 @@ export default class Draggable extends React.Component {
 	onMouseDown (e) {
 		e.stopPropagation();
 
-		const {handleClassName} = this.props;
+		const {handleClassName, onMouseDown} = this.props;
+
+		if (onMouseDown) {
+			onMouseDown(e);
+		}
 
 		if (!handleClassName || e.target.classList.contains(handleClassName)) {
 			this.setState({
@@ -111,7 +117,13 @@ export default class Draggable extends React.Component {
 	}
 
 
-	onMouseUp () {
+	onMouseUp (e) {
+		const {onMouseUp} = this.props;
+
+		if (onMouseUp) {
+			onMouseUp(e);
+		}
+
 		this.setState({
 			draggable: false
 		});

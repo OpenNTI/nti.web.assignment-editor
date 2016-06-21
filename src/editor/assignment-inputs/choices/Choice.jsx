@@ -56,7 +56,7 @@ export default class Choice extends React.Component {
 		const {choice: oldChoice, error:oldError} = this.props;
 		let state = null;
 
-		if (newChoice !== oldChoice) {
+		if (newChoice !== oldChoice && !this.isFocused) {
 			state = state || {};
 
 			state.label = newChoice.label;
@@ -111,6 +111,8 @@ export default class Choice extends React.Component {
 	onInputFocus () {
 		const {label} = this.state;
 
+		this.isFocused = true;
+
 		this.setState({
 			selectableValue: label + ' FOCUSED'
 		});
@@ -119,6 +121,8 @@ export default class Choice extends React.Component {
 
 	onInputBlur () {
 		const {label} = this.state;
+
+		this.isFocused = false;
 
 		this.setState({
 			selectableValue: label

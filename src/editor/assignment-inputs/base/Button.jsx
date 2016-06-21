@@ -48,7 +48,15 @@ export default class BaseButton extends React.Component {
 	constructor (props) {
 		super(props);
 
-		autobind(this, 'onClick');
+		this.state = {
+			mousedown: false
+		};
+
+		autobind(this,
+			'onClick',
+			'onMouseDown',
+			'onMouseUp'
+		);
 	}
 
 
@@ -75,6 +83,20 @@ export default class BaseButton extends React.Component {
 	}
 
 
+	onMouseDown () {
+		this.setState({
+			mousedown: true
+		});
+	}
+
+
+	onMouseUp () {
+		this.setState({
+			mousedown: false
+		});
+	}
+
+
 	getUsedCount () {
 		const {assignment, handles} = this.props;
 		let types = handles || [];
@@ -93,15 +115,16 @@ export default class BaseButton extends React.Component {
 
 	render () {
 		let {label, iconCls} = this.props;
+		const {mousedown} = this.state;
 		const icnCls = cx('icon', iconCls);
 		const usedCount = this.getUsedCount();
 		const usedCls = cx('used', {isUsed: usedCount > 0});
 		const data = this.getBlankQuestion() || {};
-		const cls = cx('assigment-editor-sidebar-button');
+		const cls = cx('assigment-editor-sidebar-button', {mousedown});
 
 		return (
-			<Draggable data={data} className={cls}>
-				<div className={cls} onClick={this.onClick}>
+			<Draggable data={data} className={cls} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} onDragEnd={this.onMouseUp}>
+				<div className={cls} onClick={this.onClick} >
 					<div className="icon-wrapper">
 						<div className={icnCls}></div>
 					</div>

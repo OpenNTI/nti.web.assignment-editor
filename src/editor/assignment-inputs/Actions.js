@@ -12,40 +12,75 @@ function createPartWithQuestion (/*assignment, question*/) {
 }
 
 
-function append (assignment, question) {
-	const {parts} = assignment;
-	const part = parts && parts[parts.length - 1];
-
+function insertAt (assignment, part, index, question) {
 	if (!part) {
 		createPartWithQuestion(assignment, question);
+		return;
 	}
 
 	const questionSet = part.question_set;
 	const orderedContents = questionSet && new OrderedContents(questionSet);
+	let save;
 
 	if (!questionSet) {
 		logger.error('Unknown state, assignment part without questionSet!!!');
-		dispatch(QUESTION_SET_ERROR, questionSet);
-	} else if (orderedContents.canEdit) {
-		dispatch(SAVING, questionSet);
-
-		orderedContents.append(question)
-			.then(() => {
-				dispatch(SAVE_ENDED);
-				dispatch(QUESTION_SET_UPDATED, questionSet);
-			})
-			.catch((reason) => {
-				logger.error('Unable to append question: ', reason);
-				dispatch(QUESTION_SET_ERROR, reason);
-			});
-	} else {
+		save = Promise.reject();
+	} else if (!orderedContents.canEdit) {
 		logger.warn('Unable to edit question set, dropping it on the floor');
+	} else if (index === Infinity) {
+		save = orderedContents.append(question);
+	} else {
+		save = orderedContents.insertAt(question, index);
 	}
+
+
+	return save
+		.then(() => {
+			dispatch(SAVE_ENDED);
+			dispatch(QUESTION_SET_UPDATED, questionSet);
+		})
+		.catch((reason) => {
+			logger.error('Unable to append question: ', reason);
+			dispatch(QUESTION_SET_ERROR, reason);
+		});
 }
 
 
-function insertAfter (/*assignment, question, after*/) {
-	//TODO: Figure this out
+function append (assignment, question) {
+	const {parts} = assignment;
+	const part = parts && parts[0];
+
+	insertAt(assignment, part, Infinity, question);
+}
+
+
+function insertAfter (assignment, newQuestion, after) {
+	const {parts} = assignment;
+	let position = {
+		index: -1,
+		part: null
+	};
+
+	for (let part of parts) {
+		let questionSet = part.question_set;
+		let {questions} = questionSet;
+
+		for (let i = 0; i < questions.length; i++) {
+			let question = questions[i];
+
+			if (question.NTIID === after.NTIID) {
+				position.index = i + 1;
+				position.part = part;
+				break;
+			}
+		}
+
+		if (position.part) {
+			break;
+		}
+	}
+
+	return insertAt(assignment, position.part, position.index, newQuestion);
 }
 
 

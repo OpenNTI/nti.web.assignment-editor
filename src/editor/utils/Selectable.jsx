@@ -79,12 +79,14 @@ export default class Selectable extends React.Component {
 
 
 	onSelectionChanged () {
-		let item = this.getSelectionItem();
-		let selectionManager = this.context.SelectionManager;
+		const {selected:wasSelected} = this.state;
+		const item = this.getSelectionItem();
+		const selectionManager = this.context.SelectionManager;
+		const isSelected = selectionManager.isSelected(item);
 
-		if (selectionManager) {
+		if (selectionManager && wasSelected !== isSelected) {
 			this.setState({
-				selected: selectionManager.isSelected(item)
+				selected: isSelected
 			});
 		}
 	}
@@ -137,7 +139,7 @@ export default class Selectable extends React.Component {
 			if (onUnselect) {
 				onUnselect(item);
 			}
-		}, 100);
+		}, 250);
 	}
 
 
