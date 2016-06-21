@@ -3,12 +3,25 @@ import uuid from 'node-uuid';
 import path from 'path';
 import minWait, {SHORT} from 'nti-commons/lib/wait-min';
 
-const linkName = 'ordered-contents';
+const LINK_NAME = 'ordered-contents';
 
-const fields = [
+const FIELDS = [
 	'questions',
 	'parts'
 ];
+
+
+function getLinkFromObj (obj) {
+	return obj && (obj.getOrderedContentsLink ? obj.getOrderedContentsLink() : obj.getLink(LINK_NAME));
+}
+
+
+export function hasOrderedContents (obj) {
+	const link = getLinkFromObj(obj);
+
+	return !!link;
+}
+
 
 export default class OrderedContents {
 	constructor (obj) {
@@ -19,11 +32,11 @@ export default class OrderedContents {
 	get orderedContentsField () {
 		const obj = this.backingObject;
 
-		if (obj.getOrderedContents) {
-			return obj.getOrderedContents();
+		if (obj.orderedContentsField) {
+			return obj.orderedContentsField;
 		}
 
-		for (let field of fields) {
+		for (let field of FIELDS) {
 			if (Array.isArray(obj[field])) {
 				return field;
 			}
@@ -43,14 +56,12 @@ export default class OrderedContents {
 
 
 	get link () {
-		const obj = this.backingObject;
-
-		return obj.getOrderedContentsLink ? obj.getOrderedContentsLink() : obj.getLink(linkName);
+		return getLinkFromObj(this.backingObject);
 	}
 
 
 	get canEdit () {
-		return !!this.link;
+		return hasOrderedContents(this.backingObject);
 	}
 
 
@@ -339,3 +350,4 @@ export default class OrderedContents {
 			});
 	}
 }
+

@@ -1,0 +1,13 @@
+@import "~nti-style-common";
+
+.assignment-editing-controls {
+	i[class^="icon-"] {
+		font-size: 1rem;
+		color: $secondary-grey;
+		cursor: pointer;
+
+		&:hover {
+			color: $primary-grey;
+		}
+	}
+}

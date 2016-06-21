@@ -9,7 +9,7 @@ import ControlsConfig from '../controls/ControlsConfig';
 
 import Content from './Content';
 import Parts from './Parts';
-import Controls from './Controls';
+import Controls from './controls';
 
 export default class QuestionComponent extends React.Component {
 	static propTypes = {
@@ -103,18 +103,18 @@ export default class QuestionComponent extends React.Component {
 
 
 	render () {
-		const {question, index} = this.props;
+		const {question, index, questionSet} = this.props;
 		const {selectableId, selectableValue, contentError, partError} = this.state;
 		const cls = cx('question-editor', {saving: question.isSaving});
 
 		return (
-			<div className="question-container">
+			<div className="assignment-editing-question-container">
 				<Selectable className={cls} id={selectableId} value={selectableValue}>
 					<div className="index">{index + 1}</div>
 					<Content question={question} onFocus={this.onContentFocus} onBlur={this.onContentBlur} error={contentError}/>
 					<Parts question={question} error={partError} />
 				</Selectable>
-				<Controls question={question} />
+				<Controls question={question} questionSet={questionSet} />
 			</div>
 		);
 	}

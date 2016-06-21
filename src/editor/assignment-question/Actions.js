@@ -23,15 +23,17 @@ export function saveQuestionContent (question, content) {
 export function deleteQuestionFrom (question, questionSet) {
 	const orderedContents = new OrderedContents(questionSet);
 
-	dispatch(SAVING, questionSet);
+	if (orderedContents.canEdit) {
+		dispatch(SAVING, questionSet);
 
-	orderedContents.remove(question)
-		.then(() => {
-			dispatch(SAVE_ENDED);
-			dispatch(QUESTION_SET_UPDATED, questionSet);
-		})
-		.catch((reason) => {
-			dispatch(SAVE_ENDED);
-			dispatch(QUESTION_SET_ERROR, reason);
-		});
+		orderedContents.remove(question)
+			.then(() => {
+				dispatch(SAVE_ENDED);
+				dispatch(QUESTION_SET_UPDATED, questionSet);
+			})
+			.catch((reason) => {
+				dispatch(SAVE_ENDED);
+				dispatch(QUESTION_SET_ERROR, reason);
+			});
+	}
 }

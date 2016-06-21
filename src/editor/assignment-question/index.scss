@@ -1,12 +1,12 @@
 @import "~nti-style-common";
 
-.question-container {
+.assignment-editing-question-container {
 	position: relative;
 	margin-bottom: 30px;
 
 
 	.question-editor {
-		margin-right: 90px;
+		margin-right: rem-calc(58px);
 
 		&:not(.selected) {
 			box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
@@ -25,17 +25,17 @@
 		}
 	}
 
-	.controls {
+	.assignment-editing-controls {
 		position: absolute;
-		top: 0;
-		right: 0;
+		top: rem-calc(8px);
+		right: rem-calc(16px);
 	}
 }
 
-.dragging .question-container {
+.dragging .assignment-editing-question-container  {
 	position: static;
 
-	.controls {
+	.assignment-editing-controls {
 		display: none;
 	}
 }
