@@ -48,7 +48,7 @@ export default class FormatControls extends React.Component {
 
 		return (
 			<EditorContextProvider editor={editor}>
-				<div>
+				<div className="editor-format-controls">
 					{editor ? 'Editor' : 'No Editor'}
 					<FormatButton format={FormatButton.Formats.BOLD}/>
 					<FormatButton format={FormatButton.Formats.ITALIC}/>

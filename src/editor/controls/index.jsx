@@ -1,6 +1,6 @@
 import React from 'react';
 import autobind from 'nti-commons/lib/autobind';
-
+import PublishControls from './PublishControls';
 import FormatControls from './FormatControls';
 
 export default class Controls extends React.Component {
@@ -57,6 +57,7 @@ export default class Controls extends React.Component {
 		return (
 			<div className="assignment-editor-controls">
 				<FormatControls selection={selection} />
+				<PublishControls />
 			</div>
 		);
 	}
