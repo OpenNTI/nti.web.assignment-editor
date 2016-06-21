@@ -1,4 +1,6 @@
 import React from 'react';
+import autobind from 'nti-commons/lib/autobind';
+
 import QuestionTypes from './QuestionTypes';
 import TabBar from './header';
 
@@ -11,18 +13,52 @@ export default class Editor extends React.Component {
 		selection: React.PropTypes.any
 	}
 
-
-	shouldComponentUpdate (nextProps) {
-		const {assignment:oldAssignment, schema:oldSchema, selection:oldSelection} = this.props;
-		const {assignment:newAssignment, schema:newSchema, selection:newSelection} = nextProps;
-
-		return oldAssignment !== newAssignment || oldSchema !== newSchema || oldSelection !== newSelection;
+	static contextTypes = {
+		SelectionManager: React.PropTypes.shape({
+			select: React.PropTypes.fn,
+			unseleft: React.PropTypes.fn
+		})
 	}
 
 
+	constructor (props) {
+		super(props);
+
+		this.state = {};
+
+		autobind(this, 'selectionChanged');
+	}
+
+
+	componentDidMount () {
+		const {SelectionManager} = this.context;
+
+		if (SelectionManager) {
+			SelectionManager.addListener('selection-changed', this.selectionChanged);
+			this.selectionChanged(SelectionManager.getSelection());
+		}
+	}
+
+
+	componenWillUnmount () {
+		const {SelectionManager} = this.context;
+
+		if (SelectionManager) {
+			SelectionManager.removeListener('selection-changed', this.selectionChanged);
+		}
+	}
+
+
+	selectionChanged (selection) {
+		this.setState({
+			selection
+		});
+	}
+
 
 	render () {
-		const {assignment, schema, selection} = this.props;
+		const {assignment, schema} = this.props;
+		const {selection} = this.state;
 
 		if (!assignment) {
 			return (

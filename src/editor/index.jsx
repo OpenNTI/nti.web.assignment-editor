@@ -44,8 +44,7 @@ export default class Editor extends React.Component {
 
 		autobind(this,
 			'onStoreChange',
-			'onWindowScroll',
-			'selectionChanged'
+			'onWindowScroll'
 		);
 	}
 
@@ -53,16 +52,11 @@ export default class Editor extends React.Component {
 	componentDidMount () {
 		Store.addChangeListener(this.onStoreChange);
 		loadAssignment(this.props.NTIID);
-
-		selectionManager.addListener('selection-changed', this.selectionChanged);
-		this.selectionChanged(selectionManager.getSelection());
 	}
 
 
 	componenWillUnmount () {
 		Store.removeChangeListener(this.onStoreChange);
-
-		selectionManager.removeListener('selection-changed', this.selectionChanged);
 	}
 
 
@@ -89,14 +83,6 @@ export default class Editor extends React.Component {
 		return {
 			SelectionManager: selectionManager
 		};
-	}
-
-
-	selectionChanged (selection) {
-		this.setState({
-			controlBarVisible: selection.length > 0,
-			selection: selection
-		});
 	}
 
 
