@@ -1,3 +1,5 @@
+@import "~nti-style-common";
+
 .question-set-editor {
-	padding: 30px;
+	padding: rem-calc(30px) rem-calc(30px) rem-calc(60px);
 }
