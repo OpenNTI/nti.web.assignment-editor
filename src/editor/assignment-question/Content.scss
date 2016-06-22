@@ -1,11 +1,27 @@
 @import "~nti-style-common";
 
-.question-content-editor {
-	height: 80px;
+.question-content-editor.nti-rich-text {
+	min-height: 80px;
 	padding: 20px 21px 20px 54px;
-	font-size: 0.875rem;
+	border: none;
+	background: none;
 
 	&.error {
 		box-shadow: 0 0 1px 1px $primary-red;
+	}
+
+	.DraftEditor-root {
+		padding: 0;
+		padding-bottom: 0;
+		font-size: 0.875rem;
+	}
+
+	.character-count {
+		display: none;
+	}
+
+	.public-DraftEditorPlaceholder-root {
+		font-style: italic;
+		font-weight: 300;
 	}
 }

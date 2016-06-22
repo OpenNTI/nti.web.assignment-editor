@@ -110,12 +110,5 @@ export default class ContentEditor extends React.Component {
 				/>
 			</Selectable>
 		);
-
-		// return (
-		// 	<Selectable className={cls} id={selectableId} value={selectableValue} onUnselect={this.onBlur}>
-		// 		<textarea placeholder={PLACEHOLDER} value={value} onChange={this.onChange} onFocus={this.onEditorFocus} onBlur={this.onEditorBlur}>
-		// 		</textarea>
-		// 	</Selectable>
-		// );
 	}
 }

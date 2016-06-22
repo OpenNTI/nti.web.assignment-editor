@@ -84,21 +84,21 @@ export default class QuestionComponent extends React.Component {
 	}
 
 
-	onContentFocus () {
-		// const {question} = this.props;
+	onContentFocus (editor) {
+		const {question} = this.props;
 
-		// this.setState({
-		// 	selectableValue: question.content + ' FOCUSED'
-		// });
+		this.setState({
+			selectableValue: new ControlsConfig(editor, question)
+		});
 	}
 
 
 	onContentBlur () {
-		// const {question} = this.props;
+		const {question} = this.props;
 
-		// this.setState({
-		// 	selectableValue: question.content
-		// });
+		this.setState({
+			selectableValue: new ControlsConfig(null, question)
+		});
 	}
 
 

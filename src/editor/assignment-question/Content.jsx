@@ -1,10 +1,11 @@
 import React from 'react';
 import cx from 'classnames';
+import {TextEditor} from 'nti-modeled-content';
 import autobind from 'nti-commons/lib/autobind';
 
-import TextArea from '../inputs/TextArea';
-
 import {saveQuestionContent} from './Actions';
+
+const PLACEHOLDER = 'Question Content';
 
 export default class QuestionContent extends React.Component {
 	static propTypes = {
@@ -18,6 +19,8 @@ export default class QuestionContent extends React.Component {
 	constructor (props) {
 		super(props);
 
+		this.setEditorRef = x => this.editorRef = x;
+
 		const {question, error} = props;
 
 		this.state = {
@@ -26,32 +29,39 @@ export default class QuestionContent extends React.Component {
 		};
 
 		autobind(this,
-			'onFocus',
-			'onBlur',
-			'onChange'
+			'onEditorFocus',
+			'onEditorBlur',
+			'onEditorChange'
 		);
 	}
 
 
 	componentWillReceiveProps (nextProps) {
-		this.setState({
-			error: nextProps.error
-		});
-	}
+		const {question:oldQuestion, error:oldError} = this.props;
+		const {question:newQuestion, error:newError} = nextProps;
+		let state = null;
 
+		if (oldQuestion.content !== newQuestion.content) {
+			state = state || {};
 
-	onFocus () {
-		const {onFocus} = this.props;
+			state.content = newQuestion.content;
+		}
 
-		if (onFocus) {
-			onFocus();
+		if (oldError !== newError) {
+			state = state || {};
+
+			state.error = newError;
+		}
+
+		if (state) {
+			this.setState(state);
 		}
 	}
 
 
-	onBlur () {
+	onEditorBlur () {
 		const {onBlur, question} = this.props;
-		const content = this.textarea.getValue();
+		const content = this.editorRef.getValue();
 
 		if (onBlur) {
 			onBlur();
@@ -61,7 +71,16 @@ export default class QuestionContent extends React.Component {
 	}
 
 
-	onChange () {
+	onEditorFocus () {
+		const {onFocus} = this.props;
+
+		if (onFocus) {
+			onFocus(this.editorRef);
+		}
+	}
+
+
+	onEditorChange () {
 		//TODO: start save timer?
 		const {error} = this.state;
 
@@ -76,7 +95,15 @@ export default class QuestionContent extends React.Component {
 		const cls = cx('question-content-editor', {error});
 
 		return (
-			<TextArea className={cls} ref={x => this.textarea = x} onChange={this.onChange} onFocus={this.onFocus} onBlur={this.onBlur} value={content} />
+			<TextEditor
+				className={cls}
+				ref={this.setEditorRef}
+				initialValue={content}
+				placeholder={PLACEHOLDER}
+				onFocus={this.onEditorFocus}
+				onBlur={this.onEditorBlur}
+				onChange={this.onEditorChange}
+			/>
 		);
 	}
 }
