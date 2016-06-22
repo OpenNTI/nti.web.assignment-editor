@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import autobind from 'nti-commons/lib/autobind';
+import wait from 'nti-commons/lib/wait';
 
 import DataTransfer from './DataTransfer';
 import DnDInfo from './Info';
@@ -47,7 +48,6 @@ export default class Draggable extends React.Component {
 		}
 	}
 
-
 	setDataForTransfer (data) {
 		if (!Array.isArray(data)) {
 			data = [data];
@@ -77,13 +77,16 @@ export default class Draggable extends React.Component {
 			});
 		}
 
-		this.setState({
-			isDragging: true
-		});
+		wait(100)
+			.then(() => {
+				this.setState({
+					isDragging: true
+				});
 
-		if (onDragStart) {
-			onDragStart(e);
-		}
+				if (onDragStart) {
+					onDragStart();
+				}
+			});
 	}
 
 
