@@ -1,7 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
 import autobind from 'nti-commons/lib/autobind';
-import wait from 'nti-commons/lib/wait';
 
 import DataTransfer from './DataTransfer';
 import DnDInfo from './Info';
@@ -77,16 +76,13 @@ export default class Draggable extends React.Component {
 			});
 		}
 
-		wait(100)
-			.then(() => {
-				this.setState({
-					isDragging: true
-				});
+		this.setState({
+			isDragging: true
+		});
 
-				if (onDragStart) {
-					onDragStart();
-				}
-			});
+		if (onDragStart) {
+			onDragStart();
+		}
 	}
 
 
