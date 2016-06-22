@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import autobind from 'nti-commons/lib/autobind';
+import {Error, Loading} from 'nti-web-commons';
 
 import ControlBar from '../control-bar';
 
@@ -89,21 +90,27 @@ export default class Editor extends React.Component {
 	render () {
 		let {error, assignment, schema, selection} = this.state;
 
-		if (error) {
-			return this.renderError(error);
+		if (error || (Store.isLoaded && !assignment)) {
+			return this.renderError(error || 'No Assignment');
 		}
 
 		let cls = cx('assignment-editor-container', {loading: Store.isLoaded});
 
 		return (
 			<div className={cls}>
-				<AssignmentEditor assignment={assignment} schema={schema} />
-				<FixedElement className="assignment-editing-sidebar-fixed">
-					<Sidebar ref={x => this.sidebar = x} assignment={assignment} schema={schema} selection={selection} />
-				</FixedElement>
-				<ControlBar visible >
-					<Controls assignment={assignment} selection={selection} />
-				</ControlBar>
+				{!assignment ? (
+					<Loading/>
+				) : (
+					<div>
+						<AssignmentEditor assignment={assignment} schema={schema} />
+						<FixedElement className="assignment-editing-sidebar-fixed">
+							<Sidebar ref={x => this.sidebar = x} assignment={assignment} schema={schema} selection={selection} />
+						</FixedElement>
+						<ControlBar visible>
+							<Controls assignment={assignment} selection={selection} />
+						</ControlBar>
+					</div>
+				)}
 			</div>
 		);
 	}
@@ -112,7 +119,7 @@ export default class Editor extends React.Component {
 	renderError (error) {
 		return (
 			<div className="assignment-editor error">
-				<span>{{error}}</span>
+				<Error error={error} />
 			</div>
 		);
 	}

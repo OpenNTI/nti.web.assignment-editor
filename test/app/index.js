@@ -7,7 +7,7 @@ import Dnd from '../../src/dnd/';
 import Ordering from '../../src/dnd/ordering';
 
 import 'normalize.css';
-import 'nti-style-common/fonts.scss';
+import 'nti-style-common/all.scss';
 import 'nti-web-commons/lib/index.css';
 import 'nti-modeled-content/lib/index.css';
 
