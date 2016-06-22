@@ -4,7 +4,7 @@
 	min-height: 80px;
 	padding: 20px 21px 20px 54px;
 	border: none;
-	background: none;
+	background: white;
 
 	&.error {
 		box-shadow: 0 0 1px 1px $primary-red;
@@ -23,5 +23,21 @@
 	.public-DraftEditorPlaceholder-root {
 		font-style: italic;
 		font-weight: 300;
+	}
+}
+
+.dragging .question-content-editor.nti-rich-text {
+	position: static;
+
+	.DraftEditor-root {
+		position: static;
+	}
+
+	.DraftEditor-editorContainer {
+		position: static;
+	}
+
+	.public-DraftStyleDefault-block {
+		position: static;
 	}
 }
