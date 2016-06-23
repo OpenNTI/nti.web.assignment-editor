@@ -12,23 +12,26 @@
 	}
 
 	&.correct {
-		input[type=text] {
+		.nti-rich-text {
 			background-color: $light-green;
 			border: 1px solid $border-green-light;
 		}
-
-		// &.selected {
-		// 	box-shadow: 0 0 1px 1px $border-green-light;
-		// }
 	}
 
-	input[type=text] {
+	.nti-rich-text {
 		font: normal 400 0.875rem/40px $body-font-family;
 		color: $primary-grey;
 		background-color: white;
 		width: 100%;
 		padding: 0 10px;
 		border: 1px solid $border-grey-light;
+
+		.DraftEditor-root {
+			padding: 0;
+			min-height: 0;
+			line-height: 2.5rem;
+			font-size: 0.875rem;
+		}
 	}
 }
 

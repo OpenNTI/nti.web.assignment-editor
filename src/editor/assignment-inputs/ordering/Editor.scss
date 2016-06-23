@@ -3,22 +3,25 @@
 .ordering-editor-choices {
 	padding-right: 30px;
 
-	.choices {
-		box-shadow: 0 0 0 1px $border-grey-light;
+	.ordering-item:first-of-type {
+		.assignment-input-choice {
+			border-top-width: 1px;
+		}
 	}
 
 	.assignment-input-choice {
-		margin-bottom: 1px;
+		border: 0 solid $border-grey-light;
+		border-left-width: 1px;
+		border-bottom-width: 1px;
 
-		&:not(.selected):not(.error) {
-			box-shadow: 0 1px 0 0 $border-grey-light;
-
-			&.correct {
-				box-shadow: 0 1px 0 0 $border-green-light, -1px 0 0 0 $border-green-light;
-			}
+		&.correct {
+			border: 0 solid $border-green-light;
+			border-right-width: 1px;
+			border-left-width: 1px;
+			border-bottom-width: 1px;
 		}
 
-		input {
+		.nti-rich-text {
 			border: none;
 		}
 
@@ -31,14 +34,14 @@
 		&.error {
 			position: relative;
 			z-index: 1;
-			box-shadow: 0 0 0 1px $border-red;
+			border: 1px solid $border-red;
 
 			input {
 				border: none;
 			}
 
 			&.selected {
-				box-shadow: 0 0 1px 1px $border-red;
+				box-shadow: 0 0 0 1px $border-red;
 			}
 		}
 
@@ -56,6 +59,9 @@
 
 	.add-choice {
 		clear: both;
-		border: none;
+		border: 0 solid $border-grey-light;
+		border-left-width: 1px;
+		border-right-width: 1px;
+		border-bottom-width: 1px;
 	}
 }

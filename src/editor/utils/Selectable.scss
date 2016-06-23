@@ -1,3 +1,5 @@
+@import "~nti-style-common";
+
 .selectable {
 	&, input, textarea {
 		&:focus {
@@ -6,6 +8,6 @@
 	}
 
 	&.selected {
-		box-shadow: 0 0 1px 1px blue;
+		box-shadow: 0 0 1px 1px $primary-blue;
 	}
 }

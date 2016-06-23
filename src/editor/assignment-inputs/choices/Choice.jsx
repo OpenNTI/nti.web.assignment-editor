@@ -1,8 +1,12 @@
 import React from 'react';
 import cx from 'classnames';
+import {TextEditor} from 'nti-modeled-content';
 import autobind from 'nti-commons/lib/autobind';
 
 import Selectable from '../../utils/Selectable';
+import ControlsConfig from '../../controls/ControlsConfig';
+
+const PLACEHOLDER = '';
 
 /**
  * Render a choice for a assignment question.
@@ -35,18 +39,17 @@ export default class Choice extends React.Component {
 		this.state = {
 			label: choice.label,
 			selectableId: choice.NTIID || choice.ID,
-			selectableValue: choice.label,
+			selectableValue: new ControlsConfig(),
 			error
 		};
 
-		this.setInputRef = x => this.inputRef = x;
+		this.setEditorRef = x => this.editorRef = x;
 
 		autobind(this,
 			'onUnselect',
 			'onSelect',
-			'onInputFocus',
-			'onInputBlur',
-			'onInputChange'
+			'onEditorFocus',
+			'onEditorChange'
 		);
 	}
 
@@ -77,8 +80,8 @@ export default class Choice extends React.Component {
 
 
 	componentDidMount () {
-		if (this.isNew && this.inputRef) {
-			this.inputRef.focus();
+		if (this.isNew && this.editorRef) {
+			this.editorRef.focus();
 			delete this.isNew;
 		}
 	}
@@ -86,7 +89,7 @@ export default class Choice extends React.Component {
 
 	onChange () {
 		const {onChange, choice} = this.props;
-		const {label} = this.state;
+		const label = this.editorRef && this.editorRef.getValue();
 
 		if (onChange && choice.label !== label) {
 			onChange({...choice, label: label});
@@ -94,38 +97,23 @@ export default class Choice extends React.Component {
 	}
 
 
-	onInputChange (e) {
-		const {error} = this.state;
+	onEditorChange () {
+		const {error, label} = this.state;
+		const newLabel = this.editorRef && this.editorRef.getValue();
 
-		this.setState({
-			label: e.target.value
-		}, () => {
-			if (error && error.clear) {
-				this.onChange();
-				error.clear();
-			}
-		});
+
+		if (error && error.clear && newLabel !== label) {
+			this.onChange();
+			error.clear();
+		}
 	}
 
 
-	onInputFocus () {
-		const {label} = this.state;
-
+	onEditorFocus () {
 		this.isFocused = true;
 
 		this.setState({
-			selectableValue: label + ' FOCUSED'
-		});
-	}
-
-
-	onInputBlur () {
-		const {label} = this.state;
-
-		this.isFocused = false;
-
-		this.setState({
-			selectableValue: label
+			selectableValue: new ControlsConfig(this.editorRef)
 		});
 	}
 
@@ -149,7 +137,13 @@ export default class Choice extends React.Component {
 
 		return (
 			<Selectable className={cls} id={selectableId} value={selectableValue} onSelect={this.onSelect} onUnselect={this.onUnselect}>
-				<input type="text" ref={this.setInputRef} value={label} onFocus={this.onInputFocus} onBlur={this.onInputBlur} onChange={this.onInputChange}/>
+				<TextEditor
+					ref={this.setEditorRef}
+					initialValue={label}
+					placeholder={PLACEHOLDER}
+					onFocus={this.onEditorFocus}
+					onChange={this.onEditorChange}
+				/>
 			</Selectable>
 		);
 	}
