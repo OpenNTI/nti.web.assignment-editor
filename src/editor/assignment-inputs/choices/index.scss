@@ -3,12 +3,29 @@
 .assignment-input-choices {
 	position: relative;
 
+	.dragging & {
+		position: static;
+	}
+
 	.delete {
 		position: absolute;
 		top: 0; right: 10px;
 
 		div {
 			line-height: 42px;
+		}
+	}
+
+	.choices {
+		position: relative;
+		z-index: 0;
+
+		.dragging & {
+			position: static;
+		}
+
+		.dragging & .ordering-container > div{
+			position: static !important;
 		}
 	}
 

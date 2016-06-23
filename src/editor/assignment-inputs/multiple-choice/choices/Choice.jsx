@@ -70,8 +70,8 @@ export default class MultipleChoiceChoice extends React.Component {
 
 		return (
 			<div className={cls}>
-				{this.renderSolution(correct, multipleAnswers, group)}
 				<Choice choice={choice} onChange={this.onChoiceChange} error={error} plainText={plainText} />
+				{this.renderSolution(correct, multipleAnswers, group)}
 			</div>
 		);
 	}

@@ -24,6 +24,10 @@
 		padding: 0 10px;
 		border: 1px solid $border-grey-light;
 
+		.dragging & {
+			position: static;
+		}
+
 		.DraftEditor-root {
 			padding: 0;
 			min-height: 0;

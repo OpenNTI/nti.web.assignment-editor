@@ -110,8 +110,8 @@ export default class QuestionComponent extends React.Component {
 		return (
 			<div className="assignment-editing-question-container">
 				<Selectable className={cls} id={selectableId} value={selectableValue}>
-					<div className="index">{index + 1}</div>
 					<Content question={question} onFocus={this.onContentFocus} onBlur={this.onContentBlur} error={contentError}/>
+					<div className="index">{index + 1}</div>
 					<Parts question={question} error={partError} />
 				</Selectable>
 				<Controls question={question} questionSet={questionSet} />
