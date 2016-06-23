@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import {TextEditor} from 'nti-modeled-content';
+import {TextEditor, valuesEqual} from 'nti-modeled-content';
 import autobind from 'nti-commons/lib/autobind';
 
 import Selectable from '../../utils/Selectable';
@@ -49,7 +49,8 @@ export default class Choice extends React.Component {
 			'onUnselect',
 			'onSelect',
 			'onEditorFocus',
-			'onEditorChange'
+			'onEditorChange',
+			'onEditorBlur'
 		);
 	}
 
@@ -59,12 +60,14 @@ export default class Choice extends React.Component {
 		const {choice: oldChoice, error:oldError} = this.props;
 		let state = null;
 
+		this.updatedLabel = newChoice.label;
+
 		if (newChoice !== oldChoice && !this.isFocused) {
 			state = state || {};
 
+			delete this.updatedLabel;
 			state.label = newChoice.label;
 			state.selectableId = newChoice.NTIID || newChoice.ID;
-			state.selectableValue = newChoice.label;
 		}
 
 		if (newError !== oldError) {
@@ -87,22 +90,30 @@ export default class Choice extends React.Component {
 	}
 
 
+	getLabelFromState () {
+		const {label} = this.state;
+
+		return this.updatedLabel || label;
+	}
+
+
 	onChange () {
 		const {onChange, choice} = this.props;
+		const oldLabel = this.getLabelFromState();
 		const label = this.editorRef && this.editorRef.getValue();
 
-		if (onChange && choice.label !== label) {
+		if (onChange && !valuesEqual(oldLabel, label)) {
 			onChange({...choice, label: label});
 		}
 	}
 
 
 	onEditorChange () {
-		const {error, label} = this.state;
+		const {error} = this.state;
+		const oldLabel = this.getLabelFromState();
 		const newLabel = this.editorRef && this.editorRef.getValue();
 
-
-		if (error && error.clear && newLabel !== label) {
+		if (error && error.clear && !valuesEqual(oldLabel, newLabel)) {
 			this.onChange();
 			error.clear();
 		}
@@ -115,6 +126,11 @@ export default class Choice extends React.Component {
 		this.setState({
 			selectableValue: new ControlsConfig(this.editorRef)
 		});
+	}
+
+
+	onEditorBlur () {
+		this.isFocused = null;
 	}
 
 
@@ -142,6 +158,7 @@ export default class Choice extends React.Component {
 					initialValue={label}
 					placeholder={PLACEHOLDER}
 					onFocus={this.onEditorFocus}
+					onBlur = {this.onEditorBlur}
 					onChange={this.onEditorChange}
 				/>
 			</Selectable>
