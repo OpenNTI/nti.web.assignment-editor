@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import cx from 'classnames';
-import {StickyContainer, Sticky} from 'react-sticky';
 import autobind from 'nti-commons/lib/autobind';
 
+import {StickyContainer, Sticky} from '../utils/StickyElement';
 import AssignmentInfo from '../assignment-info';
 import AssignmentParts from '../assignment-parts';
 import AssignmentContent from '../assignment-content';
