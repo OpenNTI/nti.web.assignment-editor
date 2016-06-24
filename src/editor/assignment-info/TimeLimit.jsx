@@ -1,5 +1,5 @@
 import React from 'react';
-import {Flyout, Checkbox} from 'nti-web-commons';
+import {Flyout, Checkbox, LabeledValue, TinyLoader as Loading} from 'nti-web-commons';
 import cx from 'classnames';
 
 import DurationPicker from './DurationPicker';
@@ -49,13 +49,23 @@ export default class TimeLimit extends React.Component {
 	save () {
 		const {assignment} = this.props;
 		const {value, hasTimeLimit} = this.state;
+		this.setState({
+			saving: true,
+			error: null
+		});
 		assignment.save({
 			IsTimedAssignment: hasTimeLimit,
 			MaximumTimeAllowed: value
 		})
+		.catch((error) => {
+			this.setState({
+				error
+			});
+		})
 		.then(() => {
 			this.setState({
-				changed: false
+				changed: false,
+				saving: false
 			});
 			this.flyout.dismiss();
 		});
@@ -63,9 +73,9 @@ export default class TimeLimit extends React.Component {
 
 	render () {
 
-		const {value, hasTimeLimit} = this.state;
+		const {value, hasTimeLimit, saving, changed, error} = this.state;
 		const buttonClasses = cx('flyout-fullwidth-btn', {
-			'changed': this.state.changed
+			'changed': changed || error
 		});
 
 		return (
@@ -74,7 +84,7 @@ export default class TimeLimit extends React.Component {
 					<div className="time-limit-editor">
 						<Checkbox label="Time Limit" checked={hasTimeLimit} onChange={this.toggleTimeLimit}/>
 						<DurationPicker onChange={this.timeChanged} value={value} />
-						<div className={buttonClasses} onClick={this.save}>Save Changes</div>
+						{saving ? <Loading /> : <div className={buttonClasses} onClick={this.save}>Save Changes</div>}
 					</div>
 				</Flyout>
 			</div>
@@ -83,20 +93,17 @@ export default class TimeLimit extends React.Component {
 
 	renderDisplay () {
 
-		const {value, hasTimeLimit} = this.state;
+		const {value, hasTimeLimit, error} = this.state;
 		const days = DurationPicker.days(value);
 		const hours = DurationPicker.hours(value);
 		const minutes = DurationPicker.minutes(value);
 
 		const p = (val, unit) => val > 0 ? `${val} ${unit}` + (val === 1 ? '' : 's') : '';
 
-		const label = hasTimeLimit ? `${p(days, 'day')} ${p(hours, 'hour')} ${p(minutes, 'minute')}` : 'No Limit';
+		const label = error ? 'Error' : hasTimeLimit ? `${p(days, 'day')} ${p(hours, 'hour')} ${p(minutes, 'minute')}` : 'No Limit';
 
 		return (
-			<div className="time-limit-display">
-				<div className="field-label">Time Limit</div>
-				<div className="field-value">{label}</div>
-			</div>
+			<LabeledValue label="Time Limit">{label}</LabeledValue>
 		);
 	}
 }

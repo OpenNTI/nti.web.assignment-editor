@@ -9,15 +9,10 @@
 		width: 25%;
 		float: left;
 		box-shadow: 1px 0 0 0 $border-grey-light;
-		padding: .5rem 0 0 1rem;
-		.field-label {
-			font-size: .625rem;
-			text-transform: uppercase;
-			color: $secondary-grey;
-		}
-		.field-value {
-			font-size: .875rem;
-			color: $primary-grey;
-		}
+	}
+
+	.labeled-value {
+		padding: 0 .5rem;
+		height: 100%;
 	}
 }

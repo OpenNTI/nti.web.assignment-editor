@@ -1,5 +1,5 @@
 import React from 'react';
-import {NumberInput} from 'nti-web-commons';
+import {NumberInput, LabeledValue} from 'nti-web-commons';
 
 export default class PointValue extends React.Component {
 	constructor (props) {
@@ -29,10 +29,9 @@ export default class PointValue extends React.Component {
 
 		return (
 			<div className="field point-value">
-				<div className="field-label">Point Value</div>
-				<div className="field-value">
+				<LabeledValue label="Point Value">
 					<NumberInput ref={x => this.input = x} onBlur={this.onBlur} defaultValue={value} />
-				</div>
+				</LabeledValue>
 			</div>
 		);
 	}
