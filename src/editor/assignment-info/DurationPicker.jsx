@@ -2,7 +2,10 @@ import React from 'react';
 
 import {NumberInput} from 'nti-web-commons';
 
-export default class TimeLimitEditor extends React.Component {
+export const secondsPerHour = 3600;
+export const secondsPerDay = secondsPerHour * 24;
+
+export default class DurationPicker extends React.Component {
 	constructor (props) {
 		super(props);
 
@@ -16,6 +19,33 @@ export default class TimeLimitEditor extends React.Component {
 		value: React.PropTypes.number
 	}
 
+	/**
+	 * Get the minutes (0-59) for the given seconds value.
+	 * @param  {number} seconds number of seconds
+	 * @return {integer} the minutes (0-59) for the given seconds value
+	 */
+	static minutes (seconds) {
+		return Math.floor((seconds % secondsPerHour) / 60);
+	}
+
+	/**
+	 * Get the hours (0-23) for the given seconds value
+	 * @param  {number} seconds The number of seconds
+	 * @return {integer} the number of hours (0-23) for the given seconds value
+	 */
+	static hours (seconds) {
+		return Math.floor((seconds % secondsPerDay) / secondsPerHour);
+	}
+
+	/**
+	 * Get the number of days for the given seconds value
+	 * @param  {number} seconds The number of seconds
+	 * @return {integer} the number of days for the given seconds value
+	 */
+	static days (seconds) {
+		return Math.floor(seconds / secondsPerDay);
+	}
+
 	componentWillMount () {
 		const {value = 0} = this.props;
 		this.setState({value});
@@ -26,9 +56,10 @@ export default class TimeLimitEditor extends React.Component {
 	}
 
 	getValue () {
+		const days = this.days.value;
 		const hours = this.hours.value;
 		const minutes = this.minutes.value;
-		return (hours * 3600) + (minutes * 60);
+		return (days * secondsPerDay) + (hours * secondsPerHour) + (minutes * 60);
 	}
 
 	inputChanged () {
@@ -44,29 +75,41 @@ export default class TimeLimitEditor extends React.Component {
 
 	render () {
 
-		const h = (v) => Math.floor(v / 3600);
-		const m = (v) => Math.floor((v - (h(v) * 3600)) / 60);
-
 		const {value} = this.state;
-		const hours = h(value);
-		const minutes = m(value);
+		const days = this.constructor.days(value);
+		const hours = this.constructor.hours(value);
+		const minutes = this.constructor.minutes(value);
 
 		return (
 			<div className="duration-picker">
-				<NumberInput ref={x => this.hours = x}
-					type="number"
-					onChange={this.inputChanged}
-					defaultValue={hours}
-					min="0"
-				/>
-				<span> : </span>
-				<NumberInput ref={x => this.minutes = x}
-					type="number"
-					onChange={this.inputChanged}
-					defaultValue={minutes}
-					min="0"
-					max="59"
-				/>
+				<label>
+					<span className="label">Days</span>
+					<NumberInput ref={x => this.days = x}
+						type="number"
+						onChange={this.inputChanged}
+						defaultValue={days}
+						min="0"
+					/>
+				</label>
+				<label>
+					<span className="label">Hours</span>
+					<NumberInput ref={x => this.hours = x}
+						type="number"
+						onChange={this.inputChanged}
+						defaultValue={hours}
+						min={0} max={23}
+					/>
+				</label>
+				<label>
+					<span className="label">Minutes</span>
+					<NumberInput ref={x => this.minutes = x}
+						type="number"
+						onChange={this.inputChanged}
+						defaultValue={minutes}
+						min="0"
+						max="59"
+					/>
+				</label>
 			</div>
 		);
 	}

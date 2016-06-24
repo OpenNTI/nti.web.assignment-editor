@@ -3,3 +3,13 @@
 		height: 100%;
 	}
 }
+
+.time-limit-editor {
+	background: white;
+	padding: .5rem;
+	box-shadow: 0 0 0 1px #e2e2e2;
+	font-size: .875rem;
+	.duration-picker {
+		margin: .5rem 0;
+	}
+}
