@@ -10,6 +10,10 @@ import MoveRoot from '../utils/MoveRoot';
 const QUESTION_TYPE = 'application/vnd.nextthought.naquestion';
 const {ItemChanges} = HOC;
 
+export {
+	QUESTION_TYPE
+};
+
 export default class QuestionSetComponent extends React.Component {
 
 	static propTypes = {

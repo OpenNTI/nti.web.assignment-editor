@@ -1,0 +1,12 @@
+@import "~nti-style-common";
+
+.assignment-editor-no-parts {
+	min-height: 200px;
+	text-transform: uppercase;
+	font: normal 400 1.25rem/1.5rem $body-font-family;
+	padding: rem-calc(20px);
+
+	&.drag-over {
+		background: $tertiary-grey;
+	}
+}

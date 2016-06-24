@@ -4,13 +4,9 @@ import Logger from 'nti-util-logger';
 import {getEqualityCheck} from './index';
 import {SAVING, SAVE_ENDED, QUESTION_SET_UPDATED, QUESTION_SET_ERROR, QUESTION_UPDATED, QUESTION_ERROR} from '../Constants';
 import OrderedContents from '../utils/OrderedContents';
+import {createPartWithQuestion} from '../assignment-parts/Actions';
 
 const logger = Logger.get('assignment-inputs:Actions');
-
-function createPartWithQuestion (/*assignment, question*/) {
-	//TODO: figure this out
-}
-
 
 function insertAt (assignment, part, index, question) {
 	if (!part) {

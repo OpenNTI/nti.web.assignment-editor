@@ -1,6 +1,12 @@
 import React from 'react';
 import Logger from 'nti-util-logger';
+import {HOC} from 'nti-web-commons';
+import autobind from 'nti-commons/lib/autobind';
+
+import NoParts from './NoParts';
 import Part from './Part';
+
+const {ItemChanges} = HOC;
 
 const logger = Logger.get('assignment-editor:assignment-parts');
 
@@ -12,7 +18,12 @@ export default class AssignmentParts extends React.Component {
 	constructor (props) {
 		super(props);
 
-		this.state = {};
+		autobind(this, 'onAssignmentUpdate');
+	}
+
+
+	onAssignmentUpdate () {
+		this.forceUpdate();
 	}
 
 
@@ -28,12 +39,14 @@ export default class AssignmentParts extends React.Component {
 		const parts = assignment.parts;
 
 		return (
-			<div className="assignment-parts">
-				{parts && parts.length ?
-					this.renderParts(parts) :
-					(<span>No parts</span>)
-				}
-			</div>
+			<ItemChanges item={assignment} onItemChanged={this.onAssignmentUpdate}>
+				<div className="assignment-parts">
+					{parts && parts.length ?
+						this.renderParts(parts) :
+						this.renderNoParts()
+					}
+				</div>
+			</ItemChanges>
 		);
 	}
 
@@ -45,6 +58,15 @@ export default class AssignmentParts extends React.Component {
 
 		return (
 			<Part part={parts[0]} assignment={this.props.assignment} />
+		);
+	}
+
+
+	renderNoParts () {
+		const {assignment} = this.props;
+
+		return (
+			<NoParts assignment={assignment} />
 		);
 	}
 }
