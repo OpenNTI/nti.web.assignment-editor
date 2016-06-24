@@ -1,0 +1,8 @@
+.point-value {
+	input {
+		border: none;
+		&:focus {
+			border: inherit;
+		}
+	}
+}
