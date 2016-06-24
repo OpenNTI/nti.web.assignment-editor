@@ -11,7 +11,7 @@ export default class PointValue extends React.Component {
 	render () {
 		return (
 			<div className="field point-value">
-				Point Value
+				<div className="field-label">Point Value</div>
 			</div>
 		);
 	}
