@@ -7,6 +7,9 @@ import OrderedContents from '../utils/OrderedContents';
 
 const logger = Logger.get('assignment-questionset:Actions');
 
+const questionSetKey = 'question_set';
+const partsKey = 'parts';
+
 const blankAssignmentPart = {
 	'Class': 'AssignmentPart',
 	'MimeType': 'application/vnd.nextthought.assessment.assignmentpart'
@@ -21,14 +24,23 @@ const blankQuestionSet = {
 function buildPartWithQuestion (question) {
 	const questionSet = {...blankQuestionSet, questions: [question]};
 
-	return {...blankAssignmentPart, question_set: questionSet};
+	return {...blankAssignmentPart, [questionSetKey]: questionSet};
 }
 
 
 export function createPartWithQuestion (assignment, question) {
 	const part = buildPartWithQuestion(question);
 
-	saveFieldOn(assignment, 'parts', [part]);
+	saveFieldOn(assignment, partsKey, [part]);
+}
+
+
+export function removePartWithQuestionSet (assignment, questionSet) {
+	let {[partsKey]:parts} = assignment;
+
+	parts = parts.filter(part => part[questionSetKey].NTIID !== questionSet.NTIID);
+
+	saveFieldOn(assignment, partsKey, parts);
 }
 
 

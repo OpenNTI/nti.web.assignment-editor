@@ -84,10 +84,10 @@ export default class QuestionSetComponent extends React.Component {
 
 
 	renderQuestion (question, index) {
-		const {questionSet} = this.props;
+		const {questionSet, assignment} = this.props;
 
 		return (
-			<Question index={index} question={question} questionSet={questionSet} />
+			<Question index={index} question={question} questionSet={questionSet} assignment={assignment} />
 		);
 	}
 }

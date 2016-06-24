@@ -8,7 +8,8 @@ const TITLE = 'Delete';
 export default class DeleteControl extends React.Component {
 	static propTypes = {
 		question: React.PropTypes.object.isRequired,
-		questionSet: React.PropTypes.object.isRequired
+		questionSet: React.PropTypes.object.isRequired,
+		assignment: React.PropTypes.object.isRequired
 	}
 
 
@@ -21,9 +22,9 @@ export default class DeleteControl extends React.Component {
 
 
 	onClick () {
-		const {question, questionSet} = this.props;
+		const {question, questionSet, assignment} = this.props;
 
-		deleteQuestionFrom(question, questionSet);
+		deleteQuestionFrom(question, questionSet, assignment);
 	}
 
 

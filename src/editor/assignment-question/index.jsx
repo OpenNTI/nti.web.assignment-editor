@@ -15,6 +15,7 @@ export default class QuestionComponent extends React.Component {
 	static propTypes = {
 		question: React.PropTypes.object.isRequired,
 		questionSet: React.PropTypes.object.isRequired,
+		assignment: React.PropTypes.object.isRequired,
 		index: React.PropTypes.number
 	}
 
@@ -103,7 +104,7 @@ export default class QuestionComponent extends React.Component {
 
 
 	render () {
-		const {question, index, questionSet} = this.props;
+		const {question, index, questionSet, assignment} = this.props;
 		const {selectableId, selectableValue, contentError, partError} = this.state;
 		const cls = cx('question-editor', {saving: question.isSaving});
 
@@ -114,7 +115,7 @@ export default class QuestionComponent extends React.Component {
 					<div className="index">{index + 1}</div>
 					<Parts question={question} error={partError} />
 				</Selectable>
-				<Controls question={question} questionSet={questionSet} />
+				<Controls question={question} questionSet={questionSet} assignment={assignment} />
 			</div>
 		);
 	}

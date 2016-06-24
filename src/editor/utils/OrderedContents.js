@@ -55,6 +55,11 @@ export default class OrderedContents {
 	}
 
 
+	get length () {
+		return this.orderedContents.length;
+	}
+
+
 	get link () {
 		return getLinkFromObj(this.backingObject);
 	}

@@ -1,7 +1,10 @@
 import {dispatch} from 'nti-lib-dispatcher';
+
 import OrderedContents from '../utils/OrderedContents';
 import {saveFieldOn} from '../Actions';
+import {removePartWithQuestionSet} from '../assignment-parts/Actions';
 import {SAVING, SAVE_ENDED, QUESTION_UPDATED, QUESTION_ERROR, QUESTION_SET_UPDATED, QUESTION_SET_ERROR} from '../Constants';
+
 import {cloneQuestion} from './utils';
 
 
@@ -22,10 +25,12 @@ export function saveQuestionContent (question, content) {
 }
 
 
-export function deleteQuestionFrom (question, questionSet) {
+export function deleteQuestionFrom (question, questionSet, assignment) {
 	const orderedContents = new OrderedContents(questionSet);
 
-	if (orderedContents.canEdit) {
+	if (orderedContents.canEdit && orderedContents.length === 1) {
+		removePartWithQuestionSet(assignment, questionSet);
+	} else if (orderedContents.canEdit) {
 		dispatch(SAVING, questionSet);
 
 		orderedContents.remove(question)
