@@ -53,11 +53,12 @@ export default class Controls extends React.Component {
 
 	render () {
 		const {selection} = this.state;
+		const {assignment} = this.props;
 
 		return (
 			<div className="assignment-editor-controls">
 				<FormatControls selection={selection} />
-				<PublishControls />
+				<PublishControls assignment={assignment} />
 			</div>
 		);
 	}
