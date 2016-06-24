@@ -1,4 +1,5 @@
 import {dispatch} from 'nti-lib-dispatcher';
+import {getService} from  'nti-web-client';
 import Logger from 'nti-util-logger';
 
 import {saveFieldOn} from '../Actions';
@@ -7,8 +8,9 @@ import OrderedContents from '../utils/OrderedContents';
 
 const logger = Logger.get('assignment-questionset:Actions');
 
-const questionSetKey = 'question_set';
-const partsKey = 'parts';
+const QUESTIONS_KEY = 'questions';
+const QUESTION_SET_KEY = 'question_set';
+const PARTS_KEY = 'parts';
 
 const blankAssignmentPart = {
 	'Class': 'AssignmentPart',
@@ -21,26 +23,77 @@ const blankQuestionSet = {
 };
 
 
-function buildPartWithQuestion (question) {
-	const questionSet = {...blankQuestionSet, questions: [question]};
+function buildPartWithQuestion (questionData) {
+	return getService()
+		.then((service) => {
+			const part = service.getObjectPlaceholder({...blankAssignmentPart});
+			const questionSet = service.getObjectPlaceholder({...blankQuestionSet});
+			const question = service.getObjectPlaceholder({...questionData});
 
-	return {...blankAssignmentPart, [questionSetKey]: questionSet};
+			part.isSaving = true;
+			questionSet.isSaving = true;
+			question.isSaving = true;
+
+			questionSet[QUESTIONS_KEY] = questionSet[QUESTIONS_KEY] || [];
+			questionSet[QUESTIONS_KEY].push(question);
+
+			part[QUESTION_SET_KEY] = questionSet;
+
+			return part;
+		});
+}
+
+
+function setErrorOnPlaceholderPart (part, reason) {
+	if (!part || !part.isPlaceholder) { return part; }
+
+	part.error = reason;
+
+	const questionSet = part[QUESTION_SET_KEY];
+
+	if (questionSet.isPlaceholder) {
+		questionSet.error = reason;
+	}
+
+	const questions = questionSet[QUESTIONS_KEY];
+
+	questionSet[QUESTIONS_KEY] = questions.map((question) => {
+		if (question.isPlaceholder) {
+			question.error = reason;
+		}
+	});
+
+	return part;
 }
 
 
 export function createPartWithQuestion (assignment, question) {
-	const part = buildPartWithQuestion(question);
+	buildPartWithQuestion(question)
+		.then((part) => {
+			assignment.parts = assignment.parts || [];
+			assignment.parts.push(part);
 
-	saveFieldOn(assignment, partsKey, [part]);
+			assignment.onChange();
+
+			const save = saveFieldOn(assignment, PARTS_KEY, [part]);
+
+			if (save && save.then) {
+				save.catch((reason) => {
+					assignment.parts = assignment.parts.map(p => setErrorOnPlaceholderPart(p, reason));
+
+					assignment.onChange();
+				});
+			}
+		});
 }
 
 
 export function removePartWithQuestionSet (assignment, questionSet) {
-	let {[partsKey]:parts} = assignment;
+	let {[PARTS_KEY]:parts} = assignment;
 
-	parts = parts.filter(part => part[questionSetKey].NTIID !== questionSet.NTIID);
+	parts = parts.filter(part => part[QUESTION_SET_KEY].NTIID !== questionSet.NTIID);
 
-	saveFieldOn(assignment, partsKey, parts);
+	saveFieldOn(assignment, PARTS_KEY, parts);
 }
 
 

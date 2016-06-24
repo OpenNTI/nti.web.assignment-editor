@@ -12,7 +12,12 @@ const FIELDS = [
 
 
 function getLinkFromObj (obj) {
-	return obj && (obj.getOrderedContentsLink ? obj.getOrderedContentsLink() : obj.getLink(LINK_NAME));
+	return obj && (obj.getOrderedContentsLink ?
+						obj.getOrderedContentsLink() :
+						obj.getLink ?
+							obj.getLink(LINK_NAME) :
+							''
+					);
 }
 
 

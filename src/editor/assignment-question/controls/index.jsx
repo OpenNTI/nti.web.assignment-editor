@@ -15,6 +15,7 @@ QuestionControls.propTypes = {
 
 export default function QuestionControls (props) {
 	const {question, questionSet, assignment} = props;
+
 	const ordered = hasOrderedContents(questionSet);
 	const canDelete = ordered;
 	const canDuplicate = ordered;

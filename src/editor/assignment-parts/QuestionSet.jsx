@@ -27,7 +27,7 @@ export default class QuestionSetComponent extends React.Component {
 
 		const {questionSet} = props;
 		const {questions} = questionSet;
-		const moveLink = questionSet.getLink('AssessmentMove');
+		const moveLink = questionSet && questionSet.getLink && questionSet.getLink('AssessmentMove');
 
 		this.state = {
 			questions: questions
@@ -46,13 +46,24 @@ export default class QuestionSetComponent extends React.Component {
 		);
 	}
 
+	componentWillReceiveProps (nextProps) {
+		const {questionSet:newQuestionSet} = nextProps;
+		const {questionSet:oldQuestionSet} = this.props;
+
+		if (newQuestionSet !== oldQuestionSet) {
+			this.setState({
+				questions: newQuestionSet.questions
+			});
+		}
+	}
+
 
 	onQuestionSetChange () {
 		const {questionSet} = this.props;
 		const {questions} = questionSet;
 
 		this.setState({
-			questions: questions
+			questions
 		});
 	}
 
@@ -67,9 +78,10 @@ export default class QuestionSetComponent extends React.Component {
 	render () {
 		const {questionSet} = this.props;
 		const {questions} = this.state;
+		const item = questionSet.isSaving ? null : questionSet;
 
 		return (
-			<ItemChanges item={questionSet} onItemChanged={this.onQuestionSetChange}>
+			<ItemChanges item={item} onItemChanged={this.onQuestionSetChange}>
 				<Ordering
 					containerId={questionSet.NTIID}
 					className="question-set-editor"
