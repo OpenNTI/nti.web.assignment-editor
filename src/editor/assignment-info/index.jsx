@@ -1,8 +1,7 @@
 import React from 'react';
 
 import PointValue from './PointValue';
-import AvailableBeginning from './AvailableBeginning';
-import AvailableEnding from './AvailableEnding';
+import DueDate from './DueDate';
 import TimeLimit from './TimeLimit';
 
 export default class AssignmentInfo extends React.Component {
@@ -29,8 +28,7 @@ export default class AssignmentInfo extends React.Component {
 
 		return (
 			<div className="assignment-info">
-				<AvailableBeginning assignment={assignment} schema={schema} />
-				<AvailableEnding assignment={assignment} schema={schema} />
+				<DueDate assignment={assignment} schema={schema} />
 				<TimeLimit assignment={assignment} schema={schema} />
 				<PointValue assignment={assignment} schema={schema} />
 			</div>
