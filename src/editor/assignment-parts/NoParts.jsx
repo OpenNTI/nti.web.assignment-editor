@@ -6,7 +6,7 @@ import {Dropzone} from '../../dnd';
 import {createPartWithQuestion} from './Actions';
 import {QUESTION_TYPE} from './QuestionSet';
 
-const PLACEHOLDER = 'No questions yet. Select question from the right to get add one.';
+const PLACEHOLDER = 'No questions yet. Select question from the right to add one.';
 
 export default class NoParts extends React.Component {
 	static propTypes = {
