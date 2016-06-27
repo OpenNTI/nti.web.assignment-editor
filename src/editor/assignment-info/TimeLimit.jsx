@@ -32,7 +32,7 @@ export default class TimeLimit extends React.Component {
 	setUp (props = this.props) {
 		const {assignment} = props;
 		const value = assignment.maximum_time_allowed || 0;
-		const hasTimeLimit = assignment.isTimed;
+		const hasTimeLimit = !!assignment.isTimed;
 		this.setState({
 			value,
 			hasTimeLimit,
