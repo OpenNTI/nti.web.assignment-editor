@@ -1,7 +1,10 @@
 import {getService} from  'nti-web-client';
+import Logger from 'nti-util-logger';
 import uuid from 'node-uuid';
 import path from 'path';
 import minWait, {SHORT} from 'nti-commons/lib/wait-min';
+
+const logger = Logger.get('OrderedContents');
 
 const LINK_NAME = 'ordered-contents';
 
@@ -162,9 +165,16 @@ export default class OrderedContents {
 			.then(minWait(SHORT))
 			.then((savedItem) => {
 				//after it has saved, replace the optimistic placeholder with the real thing
-				orderedContents[index] = savedItem;
-				obj[orderedContentsField] = orderedContents;
-				obj.onChange();
+				const newContents = this.orderedContents.slice();
+				const placeholderIndex = newContents.findIndex(x => x === item);
+
+				if (placeholderIndex < 0) {
+					logger.error('How did we get here?!?!?!?!');
+				} else {
+					newContents[placeholderIndex] = savedItem;
+					obj[orderedContentsField] = newContents;
+					obj.onChange();
+				}
 			})
 			.catch((reason) => {
 				delete item.isSaving;
