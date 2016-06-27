@@ -89,11 +89,22 @@ export function createPartWithQuestion (assignment, question) {
 
 
 export function removePartWithQuestionSet (assignment, questionSet) {
+	function deleteQuestionSet () {
+		questionSet.delete();
+	}
+
+
 	let {[PARTS_KEY]:parts} = assignment;
 
 	parts = parts.filter(part => part[QUESTION_SET_KEY].NTIID !== questionSet.NTIID);
 
-	saveFieldOn(assignment, PARTS_KEY, parts);
+	const save = saveFieldOn(assignment, PARTS_KEY, parts);
+
+	if (save && save.then) {
+		save.then(deleteQuestionSet);
+	} else {
+		deleteQuestionSet();
+	}
 }
 
 
