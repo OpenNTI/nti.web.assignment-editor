@@ -33,6 +33,7 @@
 			min-height: 0;
 			line-height: 2.5rem;
 			font-size: 0.875rem;
+			transition: color 500ms;
 		}
 	}
 }
@@ -40,5 +41,11 @@
 .assignment-input-choices.can-delete {
 	input[type=text] {
 		padding-right: 30px;
+	}
+}
+
+.is-saving .assignment-input-choice {
+	.nti-rich-text .DraftEditor-root {
+		color: transparent;
 	}
 }

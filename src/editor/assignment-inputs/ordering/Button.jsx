@@ -2,9 +2,9 @@ import React from 'react';
 import Button from '../base/Button';
 import {generatePartFor} from './utils';
 
-const defaultLabels = ['Label 1', 'Label 2', 'Label 3'];
-const defaultValues = ['Value 1', 'Value 2', 'Value 3'];
-const defaultSolution = {'0': 2, '1': 1, '2': 0};
+const defaultLabels = ['Label 1', 'Label 2'];
+const defaultValues = ['Value 1', 'Label 2'];
+const defaultSolution = {'0': 0, '1': 1};
 
 export default class OrderingButton extends React.Component {
 	static propTypes = {

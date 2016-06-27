@@ -19,6 +19,8 @@
 		left: 1.25rem;
 		font: normal 400 0.875rem/1.25rem $body-font-family;
 		color: $tertiary-grey;
+		transition: opacity 500ms;
+		opacity: 1;
 
 		&::after {
 			content: '.';
@@ -29,6 +31,13 @@
 		position: absolute;
 		top: rem-calc(8px);
 		right: rem-calc(16px);
+	}
+
+
+	& .is-saving {
+		.index {
+			opacity: 0;
+		}
 	}
 }
 

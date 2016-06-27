@@ -12,6 +12,8 @@
 		position: absolute;
 		top: 15px;
 		left: 15px;
+		opacity: 1;
+		transition: opacity 500ms;
 	}
 
 	.remove {
@@ -22,10 +24,16 @@
 	}
 }
 
-.dragging .multiple-choice .choice {
+.dragging .multiple-choice-choice {
 	position: static;
 
 	input[type="checkbox"], input[type="radio"] {
 		display: none;
+	}
+}
+
+.is-saving .multiple-choice-choice {
+	input[type="checkbox"], input[type="radio"] {
+	 	opacity: 0;
 	}
 }

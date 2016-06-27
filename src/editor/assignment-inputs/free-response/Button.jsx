@@ -2,6 +2,11 @@ import React from 'react';
 import Button from '../base/Button';
 import {generatePartFor} from './utils';
 
+const LABEL = 'Free Response';
+const DEFAULT_CONTENT = 'Free Response Question';
+const DEFAULT_SOLUTION = ['Answer 1'];
+const ICON_CLS = 'freeresponse';
+
 
 export default class FreeResponseButton extends React.Component {
 	static propTypes = {
@@ -17,10 +22,6 @@ export default class FreeResponseButton extends React.Component {
 		return this.handledMimetypes;
 	}
 
-	label = 'Free Response'
-	defaultQuestionContent = 'Essay Question'
-	iconCls = 'freeresponse';
-
 
 	render () {
 		const {assignment, activeQuestion} = this.props;
@@ -30,10 +31,10 @@ export default class FreeResponseButton extends React.Component {
 				part={this.getBlankPart()}
 				assignment={assignment}
 				activeQuestion={activeQuestion}
-				label={this.label}
-				defaultQuestionContent={this.defaultQuestionContent}
+				label={LABEL}
+				defaultQuestionContent={DEFAULT_CONTENT}
 				handles={handles}
-				iconCls={this.iconCls} />
+				iconCls={ICON_CLS} />
 		);
 	}
 
@@ -43,7 +44,7 @@ export default class FreeResponseButton extends React.Component {
 		let mimeType = handles && handles[0];
 
 		if (mimeType) {
-			return generatePartFor(mimeType, this.defaultQuestionContent);
+			return generatePartFor(mimeType, DEFAULT_CONTENT, DEFAULT_SOLUTION);
 		}
 		return {};
 	}

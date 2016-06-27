@@ -3,10 +3,15 @@
 .assignment-textinput-placeholder {
 	border: 1px solid $border-grey-light;
 	font: italic 400 0.875rem/1rem $body-font-family;
+	transition: color 500ms;
 	color: $tertiary-grey;
 	padding: 10px 14px;
 
 	&:not(.single-line) {
 		min-height: 10rem;
 	}
+}
+
+.is-saving .assignment-textinput-placeholder {
+	color: transparent;
 }

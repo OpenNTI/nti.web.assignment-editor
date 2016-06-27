@@ -1,32 +1,36 @@
 @import "~nti-style-common";
 
-.question-content-editor.nti-rich-text {
+.question-content-editor {
 	min-height: 80px;
-	padding: 20px 21px 20px 54px;
-	border: none;
-	background: white;
 
-	&.error {
+	&.error .nti-rich-text {
 		box-shadow: 0 0 1px 1px $primary-red;
 	}
 
-	.DraftEditor-root {
-		padding: 0;
-		padding-bottom: 0;
-		font-size: 0.875rem;
-	}
+	.nti-rich-text {
+		padding: 20px 21px 20px 54px;
+		border: none;
+		background: white;
 
-	.character-count {
-		display: none;
-	}
+		.DraftEditor-root {
+			padding: 0;
+			padding-bottom: 0;
+			font-size: 0.875rem;
+			transition: color 500ms;
+		}
 
-	.public-DraftEditorPlaceholder-root {
-		font-style: italic;
-		font-weight: 300;
+		.character-count {
+			display: none;
+		}
+
+		.public-DraftEditorPlaceholder-root {
+			font-style: italic;
+			font-weight: 300;
+		}
 	}
 }
 
-.dragging .question-content-editor.nti-rich-text {
+.dragging .question-content-editor .nti-rich-text {
 	position: static;
 
 	.DraftEditor-root {
@@ -40,4 +44,8 @@
 	.public-DraftStyleDefault-block {
 		position: static;
 	}
+}
+
+.is-saving .question-content-editor .nti-rich-text .DraftEditor-root {
+	color: transparent;
 }

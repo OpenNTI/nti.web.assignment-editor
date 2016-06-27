@@ -37,6 +37,7 @@
 		padding: 0 10px 0 34px;
 		border: 1px solid $border-grey-light;
 		cursor: pointer;
+		transition: color 500ms;
 
 		&::before {
 			content: '+';
@@ -47,3 +48,13 @@
 		}
 	}
 }
+
+
+.is-saving .assignment-input-choices {
+	.add-choice {
+		color: transparent;
+	}
+}
+
+
+

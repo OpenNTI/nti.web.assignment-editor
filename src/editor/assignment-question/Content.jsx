@@ -10,6 +10,7 @@ const PLACEHOLDER = 'Question Content';
 export default class QuestionContent extends React.Component {
 	static propTypes = {
 		question: React.PropTypes.object.isRequired,
+		isSaving: React.PropTypes.bool,
 		onFocus: React.PropTypes.func,
 		onBlur: React.PropTypes.func,
 		error: React.PropTypes.any
@@ -91,19 +92,25 @@ export default class QuestionContent extends React.Component {
 
 
 	render () {
+		const {isSaving} = this.props;
 		const {content, error} = this.state;
 		const cls = cx('question-content-editor', {error});
 
 		return (
-			<TextEditor
-				className={cls}
-				ref={this.setEditorRef}
-				initialValue={content}
-				placeholder={PLACEHOLDER}
-				onFocus={this.onEditorFocus}
-				onBlur={this.onEditorBlur}
-				onChange={this.onEditorChange}
-			/>
+			<div className={cls}>
+				{!isSaving ?
+					<TextEditor
+						className={cls}
+						ref={this.setEditorRef}
+						initialValue={content}
+						placeholder={PLACEHOLDER}
+						onFocus={this.onEditorFocus}
+						onBlur={this.onEditorBlur}
+						onChange={this.onEditorChange}
+					/> :
+					null
+				}
+			</div>
 		);
 	}
 }

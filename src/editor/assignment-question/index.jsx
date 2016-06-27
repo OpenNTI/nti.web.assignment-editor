@@ -107,7 +107,7 @@ export default class QuestionComponent extends React.Component {
 		const {question, index, questionSet, assignment} = this.props;
 		const {selectableId, selectableValue, contentError, partError} = this.state;
 		const {isSaving} = question;
-		const cls = cx('question-editor', {saving: isSaving});
+		const cls = cx('question-editor', {'is-saving': isSaving});
 
 		return (
 			<div className="assignment-editing-question-container">
