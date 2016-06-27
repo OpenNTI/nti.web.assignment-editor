@@ -16,7 +16,6 @@ export default class PointValue extends React.Component {
 	onBlur () {
 		const {assignment} = this.props;
 		const {value} = this.input;
-		console.log(value);
 		assignment.save({
 			PointValue: value
 		});
@@ -29,7 +28,7 @@ export default class PointValue extends React.Component {
 
 		return (
 			<div className="field point-value">
-				<LabeledValue label="Point Value">
+				<LabeledValue label="Value">
 					<NumberInput ref={x => this.input = x} onBlur={this.onBlur} defaultValue={value} />
 				</LabeledValue>
 			</div>
