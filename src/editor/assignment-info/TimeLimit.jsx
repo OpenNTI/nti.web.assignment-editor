@@ -108,7 +108,7 @@ export default class TimeLimit extends React.Component {
 
 		const p = (val, unit) => val > 0 ? `${val} ${unit}` + (val === 1 ? '' : 's') : '';
 
-		const label = error ? 'Error' : hasTimeLimit ? `${p(days, 'day')} ${p(hours, 'hour')} ${p(minutes, 'minute')}` : 'No Limit';
+		const label = error ? 'Error' : (hasTimeLimit && value > 0) ? `${p(days, 'day')} ${p(hours, 'hour')} ${p(minutes, 'minute')}` : 'No Limit';
 
 		return (
 			<LabeledValue label="Time Limit">{label}</LabeledValue>
