@@ -59,7 +59,7 @@ export default class DurationPicker extends React.Component {
 		const days = this.days.value;
 		const hours = this.hours.value;
 		const minutes = this.minutes.value;
-		return (days * secondsPerDay) + (hours * secondsPerHour) + (minutes * 60);
+		return Math.max(0, (days * secondsPerDay) + (hours * secondsPerHour) + (minutes * 60));
 	}
 
 	inputChanged () {
