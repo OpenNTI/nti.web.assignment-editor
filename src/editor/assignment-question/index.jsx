@@ -106,7 +106,8 @@ export default class QuestionComponent extends React.Component {
 	render () {
 		const {question, index, questionSet, assignment} = this.props;
 		const {selectableId, selectableValue, contentError, partError} = this.state;
-		const cls = cx('question-editor', {saving: question.isSaving});
+		const {isSaving} = question;
+		const cls = cx('question-editor', {saving: isSaving});
 
 		return (
 			<div className="assignment-editing-question-container">
@@ -115,7 +116,7 @@ export default class QuestionComponent extends React.Component {
 					<div className="index">{index + 1}</div>
 					<Parts question={question} error={partError} />
 				</Selectable>
-				<Controls question={question} questionSet={questionSet} assignment={assignment} />
+				{!isSaving && (<Controls question={question} questionSet={questionSet} assignment={assignment} />)}
 			</div>
 		);
 	}
