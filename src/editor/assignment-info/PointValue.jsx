@@ -10,7 +10,7 @@ export default class PointValue extends React.Component {
 	}
 
 	static propTypes = {
-		assignment: React.PropTypes.object.required
+		assignment: React.PropTypes.object.isRequired
 	}
 
 	onBlur () {
