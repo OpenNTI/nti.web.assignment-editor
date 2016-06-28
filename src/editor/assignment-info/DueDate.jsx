@@ -1,7 +1,7 @@
 import React from 'react';
 import {AvailablePicker} from 'nti-web-commons';
 
-export default class AvailableBeginning extends React.Component {
+export default class DueDate extends React.Component {
 	static propTypes = {
 		assignment: React.PropTypes.object.isRequired
 	}
@@ -9,24 +9,21 @@ export default class AvailableBeginning extends React.Component {
 		super(props);
 
 		this.state = {};
-		this.dateChanged = this.dateChanged.bind(this);
-		this.save = this.save.bind(this);
 	}
 
 	componentWillMount () {
 		const {assignment} = this.props;
 		const value = assignment.getAvailableForSubmissionEnding();
 		this.setState({
-			value,
-			changed: false
+			value
 		});
 	}
 
-	dateChanged (value) {
-		this.setState({value, changed: true});
+	dateChanged = (value) => {
+		this.setState({value});
 	}
 
-	save (value) {
+	save = (value) => {
 		const {assignment} = this.props;
 
 		this.setState({
@@ -34,18 +31,21 @@ export default class AvailableBeginning extends React.Component {
 			error: null
 		});
 
-		assignment.save({
+		return assignment.save({
 			'available_for_submission_ending': value
 		})
 		.then(() => {
-			return this.setState({
-				changed: true,
-				value
+			this.setState({
+				value,
+				saving: false
 			});
+
+			return value;
 		})
 		.catch((error) => {
 			this.setState({
-				error
+				error,
+				saving: false
 			});
 		});
 	}
