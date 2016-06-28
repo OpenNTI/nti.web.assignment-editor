@@ -2,7 +2,7 @@ import React from 'react';
 import {Flyout, Checkbox, LabeledValue, TinyLoader as Loading} from 'nti-web-commons';
 import cx from 'classnames';
 
-import DurationPicker from './DurationPicker';
+import {DurationPicker} from 'nti-web-commons';
 
 export default class TimeLimit extends React.Component {
 	constructor (props) {
