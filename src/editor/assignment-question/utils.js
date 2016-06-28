@@ -14,14 +14,17 @@ function cloneObj (obj) {
 export function cloneSolution (solution) {
 	let clone = cloneObj(solution);
 
+	clone.Class = solution.Class;
+	delete clone.weight;
+
 	return clone;
 }
 
 export function clonePart (part) {
 	let clone = cloneObj(part);
 
-	if (clone.solutions) {
-		clone.solutions = clone.solutions.map(cloneSolution);
+	if (part.solutions) {
+		clone.solutions = part.solutions.map(cloneSolution);
 	}
 
 	delete clone.weight;
