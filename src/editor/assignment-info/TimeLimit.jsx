@@ -1,8 +1,11 @@
 import React from 'react';
+import Logger from 'nti-util-logger';
 import {Flyout, Checkbox, LabeledValue, TinyLoader as Loading} from 'nti-web-commons';
 import cx from 'classnames';
 
 import {DurationPicker} from 'nti-web-commons';
+
+const logger = Logger.get('TimeLimit');
 
 export default class TimeLimit extends React.Component {
 	constructor (props) {
@@ -66,6 +69,7 @@ export default class TimeLimit extends React.Component {
 			maximum_time_allowed: hasTimeLimit ? value : null //eslint-disable-line
 		})
 		.catch((error) => {
+			logger.error(error);
 			this.setState({
 				error
 			});
