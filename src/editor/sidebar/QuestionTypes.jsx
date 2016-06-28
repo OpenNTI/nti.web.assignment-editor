@@ -37,13 +37,14 @@ export default class QuestionTypes extends React.Component {
 	render () {
 		const {assignment, activeQuestion} = this.props;
 		const questionSet = getQuestionSetFrom(assignment);
-		const item = questionSet && !questionSet.isPlaceholder ? questionSet : assignment;
 
 		return (
-			<ItemChanges item={item} onItemChanged={this.onChange}>
-				<div className="question-types">
-					{getButtons(null, assignment, activeQuestion)}
-				</div>
+			<ItemChanges item={assignment} onItemChanged={this.onChange}>
+				<ItemChanges item={questionSet} onItemChanged={this.onChange}>
+					<div className="question-types">
+						{getButtons(null, assignment, activeQuestion)}
+					</div>
+				</ItemChanges>
 			</ItemChanges>
 		);
 	}
