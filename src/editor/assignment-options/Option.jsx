@@ -23,13 +23,13 @@ export default class Option extends React.Component {
 
 
 	render () {
-		const {type} = this.props;
+		const {type, value} = this.props;
 		const Control = type === 'radio' ? Radio : Checkbox;
 
 		return (
 			<div className="assignment-single-option">
 				<div className="option-input">
-					<Control {...this.props} type={void type}/>
+					<Control {...this.props} checked={value} type={void type}/>
 				</div>
 			</div>
 		);
