@@ -6,7 +6,7 @@ function questionParts (props) {
 	const {question, error} = props;
 	const {parts} = question;
 
-	if (parts.length === 0) {
+	if (!parts || parts.length === 0) {
 		return (
 			<div className="question-parts">No Parts</div>
 		);

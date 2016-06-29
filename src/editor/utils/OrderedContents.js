@@ -32,8 +32,9 @@ export function hasOrderedContents (obj) {
 
 
 export default class OrderedContents {
-	constructor (obj) {
+	constructor (obj, getDataForUndo) {
 		this.backingObject = obj;
+		this.getDataForUndo = getDataForUndo || (x => x);
 	}
 
 
@@ -267,7 +268,7 @@ export default class OrderedContents {
 					obj.onChange();
 
 					return () => {
-						this.insertAt(item, index);
+						this.insertAt(this.getDataForUndo(item), index);
 					};
 				})
 				.catch((reason) => {

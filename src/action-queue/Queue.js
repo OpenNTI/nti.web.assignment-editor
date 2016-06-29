@@ -77,7 +77,7 @@ export default class ActionQueue extends EventEmitter {
 
 	wrapAction (action) {
 		const id = this.seenCount;
-		const {label, name, fn} = action;
+		const {label, name, onComplete} = action;
 
 		return this[START_TIMER]({
 			label, name,
@@ -85,7 +85,7 @@ export default class ActionQueue extends EventEmitter {
 			complete: (...args) => {
 				this.clear(id);
 
-				fn(...args);
+				onComplete(...args);
 			}
 		}, this.keepFor);
 	}
@@ -109,7 +109,8 @@ export default class ActionQueue extends EventEmitter {
 	 *
 	 * Is an object that looks like:
 	 * {
-	 * 	fn: Function to call,
+	 * 	onComplete: Function to call when the user completes the action,
+	 * 	onTimeout: Function to call when the timer to do the action runs out,
 	 * 	label: String that gets displayed to identify the action,
 	 * 	name: String that is used to label the button to perform the button
 	 * }
@@ -146,7 +147,16 @@ export default class ActionQueue extends EventEmitter {
 
 		if (action) {
 			action = action.ID || action;
-			queue = queue.filter((q) => q.ID !== action);
+			queue = queue.filter((q) => {
+				let remove = false;
+
+				if (q.ID === action) {
+					this[STOP_TIMER](q);
+					remove = true;
+				}
+
+				return remove;
+			});
 		} else {
 			queue = [];
 		}

@@ -34,7 +34,13 @@ export function saveQuestionContent (question, content) {
 
 
 export function deleteQuestionFrom (question, questionSet, assignment) {
-	const orderedContents = new OrderedContents(questionSet);
+	const orderedContents = new OrderedContents(questionSet, (item) => {
+		let clone = cloneQuestion(item);
+
+		clone.NTIID = item.NTIID;
+
+		return {MimeType: item.MimeType, NTIID: item.NTIID};
+	});
 
 	if (orderedContents.canEdit && orderedContents.length === 1) {
 		removePartWithQuestionSet(assignment, questionSet);
@@ -50,7 +56,7 @@ export function deleteQuestionFrom (question, questionSet, assignment) {
 					dispatch(UNDO_CREATED, {
 						label: 'Question Deleted',
 						name: 'Undo',
-						fn: undo
+						onComplete: undo
 					});
 				}
 			})

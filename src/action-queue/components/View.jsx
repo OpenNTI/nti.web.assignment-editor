@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import cx from 'classnames';
 
 import Item from './Item';
@@ -58,7 +59,9 @@ export default class ActionStack extends React.Component {
 
 		return (
 			<div className={cls}>
-				{items.map(this.renderItem)}
+				<ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
+					{items.map(this.renderItem)}
+				</ReactCSSTransitionGroup>
 			</div>
 		);
 	}

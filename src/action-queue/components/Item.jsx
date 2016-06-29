@@ -23,8 +23,8 @@ export default class ActionQueueItem extends React.Component {
 
 		return (
 			<div className="action-stack-item">
-				<span>{item.label}</span>
-				<span onClick={this.onComplete}>{name}</span>
+				<span className="label">{item.label}</span>
+				<span onClick={this.onComplete} className="action">{name}</span>
 			</div>
 		);
 	}
