@@ -8,10 +8,10 @@ import Draggable from '../../../dnd/Draggable';
 const QuestionMimeType = 'application/vnd.nextthought.naquestion';
 
 function getCountInQuestion (question, types) {
-	const {parts} = question;
+	const {parts} = question || {};
 
 	return (parts || []).reduce((acc, part) => {
-		if (types[part.MimeType.toLowerCase()]) {
+		if (part && types[part.MimeType.toLowerCase()]) {
 			acc += 1;
 		}
 
