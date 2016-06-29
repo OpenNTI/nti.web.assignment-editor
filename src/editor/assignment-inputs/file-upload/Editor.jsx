@@ -1,5 +1,6 @@
 import React from 'react';
 
+import {Prompt} from 'nti-web-commons';
 import {savePartToQuestion} from '../Actions';
 import {generatePartFor} from './utils';
 import Settings from './Settings';
@@ -14,14 +15,13 @@ export default class FileUploadEditor extends React.Component {
 		super(props);
 
 		this.onSaveSettings = this.onSaveSettings.bind(this);
-		this.toggleSettings = this.toggleSettings.bind(this);
+		this.showSettings = this.showSettings.bind(this);
 		this.state = {};
 	}
 
-	toggleSettings () {
-		this.setState({
-			showSettings: !this.state.showSettings
-		});
+	showSettings () {
+		const {part} = this.props;
+		Prompt.modal(<Settings onSave={this.onSaveSettings} part={part}/>);
 	}
 
 	onSaveSettings (value) {
@@ -34,24 +34,16 @@ export default class FileUploadEditor extends React.Component {
 			value.fileExtensions
 		);
 		savePartToQuestion(question, newPart);
-		this.toggleSettings();
+		return true;
 	}
 
 	render () {
-
-		const {showSettings} = this.state;
-		const {part} = this.props;
-
-		if (showSettings) {
-			return <Settings onCancel={this.toggleSettings} onSave={this.onSaveSettings} part={part}/>;
-		}
-
 		return (
 			<div className="file-upload">
 				<div>Upload your file here.</div>
 				<div>Maximum file size is 10MB.</div>
 				<div className="upload-button">Upload a file</div>
-				<div className="settings-button" onClick={this.toggleSettings}>Settings</div>
+				<div className="settings-button" onClick={this.showSettings}>Settings</div>
 			</div>
 		);
 	}

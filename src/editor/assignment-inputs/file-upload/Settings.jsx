@@ -14,17 +14,19 @@ export default class Settings extends React.Component {
 	}
 
 	static propTypes = {
-		onCancel: React.PropTypes.func,
+		onDismiss: React.PropTypes.func,
 		onSave: React.PropTypes.func,
 		part: React.PropTypes.object.isRequired
 	}
 
 	cancel () {
-		this.props.onCancel();
+		this.props.onDismiss();
 	}
 
 	save () {
-		this.props.onSave(this.value());
+		if(this.props.onSave(this.value())) {
+			this.props.onDismiss();
+		}
 	}
 
 	value () {
@@ -47,9 +49,13 @@ export default class Settings extends React.Component {
 				<div className="content">
 					<form>
 						<div>Accepted File Types</div>
-						<div><Radio name="accepted-file-types" label="Allow All File Types" /></div>
-						<div><Radio name="accepted-file-types" label="Specific File Types" /></div>
-						<FileExtensionsEditor ref={x => this.fileExtensions = x} extensions={part.allowed_extensions} />
+						<div><Radio name="accepted-file-types" label="All File Types" /></div>
+						<div><Radio name="accepted-file-types" label="Specific File Types" defaultChecked /></div>
+						<FileExtensionsEditor
+							ref={x => this.fileExtensions = x}
+							extensions={part.allowed_extensions}
+
+						/>
 					</form>
 				</div>
 				<div className="button-row">
