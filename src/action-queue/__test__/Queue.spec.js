@@ -1,12 +1,12 @@
 import Queue from '../Queue';
 
-function createAction (label, fn) {
+function createAction (label, onComplete) {
 	label = label || '';
-	fn = fn || (() => {});
+	onComplete = onComplete || (() => {});
 
 	return {
 		label,
-		fn
+		onComplete
 	};
 }
 

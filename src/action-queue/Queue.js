@@ -26,7 +26,7 @@ export default class ActionQueue extends EventEmitter {
 
 
 	get next () {
-		return this.unwrapAction(this.queue[0]);
+		return this.unwrapAction(this[ACTION_QUEUE][0]);
 	}
 
 
@@ -155,7 +155,7 @@ export default class ActionQueue extends EventEmitter {
 					remove = true;
 				}
 
-				return remove;
+				return !remove;
 			});
 		} else {
 			queue = [];
