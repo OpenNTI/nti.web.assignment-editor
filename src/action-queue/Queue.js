@@ -30,7 +30,7 @@ export default class ActionQueue extends EventEmitter {
 	}
 
 
-	get queue () {
+	get items () {
 		const queue = this[ACTION_QUEUE];
 
 		return queue.slice(0, this.maxVisible).map(this.unwrapAction);
@@ -58,9 +58,6 @@ export default class ActionQueue extends EventEmitter {
 	[START_TIMER] (action) {
 		if (action && this.keepFor !== Infinity) {
 			action.timer = setTimeout(() => {
-				if (action.label === 'TEST') {
-					debugger;
-				}
 				this.clear(action);
 			}, this.keepFor);
 		}
@@ -97,6 +94,7 @@ export default class ActionQueue extends EventEmitter {
 	unwrapAction (action) {
 		return {
 			label: action.label,
+			name: action.name,
 			complete: action.complete,
 			ID: action.ID
 		};
