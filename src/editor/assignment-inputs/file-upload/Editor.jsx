@@ -25,9 +25,7 @@ export default class FileUploadEditor extends React.Component {
 	}
 
 	onSaveSettings (value) {
-		console.log(value);
 		const {question, part} = this.props;
-		// generatePartFor (MimeType, content, maxSize, mimeTypes = ['*/*'], extensions = [], hints = []) {
 		const newPart = generatePartFor(
 			part.MimeType,
 			part.content,
