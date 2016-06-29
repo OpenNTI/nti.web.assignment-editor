@@ -2,10 +2,14 @@
 
 .file-extension-pill {
 	display: inline-block;
-	background: $quad-grey;
-	border: 1px solid $tertiary-grey;
+	background: $panel-background;
+	border: 1px solid $border-grey-light;
 	margin-right: .5em;
-	padding: .5em;
+	margin-bottom: .3em;
+	padding: 0 .5em;
+	line-height: 1.7;
+	color: $secondary-grey;
+	font-size: .875rem;
 	.value {
 		margin-right: .5em;
 	}

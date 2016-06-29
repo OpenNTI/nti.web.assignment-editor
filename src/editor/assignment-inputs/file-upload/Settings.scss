@@ -1,9 +1,40 @@
+@import "~nti-style-common";
+
 .settings-panel {
 	position: absolute;
 	background: white;
 	top: 0;
 	left: 0;
 	right: 3.6rem;
-	padding: 1rem;
-	border: 1px solid #b8b8b8;
+	padding: 0;
+	border: 1px solid $tertiary-grey;
+	.titlebar {
+		position: relative;
+		padding: .75rem 1.25rem;
+		.title {
+			font-size: 1.1rem;
+			font-weight: 200;
+			color: $primary-grey;
+		}
+		i {
+			position: absolute;
+			top: 0.75rem;
+			right: 1rem;
+			font-size: 1.75rem;
+			color: $tertiary-grey;
+		}
+	}
+	.content {
+		padding: 1.25rem;
+		background: $panel-background;
+		border-top: 1px solid $border-grey-light;
+		font-size: .875rem;
+		line-height: 2;
+	}
+	.button-row {
+		@extend %dialog-buttons;
+		.button {
+			display: inline-block;
+		}
+	}
 }

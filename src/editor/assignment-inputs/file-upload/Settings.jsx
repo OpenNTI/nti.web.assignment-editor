@@ -42,7 +42,7 @@ export default class Settings extends React.Component {
 			<div className="settings-panel">
 				<div className="titlebar">
 					<div className="title">Settings</div>
-					<div className="x-close" onClick={this.cancel}>X</div>
+					<i className="icon-light-x" onClick={this.cancel} />
 				</div>
 				<div className="content">
 					<form>

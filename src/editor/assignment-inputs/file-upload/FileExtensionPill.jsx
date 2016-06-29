@@ -23,8 +23,8 @@ export default class FileExtensionPill extends React.Component {
 
 		return (
 			<div className="file-extension-pill">
-			<span className="value">{value}</span>
-			<i onClick={this.remove} className="x-close">x</i>
+				<span className="value">{value}</span>
+				<i onClick={this.remove} className="icon-bold-x"/>
 			</div>
 		);
 	}
