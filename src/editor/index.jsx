@@ -88,7 +88,8 @@ export default class Editor extends React.Component {
 
 
 	render () {
-		let {error, assignment, schema, selection} = this.state;
+		const {undoQueue} = Store;
+		let {error, assignment, schema} = this.state;
 
 		if (error || (Store.isLoaded && !assignment)) {
 			return this.renderError(error || 'No Assignment');
@@ -104,10 +105,10 @@ export default class Editor extends React.Component {
 					<div>
 						<AssignmentEditor assignment={assignment} schema={schema} />
 						<FixedElement className="assignment-editing-sidebar-fixed">
-							<Sidebar ref={x => this.sidebar = x} assignment={assignment} schema={schema} selection={selection} />
+							<Sidebar ref={x => this.sidebar = x} assignment={assignment} schema={schema} />
 						</FixedElement>
 						<ControlBar visible>
-							<Controls assignment={assignment} selection={selection} />
+							<Controls assignment={assignment} undoQueue={undoQueue} />
 						</ControlBar>
 					</div>
 				)}

@@ -265,6 +265,10 @@ export default class OrderedContents {
 					orderedContents = orderedContents.filter(a => a.NTIID !== item.NTIID);
 					obj[orderedContentsField] = orderedContents;
 					obj.onChange();
+
+					return () => {
+						this.insertAt(item, index);
+					};
 				})
 				.catch((reason) => {
 					delete item.isDeleting;

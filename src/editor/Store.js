@@ -1,11 +1,15 @@
-import {LOADED, LOADED_SCHEMA, ASSIGNMENT_ERROR, QUESTION_ERROR} from './Constants';
 import StorePrototype from 'nti-lib-store';
+import {Queue} from '../action-queue';
+
+import {LOADED, LOADED_SCHEMA, ASSIGNMENT_ERROR, QUESTION_ERROR, UNDO_CREATED, CLEAR_UNDOS} from './Constants';
 
 const PRIVATE = new WeakMap();
 const SetAssignment = Symbol('Set Assignment');
 const SetSchema = Symbol('Set Assignment Schema');
 const SetError = Symbol('Set Error');
 const RemoveError = Symbol('Remove Error');
+const AddUndo = Symbol('Add Undo');
+const ClearUndos = Symbol('Clear Undos');
 
 
 function findErrorsForId (id, errors) {
@@ -31,7 +35,8 @@ class Store extends StorePrototype {
 		PRIVATE.set(this, {
 			assignment: null,
 			schema: null,
-			errors: {}
+			errors: {},
+			undoQueue: new Queue({maxVisible: 1, maxDepth: 5, keepFor: 30000})
 		});
 
 		this.setAssignmentError = this[SetError].bind(this, ASSIGNMENT_ERROR);
@@ -41,7 +46,9 @@ class Store extends StorePrototype {
 			[LOADED]: SetAssignment,
 			[LOADED_SCHEMA]: SetSchema,
 			[ASSIGNMENT_ERROR]: 'setAssignmentError',
-			[QUESTION_ERROR]: 'setQuestionError'
+			[QUESTION_ERROR]: 'setQuestionError',
+			[UNDO_CREATED]: AddUndo,
+			[CLEAR_UNDOS]: ClearUndos
 		});
 	}
 
@@ -119,6 +126,23 @@ class Store extends StorePrototype {
 	}
 
 
+	[AddUndo] (e) {
+		const undo = e.action.response;
+		const p = PRIVATE.get(this);
+		const {undoQueue} = p;
+
+		undoQueue.push(undo);
+	}
+
+
+	[ClearUndos] () {
+		const p = PRIVATE.get(this);
+		const {undoQueue} = p;
+
+		undoQueue.clear();
+	}
+
+
 	get isLoaded () {
 		let p = PRIVATE.get(this);
 
@@ -137,6 +161,13 @@ class Store extends StorePrototype {
 		let p = PRIVATE.get(this);
 
 		return p.schema;
+	}
+
+
+	get undoQueue () {
+		const p = PRIVATE.get(this);
+
+		return p.undoQueue;
 	}
 
 

@@ -9,3 +9,6 @@ export const QUESTION_SET_ERROR = 'assignment:editor:QuestionError';
 export const QUESTION_UPDATED = 'assignment:editor:QuestionUpdated';
 export const QUESTION_ERROR = 'assignment:editor:QuestionError';
 
+export const UNDO_CREATED = 'assignment:editor:UndoCreated';
+export const CLEAR_UNDOS = 'assignment:editor:ClearUndo';
+

@@ -3,7 +3,15 @@ import {dispatch} from 'nti-lib-dispatcher';
 import OrderedContents from '../utils/OrderedContents';
 import {saveFieldOn} from '../Actions';
 import {removePartWithQuestionSet} from '../assignment-parts/Actions';
-import {SAVING, SAVE_ENDED, QUESTION_UPDATED, QUESTION_ERROR, QUESTION_SET_UPDATED, QUESTION_SET_ERROR} from '../Constants';
+import {
+	SAVING,
+	SAVE_ENDED,
+	QUESTION_UPDATED,
+	QUESTION_ERROR,
+	QUESTION_SET_UPDATED,
+	QUESTION_SET_ERROR,
+	UNDO_CREATED
+} from '../Constants';
 
 import {cloneQuestion} from './utils';
 
@@ -34,9 +42,17 @@ export function deleteQuestionFrom (question, questionSet, assignment) {
 		dispatch(SAVING, questionSet);
 
 		orderedContents.remove(question)
-			.then(() => {
+			.then((undo) => {
 				dispatch(SAVE_ENDED);
 				dispatch(QUESTION_SET_UPDATED, questionSet);
+
+				if (undo) {
+					dispatch(UNDO_CREATED, {
+						label: 'Question Deleted',
+						name: 'Undo',
+						fn: undo
+					});
+				}
 			})
 			.catch((reason) => {
 				dispatch(SAVE_ENDED);
