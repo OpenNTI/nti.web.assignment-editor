@@ -67,7 +67,7 @@ export default class Test extends React.Component {
 	}
 
 
-	renderItem (item, index) {
+	renderItem (item) {
 		return (
 			<div>{item.label}</div>
 		);

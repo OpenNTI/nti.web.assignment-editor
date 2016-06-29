@@ -12,9 +12,7 @@ export {
 
 export default function testDND () {
 	const handlers = {
-		'application/vnd.nextthought.text': () => {
-			debugger;
-		}
+		'application/vnd.nextthought.text': () => {}
 	};
 
 	return (
