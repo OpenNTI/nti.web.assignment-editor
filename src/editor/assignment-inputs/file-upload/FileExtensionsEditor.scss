@@ -1,0 +1,20 @@
+@import "~nti-style-common";
+
+.file-extensions-editor {
+	position: relative;
+	padding: .5rem;
+	border: 1px solid $tertiary-grey;
+	background: white;
+	input {
+		padding: .5rem;
+		width: 5rem;
+		border: none;
+	}
+	.placeholder {
+		position: absolute;
+		font-style: italic;
+		color: $tertiary-grey;
+		top: 1rem;
+		left: 1rem;
+	}
+}

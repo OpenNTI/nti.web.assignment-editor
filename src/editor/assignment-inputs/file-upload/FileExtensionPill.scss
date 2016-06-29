@@ -1,0 +1,12 @@
+@import "~nti-style-common";
+
+.file-extension-pill {
+	display: inline-block;
+	background: $quad-grey;
+	border: 1px solid $tertiary-grey;
+	margin-right: .5em;
+	padding: .5em;
+	.value {
+		margin-right: .5em;
+	}
+}

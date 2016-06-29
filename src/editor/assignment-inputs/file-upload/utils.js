@@ -1,8 +1,11 @@
-export function generatePartFor (mimeType, content, mimeTypes, extensions, maxSize, hints) {
+export function generatePartFor (MimeType, content, maxSize, mimeTypes = ['*/*'], extensions = [], hints = []) {
 	return {
-		MimeType: mimeType,
-		content: content ,
-		hints: hints || []
+		MimeType,
+		'max_file_size': maxSize,
+		'allowed_mime_types': mimeTypes,
+		'allowed_extensions': extensions,
+		content,
+		hints
 	};
 }
 
