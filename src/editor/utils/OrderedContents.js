@@ -32,9 +32,8 @@ export function hasOrderedContents (obj) {
 
 
 export default class OrderedContents {
-	constructor (obj, getDataForUndo) {
+	constructor (obj) {
 		this.backingObject = obj;
-		this.getDataForUndo = getDataForUndo || (x => x);
 	}
 
 
@@ -125,6 +124,7 @@ export default class OrderedContents {
 	insertAt (item, index) {
 		const obj = this.backingObject;
 		let {orderedContents, orderedContentsField, link} = this;
+		let postData;
 
 		if (!link) {
 			return Promise.reject('No Ordered Contents Link');
@@ -142,6 +142,10 @@ export default class OrderedContents {
 				enumerable: false,
 				value: uuid.v4()
 			});
+
+			postData = item;
+		} else {
+			postData = {ntiid: item.NTIID};
 		}
 
 		if (index === Infinity || index === undefined) {
@@ -159,9 +163,7 @@ export default class OrderedContents {
 		let insertLink = path.join(link, 'index', index.toString(10));
 
 		return getService()
-			.then(service =>
-				service.postParseResponse(insertLink, item)
-			)
+			.then(service => service.postParseResponse(insertLink, postData))
 			//Make sure we wait at least a little bit
 			.then(minWait(SHORT))
 			.then((savedItem) => {
@@ -268,7 +270,7 @@ export default class OrderedContents {
 					obj.onChange();
 
 					return () => {
-						this.insertAt(this.getDataForUndo(item), index);
+						this.insertAt(item, index);
 					};
 				})
 				.catch((reason) => {

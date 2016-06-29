@@ -34,13 +34,7 @@ export function saveQuestionContent (question, content) {
 
 
 export function deleteQuestionFrom (question, questionSet, assignment) {
-	const orderedContents = new OrderedContents(questionSet, (item) => {
-		let clone = cloneQuestion(item);
-
-		clone.NTIID = item.NTIID;
-
-		return {MimeType: item.MimeType, NTIID: item.NTIID};
-	});
+	const orderedContents = new OrderedContents(questionSet);
 
 	if (orderedContents.canEdit && orderedContents.length === 1) {
 		removePartWithQuestionSet(assignment, questionSet);
