@@ -1,6 +1,12 @@
 @import "~nti-style-common";
 
-.publish-locked {
+.publish-locked.flyout {
+	border-radius: 0.25rem;
+	background-color: #ffffff;
+	box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.21);
+	padding: 0.625rem;
+	width: 19.0625rem;
+	
 	.reset-label {
 		font-size: 0.875rem;
 	    line-height: 1.9;
