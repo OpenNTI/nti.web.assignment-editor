@@ -2,6 +2,9 @@ import React from 'react';
 import Button from '../base/Button';
 import {generatePartFor} from './utils';
 
+const LABEL = 'Multiple Choice';
+const ICON_CLS = 'multiple-choice';
+
 const defaultChoices = ['Choice 1'];
 const defaultSolution = 0;
 const defaultHint = [];
@@ -20,10 +23,6 @@ export default class MultipleChoiceButton extends React.Component {
 		return this.handledMimetypes;
 	}
 
-	label = 'Multiple Choice'
-	defaultQuestionContent = 'Multiple Choice Question'
-	iconCls = 'multiple-choice'
-
 
 	render () {
 		const {assignment, activeQuestion} = this.props;
@@ -34,10 +33,9 @@ export default class MultipleChoiceButton extends React.Component {
 				part={this.getBlankPart()}
 				assignment={assignment}
 				activeQuestion={activeQuestion}
-				label={this.label}
-				defaultQuestionContent={this.defaultQuestionContent}
+				label={LABEL}
 				handles={handles}
-				iconCls={this.iconCls} />
+				iconCls={ICON_CLS} />
 		);
 	}
 
@@ -47,7 +45,7 @@ export default class MultipleChoiceButton extends React.Component {
 		let mimeType = handles && handles[0];
 
 		if (mimeType) {
-			return generatePartFor(mimeType, this.defaultQuestionContent, defaultChoices, defaultSolution, defaultHint);
+			return generatePartFor(mimeType, null, defaultChoices, defaultSolution, defaultHint);
 		}
 	}
 }

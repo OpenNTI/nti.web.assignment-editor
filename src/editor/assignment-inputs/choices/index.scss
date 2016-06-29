@@ -10,6 +10,8 @@
 	.delete {
 		position: absolute;
 		top: 0; right: 10px;
+		opacity: 1;
+		transition: opacity 50ms;
 
 		div {
 			line-height: 42px;
@@ -53,6 +55,10 @@
 .is-saving .assignment-input-choices {
 	.add-choice {
 		color: transparent;
+	}
+
+	.delete {
+		opacity: 0;
 	}
 }
 

@@ -3,7 +3,6 @@ import Button from '../base/Button';
 import {generatePartFor} from './utils';
 
 const LABEL = 'Free Response';
-const DEFAULT_CONTENT = 'Free Response Question';
 const DEFAULT_SOLUTION = ['Answer 1'];
 const ICON_CLS = 'freeresponse';
 
@@ -32,7 +31,6 @@ export default class FreeResponseButton extends React.Component {
 				assignment={assignment}
 				activeQuestion={activeQuestion}
 				label={LABEL}
-				defaultQuestionContent={DEFAULT_CONTENT}
 				handles={handles}
 				iconCls={ICON_CLS} />
 		);
@@ -44,7 +42,7 @@ export default class FreeResponseButton extends React.Component {
 		let mimeType = handles && handles[0];
 
 		if (mimeType) {
-			return generatePartFor(mimeType, DEFAULT_CONTENT, DEFAULT_SOLUTION);
+			return generatePartFor(mimeType, null, DEFAULT_SOLUTION);
 		}
 		return {};
 	}

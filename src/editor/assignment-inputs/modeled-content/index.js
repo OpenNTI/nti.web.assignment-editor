@@ -1,6 +1,7 @@
 import Editor from './Editor';
 import Button from './Button';
 import {partsEqual} from './utils';
+import {PROMPT} from '../';
 
 export default class EssayPart {
 	//TODO: get this mime type from the model
@@ -16,6 +17,11 @@ export default class EssayPart {
 
 	static get editor () {
 		return Editor;
+	}
+
+
+	static get contentPlaceholder () {
+		return PROMPT;
 	}
 
 

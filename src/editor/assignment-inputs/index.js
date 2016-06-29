@@ -8,6 +8,9 @@ import MultipleChoice from './multiple-choice';
 import MultipleChoiceMultipleAnwer from './multiple-choice-multiple-answer';
 import Ordering from './ordering';
 
+const PROMPT = 'Write a prompt...';
+const QUESTION = 'Write a question...';
+
 const logger = Logger.get('assignment-inputs:index');
 const KINDS = [
 	ModeledContent,
@@ -17,6 +20,11 @@ const KINDS = [
 	MultipleChoiceMultipleAnwer,
 	Ordering
 ];
+
+export {
+	PROMPT,
+	QUESTION
+};
 
 
 function canHandle (cmp, type) {
@@ -85,3 +93,26 @@ export function getEqualityCheck (mimeType) {
 
 	return equal;
 }
+
+
+export function getContentPlaceholderFor (question) {
+	const {parts} = question;
+	let placeholder = QUESTION;
+
+	if (!parts || parts.length !== 1) {
+		return placeholder;
+	}
+
+	const part = parts[0];
+	const mimeType = part && part.MimeType && part.MimeType.toLowerCase();
+
+	for (let Type of KINDS) {
+		if (canHandle(Type, mimeType)) {
+			placeholder = Type.contentPlaceholder || QUESTION;
+			break;
+		}
+	}
+
+	return placeholder;
+}
+

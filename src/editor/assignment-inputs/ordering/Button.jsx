@@ -2,6 +2,9 @@ import React from 'react';
 import Button from '../base/Button';
 import {generatePartFor} from './utils';
 
+const LABEL = 'Ordering';
+const ICON_CLS = 'ordering';
+
 const defaultLabels = ['Label 1', 'Label 2'];
 const defaultValues = ['Value 1', 'Label 2'];
 const defaultSolution = {'0': 0, '1': 1};
@@ -20,9 +23,6 @@ export default class OrderingButton extends React.Component {
 		return this.handledMimetypes;
 	}
 
-	label = 'Ordering'
-	iconCls = 'ordering'
-
 
 	render () {
 		const {assignment, activeQuestion} = this.props;
@@ -32,10 +32,9 @@ export default class OrderingButton extends React.Component {
 				part={this.getBlankPart()}
 				assignment={assignment}
 				activeQuestion={activeQuestion}
-				label={this.label}
-				defaultQuestionContent={this.defaultQuestionContent}
+				label={LABEL}
 				handles={handles}
-				iconCls={this.iconCls} />
+				iconCls={ICON_CLS} />
 		);
 	}
 
@@ -44,7 +43,7 @@ export default class OrderingButton extends React.Component {
 		let mimeType = handles && handles[0];
 
 		if (mimeType) {
-			return generatePartFor(mimeType, this.defaultQuestionContent, defaultLabels, defaultValues, defaultSolution);
+			return generatePartFor(mimeType, null, defaultLabels, defaultValues, defaultSolution);
 		}
 		return {};
 	}

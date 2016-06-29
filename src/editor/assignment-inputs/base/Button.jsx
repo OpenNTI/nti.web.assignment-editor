@@ -35,14 +35,12 @@ export default class BaseButton extends React.Component {
 		part: React.PropTypes.object.isRequired,
 		handles: React.PropTypes.array,
 		activeQuestion: React.PropTypes.object,
-		defaultQuestionContent: React.PropTypes.string,
 		label: React.PropTypes.string,
 		iconCls: React.PropTypes.string
 	}
 
 	static defaultProps = {
-		label: 'Add Question',
-		defaultQuestionContent: 'Blank Question'
+		label: 'Add Question'
 	}
 
 	constructor (props) {
@@ -61,12 +59,11 @@ export default class BaseButton extends React.Component {
 
 
 	getBlankQuestion () {
-		const {part, defaultQuestionContent} = this.props;
+		const {part} = this.props;
 
 		if (part) {
 			return {
 				MimeType: QuestionMimeType,
-				content: defaultQuestionContent,
 				parts: [part]
 			};
 		}

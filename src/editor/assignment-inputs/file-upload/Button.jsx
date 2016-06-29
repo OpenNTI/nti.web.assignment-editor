@@ -2,6 +2,9 @@ import React from 'react';
 import Button from '../base/Button';
 import {generatePartFor} from './utils';
 
+const LABEL = 'File Upload';
+const ICON_CLS = 'file-upload';
+
 export default class FileUploadButton extends React.Component {
 	static propTypes = {
 		assignment: React.PropTypes.object.isRequired,
@@ -16,10 +19,6 @@ export default class FileUploadButton extends React.Component {
 		return this.handledMimetypes;
 	}
 
-	label = 'File Upload'
-	defaultQuestionContent = 'File Upload Question'
-	iconCls = 'file-upload'
-
 	render () {
 		const {assignment, activeQuestion} = this.props;
 		const {handles} = this.constructor;
@@ -28,10 +27,9 @@ export default class FileUploadButton extends React.Component {
 				part={this.getBlankPart()}
 				assignment={assignment}
 				activeQuestion={activeQuestion}
-				label={this.label}
-				defaultQuestionContent={this.defaultQuestionContent}
+				label={LABEL}
 				handles={handles}
-				iconCls={this.iconCls} />
+				iconCls={ICON_CLS} />
 		);
 	}
 
@@ -41,7 +39,7 @@ export default class FileUploadButton extends React.Component {
 		let mimeType = handles && handles[0];
 
 		if (mimeType) {
-			return generatePartFor(mimeType, this.defaultQuestionContent);
+			return generatePartFor(mimeType);
 		}
 		return {};
 	}

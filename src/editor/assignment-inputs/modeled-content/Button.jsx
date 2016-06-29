@@ -2,6 +2,8 @@ import React from 'react';
 import Button from '../base/Button';
 import {generatePartFor} from './utils';
 
+const LABEL = 'Essay';
+const ICON_CLS = 'essay';
 
 export default class EssayButton extends React.Component {
 	static propTypes = {
@@ -17,10 +19,6 @@ export default class EssayButton extends React.Component {
 		return this.handledMimetypes;
 	}
 
-	label = 'Essay'
-	defaultQuestionContent = 'Essay Question'
-	iconCls = 'essay';
-
 
 	render () {
 		const {assignment, activeQuestion} = this.props;
@@ -30,10 +28,9 @@ export default class EssayButton extends React.Component {
 				part={this.getBlankPart()}
 				assignment={assignment}
 				activeQuestion={activeQuestion}
-				label={this.label}
-				defaultQuestionContent={this.defaultQuestionContent}
+				label={LABEL}
 				handles={handles}
-				iconCls={this.iconCls} />
+				iconCls={ICON_CLS} />
 		);
 	}
 
@@ -43,7 +40,7 @@ export default class EssayButton extends React.Component {
 		const mimeType = handles && handles[0];
 
 		if (mimeType) {
-			return generatePartFor(mimeType, this.defaultQuestionContent);
+			return generatePartFor(mimeType);
 		}
 		return {};
 	}

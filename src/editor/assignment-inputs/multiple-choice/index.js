@@ -20,6 +20,7 @@ export default class MultipleChoicePart {
 		return Editor;
 	}
 
+
 	static partsEqual (partA, partB) {
 		return partsEqual(partA, partB);
 	}

@@ -1,8 +1,6 @@
 @import "~nti-style-common";
 
 .question-content-editor {
-	min-height: 80px;
-
 	&.error .nti-rich-text {
 		box-shadow: 0 0 1px 1px $primary-red;
 	}
@@ -17,6 +15,7 @@
 			padding-bottom: 0;
 			font-size: 0.875rem;
 			transition: color 50ms;
+			min-height: 0;
 		}
 
 		.character-count {
@@ -26,6 +25,7 @@
 		.public-DraftEditorPlaceholder-root {
 			font-style: italic;
 			font-weight: 300;
+			transition: color 50ms;
 		}
 	}
 }
@@ -46,6 +46,8 @@
 	}
 }
 
-.is-saving .question-content-editor .nti-rich-text .DraftEditor-root {
-	color: transparent;
+.is-saving .question-content-editor .nti-rich-text {
+	.DraftEditor-root, .public-DraftEditorPlaceholder-root {
+		color: transparent;
+	}
 }

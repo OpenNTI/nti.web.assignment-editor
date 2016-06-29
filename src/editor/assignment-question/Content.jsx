@@ -3,9 +3,10 @@ import cx from 'classnames';
 import {TextEditor} from 'nti-modeled-content';
 import autobind from 'nti-commons/lib/autobind';
 
+import {getContentPlaceholderFor} from '../assignment-inputs/';
+
 import {saveQuestionContent} from './Actions';
 
-const PLACEHOLDER = 'Question Content';
 
 export default class QuestionContent extends React.Component {
 	static propTypes = {
@@ -92,9 +93,11 @@ export default class QuestionContent extends React.Component {
 
 
 	render () {
-		const {isSaving} = this.props;
+		const {isSaving, question} = this.props;
 		const {content, error} = this.state;
 		const cls = cx('question-content-editor', {error});
+
+		const placeholder = getContentPlaceholderFor(question);
 
 		return (
 			<div className={cls}>
@@ -103,7 +106,7 @@ export default class QuestionContent extends React.Component {
 						className={cls}
 						ref={this.setEditorRef}
 						initialValue={content}
-						placeholder={PLACEHOLDER}
+						placeholder={placeholder}
 						onFocus={this.onEditorFocus}
 						onBlur={this.onEditorBlur}
 						onChange={this.onEditorChange}
