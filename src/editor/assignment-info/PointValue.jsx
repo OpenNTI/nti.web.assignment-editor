@@ -2,19 +2,12 @@ import React from 'react';
 import {NumberInput, LabeledValue} from 'nti-web-commons';
 
 export default class PointValue extends React.Component {
-	constructor (props) {
-		super(props);
-
-		this.state = {};
-		this.onBlur = this.onBlur.bind(this);
-		this.onChange = this.onChange.bind(this);
-		this.save = this.save.bind(this);
-		this.setUp = this.setUp.bind(this);
-	}
 
 	static propTypes = {
 		assignment: React.PropTypes.object.isRequired
 	}
+
+	state = {}
 
 	componentWillMount () {
 		this.setUp();
@@ -32,28 +25,24 @@ export default class PointValue extends React.Component {
 		});
 	}
 
-	onBlur () {
+	attachRef = x => this.input = x
+
+	onBlur = () => {
 		this.save();
 	}
 
-	onChange (e) {
+	onChange = () => {
 		this.setState({
-			value: e.target.value,
-			changed: true
+			value: this.input.value
 		});
 	}
 
 	save () {
 		const {assignment} = this.props;
-		const {value, changed} = this.state;
-		if(changed) {
+		const {value} = this.state;
+		if(assignment.totalPoints !== value) {
 			assignment.save({
 				'total_points': value || 0
-			})
-			.then(() => {
-				this.setState({
-					changed: false
-				});
 			});
 		}
 	}
@@ -65,7 +54,11 @@ export default class PointValue extends React.Component {
 		return (
 			<div className="field point-value">
 				<LabeledValue label="Value">
-					<NumberInput ref={x => this.input = x} onBlur={this.onBlur} onChange={this.onChange} defaultValue={value} />
+					<NumberInput defaultValue={value}
+						ref={this.attachRef}
+						onBlur={this.onBlur}
+						onChange={this.onChange}
+						/>
 				</LabeledValue>
 			</div>
 		);
