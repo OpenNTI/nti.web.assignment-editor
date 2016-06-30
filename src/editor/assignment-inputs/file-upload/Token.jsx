@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class FileExtensionPill extends React.Component {
+export default class Token extends React.Component {
 
 	constructor (props) {
 		super(props);
@@ -22,7 +22,7 @@ export default class FileExtensionPill extends React.Component {
 		const {value} = this.props;
 
 		return (
-			<div className="file-extension-pill">
+			<div className="token">
 				<span className="value">{value}</span>
 				<i onClick={this.remove} className="icon-bold-x"/>
 			</div>

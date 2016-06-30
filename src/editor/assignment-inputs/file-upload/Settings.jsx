@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import {RadioGroup, DialogButtons} from 'nti-web-commons';
 
-import FileExtensionsEditor from './FileExtensionsEditor';
+import TokenEditor from './TokenEditor';
 
 const ALL_TYPES = 'All File Types';
 const SPECIFIC_TYPES = 'Specific File Types';
@@ -92,9 +92,9 @@ export default class Settings extends React.Component {
 							options={[ALL_TYPES, SPECIFIC_TYPES]}
 							initialValue={selectedRadio}
 						/>
-						<FileExtensionsEditor
+						<TokenEditor
 							ref={x => this.fileExtensions = x}
-							extensions={extensions}
+							tokens={extensions}
 							onFocus={this.activateSpecific}
 							className={fileExtensionsClasses}
 						/>

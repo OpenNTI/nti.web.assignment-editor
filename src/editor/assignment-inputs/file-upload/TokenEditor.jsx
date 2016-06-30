@@ -2,9 +2,9 @@ import React from 'react';
 import isEmpty from 'isempty';
 import cx from 'classnames';
 
-import FileExtensionPill from './FileExtensionPill';
+import Token from './Token';
 
-export default class FileExtensionsEditor extends React.Component {
+export default class TokenEditor extends React.Component {
 
 	constructor (props) {
 		super(props);
@@ -12,30 +12,22 @@ export default class FileExtensionsEditor extends React.Component {
 	}
 
 	static propTypes = {
-		extensions: React.PropTypes.array,
+		tokens: React.PropTypes.array,
 		onFocus: React.PropTypes.func,
 		className: React.PropTypes.string
-	}
-
-	componentWillMount () {
-		this.setUp();
 	}
 
 	get value () {
 		return [...this.state.values];
 	}
 
-	setUp (props = this.props) {
-		this.setState({
-			values: new Set(props.extensions)
-		});
+	componentWillMount () {
+		this.setUp();
 	}
 
-	remove = (value) => {
-		const {values} = this.state;
-		values.delete(value);
+	setUp (props = this.props) {
 		this.setState({
-			values
+			values: new Set(props.tokens)
 		});
 	}
 
@@ -50,6 +42,14 @@ export default class FileExtensionsEditor extends React.Component {
 		const {values} = this.state;
 		values.add(v);
 		this.setState({values});
+	}
+
+	remove = (value) => {
+		const {values} = this.state;
+		values.delete(value);
+		this.setState({
+			values
+		});
 	}
 
 	clearInput = () => {
@@ -107,12 +107,12 @@ export default class FileExtensionsEditor extends React.Component {
 
 		const {values, inputValue} = this.state;
 
-		const classes = cx('file-extensions-editor', this.props.className);
+		const classes = cx('token-editor', this.props.className);
 
 		return (
 			<div className={classes} onClick={this.focusInput}>
 				{values.size === 0 && inputValue.length === 0 && <span className="placeholder">Enter all the file types you want to accept</span>}
-				{[...values].map(x => <FileExtensionPill key={x} value={x} onRemove={this.remove} />)}
+				{[...values].map(x => <Token key={x} value={x} onRemove={this.remove} />)}
 				<input
 					ref={x => this.input = x}
 					onKeyDown={this.onKeyDown}
