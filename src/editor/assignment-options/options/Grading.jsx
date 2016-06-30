@@ -35,7 +35,7 @@ export default class Grading extends React.Component {
 		const disabled = !assignment.hasLink('edit');
 
 		return (
-			<OptionGroup name="grading" content={t('content')}>
+			<OptionGroup name="grading" header="Grading" content={t('content')}>
 				<Option label={t('label')} name="auto-grading" value={isAutoGraded} onChange={this.onChange} disabled={disabled}/>
 			</OptionGroup>
 		);
