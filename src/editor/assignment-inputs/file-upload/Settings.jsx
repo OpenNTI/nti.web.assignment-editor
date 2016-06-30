@@ -1,8 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import {RadioGroup, DialogButtons} from 'nti-web-commons';
-
-import TokenEditor from './TokenEditor';
+import {RadioGroup, DialogButtons, TokenEditor} from 'nti-web-commons';
 
 const ALL_TYPES = 'All File Types';
 const SPECIFIC_TYPES = 'Specific File Types';
@@ -70,6 +68,13 @@ export default class Settings extends React.Component {
 		});
 	}
 
+	preprocessToken (token) {
+		if (!token.startsWith('.')) {
+			token = '.' + token;
+		}
+		return token;
+	}
+
 	render () {
 
 		const {extensions = [], selectedRadio} = this.state;
@@ -95,6 +100,7 @@ export default class Settings extends React.Component {
 						<TokenEditor
 							ref={x => this.fileExtensions = x}
 							tokens={extensions}
+							preprocessToken={this.preprocessToken}
 							onFocus={this.activateSpecific}
 							className={fileExtensionsClasses}
 						/>
