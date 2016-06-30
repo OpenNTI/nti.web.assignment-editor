@@ -2,6 +2,7 @@
 import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {ConflictResolutionHandler} from 'nti-web-commons';
 import {Editor} from '../../src/index';
 import Dnd from '../../src/dnd/';
 import Ordering from '../../src/dnd/ordering';
@@ -12,6 +13,9 @@ import 'nti-web-commons/lib/index.css';
 import 'nti-modeled-content/lib/index.css';
 
 ReactDOM.render(
-	<Editor />,
+	<div>
+		<ConflictResolutionHandler />
+		<Editor />
+	</div>,
 	document.getElementById('content')
 );
