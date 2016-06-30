@@ -1,5 +1,6 @@
 import React from 'react';
 import isEmpty from 'isempty';
+import cx from 'classnames';
 
 import FileExtensionPill from './FileExtensionPill';
 
@@ -20,15 +21,13 @@ export default class FileExtensionsEditor extends React.Component {
 	}
 
 	static propTypes = {
-		extensions: React.PropTypes.array
+		extensions: React.PropTypes.array,
+		onFocus: React.PropTypes.func,
+		className: React.PropTypes.string
 	}
 
 	componentWillMount () {
 		this.setUp();
-	}
-
-	componentWillReceiveProps (nextProps) {
-		this.setUp(nextProps);
 	}
 
 	get value () {
@@ -72,6 +71,9 @@ export default class FileExtensionsEditor extends React.Component {
 		if (this.input) {
 			this.input.focus();
 		}
+		if (this.props.onFocus) {
+			this.props.onFocus();
+		}
 	}
 
 	onBlur (e) {
@@ -114,8 +116,10 @@ export default class FileExtensionsEditor extends React.Component {
 
 		const {values, inputValue} = this.state;
 
+		const classes = cx('file-extensions-editor', this.props.className);
+
 		return (
-			<div className="file-extensions-editor" onClick={this.focusInput}>
+			<div className={classes} onClick={this.focusInput}>
 				{values.size === 0 && inputValue.length === 0 && <span className="placeholder">Enter all the file types you want to accept</span>}
 				{[...values].map(x => <FileExtensionPill key={x} value={x} onRemove={this.remove} />)}
 				<input

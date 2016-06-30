@@ -1,7 +1,11 @@
 import React from 'react';
-import {Radio} from 'nti-web-commons';
+import cx from 'classnames';
+import {RadioGroup} from 'nti-web-commons';
 
 import FileExtensionsEditor from './FileExtensionsEditor';
+
+const ALL_TYPES = 'All File Types';
+const SPECIFIC_TYPES = 'Specific File Types';
 
 export default class Settings extends React.Component {
 
@@ -19,6 +23,23 @@ export default class Settings extends React.Component {
 		part: React.PropTypes.object.isRequired
 	}
 
+	componentWillMount () {
+		this.setup();
+	}
+
+	componentWillReceiveProps (nextProps) {
+		this.setup(nextProps);
+	}
+
+	setup (props = this.props) {
+		const {part} = props;
+		const extensions = part.allowed_extensions || [];
+		this.setState({
+			extensions,
+			selectedRadio: extensions.length > 0 ? SPECIFIC_TYPES : ALL_TYPES
+		});
+	}
+
 	cancel () {
 		this.props.onDismiss();
 	}
@@ -30,15 +51,31 @@ export default class Settings extends React.Component {
 	}
 
 	value () {
-		const fileExtensions = this.fileExtensions.value;
+		const option = this.radioGroup.value;
+		const fileExtensions = option === ALL_TYPES ? [] : this.fileExtensions.value;
 		return {
 			fileExtensions
 		};
 	}
 
+	onRadioChange = (value) => {
+		this.setState({
+			selectedRadio: value
+		});
+	}
+
+	activateSpecific = () => {
+		this.setState({
+			selectedRadio: SPECIFIC_TYPES
+		});
+	}
+
 	render () {
 
-		const {part} = this.props;
+		const {extensions = [], selectedRadio} = this.state;
+		const fileExtensionsClasses = cx({
+			'disabled': selectedRadio === ALL_TYPES
+		});
 
 		return (
 			<div className="settings-panel">
@@ -49,12 +86,17 @@ export default class Settings extends React.Component {
 				<div className="content">
 					<form>
 						<div>Accepted File Types</div>
-						<div><Radio name="accepted-file-types" label="All File Types" /></div>
-						<div><Radio name="accepted-file-types" label="Specific File Types" defaultChecked /></div>
+						<RadioGroup name="accepted-file-types"
+							ref={x => this.radioGroup = x}
+							onChange={this.onRadioChange}
+							options={[ALL_TYPES, SPECIFIC_TYPES]}
+							initialValue={selectedRadio}
+						/>
 						<FileExtensionsEditor
 							ref={x => this.fileExtensions = x}
-							extensions={part.allowed_extensions}
-
+							extensions={extensions}
+							onFocus={this.activateSpecific}
+							className={fileExtensionsClasses}
 						/>
 					</form>
 				</div>
