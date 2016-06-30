@@ -1,0 +1,23 @@
+@import "~nti-style-common";
+
+.assignment-editor-before-question {
+	position: absolute;
+	top: -30px;
+	left: 0;
+	right: 0;
+	min-height: 30px;
+	padding: 0 rem-calc(15px);
+
+	&.selected {
+		box-shadow: none;
+
+		&::before {
+			content: '';
+			display: block;
+			height: 1px;
+			border: 1px solid $primary-blue;
+			background: $primary-blue;
+			margin-top: 14px;
+		}
+	}
+}

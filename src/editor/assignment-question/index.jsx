@@ -7,6 +7,7 @@ import {QUESTION_ERROR} from '../Constants';
 import Selectable from '../utils/Selectable';
 import ControlsConfig from '../controls/ControlsConfig';
 
+import Before from './Before';
 import Content from './Content';
 import Parts from './Parts';
 import Controls from './controls';
@@ -111,6 +112,7 @@ export default class QuestionComponent extends React.Component {
 
 		return (
 			<div className="assignment-editing-question-container">
+				<Before question={question} />
 				<Selectable className={cls} id={selectableId} value={selectableValue}>
 					<Content question={question} onFocus={this.onContentFocus} onBlur={this.onContentBlur} error={contentError}/>
 					<div className="index">{index + 1}</div>
