@@ -1,6 +1,7 @@
 import React from 'react';
-
+import filesize from 'filesize';
 import {Prompt} from 'nti-web-commons';
+
 import {savePartToQuestion} from '../Actions';
 import {generatePartFor} from './utils';
 import Settings from './Settings';
@@ -39,10 +40,13 @@ export default class FileUploadEditor extends React.Component {
 	}
 
 	render () {
+
+		const {part} = this.props;
+
 		return (
 			<div className="file-upload">
 				<div>Upload your file here.</div>
-				<div>Maximum file size is 10MB.</div>
+				{part.max_file_size && <div>Maximum file size is <span className="filesize">{filesize(part.max_file_size)}</span>.</div>}
 				<div className="upload-button">Upload a file</div>
 				<SettingsButton onClick={this.showSettings} />
 			</div>
