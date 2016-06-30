@@ -34,6 +34,15 @@ class PublishControls extends React.Component {
 	}
 
 
+	onDeleteClick = () => {
+		const assignment = PublishControls.getItem(this.props);
+		if (assignment.hasLink('edit')) {
+			assignment.delete();
+			// TODO: Find out how to handle after a delete
+		}
+	}
+
+
 	render () {
 		const assignment = PublishControls.getItem(this.props);
 		const value = Publish.evaluatePublishStateFor({
@@ -51,8 +60,9 @@ class PublishControls extends React.Component {
 					value={value}
 					onChange={this.onChange}
 					assignment={assignment}
-					enableDelete={canDelete}
-				/>
+				>
+					{canDelete && <div className="flyout-fullwidth-btn delete" onClick={this.onDeleteClick}>Delete</div>}
+				</Control>
 			</div>
 		);
 	}
