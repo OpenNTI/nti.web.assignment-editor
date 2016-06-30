@@ -8,15 +8,6 @@ export default class FileExtensionsEditor extends React.Component {
 
 	constructor (props) {
 		super(props);
-
-		this.add = this.add.bind(this);
-		this.clearInput = this.clearInput.bind(this);
-		this.deleteLastValue = this.deleteLastValue.bind(this);
-		this.focusInput = this.focusInput.bind(this);
-		this.onBlur = this.onBlur.bind(this);
-		this.onInputChange = this.onInputChange.bind(this);
-		this.onKeyDown = this.onKeyDown.bind(this);
-		this.remove = this.remove.bind(this);
 		this.state = {inputValue: ''};
 	}
 
@@ -40,7 +31,7 @@ export default class FileExtensionsEditor extends React.Component {
 		});
 	}
 
-	remove (value) {
+	remove = (value) => {
 		const {values} = this.state;
 		values.delete(value);
 		this.setState({
@@ -48,7 +39,7 @@ export default class FileExtensionsEditor extends React.Component {
 		});
 	}
 
-	add (value) {
+	add = (value) => {
 		let v = value;
 		if (isEmpty(v)) {
 			return;
@@ -61,13 +52,13 @@ export default class FileExtensionsEditor extends React.Component {
 		this.setState({values});
 	}
 
-	clearInput () {
+	clearInput = () => {
 		this.setState({
 			inputValue: ''
 		});
 	}
 
-	focusInput () {
+	focusInput = () => {
 		if (this.input) {
 			this.input.focus();
 		}
@@ -76,18 +67,18 @@ export default class FileExtensionsEditor extends React.Component {
 		}
 	}
 
-	onBlur (e) {
+	onBlur = (e) => {
 		this.add(e.target.value);
 		this.clearInput();
 	}
 
-	onInputChange (e) {
+	onInputChange = (e) => {
 		this.setState({
 			inputValue: e.target.value
 		});
 	}
 
-	onKeyDown (e) {
+	onKeyDown = (e) => {
 		const finishingKeys = ['Enter', 'Tab', ' ', ','];
 		if (finishingKeys.indexOf(e.key) > -1) {
 			e.stopPropagation();
@@ -101,7 +92,7 @@ export default class FileExtensionsEditor extends React.Component {
 		}
 	}
 
-	deleteLastValue () {
+	deleteLastValue = () => {
 		const {values} = this.state;
 		if (values.size > 0) {
 			const lastValue = [...values][values.size - 1];
