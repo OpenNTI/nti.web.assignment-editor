@@ -4,6 +4,7 @@ import {Prompt} from 'nti-web-commons';
 import {savePartToQuestion} from '../Actions';
 import {generatePartFor} from './utils';
 import Settings from './Settings';
+import SettingsButton from './SettingsButton';
 
 export default class FileUploadEditor extends React.Component {
 	static propTypes = {
@@ -43,7 +44,7 @@ export default class FileUploadEditor extends React.Component {
 				<div>Upload your file here.</div>
 				<div>Maximum file size is 10MB.</div>
 				<div className="upload-button">Upload a file</div>
-				<div className="settings-button" onClick={this.showSettings}>Settings</div>
+				<SettingsButton onClick={this.showSettings} />
 			</div>
 		);
 	}
