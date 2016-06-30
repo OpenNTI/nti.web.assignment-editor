@@ -7,9 +7,6 @@ const logger = Logger.get('assignment-editor:assignment-actions');
 const defaultSchema = {};
 
 export function loadAssignment (ntiid) {
-	//TODO: ABSOLUTELY GET RID OF THIS BEFORE IT GOES OUT ANYWHERE
-	window.$AppConfig = window.$AppConfig || {server: '/dataserver2/'};
-
 	getService()
 		.then((service) => {
 			return service.getObject(ntiid);
