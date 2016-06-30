@@ -101,6 +101,7 @@ export default class Settings extends React.Component {
 							ref={x => this.fileExtensions = x}
 							tokens={extensions}
 							preprocessToken={this.preprocessToken}
+							placeholder="Enter all the file types you want to accept"
 							onFocus={this.activateSpecific}
 							className={fileExtensionsClasses}
 						/>
