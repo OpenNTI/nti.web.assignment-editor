@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
 import {scoped} from 'nti-lib-locale';
+import {HOC} from 'nti-web-commons';
+
 import OptionGroup from '../OptionGroup';
 import Option from '../Option';
 
@@ -21,9 +23,14 @@ const DEFAULT_TEXT = {
 const t = scoped('OPTIONS_RANDOMIZE', DEFAULT_TEXT);
 
 
-export default class Randomize extends React.Component {
+class Randomize extends React.Component {
 	static propTypes = {
 		assignment: PropTypes.object.isRequired
+	}
+
+
+	static getItem (props) {
+		return getQuestionSet(props);
 	}
 
 
@@ -60,3 +67,5 @@ export default class Randomize extends React.Component {
 		);
 	}
 }
+
+export default HOC.ItemChanges.compose(Randomize);
