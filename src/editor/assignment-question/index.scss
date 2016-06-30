@@ -3,6 +3,7 @@
 .assignment-editing-question-container {
 	position: relative;
 	margin-bottom: 30px;
+	padding: 0 rem-calc(30px);
 
 
 	.question-editor {
@@ -15,8 +16,8 @@
 
 	.index {
 		position: absolute;
-		top: 1.25rem;
-		left: 1.25rem;
+		top: rem-calc(20px);
+		left: rem-calc(50px);
 		font: normal 400 0.875rem/1.25rem $body-font-family;
 		color: $tertiary-grey;
 		transition: opacity 500ms;
@@ -30,14 +31,18 @@
 	.assignment-editing-controls {
 		position: absolute;
 		top: rem-calc(8px);
-		right: rem-calc(16px);
+		right: rem-calc(46px);
 	}
 
 
-	& .is-saving {
+	&.is-saving {
 		.index {
 			opacity: 0;
 		}
+	}
+
+	&.is-deleting {
+		display: none;
 	}
 }
 

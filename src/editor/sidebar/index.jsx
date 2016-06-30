@@ -6,6 +6,16 @@ import TabBar from './header';
 
 const QUESTION_TYPE = 'application/vnd.nextthought.naquestion';
 
+
+function getActiveQuestionInsertFromSelection (selection) {
+	const activeSelection = selection && selection[0];//For now just look at the first one
+	const activeInsert = activeSelection && activeSelection.value && activeSelection.value.insertAt;
+	const item = activeInsert && activeInsert.item;
+
+	return item && item.MimeType === QUESTION_TYPE ? activeInsert : null;
+}
+
+
 export default class Editor extends React.Component {
 	static propTypes = {
 		assignment: React.PropTypes.object,
@@ -60,20 +70,19 @@ export default class Editor extends React.Component {
 		const {assignment, schema} = this.props;
 		const {selection} = this.state;
 
+		const activeInsert = getActiveQuestionInsertFromSelection(selection);
+
 		if (!assignment) {
 			return (
 				<div className="assignment-editing-sidebar loading"></div>
 			);
 		}
 
-		const activeSelection = selection && selection[0];
-		const activeItem = activeSelection && activeSelection.value && activeSelection.value.item;
-		const activeQuestion = activeItem && activeItem.MimeType === QUESTION_TYPE ? activeItem : null;
 
 		return (
 			<div className="assignment-editing-sidebar">
 				<TabBar />
-				<QuestionTypes assignment={assignment} schema={schema} selection={selection} activeQuestion={activeQuestion} />
+				<QuestionTypes assignment={assignment} schema={schema} selection={selection} activeInsert={activeInsert} />
 			</div>
 		);
 	}

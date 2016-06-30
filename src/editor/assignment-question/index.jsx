@@ -26,7 +26,7 @@ export default class QuestionComponent extends React.Component {
 
 		this.state = {
 			selectableId: question.NTIID,
-			selectableValue: new ControlsConfig(null, question)
+			selectableValue: new ControlsConfig(null, {after: true, item: question})
 		};
 
 		autobind(this,
@@ -98,7 +98,7 @@ export default class QuestionComponent extends React.Component {
 		const {question} = this.props;
 
 		this.setState({
-			selectableValue: new ControlsConfig(null, question)
+			selectableValue: new ControlsConfig(null, {after: true, item: question})
 		});
 	}
 

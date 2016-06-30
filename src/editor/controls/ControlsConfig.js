@@ -1,12 +1,26 @@
 export default class ControlsConfig {
-	constructor (editor, item) {
+	/**
+	 * Create a config for the controls in the control bar.
+	 *
+	 * insertAt looks like:
+	 * {
+	 * 		before: Boolean,
+	 * 		after: Boolean,
+	 * 		item: Object
+	 * }
+	 *
+	 * @param  {[type]} editor   [description]
+	 * @param  {[type]} insertAt [description]
+	 * @return {[type]}          [description]
+	 */
+	constructor (editor, insertAt) {
 		this.activeEditor = editor;
-		this.activeItem = item;
+		this.activeInsertAt = insertAt;
 	}
 
 
-	get item () {
-		return this.activeItem;
+	get insertAt () {
+		return this.activeInsertAt;
 	}
 
 

@@ -34,7 +34,7 @@ export default class BaseButton extends React.Component {
 		assignment: React.PropTypes.object.isRequired,
 		part: React.PropTypes.object.isRequired,
 		handles: React.PropTypes.array,
-		activeQuestion: React.PropTypes.object,
+		activeInsert: React.PropTypes.object,
 		label: React.PropTypes.string,
 		iconCls: React.PropTypes.string
 	}
@@ -71,11 +71,11 @@ export default class BaseButton extends React.Component {
 
 
 	onClick () {
-		const {assignment, activeQuestion} = this.props;
+		const {assignment, activeInsert} = this.props;
 		const question = this.getBlankQuestion();
 
 		if (question) {
-			appendQuestionTo(assignment, question, activeQuestion);
+			appendQuestionTo(assignment, question, activeInsert);
 		}
 	}
 

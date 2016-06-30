@@ -42,7 +42,7 @@ function insertAt (assignment, part, index, question) {
 }
 
 
-function append (assignment, question) {
+function appendQuestion (assignment, question) {
 	const {parts} = assignment;
 	const part = parts && parts[0];
 
@@ -50,9 +50,10 @@ function append (assignment, question) {
 }
 
 
-function insertAfter (assignment, newQuestion, after) {
+function insertQuestionAt (assignment, newQuestion, position) {
 	const {parts} = assignment;
-	let position = {
+	const {item, before} = position;
+	let insert = {
 		index: -1,
 		part: null
 	};
@@ -64,27 +65,27 @@ function insertAfter (assignment, newQuestion, after) {
 		for (let i = 0; i < questions.length; i++) {
 			let question = questions[i];
 
-			if (question.NTIID === after.NTIID) {
-				position.index = i + 1;
-				position.part = part;
+			if (question.NTIID === item.NTIID) {
+				insert.index = i + (before ? 0 : 1);
+				insert.part = part;
 				break;
 			}
 		}
 
-		if (position.part) {
+		if (insert.part) {
 			break;
 		}
 	}
 
-	return insertAt(assignment, position.part, position.index, newQuestion);
+	return insertAt(assignment, insert.part, insert.index, newQuestion);
 }
 
 
-export function appendQuestionTo (assignment, question, after) {
-	if (!after) {
-		append(assignment, question);
+export function appendQuestionTo (assignment, question, position) {
+	if (!position || !position.item) {
+		appendQuestion(assignment, question);
 	} else {
-		insertAfter(assignment, question, after);
+		insertQuestionAt(assignment, question, position);
 	}
 }
 

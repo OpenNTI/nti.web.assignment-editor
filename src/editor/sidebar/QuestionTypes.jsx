@@ -18,7 +18,7 @@ export default class QuestionTypes extends React.Component {
 	static propTypes = {
 		assignment: React.PropTypes.object.isRequired,
 		schema: React.PropTypes.object,
-		activeQuestion: React.PropTypes.object
+		activeInsert: React.PropTypes.object
 	}
 
 
@@ -35,14 +35,14 @@ export default class QuestionTypes extends React.Component {
 
 
 	render () {
-		const {assignment, activeQuestion} = this.props;
+		const {assignment, activeInsert} = this.props;
 		const questionSet = getQuestionSetFrom(assignment);
 
 		return (
 			<ItemChanges item={assignment} onItemChanged={this.onChange}>
 				<ItemChanges item={questionSet} onItemChanged={this.onChange}>
 					<div className="question-types">
-						{getButtons(null, assignment, activeQuestion)}
+						{getButtons(null, assignment, activeInsert)}
 					</div>
 				</ItemChanges>
 			</ItemChanges>

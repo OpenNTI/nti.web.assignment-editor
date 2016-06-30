@@ -10,7 +10,7 @@ const ICON_CLS = 'freeresponse';
 export default class FreeResponseButton extends React.Component {
 	static propTypes = {
 		assignment: React.PropTypes.object.isRequired,
-		activeQuestion: React.PropTypes.object
+		activeInsert: React.PropTypes.object
 	}
 
 	static set handles (handles) {
@@ -23,13 +23,13 @@ export default class FreeResponseButton extends React.Component {
 
 
 	render () {
-		const {assignment, activeQuestion} = this.props;
+		const {assignment, activeInsert} = this.props;
 		const {handles} = this.constructor;
 		return (
 			<Button
 				part={this.getBlankPart()}
 				assignment={assignment}
-				activeQuestion={activeQuestion}
+				activeInsert={activeInsert}
 				label={LABEL}
 				handles={handles}
 				iconCls={ICON_CLS} />
