@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import {RadioGroup} from 'nti-web-commons';
+import {RadioGroup, DialogButtons} from 'nti-web-commons';
 
 import FileExtensionsEditor from './FileExtensionsEditor';
 
@@ -100,10 +100,16 @@ export default class Settings extends React.Component {
 						/>
 					</form>
 				</div>
-				<div className="button-row">
-					<div className="button secondary cancel" onClick={this.cancel}>Cancel</div>
-					<div className="button primary save" onClick={this.save}>Save</div>
-				</div>
+				<DialogButtons flat buttons={[
+					{
+						label: 'Cancel',
+						onClick: this.cancel
+					},
+					{
+						label: 'Save',
+						onClick: this.save
+					}
+				]} />
 			</div>
 		);
 	}
