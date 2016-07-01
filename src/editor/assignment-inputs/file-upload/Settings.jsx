@@ -85,12 +85,11 @@ export default class Settings extends React.Component {
 		return (
 			<div className="settings-panel">
 				<div className="titlebar">
-					<div className="title">Settings</div>
+					<div className="title">Allowed File Extensions</div>
 					<i className="icon-light-x" onClick={this.cancel} />
 				</div>
 				<div className="content">
 					<form>
-						<div>Accepted File Types</div>
 						<RadioGroup name="accepted-file-types"
 							ref={x => this.radioGroup = x}
 							onChange={this.onRadioChange}
