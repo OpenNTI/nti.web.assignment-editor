@@ -5,7 +5,7 @@ import {Prompt} from 'nti-web-commons';
 import {savePartToQuestion} from '../Actions';
 import {generatePartFor} from './utils';
 import Settings from './Settings';
-import SettingsButton from './SettingsButton';
+import {SettingsButton} from 'nti-web-commons';
 
 export default class FileUploadEditor extends React.Component {
 	static propTypes = {
