@@ -57,9 +57,12 @@ export default class MultipleChoiceChoice extends React.Component {
 
 
 	onSolutionChange (e) {
-		const {choice} = this.props;
+		const {choice:oldChoice} = this.props;
+		let newChoice = oldChoice.clone();
 
-		this.onChange({...choice, correct: e.target.checked});
+		newChoice.correct = e.target.checked;
+
+		this.onChange(newChoice);
 	}
 
 

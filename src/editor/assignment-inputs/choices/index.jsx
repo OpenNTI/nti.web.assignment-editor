@@ -4,7 +4,7 @@ import autobind from 'nti-commons/lib/autobind';
 
 import Ordering from '../../../dnd/ordering/Ordering';
 import Choice from './Choice';
-import {isErrorForChoice, cloneChoice} from './Factory';
+import {isErrorForChoice} from './Factory';
 
 const defaultLabel = 'Add a choice';
 
@@ -219,9 +219,10 @@ export default class Choices extends React.Component {
 
 		column = column.map((choice) => {
 			if (this.isSameChoice(choice, newChoice)) {
+				choice = choice.clone();
 				choice.label = newChoice.label;
 
-				return cloneChoice(choice);
+				return choice;
 			}
 
 			return choice;

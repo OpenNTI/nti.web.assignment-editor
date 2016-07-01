@@ -7,6 +7,10 @@ class Choice extends EventEmitter {
 		this.data = data;
 	}
 
+	clone () {
+		return new Choice({...this.data});
+	}
+
 	get MimeType () {
 		return this.data.MimeType;
 	}
@@ -26,13 +30,19 @@ class Choice extends EventEmitter {
 	}
 
 
+	get isNew () {
+		return this.data.isNew;
+	}
+
+
 	get correct () {
 		return this.data.correct;
 	}
 
-
-	get isNew () {
-		return this.data.isNew;
+	set correct (value) {
+		if (this.data.correct !== value) {
+			this.data.correct = value;
+		}
 	}
 
 

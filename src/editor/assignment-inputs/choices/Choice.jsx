@@ -6,8 +6,6 @@ import autobind from 'nti-commons/lib/autobind';
 import Selectable from '../../utils/Selectable';
 import ControlsConfig from '../../controls/ControlsConfig';
 
-import {cloneChoice} from './Factory';
-
 function getSyncLabel (choice) {
 	const {syncHeightWith} = choice;
 	let label = 'w';
@@ -176,14 +174,15 @@ export default class Choice extends React.Component {
 
 
 	onChange () {
-		const {onChange, choice} = this.props;
+		const {onChange, choice:oldChoice} = this.props;
 		const oldLabel = this.getLabelFromState();
 		const label = this.editorRef && this.editorRef.getValue();
 
 		if (onChange && !valuesEqual(oldLabel, label)) {
-			choice.label = label;
+			let newChoice = oldChoice.clone();
+			newChoice.label = label;
 
-			onChange(cloneChoice(choice));
+			onChange(newChoice);
 		}
 	}
 
