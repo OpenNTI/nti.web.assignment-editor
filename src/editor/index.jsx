@@ -30,7 +30,7 @@ export default class Editor extends React.Component {
 	static childContextTypes = {
 		SelectionManager: React.PropTypes.shape({
 			select: React.PropTypes.fn,
-			unseleft: React.PropTypes.fn
+			unselect: React.PropTypes.fn
 		})
 	}
 

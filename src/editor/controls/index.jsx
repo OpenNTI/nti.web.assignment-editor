@@ -15,7 +15,7 @@ export default class Controls extends React.Component {
 	static contextTypes = {
 		SelectionManager: React.PropTypes.shape({
 			select: React.PropTypes.fn,
-			unseleft: React.PropTypes.fn
+			unselect: React.PropTypes.fn
 		})
 	}
 
