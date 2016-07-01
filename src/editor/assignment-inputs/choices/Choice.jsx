@@ -245,6 +245,7 @@ export default class Choice extends React.Component {
 					onFocus={this.onEditorFocus}
 					onBlur = {this.onEditorBlur}
 					onChange={this.onEditorChange}
+					error={error && error.message}
 				/>
 			</Selectable>
 		);

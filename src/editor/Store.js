@@ -12,6 +12,11 @@ const AddUndo = Symbol('Add Undo');
 const ClearUndos = Symbol('Clear Undos');
 
 
+function getMessageForReason (reason) {
+	return (reason && reason.message) || 'Unknown Error';
+}
+
+
 function findErrorsForId (id, errors) {
 	return errors[id] || [];
 }
@@ -102,6 +107,7 @@ class Store extends StorePrototype {
 				NTIID,
 				field,
 				reason,
+				message: getMessageForReason(reason),
 				clear: () => this[RemoveError](NTIID, field, type)
 			});
 

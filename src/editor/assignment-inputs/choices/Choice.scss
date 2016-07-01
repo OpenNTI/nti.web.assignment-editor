@@ -43,6 +43,11 @@
 		}
 	}
 
+	.text-editor-error {
+		padding: 0.6rem;
+		margin-top: -1rem;
+	}
+
 	.sync-height-with {
 		content: attr(data-sync-height-with);
 		visibility: hidden;
