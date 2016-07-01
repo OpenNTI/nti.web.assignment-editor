@@ -1,10 +1,31 @@
 import React from 'react';
 import cx from 'classnames';
-import {TextEditor, valuesEqual} from 'nti-modeled-content';
+import {TextEditor, valuesEqual, normalizeValue} from 'nti-modeled-content';
 import autobind from 'nti-commons/lib/autobind';
 
 import Selectable from '../../utils/Selectable';
 import ControlsConfig from '../../controls/ControlsConfig';
+
+import {cloneChoice} from './Factory';
+
+function getSyncLabel (choice) {
+	const {syncHeightWith} = choice;
+	let label = 'w';
+
+	if (!syncHeightWith || !syncHeightWith.length) {
+		label = choice.label;
+	} else {
+		label = syncHeightWith.reduce((acc, sync) => {
+			if (sync.label.length > acc.length) {
+				acc = sync.label;
+			}
+
+			return acc;
+		}, label);
+	}
+
+	return normalizeValue(label);
+}
 
 const PLACEHOLDER = '';
 
@@ -33,11 +54,13 @@ export default class Choice extends React.Component {
 		super(props);
 
 		const {choice, error} = this.props;
+		const syncLabel = getSyncLabel(choice);
 
 		this.isNew = choice.isNew;
 
 		this.state = {
 			label: choice.label,
+			syncLabel,
 			selectableId: choice.NTIID || choice.ID,
 			selectableValue: new ControlsConfig(),
 			error
@@ -46,6 +69,7 @@ export default class Choice extends React.Component {
 		this.setEditorRef = x => this.editorRef = x;
 
 		autobind(this,
+			'updateSyncHeight',
 			'onUnselect',
 			'onSelect',
 			'onEditorFocus',
@@ -68,6 +92,7 @@ export default class Choice extends React.Component {
 			delete this.updatedLabel;
 			state.label = newChoice.label;
 			state.selectableId = newChoice.NTIID || newChoice.ID;
+			state.syncLabel = getSyncLabel(newChoice);
 		}
 
 		if (newError !== oldError) {
@@ -87,6 +112,59 @@ export default class Choice extends React.Component {
 			this.editorRef.focus();
 			delete this.isNew;
 		}
+
+		this.removeSyncListeners();
+		this.addSyncListeners();
+	}
+
+
+	componentWillUnmount () {
+		this.removeSyncListeners();
+	}
+
+
+	addSyncListeners () {
+		const {choice} = this.props;
+		const {syncHeightWith} = choice;
+
+		if (!syncHeightWith || !syncHeightWith) {
+			return;
+		}
+
+		for (let sync of syncHeightWith) {
+			if (sync && sync.addListener) {
+				sync.addListener('changed', this.updateSyncHeight);
+			}
+		}
+	}
+
+
+	removeSyncListeners () {
+		const {choice} = this.props;
+		const {syncHeightWith} = choice;
+
+		if (!syncHeightWith || !syncHeightWith.length) {
+			return;
+		}
+
+		for (let sync of syncHeightWith) {
+			if (sync && sync.removeListener) {
+				sync.removeListener('changed', this.updateSyncHeight);
+			}
+		}
+	}
+
+
+	updateSyncHeight () {
+		const {choice} = this.props;
+		const newLabel = getSyncLabel(choice);
+		const {syncLabel:oldLabel} = this.state;
+
+		if (newLabel !== oldLabel) {
+			this.setState({
+				syncLabel: newLabel
+			});
+		}
 	}
 
 
@@ -103,19 +181,26 @@ export default class Choice extends React.Component {
 		const label = this.editorRef && this.editorRef.getValue();
 
 		if (onChange && !valuesEqual(oldLabel, label)) {
-			onChange({...choice, label: label});
+			choice.label = label;
+
+			onChange(cloneChoice(choice));
 		}
 	}
 
 
 	onEditorChange () {
+		const {choice} = this.props;
 		const {error} = this.state;
 		const oldLabel = this.getLabelFromState();
 		const newLabel = this.editorRef && this.editorRef.getValue();
 
-		if (error && error.clear && !valuesEqual(oldLabel, newLabel)) {
-			this.onChange();
-			error.clear();
+		if (!valuesEqual(oldLabel, newLabel)) {
+			if (error && error.clear) {
+				this.onChange();
+				error.clear();
+			}
+
+			choice.label = newLabel;
 		}
 	}
 
@@ -148,11 +233,12 @@ export default class Choice extends React.Component {
 
 	render () {
 		const {className, choice} = this.props;
-		const {label, error, selectableId, selectableValue} = this.state;
+		const {label, syncLabel, error, selectableId, selectableValue} = this.state;
 		const cls = cx(className, 'assignment-input-choice', {error, correct: choice.correct});
 
 		return (
 			<Selectable className={cls} id={selectableId} value={selectableValue} onSelect={this.onSelect} onUnselect={this.onUnselect}>
+				<div className="sync-height-with">{syncLabel}</div>
 				<TextEditor
 					ref={this.setEditorRef}
 					initialValue={label}

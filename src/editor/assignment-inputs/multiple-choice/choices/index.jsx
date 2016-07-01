@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Choices from '../../choices';
-import {isErrorForChoice} from '../../choices/Factory';
+import {isErrorForChoice, cloneChoice} from '../../choices/Factory';
 import Choice from './Choice';
 
 export default class MultipleChoiceChoices extends Choices {
@@ -28,9 +28,11 @@ export default class MultipleChoiceChoices extends Choices {
 					solutionChanged = true;
 				}
 
-				newColumn.push({...oldChoice, label: choice.label});
+				oldChoice.label = choice.label;
+
+				newColumn.push(cloneChoice(oldChoice));
 			} else {
-				newColumn.push({...oldChoice});
+				newColumn.push(cloneChoice(oldChoice));
 			}
 		}
 

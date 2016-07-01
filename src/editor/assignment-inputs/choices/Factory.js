@@ -1,3 +1,70 @@
+import {EventEmitter} from 'events';
+
+class Choice extends EventEmitter {
+	constructor (data) {
+		super();
+
+		this.data = data;
+	}
+
+	get MimeType () {
+		return this.data.MimeType;
+	}
+
+	get ID () {
+		return this.data.ID;
+	}
+
+
+	get errorField () {
+		return this.data.errorField;
+	}
+
+
+	get index () {
+		return this.data.index;
+	}
+
+
+	get correct () {
+		return this.data.correct;
+	}
+
+
+	get isNew () {
+		return this.data.isNew;
+	}
+
+
+	get label () {
+		return this.data.label;
+	}
+
+
+	set label (value) {
+		if (this.data.label !== value) {
+			this.data.label = value;
+			this.emit('changed');
+		}
+	}
+
+
+	get syncHeightWith () {
+		return this.rows;
+	}
+
+
+	set syncHeightWith (rows) {
+		this.rows = rows;
+	}
+
+
+	get dataForTransfer () {
+		return JSON.stringify(this.data);
+	}
+}
+
+
 export default class ChoiceFactory {
 
 	constructor (type, containerId, errorField) {
@@ -8,7 +75,7 @@ export default class ChoiceFactory {
 
 
 	make (label, correct, index, isNew) {
-		const choice = {
+		const choice = new Choice({
 			MimeType: this.choiceType,
 			ID: this.containerId + '-' + index,
 			errorField: this.errorField,
@@ -16,10 +83,19 @@ export default class ChoiceFactory {
 			label: label,
 			correct,
 			isNew
-		};
+		});
 
 		return choice;
 	}
+}
+
+
+export function cloneChoice (choice) {
+	if (!choice instanceof Choice) {
+		return choice;
+	}
+
+	return new Choice(choice.data);
 }
 
 
