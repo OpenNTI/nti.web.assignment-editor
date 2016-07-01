@@ -11,21 +11,6 @@ function createSyncHeightGroup () {
 	return new SyncHeightGroup();
 }
 
-
-function updateSyncHeightGroups (columns) {
-	const first = columns[0];
-
-	for (let i = 0; i < first.length; i++) {
-		let group = createSyncHeightGroup();
-
-		for (let column of columns) {
-			column[i].syncHeightGroup = group;
-		}
-	}
-
-	return columns;
-}
-
 const defaultLabel = 'Add a choice';
 
 /**
@@ -124,14 +109,10 @@ export default class Choices extends React.Component {
 				row = [row];
 			}
 
-			let group = createSyncHeightGroup();
-
 			columns = row.reduce((acc, cell, index) => {
 				if (!acc[index]) {
 					acc[index] = [];
 				}
-
-				cell.syncHeightGroup = group;
 
 				acc[index].push(cell);
 
@@ -167,6 +148,22 @@ export default class Choices extends React.Component {
 		for (let i = 0; i < deletes.length; i++) {
 			this.deleteHandlers[i] = this.remove.bind(this, deletes[i]);
 		}
+	}
+
+
+	clearRowSyncs () {
+		this.rowSyncs = {};
+	}
+
+
+	getSyncForRow (row) {
+		this.rowSyncs = this.rowSyncs || {};
+
+		if (!this.rowSyncs[row]) {
+			this.rowSyncs[row] = createSyncHeightGroup();
+		}
+
+		return this.rowSyncs[row];
 	}
 
 
@@ -214,7 +211,7 @@ export default class Choices extends React.Component {
 
 		columns[columnIndex] = choices.map(x => oldChoices[x.NTIID || x.ID]);
 
-		columns = updateSyncHeightGroups(columns);
+		this.clearRowSyncs();
 
 		this.setState({
 			columns
@@ -333,17 +330,17 @@ export default class Choices extends React.Component {
 	}
 
 
-	renderChoice (column, choice) {
+	renderChoice (column, choice, row) {
 		const {error} = this.state;
 		const onChange = this.choiceChangeHandlers[column];
 		const choiceError = isErrorForChoice(error, choice);
-
-		choice.error = choiceError && choiceError.reason && choiceError.reason.message;
+		const sync = this.getSyncForRow(row);
 
 		return (
 			<Choice
 				key={choice.NTIID || choice.ID}
 				choice={choice}
+				heightSyncGroup={sync}
 				onChange={onChange}
 				error={choiceError}
 			/>

@@ -23,6 +23,7 @@ const PLACEHOLDER = '';
 export default class Choice extends React.Component {
 	static propTypes = {
 		choice: React.PropTypes.object,
+		heightSyncGroup: React.PropTypes.object,
 		error: React.PropTypes.object,
 		className: React.PropTypes.string,
 		onChange: React.PropTypes.func,
@@ -169,13 +170,13 @@ export default class Choice extends React.Component {
 
 
 	render () {
-		const {className, choice} = this.props;
+		const {className, choice, heightSyncGroup} = this.props;
 		const {label, error, selectableId, selectableValue} = this.state;
 		const cls = cx(className, 'assignment-input-choice', {error, correct: choice.correct});
 
 		return (
 			<Selectable className={cls} id={selectableId} value={selectableValue} onSelect={this.onSelect} onUnselect={this.onUnselect}>
-				<SyncHeight ref={this.setSyncRef} group={choice.group}>
+				<SyncHeight ref={this.setSyncRef} group={heightSyncGroup}>
 					<TextEditor
 						ref={this.setEditorRef}
 						initialValue={label}
