@@ -10,7 +10,7 @@ const DEFAULT_MAX_DEPTH = 5;
 const DEFAULT_KEEP_FOR = Infinity;
 
 export default class ActionQueue extends EventEmitter {
-	constructor (config) {
+	constructor (config = {}) {
 		super();
 
 		this.seenCount = 0;
