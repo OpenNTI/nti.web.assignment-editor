@@ -325,7 +325,7 @@ export default class OrderedContents {
 			return Promise.resolve();
 		}
 
-		if (currentIndex === -1 || !oldIndex) {
+		if (currentIndex === -1 || oldIndex == null) {
 			return this.insertAt(item, newIndex);
 		}
 
