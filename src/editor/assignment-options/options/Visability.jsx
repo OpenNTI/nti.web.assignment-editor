@@ -18,7 +18,7 @@ const getOption = k => ({label: t(k), value: k});
 
 class Visability extends React.Component {
 	static propTypes = {
-		assignment: React.PropTypes.object.isRequired
+		assignment: PropTypes.object.isRequired
 	}
 
 	static getItem (props) {
