@@ -5,8 +5,12 @@
 		box-shadow: 0 0 1px 1px $primary-red;
 	}
 
+	.text-editor {
+		padding: rem-calc(20px) rem-calc(21px) rem-calc(20px) rem-calc(54px);
+	}
+
 	.nti-rich-text {
-		padding: 20px 21px 20px 54px;
+		padding: 0 0 0.2rem;
 		border: none;
 		background: white;
 
@@ -15,7 +19,7 @@
 			padding-bottom: 0;
 			font-size: 0.875rem;
 			transition: color 50ms;
-			min-height: 0;
+			min-height: 1rem;
 		}
 
 		.character-count {
@@ -28,6 +32,7 @@
 			transition: color 50ms;
 		}
 	}
+
 }
 
 .dragging .question-content-editor .nti-rich-text {

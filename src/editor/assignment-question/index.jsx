@@ -3,7 +3,7 @@ import cx from 'classnames';
 import autobind from 'nti-commons/lib/autobind';
 
 import Store from '../Store';
-import {QUESTION_ERROR} from '../Constants';
+import {QUESTION_ERROR, QUESTION_WARNING} from '../Constants';
 import Selectable from '../utils/Selectable';
 import ControlsConfig from '../controls/ControlsConfig';
 
@@ -62,8 +62,8 @@ export default class QuestionComponent extends React.Component {
 
 
 	onStoreChange (data) {
-		if (data.type === QUESTION_ERROR) {
-			this.onQuestionError();
+		if (data.type === QUESTION_ERROR || data.type === QUESTION_WARNING) {
+			this.onQuestionMessages();
 		}
 	}
 
@@ -73,14 +73,16 @@ export default class QuestionComponent extends React.Component {
 	}
 
 
-	onQuestionError () {
+	onQuestionMessages () {
 		const {question} = this.props;
 		const {NTIID} = question;
 		const contentError = Store.getErrorFor(NTIID, 'content');
 		const partError = Store.getErrorFor(NTIID, 'parts');
+		const contentWarning = Store.getWarningFor(NTIID, 'content');
 
 		this.setState({
 			contentError,
+			contentWarning,
 			partError
 		});
 	}
@@ -106,7 +108,7 @@ export default class QuestionComponent extends React.Component {
 
 	render () {
 		const {question, index, questionSet, assignment} = this.props;
-		const {selectableId, selectableValue, contentError, partError} = this.state;
+		const {selectableId, selectableValue, contentError, contentWarning, partError} = this.state;
 		const {isSaving} = question;
 		const cls = cx('question-editor', {'is-saving': isSaving});
 
@@ -114,7 +116,7 @@ export default class QuestionComponent extends React.Component {
 			<div className="assignment-editing-question-container">
 				<Before question={question} />
 				<Selectable className={cls} id={selectableId} value={selectableValue}>
-					<Content question={question} onFocus={this.onContentFocus} onBlur={this.onContentBlur} error={contentError}/>
+					<Content question={question} onFocus={this.onContentFocus} onBlur={this.onContentBlur} error={contentError} warning={contentWarning}/>
 					<div className="index">{index + 1}</div>
 					<Parts question={question} error={partError} />
 				</Selectable>

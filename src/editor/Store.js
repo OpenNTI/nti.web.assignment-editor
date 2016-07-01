@@ -1,13 +1,24 @@
 import StorePrototype from 'nti-lib-store';
 import {Queue} from '../action-queue';
 
-import {LOADED, LOADED_SCHEMA, ASSIGNMENT_ERROR, QUESTION_ERROR, UNDO_CREATED, CLEAR_UNDOS} from './Constants';
+import {
+	LOADED,
+	LOADED_SCHEMA,
+	ASSIGNMENT_ERROR,
+	QUESTION_ERROR,
+	QUESTION_WARNING,
+	UNDO_CREATED,
+	CLEAR_UNDOS
+} from './Constants';
 
 const PRIVATE = new WeakMap();
 const SetAssignment = Symbol('Set Assignment');
 const SetSchema = Symbol('Set Assignment Schema');
 const SetError = Symbol('Set Error');
-const RemoveError = Symbol('Remove Error');
+const SetWarning = Symbol('Set Warning');
+const GetMessageFrom = Symbol('Get Message From');
+const RemoveMessageFrom = Symbol('Remove Message From');
+const SetMessageOn = Symbol('Set Message On');
 const AddUndo = Symbol('Add Undo');
 const ClearUndos = Symbol('Clear Undos');
 
@@ -17,15 +28,15 @@ function getMessageForReason (reason) {
 }
 
 
-function findErrorsForId (id, errors) {
-	return errors[id] || [];
+function findMessagesForId (id, message) {
+	return message[id] || [];
 }
 
 
-function findErrorForField (field, errors) {
-	for (let error of errors) {
-		if (error.field === field) {
-			return error;
+function findMessageForField (field, messages) {
+	for (let message of messages) {
+		if (message.field === field) {
+			return message;
 		}
 	}
 
@@ -41,17 +52,21 @@ class Store extends StorePrototype {
 			assignment: null,
 			schema: null,
 			errors: {},
+			warnings: {},
 			undoQueue: new Queue({maxVisible: 1, maxDepth: 5, keepFor: 30000})
 		});
 
 		this.setAssignmentError = this[SetError].bind(this, ASSIGNMENT_ERROR);
 		this.setQuestionError = this[SetError].bind(this, QUESTION_ERROR);
 
+		this.setQuestionWarning = this[SetWarning].bind(this, QUESTION_WARNING);
+
 		this.registerHandlers({
 			[LOADED]: SetAssignment,
 			[LOADED_SCHEMA]: SetSchema,
 			[ASSIGNMENT_ERROR]: 'setAssignmentError',
 			[QUESTION_ERROR]: 'setQuestionError',
+			[QUESTION_WARNING]: 'setQuestionWarning',
 			[UNDO_CREATED]: AddUndo,
 			[CLEAR_UNDOS]: ClearUndos
 		});
@@ -91,44 +106,70 @@ class Store extends StorePrototype {
 	}
 
 
-	[SetError] (type, e) {
-		const error = e.action.response;
-		const {NTIID, field, reason} = error;
-		let p = PRIVATE.get(this);
+	[GetMessageFrom] (messages = {}, id, field) {
+		const messagesForId = findMessagesForId(id, messages);
+		let message;
 
-		p.errors = p.errors || {};
-
-		if (!p.errors[NTIID]) {
-			p.errors[NTIID] = [];
+		if (field) {
+			message = findMessageForField(field, messagesForId);
+		} else {
+			message = messagesForId[0];
 		}
 
-		if (!this.getErrorFor(NTIID, field)) {
-			p.errors[NTIID].push({
+		return message;
+	}
+
+
+	[RemoveMessageFrom] (messages = {}, id, field, type) {
+		if (!field) {
+			delete messages[id];
+		} else if (messages[id]) {
+			messages[id] = messages[id].filter(message => message.field !== field);
+		}
+
+		this.emitChange({type: type});
+
+		return messages;
+	}
+
+
+	[SetMessageOn] (messages = {}, message, type) {
+		const {NTIID, field, reason} = message;
+
+		if (!messages[NTIID]) {
+			messages[NTIID] = [];
+		}
+
+		if (!this[GetMessageFrom](messages, NTIID, field)) {
+			messages[NTIID].push({
 				NTIID,
 				field,
 				reason,
 				message: getMessageForReason(reason),
-				clear: () => this[RemoveError](NTIID, field, type)
+				clear: () => this[RemoveMessageFrom](messages, NTIID, field, type)
 			});
 
 			this.emitChange({type: type});
 		}
+
+		return messages;
 	}
 
 
-	[RemoveError] (id, field, type) {
-		let p = PRIVATE.get(this);
-		let {errors} = p;
+	[SetError] (type, e) {
+		const error = e.action.response;
+		const p = PRIVATE.get(this);
 
-		errors = errors || {};
+		p.errors = this[SetMessageOn](p.errors, error, type);
+	}
 
-		if (!field) {
-			delete errors[id];
-		} else if (errors[id]) {
-			errors[id] = errors[id].filter(error => error.field !== field);
-		}
 
-		this.emitChange({type: type});
+
+	[SetWarning] (type, e) {
+		const warning = e.action.response;
+		const p = PRIVATE.get(this);
+
+		p.warnings = this[SetMessageOn](p.warnings, warning, type);
 	}
 
 
@@ -178,21 +219,16 @@ class Store extends StorePrototype {
 
 
 	getErrorFor (id, field) {
-		let p = PRIVATE.get(this);
-		let {errors} = p;
-		let error;
+		const p = PRIVATE.get(this);
 
-		errors = errors || {};
+		return this[GetMessageFrom](p.errors, id, field);
+	}
 
-		let errorsForId = findErrorsForId(id, errors);
 
-		if (field) {
-			error = findErrorForField(field, errorsForId);
-		} else {
-			error = errorsForId[0];
-		}
+	getWarningFor (id, field) {
+		const p = PRIVATE.get(this);
 
-		return error;
+		return this[GetMessageFrom](p.warnings, id, field);
 	}
 }
 

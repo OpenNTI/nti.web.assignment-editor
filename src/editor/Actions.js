@@ -1,7 +1,7 @@
 import {dispatch} from 'nti-lib-dispatcher';
 import {getService} from  'nti-web-client';
 import Logger from 'nti-util-logger';
-import {LOADED, LOADED_SCHEMA, SAVING, SAVE_ENDED} from './Constants';
+import {LOADED, LOADED_SCHEMA, SAVING, SAVE_ENDED, QUESTION_WARNING} from './Constants';
 
 const logger = Logger.get('assignment-editor:assignment-actions');
 const defaultSchema = {};
@@ -65,4 +65,19 @@ export function saveFieldOn (obj, field, newValue) {
 	save.then(afterSave, afterSave);
 
 	return save;
+}
+
+
+export function warnIfQuestionEmpty (question) {
+	const {content} = question;
+
+	if (!content) {
+		dispatch(QUESTION_WARNING, {
+			NTIID: question.NTIID,
+			field: 'content',
+			reason: {
+				message: 'Questions cannot be blank.'
+			}
+		});
+	}
 }

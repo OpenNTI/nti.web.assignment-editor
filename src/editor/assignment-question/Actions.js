@@ -1,7 +1,7 @@
 import {dispatch} from 'nti-lib-dispatcher';
 
 import OrderedContents from '../utils/OrderedContents';
-import {saveFieldOn} from '../Actions';
+import {saveFieldOn, warnIfQuestionEmpty} from '../Actions';
 import {removePartWithQuestionSet} from '../assignment-parts/Actions';
 import {
 	SAVING,
@@ -22,6 +22,7 @@ export function saveQuestionContent (question, content) {
 	if (save && save.then) {
 		save.then(() => {
 			dispatch(QUESTION_UPDATED, question);
+			warnIfQuestionEmpty(question);
 		}).catch((reason) => {
 			dispatch(QUESTION_ERROR, {
 				NTIID: question.NTIID,
