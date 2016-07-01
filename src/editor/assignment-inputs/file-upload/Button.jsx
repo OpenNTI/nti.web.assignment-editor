@@ -1,9 +1,16 @@
 import React from 'react';
+import {scoped} from 'nti-lib-locale';
+
 import Button from '../base/Button';
 import {generatePartFor} from './utils';
 
-const LABEL = 'File Upload';
 const ICON_CLS = 'file-upload';
+
+const DEFAULT_TEXT = {
+	fileUploadButtonLabel: 'File Upload'
+};
+
+const t = scoped('ASSIGNMENT_AUTHORING', DEFAULT_TEXT);
 
 export default class FileUploadButton extends React.Component {
 	static propTypes = {
@@ -27,7 +34,7 @@ export default class FileUploadButton extends React.Component {
 				part={this.getBlankPart()}
 				assignment={assignment}
 				activeInsert={activeInsert}
-				label={LABEL}
+				label={t('fileUploadButtonLabel')}
 				handles={handles}
 				iconCls={ICON_CLS} />
 		);

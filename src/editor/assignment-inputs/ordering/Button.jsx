@@ -1,13 +1,20 @@
 import React from 'react';
+import {scoped} from 'nti-lib-locale';
+
 import Button from '../base/Button';
 import {generatePartFor} from './utils';
 
-const LABEL = 'Ordering';
 const ICON_CLS = 'ordering';
 
 const defaultLabels = ['Label 1', 'Label 2'];
 const defaultValues = ['Value 1', 'Label 2'];
 const defaultSolution = {'0': 0, '1': 1};
+
+const DEFAULT_TEXT = {
+	orderingButtonLabel: 'Ordering'
+};
+
+const t = scoped('ASSIGNMENT_AUTHORING', DEFAULT_TEXT);
 
 export default class OrderingButton extends React.Component {
 	static propTypes = {
@@ -32,7 +39,7 @@ export default class OrderingButton extends React.Component {
 				part={this.getBlankPart()}
 				assignment={assignment}
 				activeInsert={activeInsert}
-				label={LABEL}
+				label={t('orderingButtonLabel')}
 				handles={handles}
 				iconCls={ICON_CLS} />
 		);

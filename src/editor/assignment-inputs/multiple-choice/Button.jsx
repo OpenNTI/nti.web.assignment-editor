@@ -1,13 +1,20 @@
 import React from 'react';
+import {scoped} from 'nti-lib-locale';
+
 import Button from '../base/Button';
 import {generatePartFor} from './utils';
 
-const LABEL = 'Multiple Choice';
 const ICON_CLS = 'multiple-choice';
 
 const defaultChoices = ['Choice 1'];
 const defaultSolution = 0;
 const defaultHint = [];
+
+const DEFAULT_TEXT = {
+	multipleChoiceButtonLabel: 'Multiple Choice'
+};
+
+const t = scoped('ASSIGNMENT_AUTHORING', DEFAULT_TEXT);
 
 export default class MultipleChoiceButton extends React.Component {
 	static propTypes = {
@@ -33,7 +40,7 @@ export default class MultipleChoiceButton extends React.Component {
 				part={this.getBlankPart()}
 				assignment={assignment}
 				activeInsert={activeInsert}
-				label={LABEL}
+				label={t('multipleChoiceButtonLabel')}
 				handles={handles}
 				iconCls={ICON_CLS} />
 		);
