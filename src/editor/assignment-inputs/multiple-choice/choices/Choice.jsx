@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import autobind from 'nti-commons/lib/autobind';
+import {Radio, Checkbox} from 'nti-web-commons';
 
 import Choice from '../../choices/Choice';
 
@@ -83,12 +84,12 @@ export default class MultipleChoiceChoice extends React.Component {
 	renderSolution (correct, multipleAnswers, group) {
 		if (multipleAnswers) {
 			return (
-				<input type="checkbox" checked={correct} onChange={this.onSolutionChange} />
+				<Checkbox color="green" checked={correct} onChange={this.onSolutionChange} />
 			);
 		}
 
 		return (
-			<input type="radio" name={group} checked={correct} onChange={this.onSolutionChange} />
+			<Radio color="green" name={group} checked={correct} onChange={this.onSolutionChange} />
 		);
 	}
 }

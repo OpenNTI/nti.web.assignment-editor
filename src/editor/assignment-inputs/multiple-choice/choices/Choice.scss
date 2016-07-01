@@ -12,12 +12,21 @@
 		padding-left: 34px;
 	}
 
-	input[type="checkbox"], input[type="radio"] {
-		position: absolute;
-		top: 15px;
-		left: 15px;
-		opacity: 1;
+	.radio-component, .checkbox-component {
 		transition: opacity 50ms;
+		opacity: 1;
+	}
+
+	.radio-component {
+		position: absolute;
+		top: 10px;
+		left: 15px;
+	}
+
+	.checkbox-component {
+		position: absolute;
+	    top: 14px;
+	    left: 15px;
 	}
 
 	.remove {
