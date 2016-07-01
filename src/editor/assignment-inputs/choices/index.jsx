@@ -2,9 +2,29 @@ import React from 'react';
 import cx from 'classnames';
 import autobind from 'nti-commons/lib/autobind';
 
+import {SyncHeightGroup} from '../../../sync-height';
 import Ordering from '../../../dnd/ordering/Ordering';
 import Choice from './Choice';
 import {isErrorForChoice} from './Factory';
+
+function createSyncHeightGroup () {
+	return new SyncHeightGroup();
+}
+
+
+function updateSyncHeightGroups (columns) {
+	const first = columns[0];
+
+	for (let i = 0; i < first.length; i++) {
+		let group = createSyncHeightGroup();
+
+		for (let column of columns) {
+			column[i].syncHeightGroup = group;
+		}
+	}
+
+	return columns;
+}
 
 const defaultLabel = 'Add a choice';
 
@@ -104,12 +124,14 @@ export default class Choices extends React.Component {
 				row = [row];
 			}
 
+			let group = createSyncHeightGroup();
+
 			columns = row.reduce((acc, cell, index) => {
 				if (!acc[index]) {
 					acc[index] = [];
 				}
 
-				cell.syncHeightWith = row;
+				cell.syncHeightGroup = group;
 
 				acc[index].push(cell);
 
@@ -191,6 +213,8 @@ export default class Choices extends React.Component {
 		choices = choices.slice(0);
 
 		columns[columnIndex] = choices.map(x => oldChoices[x.NTIID || x.ID]);
+
+		columns = updateSyncHeightGroups(columns);
 
 		this.setState({
 			columns
@@ -312,13 +336,16 @@ export default class Choices extends React.Component {
 	renderChoice (column, choice) {
 		const {error} = this.state;
 		const onChange = this.choiceChangeHandlers[column];
+		const choiceError = isErrorForChoice(error, choice);
+
+		choice.error = choiceError && choiceError.reason && choiceError.reason.message;
 
 		return (
 			<Choice
 				key={choice.NTIID || choice.ID}
 				choice={choice}
 				onChange={onChange}
-				error={isErrorForChoice(error, choice)}
+				error={choiceError}
 			/>
 		);
 	}

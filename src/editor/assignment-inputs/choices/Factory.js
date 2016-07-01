@@ -8,7 +8,11 @@ class Choice extends EventEmitter {
 	}
 
 	clone () {
-		return new Choice({...this.data});
+		const clone = new Choice({...this.data});
+
+		clone.syncHeightGroup = this.syncHeightGroup;
+
+		return clone;
 	}
 
 	get MimeType () {
@@ -40,9 +44,7 @@ class Choice extends EventEmitter {
 	}
 
 	set correct (value) {
-		if (this.data.correct !== value) {
-			this.data.correct = value;
-		}
+		this.data.correct = value;
 	}
 
 
@@ -52,20 +54,17 @@ class Choice extends EventEmitter {
 
 
 	set label (value) {
-		if (this.data.label !== value) {
-			this.data.label = value;
-			this.emit('changed');
-		}
+		this.data.label = value;
 	}
 
 
-	get syncHeightWith () {
-		return this.rows;
+	get syncHeightGroup () {
+		return this.group;
 	}
 
 
-	set syncHeightWith (rows) {
-		this.rows = rows;
+	set syncHeightGroup (group) {
+		this.group = group;
 	}
 
 

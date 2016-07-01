@@ -1,33 +1,15 @@
 import React from 'react';
 import cx from 'classnames';
-import {TextEditor, valuesEqual, normalizeValue} from 'nti-modeled-content';
+import {TextEditor, valuesEqual} from 'nti-modeled-content';
 import autobind from 'nti-commons/lib/autobind';
 
+import SyncHeight from '../../../sync-height';
 import Selectable from '../../utils/Selectable';
 import ControlsConfig from '../../controls/ControlsConfig';
 
-function getSyncLabel (choice) {
-	const {syncHeightWith} = choice;
-	let label = 'w';
-
-	if (!syncHeightWith || !syncHeightWith.length) {
-		label = choice.label;
-	} else {
-		label = syncHeightWith.reduce((acc, sync) => {
-			if (sync.label.length > acc.length) {
-				acc = sync.label;
-			}
-
-			return acc;
-		}, label);
-	}
-
-	return normalizeValue(label);
-}
-
 const PLACEHOLDER = '';
 
-/**
+/*
  * Render a choice for a assignment question.
  *
  * the choice object should look like:
@@ -48,17 +30,17 @@ export default class Choice extends React.Component {
 	}
 
 
+	setSyncRef = x => this.syncRef = x
+
 	constructor (props) {
 		super(props);
 
 		const {choice, error} = this.props;
-		const syncLabel = getSyncLabel(choice);
 
 		this.isNew = choice.isNew;
 
 		this.state = {
 			label: choice.label,
-			syncLabel,
 			selectableId: choice.NTIID || choice.ID,
 			selectableValue: new ControlsConfig(),
 			error
@@ -67,7 +49,6 @@ export default class Choice extends React.Component {
 		this.setEditorRef = x => this.editorRef = x;
 
 		autobind(this,
-			'updateSyncHeight',
 			'onUnselect',
 			'onSelect',
 			'onEditorFocus',
@@ -90,7 +71,6 @@ export default class Choice extends React.Component {
 			delete this.updatedLabel;
 			state.label = newChoice.label;
 			state.selectableId = newChoice.NTIID || newChoice.ID;
-			state.syncLabel = getSyncLabel(newChoice);
 		}
 
 		if (newError !== oldError) {
@@ -99,69 +79,28 @@ export default class Choice extends React.Component {
 			state.error = newError;
 		}
 
+
 		if (state) {
-			this.setState(state);
+			this.setState(state, () => {
+				this.syncHeight();
+			});
 		}
 	}
 
 
 	componentDidMount () {
+		this.syncHeight();
+
 		if (this.isNew && this.editorRef) {
 			this.editorRef.focus();
 			delete this.isNew;
 		}
-
-		this.removeSyncListeners();
-		this.addSyncListeners();
 	}
 
 
-	componentWillUnmount () {
-		this.removeSyncListeners();
-	}
-
-
-	addSyncListeners () {
-		const {choice} = this.props;
-		const {syncHeightWith} = choice;
-
-		if (!syncHeightWith || !syncHeightWith) {
-			return;
-		}
-
-		for (let sync of syncHeightWith) {
-			if (sync && sync.addListener) {
-				sync.addListener('changed', this.updateSyncHeight);
-			}
-		}
-	}
-
-
-	removeSyncListeners () {
-		const {choice} = this.props;
-		const {syncHeightWith} = choice;
-
-		if (!syncHeightWith || !syncHeightWith.length) {
-			return;
-		}
-
-		for (let sync of syncHeightWith) {
-			if (sync && sync.removeListener) {
-				sync.removeListener('changed', this.updateSyncHeight);
-			}
-		}
-	}
-
-
-	updateSyncHeight () {
-		const {choice} = this.props;
-		const newLabel = getSyncLabel(choice);
-		const {syncLabel:oldLabel} = this.state;
-
-		if (newLabel !== oldLabel) {
-			this.setState({
-				syncLabel: newLabel
-			});
+	syncHeight () {
+		if (this.syncRef && this.syncRef.updateHeight) {
+			this.syncRef.updateHeight();
 		}
 	}
 
@@ -188,7 +127,6 @@ export default class Choice extends React.Component {
 
 
 	onEditorChange () {
-		const {choice} = this.props;
 		const {error} = this.state;
 		const oldLabel = this.getLabelFromState();
 		const newLabel = this.editorRef && this.editorRef.getValue();
@@ -199,7 +137,7 @@ export default class Choice extends React.Component {
 				error.clear();
 			}
 
-			choice.label = newLabel;
+			this.syncHeight();
 		}
 	}
 
@@ -232,21 +170,22 @@ export default class Choice extends React.Component {
 
 	render () {
 		const {className, choice} = this.props;
-		const {label, syncLabel, error, selectableId, selectableValue} = this.state;
+		const {label, error, selectableId, selectableValue} = this.state;
 		const cls = cx(className, 'assignment-input-choice', {error, correct: choice.correct});
 
 		return (
 			<Selectable className={cls} id={selectableId} value={selectableValue} onSelect={this.onSelect} onUnselect={this.onUnselect}>
-				<div className="sync-height-with">{syncLabel}</div>
-				<TextEditor
-					ref={this.setEditorRef}
-					initialValue={label}
-					placeholder={PLACEHOLDER}
-					onFocus={this.onEditorFocus}
-					onBlur = {this.onEditorBlur}
-					onChange={this.onEditorChange}
-					error={error && error.message}
-				/>
+				<SyncHeight ref={this.setSyncRef} group={choice.group}>
+					<TextEditor
+						ref={this.setEditorRef}
+						initialValue={label}
+						placeholder={PLACEHOLDER}
+						onFocus={this.onEditorFocus}
+						onBlur = {this.onEditorBlur}
+						onChange={this.onEditorChange}
+						error={error && error.message}
+					/>
+				</SyncHeight>
 			</Selectable>
 		);
 	}

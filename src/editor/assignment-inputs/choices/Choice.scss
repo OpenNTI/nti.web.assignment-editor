@@ -18,11 +18,9 @@
 		border: 1px solid $border-green-light;
 	}
 
+
 	.nti-rich-text {
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
+		position: static;
 		font: normal 400 0.875rem/40px $body-font-family;
 		color: $primary-grey;
 		background-color: inherit;
@@ -46,14 +44,6 @@
 	.text-editor-error {
 		padding: 0.6rem;
 		margin-top: -1rem;
-	}
-
-	.sync-height-with {
-		content: attr(data-sync-height-with);
-		visibility: hidden;
-		display: block;
-		font: normal 400 0.875rem/1.3rem $body-font-family;
-		padding: 0.6rem;
 	}
 }
 
