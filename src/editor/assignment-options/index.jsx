@@ -3,7 +3,7 @@ import {HOC} from 'nti-web-commons';
 import Grading from './options/Grading';
 import Randomize from './options/Randomize';
 import Limits from './options/Limits';
-import Visability from './options/Visability';
+import Visibility from './options/Visibility';
 
 class AssignmentOptions extends React.Component {
 	static propTypes = {
@@ -24,7 +24,7 @@ class AssignmentOptions extends React.Component {
 					<p className="options-assignment-title">{assignment.title}</p>
 				</header>
 				<div>
-					<Visability assignment={assignment} />
+					<Visibility assignment={assignment} />
 					<Grading assignment={assignment} />
 					<Randomize assignment={assignment} />
 					<Limits assignment={assignment} />

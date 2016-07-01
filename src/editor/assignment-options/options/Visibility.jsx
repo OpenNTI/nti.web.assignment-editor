@@ -12,11 +12,11 @@ const DEFAULT_TEXT = {
 	Everyone: 'Everyone'
 };
 
-const t = scoped('OPTIONS_VISABILITY', DEFAULT_TEXT);
+const t = scoped('OPTIONS_VISIBILITY', DEFAULT_TEXT);
 
 const getOption = k => ({label: t(k), value: k});
 
-class Visability extends React.Component {
+class Visibility extends React.Component {
 	static propTypes = {
 		assignment: PropTypes.object.isRequired
 	}
@@ -30,7 +30,7 @@ class Visability extends React.Component {
 		this.busy = true;
 
 		const {assignment} = this.props;
-		const work = assignment.setVisability(value);
+		const work = assignment.setVisibility(value);
 
 		if (work) {
 			const clearBusy = () => delete this.busy;
@@ -40,7 +40,7 @@ class Visability extends React.Component {
 
 	render () {
 		const {assignment} = this.props;
-		const value = assignment.getVisability();
+		const value = assignment.getVisibility();
 
 		const options = [
 			getOption('ForCredit'),
@@ -48,11 +48,11 @@ class Visability extends React.Component {
 		];
 
 		return (
-			<OptionGroup name="visability" header="Visability" content={t('content')}>
+			<OptionGroup name="visibility" header="Visibility" content={t('content')}>
 				<SelectBox value={value} options={options} onChange={this.onChange} />
 			</OptionGroup>
 		);
 	}
 }
 
-export default HOC.ItemChanges.compose(Visability);
+export default HOC.ItemChanges.compose(Visibility);
