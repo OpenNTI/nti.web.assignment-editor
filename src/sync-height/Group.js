@@ -27,11 +27,17 @@ export default class SyncHeightGroup extends EventEmitter {
 	}
 
 
+	maybeEmitSync () {
+		if (this.itemCount > 1) {
+			this.emit('sync-height');
+		}
+	}
+
+
 	sync () {
 		const heights = this[HEIGHTS];
 		const values = Object.values(heights);
-
-		this[CURRENT_HEIGHT] = values.reduce((acc, height) => {
+		const newHeight = values.reduce((acc, height) => {
 			if (height > acc) {
 				acc = height;
 			}
@@ -39,7 +45,10 @@ export default class SyncHeightGroup extends EventEmitter {
 			return acc;
 		}, this.minHeight);
 
-		this.emit('sync-height');
+		if (this[CURRENT_HEIGHT] !== newHeight) {
+			this[CURRENT_HEIGHT] = newHeight;
+			this.maybeEmitSync();
+		}
 	}
 
 
