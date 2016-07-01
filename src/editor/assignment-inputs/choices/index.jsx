@@ -364,7 +364,7 @@ export default class Choices extends React.Component {
 		const handler = this.deleteHandlers[index];
 
 		return (
-			<div key={key} onClick={handler}>X</div>
+			<div key={key} onClick={handler}><i className="icon-light-x" /></div>
 		);
 	}
 }

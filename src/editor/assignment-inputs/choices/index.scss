@@ -9,12 +9,16 @@
 
 	.delete {
 		position: absolute;
-		top: 0; right: 10px;
+		top: 0; right: 0px;
 		opacity: 1;
 		transition: opacity 50ms;
 
 		div {
 			line-height: 42px;
+			i {
+				font-weight: 600;
+				color: $tertiary-grey;
+			}
 		}
 	}
 
@@ -61,6 +65,3 @@
 		opacity: 0;
 	}
 }
-
-
-
