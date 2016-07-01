@@ -6,7 +6,7 @@
 		color: $secondary-grey;
 		cursor: pointer;
 		display: block;
-		margin-bottom: 2rem;
+	    padding: rem-calc(14px) rem-calc(17px);
 
 		&:hover {
 			color: $primary-grey;

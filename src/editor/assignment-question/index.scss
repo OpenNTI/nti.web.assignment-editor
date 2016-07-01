@@ -30,8 +30,14 @@
 
 	.assignment-editing-controls {
 		position: absolute;
-		top: rem-calc(8px);
-		right: rem-calc(46px);
+		top: 0;
+		right: 1.75rem;
+		width: 3rem;
+		height: auto;
+		border-radius: rem-calc(2px);
+		padding: rem-calc(7px) 0;
+		background-color: #ffffff;
+		box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.25);
 	}
 
 
