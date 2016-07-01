@@ -1,9 +1,13 @@
 import StorePrototype from 'nti-lib-store';
 import {Queue} from '../action-queue';
+// import {SHORT} from 'nti-commons/lib/wait';
+import Logger from 'nti-util-logger';
 
 import {
 	LOADED,
 	LOADED_SCHEMA,
+	SAVING,
+	SAVE_ENDED,
 	ASSIGNMENT_ERROR,
 	QUESTION_ERROR,
 	QUESTION_WARNING,
@@ -11,9 +15,15 @@ import {
 	CLEAR_UNDOS
 } from './Constants';
 
+const SHORT = 3000;
+
 const PRIVATE = new WeakMap();
+const logger = Logger.get('AssignmentEditorStore');
+
 const SetAssignment = Symbol('Set Assignment');
 const SetSchema = Symbol('Set Assignment Schema');
+const SetSaving = Symbol('Set Saving');
+const SetSaveEnded = Symbol('Set Save Ended');
 const SetError = Symbol('Set Error');
 const SetWarning = Symbol('Set Warning');
 const GetMessageFrom = Symbol('Get Message From');
@@ -51,6 +61,8 @@ class Store extends StorePrototype {
 		PRIVATE.set(this, {
 			assignment: null,
 			schema: null,
+			savingCount: 0,
+			savingStart: null,
 			errors: {},
 			warnings: {},
 			undoQueue: new Queue({maxVisible: 1, maxDepth: 5, keepFor: 30000})
@@ -64,6 +76,8 @@ class Store extends StorePrototype {
 		this.registerHandlers({
 			[LOADED]: SetAssignment,
 			[LOADED_SCHEMA]: SetSchema,
+			[SAVING]: SetSaving,
+			[SAVE_ENDED]: SetSaveEnded,
 			[ASSIGNMENT_ERROR]: 'setAssignmentError',
 			[QUESTION_ERROR]: 'setQuestionError',
 			[QUESTION_WARNING]: 'setQuestionWarning',
@@ -103,6 +117,56 @@ class Store extends StorePrototype {
 		}
 
 		this.emitChange({type: LOADED_SCHEMA});
+	}
+
+
+	[SetSaving] () {
+		let p = PRIVATE.get(this);
+		const oldCount = p.savingCount;
+
+		clearTimeout(this.endSavingTimeout);
+
+		p.savingCount += 1;
+
+		if (oldCount === 0) {
+			p.savingStart = new Date();
+			this.emitChange({type: SAVING});
+		}
+	}
+
+
+	[SetSaveEnded] () {
+		let p = PRIVATE.get(this);
+
+		const endSave = () => {
+			const oldCount = p.savingCount;
+			let newCount;
+
+			if (oldCount === 0) {
+				logger.error('More save ends than set savings called.');
+				newCount = 0;
+			} else {
+				newCount = oldCount - 1;
+			}
+
+			p.savingCount = newCount;
+
+			if (newCount !== oldCount) {
+				this.emitChange({type: SAVING});
+			}
+		};
+
+		const now = new Date();
+		const started = p.savingStart ||  new Date(0);
+		const savingTime = now - started;
+
+		clearTimeout(this.endSavingTimeout);
+
+		if (savingTime < SHORT) {
+			this.endSavingTimeout = setTimeout(endSave, SHORT - savingTime);
+		} else {
+			endSave();
+		}
 	}
 
 
@@ -191,23 +255,30 @@ class Store extends StorePrototype {
 
 
 	get isLoaded () {
-		let p = PRIVATE.get(this);
+		const p = PRIVATE.get(this);
 
 		return !!p.assignment;
 	}
 
 
 	get assignment () {
-		let p = PRIVATE.get(this);
+		const p = PRIVATE.get(this);
 
 		return p.assignment;
 	}
 
 
 	get schema () {
-		let p = PRIVATE.get(this);
+		const p = PRIVATE.get(this);
 
 		return p.schema;
+	}
+
+
+	get isSaving () {
+		const p = PRIVATE.get(this);
+
+		return p.savingCount > 0;
 	}
 
 
@@ -215,6 +286,12 @@ class Store extends StorePrototype {
 		const p = PRIVATE.get(this);
 
 		return p.undoQueue;
+	}
+
+
+	get errors () {
+		//TODO: figure this out
+		return [];
 	}
 
 

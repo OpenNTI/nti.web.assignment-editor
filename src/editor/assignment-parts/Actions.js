@@ -121,12 +121,13 @@ export function moveQuestion (question, questionSet, index, moveInfo, moveRoot) 
 
 		orderedContents.move(question, index, oldIndex, oldContainer, moveRoot)
 			.then(() => {
-				dispatch(SAVE_ENDED);
 				dispatch(QUESTION_SET_UPDATED, questionSet);
+				dispatch(SAVE_ENDED);
 			})
 			.catch((reason) => {
 				logger.error('Unable to move question: ', reason);
 				dispatch(QUESTION_SET_ERROR, reason);
+				dispatch(SAVE_ENDED);
 			});
 	}
 }

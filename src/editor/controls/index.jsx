@@ -5,6 +5,7 @@ import ActionQueue from '../../action-queue';
 
 import PublishControls from './PublishControls';
 import FormatControls from './FormatControls';
+import EditorStatus from './Status';
 
 export default class Controls extends React.Component {
 	static propTypes = {
@@ -63,6 +64,7 @@ export default class Controls extends React.Component {
 			<div className="assignment-editor-controls">
 				<ActionQueue queue={undoQueue} />
 				<FormatControls selection={selection} />
+				<EditorStatus />
 				<PublishControls assignment={assignment} />
 			</div>
 		);

@@ -32,12 +32,14 @@ function insertAt (assignment, part, index, question) {
 
 	return save
 		.then(() => {
-			dispatch(SAVE_ENDED);
 			dispatch(QUESTION_SET_UPDATED, questionSet);
 		})
 		.catch((reason) => {
 			logger.error('Unable to append question: ', reason);
 			dispatch(QUESTION_SET_ERROR, reason);
+		})
+		.always(() => {
+			dispatch(SAVE_ENDED, questionSet);
 		});
 }
 
@@ -117,15 +119,15 @@ export function savePartToQuestion (question, newPart) {
 	question.save({
 		parts: [newPart]
 	}).then(() => {
-		dispatch(SAVE_ENDED, question);
 		dispatch(QUESTION_UPDATED, question);
+		dispatch(SAVE_ENDED, question);
 	}).catch((reason) => {
 		logger.error('Failed to update question: ', reason);
-		dispatch(SAVE_ENDED);
 		dispatch(QUESTION_ERROR, {
 			NTIID: question.NTIID,
 			field: 'parts',
 			reason
 		});
+		dispatch(SAVE_ENDED, question);
 	});
 }

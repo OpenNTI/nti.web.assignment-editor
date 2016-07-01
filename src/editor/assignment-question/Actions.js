@@ -44,7 +44,6 @@ export function deleteQuestionFrom (question, questionSet, assignment) {
 
 		orderedContents.remove(question)
 			.then((undo) => {
-				dispatch(SAVE_ENDED);
 				dispatch(QUESTION_SET_UPDATED, questionSet);
 
 				if (undo) {
@@ -54,10 +53,12 @@ export function deleteQuestionFrom (question, questionSet, assignment) {
 						onComplete: undo
 					});
 				}
+
+				dispatch(SAVE_ENDED);
 			})
 			.catch((reason) => {
-				dispatch(SAVE_ENDED);
 				dispatch(QUESTION_SET_ERROR, reason);
+				dispatch(SAVE_ENDED);
 			});
 	}
 }
@@ -84,11 +85,11 @@ export function duplicateQuestionFrom (question, questionSet) {
 
 	orderedContents.insertAt(clone, index + 1)
 		.then(() => {
-			dispatch(SAVE_ENDED);
 			dispatch(QUESTION_SET_UPDATED, questionSet);
+			dispatch(SAVE_ENDED);
 		})
 		.catch((reason) => {
-			dispatch(SAVE_ENDED);
 			dispatch(QUESTION_SET_ERROR, reason);
+			dispatch(SAVE_ENDED);
 		});
 }
