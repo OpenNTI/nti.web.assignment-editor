@@ -129,8 +129,8 @@ export default class QuestionContent extends React.Component {
 						onFocus={this.onEditorFocus}
 						onBlur={this.onEditorBlur}
 						onChange={this.onEditorChange}
-						error={error && error.message}
-						warning={warning && warning.message}
+						error={!warning && error}
+						warning={warning}
 					/> :
 					null
 				}

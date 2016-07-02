@@ -1,9 +1,5 @@
-import {EventEmitter} from 'events';
-
-class Choice extends EventEmitter {
+class Choice  {
 	constructor (data) {
-		super();
-
 		this.data = data;
 	}
 

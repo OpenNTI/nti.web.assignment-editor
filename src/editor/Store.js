@@ -1,6 +1,6 @@
 import StorePrototype from 'nti-lib-store';
+import {ErrorFactory} from 'nti-web-commons';
 import {Queue} from '../action-queue';
-// import {SHORT} from 'nti-commons/lib/wait';
 import Logger from 'nti-util-logger';
 
 import {
@@ -17,6 +17,8 @@ import {
 
 const SHORT = 3000;
 
+const errorFactory = new ErrorFactory();
+
 const PRIVATE = new WeakMap();
 const logger = Logger.get('AssignmentEditorStore');
 
@@ -31,11 +33,6 @@ const RemoveMessageFrom = Symbol('Remove Message From');
 const SetMessageOn = Symbol('Set Message On');
 const AddUndo = Symbol('Add Undo');
 const ClearUndos = Symbol('Clear Undos');
-
-
-function getMessageForReason (reason) {
-	return (reason && reason.message) || 'Unknown Error';
-}
 
 
 function findMessagesForId (id, message) {
@@ -205,13 +202,12 @@ class Store extends StorePrototype {
 		}
 
 		if (!this[GetMessageFrom](messages, NTIID, field)) {
-			messages[NTIID].push({
-				NTIID,
-				field,
-				reason,
-				message: getMessageForReason(reason),
-				clear: () => this[RemoveMessageFrom](messages, NTIID, field, type)
-			});
+			messages[NTIID].push(errorFactory.make(
+					NTIID,
+					field,
+					reason,
+					() => this[RemoveMessageFrom](messages, NTIID, field, type)
+				));
 
 			this.emitChange({type: type});
 		}
