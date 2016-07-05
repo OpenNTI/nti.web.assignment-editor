@@ -1,4 +1,5 @@
 import React from 'react';
+import {Errors} from 'nti-web-commons';
 import {scoped} from 'nti-lib-locale';
 
 import {
@@ -9,6 +10,8 @@ import {
 	QUESTION_ERROR
 } from '../Constants';
 import Store from '../Store';
+
+const {Field: {FlyoutList:ErrorFlyoutList}} = Errors;
 
 const defaultText = {
 	saving: 'Saving...',
@@ -58,7 +61,7 @@ export default class AssignmentStatus extends React.Component {
 		if (type === SAVING || type === SAVE_ENDED) {
 			this.onSaveChanged();
 		} else if (type === ASSIGNMENT_ERROR || type === QUESTION_SET_ERROR || type === QUESTION_ERROR) {
-			this.onErrorsChange();
+			this.onErrorsChanged();
 		}
 	}
 
@@ -76,7 +79,14 @@ export default class AssignmentStatus extends React.Component {
 
 
 	onErrorsChanged () {
-		//TODO: fill this out
+		const {errors:oldErrors} = this.state;
+		const {errors:newErrors} = Store;
+
+		if (oldErrors !== newErrors) {
+			this.setState({
+				errors: newErrors
+			});
+		}
 	}
 
 
@@ -114,7 +124,7 @@ export default class AssignmentStatus extends React.Component {
 
 	renderErrors (errors) {
 		return (
-			<span className="errors">{errors.length}</span>
+			<ErrorFlyoutList errors={errors} />
 		);
 	}
 }

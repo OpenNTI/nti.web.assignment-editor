@@ -1,5 +1,5 @@
 import StorePrototype from 'nti-lib-store';
-import {ErrorFactory} from 'nti-web-commons';
+import {Errors} from 'nti-web-commons';
 import {Queue} from '../action-queue';
 import Logger from 'nti-util-logger';
 
@@ -17,6 +17,7 @@ import {
 
 const SHORT = 3000;
 
+const {Field: {Factory:ErrorFactory}} = Errors;
 const errorFactory = new ErrorFactory();
 
 const PRIVATE = new WeakMap();
@@ -26,6 +27,7 @@ const SetAssignment = Symbol('Set Assignment');
 const SetSchema = Symbol('Set Assignment Schema');
 const SetSaving = Symbol('Set Saving');
 const SetSaveEnded = Symbol('Set Save Ended');
+const StopSaveTimer = Symbol('Stop Save Timer');
 const SetError = Symbol('Set Error');
 const SetWarning = Symbol('Set Warning');
 const GetMessageFrom = Symbol('Get Message From');
@@ -42,12 +44,41 @@ function findMessagesForId (id, message) {
 
 function findMessageForField (field, messages) {
 	for (let message of messages) {
-		if (message.field === field) {
+		if (message.isAttachedToField(field)) {
 			return message;
 		}
 	}
 
 	return null;
+}
+
+
+function getLabelForQuestionError (questionId, field, assignment) {
+	const {parts} = assignment;
+	const part = parts[0];//For now just use the first part
+	const questionSet = part && part.question_set;
+	const questions = questionSet && questionSet.questions;
+
+	for (let i = 0; i < questions.length; i++) {
+		let question = questions[i];
+
+		if (question.NTIID === questionId) {
+			return `Question ${i + 1}`;
+		}
+	}
+}
+
+
+function getLabelForError (ntiid, field, type, assignment) {
+	let label = 'Error';
+
+	if (type === QUESTION_ERROR) {
+		label = getLabelForQuestionError(ntiid, field, assignment);
+	}
+
+	//TODO: fill out the other types
+
+	return label;
 }
 
 
@@ -124,9 +155,9 @@ class Store extends StorePrototype {
 		clearTimeout(this.endSavingTimeout);
 
 		p.savingCount += 1;
+		p.lastSaveStart = new Date();
 
 		if (oldCount === 0) {
-			p.savingStart = new Date();
 			this.emitChange({type: SAVING});
 		}
 	}
@@ -135,27 +166,33 @@ class Store extends StorePrototype {
 	[SetSaveEnded] () {
 		let p = PRIVATE.get(this);
 
+		const oldCount = p.savingCount;
+		const newCount = oldCount === 0 ? 0 : oldCount - 1;
+
+		if (oldCount === 0) {
+			logger.warn('SaveEnded called more times than SaveStarted');
+		}
+
+		p.savingCount = newCount;
+
+		if (newCount === 0) {
+			this[StopSaveTimer]();
+		}
+	}
+
+
+	[StopSaveTimer] () {
+		const p = PRIVATE.get(this);
+
 		const endSave = () => {
-			const oldCount = p.savingCount;
-			let newCount;
-
-			if (oldCount === 0) {
-				logger.error('More save ends than set savings called.');
-				newCount = 0;
-			} else {
-				newCount = oldCount - 1;
-			}
-
-			p.savingCount = newCount;
-
-			if (newCount !== oldCount) {
+			if (p.savingCount === 0) {
 				this.emitChange({type: SAVING});
 			}
 		};
 
 		const now = new Date();
-		const started = p.savingStart ||  new Date(0);
-		const savingTime = now - started;
+		const start = p.lastSaveStart || new Date(0);
+		const savingTime = now - start;
 
 		clearTimeout(this.endSavingTimeout);
 
@@ -185,7 +222,7 @@ class Store extends StorePrototype {
 		if (!field) {
 			delete messages[id];
 		} else if (messages[id]) {
-			messages[id] = messages[id].filter(message => message.field !== field);
+			messages[id] = messages[id].filter(message => !message.isAttachedToField(field));
 		}
 
 		this.emitChange({type: type});
@@ -202,12 +239,12 @@ class Store extends StorePrototype {
 		}
 
 		if (!this[GetMessageFrom](messages, NTIID, field)) {
+			//TODO: update the label when the questionSet's order changes
 			messages[NTIID].push(errorFactory.make(
-					NTIID,
-					field,
-					reason,
-					() => this[RemoveMessageFrom](messages, NTIID, field, type)
-				));
+				{NTIID, field, type, label: getLabelForError(NTIID, field, type, this.assignment)},
+				reason,
+				() => this[RemoveMessageFrom](messages, NTIID, field, type)
+			));
 
 			this.emitChange({type: type});
 		}
@@ -286,8 +323,13 @@ class Store extends StorePrototype {
 
 
 	get errors () {
-		//TODO: figure this out
-		return [];
+		const p = PRIVATE.get(this);
+		const {errors} = p;
+		const values = Object.values(errors);
+
+		return values.reduce((acc, value) => {
+			return [...acc, ...value];
+		}, []);
 	}
 
 

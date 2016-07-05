@@ -105,8 +105,8 @@ export function cloneChoice (choice) {
 
 
 export function isErrorForChoice (error, choice) {
-	const {reason} = error || {};
-	let {field, index} = reason || {};
+	const {raw} = error || {};
+	let {field, index} = raw || {};
 
 	index = index || [];
 
