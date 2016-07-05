@@ -1,6 +1,10 @@
 @import "~nti-style-common";
 
 .assignment-editing-controls {
+	&.empty {
+		display: none;
+	}
+
 	i[class^="icon-"] {
 		font-size: 1rem;
 		color: $secondary-grey;
