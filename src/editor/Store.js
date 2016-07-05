@@ -20,7 +20,7 @@ const SHORT = 3000;
 const errorFactory = new ErrorFactory();
 
 const PRIVATE = new WeakMap();
-const logger = Logger.get('AssignmentEditorStore');
+const logger = Logger.get('lib:asssignment-editor:Store');
 
 const SetAssignment = Symbol('Set Assignment');
 const SetSchema = Symbol('Set Assignment Schema');

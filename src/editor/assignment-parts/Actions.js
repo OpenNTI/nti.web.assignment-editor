@@ -6,7 +6,7 @@ import {saveFieldOn} from '../Actions';
 import {SAVING, SAVE_ENDED, QUESTION_SET_UPDATED, QUESTION_SET_ERROR} from '../Constants';
 import OrderedContents from '../utils/OrderedContents';
 
-const logger = Logger.get('assignment-questionset:Actions');
+const logger = Logger.get('lib:asssignment-editor:assignment-parts:Actions');
 
 const QUESTIONS_KEY = 'questions';
 const QUESTION_SET_KEY = 'question_set';

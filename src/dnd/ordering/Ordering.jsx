@@ -13,7 +13,7 @@ import Store from './Store';
 import {DRAG_OVER, DRAG_LEAVE} from './Constants';
 import {dragOverOrdering, dragLeaveOrdering} from './Actions';
 
-const logger = Logger.get('ordering');
+const logger = Logger.get('lib:dnd:ordering:Ordering');
 
 
 function makeRectRelativeTo (child, parent) {

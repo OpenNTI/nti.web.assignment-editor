@@ -4,7 +4,7 @@ import uuid from 'node-uuid';
 import path from 'path';
 import minWait, {SHORT} from 'nti-commons/lib/wait-min';
 
-const logger = Logger.get('OrderedContents');
+const logger = Logger.get('lib:asssignment-editor:utils:OrderedContents');
 
 const LINK_NAME = 'ordered-contents';
 
@@ -377,4 +377,3 @@ export default class OrderedContents {
 			});
 	}
 }
-

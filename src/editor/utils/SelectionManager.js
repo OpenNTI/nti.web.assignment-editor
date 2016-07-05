@@ -5,7 +5,7 @@ const PRIVATE = new WeakMap();
 const MonitorItem = Symbol('Monitor Item');
 const UnmonitorItem = Symbol('Unmonitor Item');
 const ItemUpdated = Symbol('Item Updated');
-const logger = Logger.get('selectionmanager');
+const logger = Logger.get('lib:asssignment-editor:utils:SelectionManager');
 
 export class SelectionItem extends EventEmitter {
 	constructor (config) {

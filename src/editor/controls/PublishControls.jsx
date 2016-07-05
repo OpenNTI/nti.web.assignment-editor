@@ -7,7 +7,7 @@ import PublishLocked from './PublishLocked';
 
 const {ItemChanges} = HOC;
 const {PUBLISH_STATES} = Constants;
-const logger = Logger.get('lib:asssignment-editor:publish-controls');
+const logger = Logger.get('lib:asssignment-editor:PublishControls');
 
 class PublishControls extends React.Component {
 	static propTypes = {

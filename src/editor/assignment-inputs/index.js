@@ -11,7 +11,7 @@ import Ordering from './ordering';
 const PROMPT = 'Write a prompt...';
 const QUESTION = 'Write a question...';
 
-const logger = Logger.get('assignment-inputs:index');
+const logger = Logger.get('lib:asssignment-editor:assignment-inputs');
 const KINDS = [
 	ModeledContent,
 	FileUpload,
@@ -115,4 +115,3 @@ export function getContentPlaceholderFor (question) {
 
 	return placeholder;
 }
-

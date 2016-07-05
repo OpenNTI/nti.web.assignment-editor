@@ -5,7 +5,7 @@ import cx from 'classnames';
 
 import {DurationPicker} from 'nti-web-commons';
 
-const logger = Logger.get('TimeLimit');
+const logger = Logger.get('lib:asssignment-editor:TimeLimit');
 
 export default class TimeLimit extends React.Component {
 	constructor (props) {

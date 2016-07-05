@@ -1,6 +1,6 @@
 import Logger from 'nti-util-logger';
 
-const logger = Logger.get('DataTransfer:Logs');
+const logger = Logger.get('lib:dnd:DataTransfer');
 
 /**
  * Wrap some helper methods around setting and getting data from the dataTransfer object

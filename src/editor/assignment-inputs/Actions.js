@@ -6,7 +6,7 @@ import {SAVING, SAVE_ENDED, QUESTION_SET_UPDATED, QUESTION_SET_ERROR, QUESTION_U
 import OrderedContents from '../utils/OrderedContents';
 import {createPartWithQuestion} from '../assignment-parts/Actions';
 
-const logger = Logger.get('assignment-inputs:Actions');
+const logger = Logger.get('lib:asssignment-editor:assignment-inputs:Actions');
 
 function insertAt (assignment, part, index, question) {
 	if (!part) {

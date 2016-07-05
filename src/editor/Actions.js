@@ -3,7 +3,7 @@ import {getService} from  'nti-web-client';
 import Logger from 'nti-util-logger';
 import {LOADED, LOADED_SCHEMA, SAVING, SAVE_ENDED, QUESTION_WARNING} from './Constants';
 
-const logger = Logger.get('assignment-editor:assignment-actions');
+const logger = Logger.get('lib:asssignment-editor:Actions');
 const defaultSchema = {};
 
 export function loadAssignment (ntiid) {

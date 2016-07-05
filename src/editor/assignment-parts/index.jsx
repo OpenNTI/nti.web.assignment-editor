@@ -8,7 +8,7 @@ import Part from './Part';
 
 const {ItemChanges} = HOC;
 
-const logger = Logger.get('assignment-editor:assignment-parts');
+const logger = Logger.get('lib:asssignment-editor:AssignmentParts');
 
 export default class AssignmentParts extends React.Component {
 	static propTypes = {
