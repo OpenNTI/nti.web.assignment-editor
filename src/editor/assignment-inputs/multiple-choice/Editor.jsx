@@ -5,6 +5,7 @@ import Choices from './choices';
 import ChoiceFactory from '../choices/Factory';
 import {savePartToQuestion} from '../Actions';
 import {generatePartFor} from './utils';
+import {canAddPart, canMovePart, canRemovePart} from '../utils';
 
 const errorField = 'choices';
 
@@ -152,12 +153,8 @@ export default class MultipleChoiceEditor extends React.Component {
 
 
 	render () {
-		const {part, multipleAnswers} = this.props;
+		const {part, multipleAnswers, question} = this.props;
 		const {choices, error} = this.state;
-
-		// if (error) {
-		// 	debugger;
-		// }
 
 		return (
 			<Choices
@@ -166,10 +163,10 @@ export default class MultipleChoiceEditor extends React.Component {
 				choices={choices}
 				error={error}
 				onChange={this.choicesChanged}
-				add={this.addNewChoice}
-				remove={this.removeChoice}
+				add={canAddPart(question) && this.addNewChoice}
+				remove={canRemovePart(question) && this.removeChoice}
 				multipleAnswers={multipleAnswers}
-				reorderable
+				reorderable={canMovePart(question)}
 			/>
 		);
 	}

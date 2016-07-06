@@ -3,6 +3,7 @@ import autobind from 'nti-commons/lib/autobind';
 
 import {savePartToQuestion} from '../Actions';
 import {generatePartFor} from './utils';
+import {canAddPart, canMovePart, canRemovePart} from '../utils';
 import ChoiceFactory from '../choices/Factory';
 import Choices from '../choices';
 
@@ -156,7 +157,7 @@ export default class OrderingEditor extends React.Component {
 
 
 	render () {
-		const {part} = this.props;
+		const {part, question} = this.props;
 		const {choices, error} =  this.state;
 
 		return (
@@ -167,10 +168,10 @@ export default class OrderingEditor extends React.Component {
 				choices={choices}
 				error={error}
 				onChange={this.choicesChanged}
-				add={this.addNewChoice}
-				remove={this.removeChoice}
+				add={canAddPart(question) && this.addNewChoice}
+				remove={canRemovePart(question) && this.removeChoice}
 				addLabel={addLabel}
-				reorderable
+				reorderable={canMovePart(question)}
 			/>
 		);
 	}

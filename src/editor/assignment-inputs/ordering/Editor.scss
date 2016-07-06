@@ -9,6 +9,12 @@
 		}
 	}
 
+	.no-reorder {
+		.assignment-input-choice:first-of-type {
+			border-top-width: 1px;
+		}
+	}
+
 	.assignment-input-choice {
 		border: 0 solid $border-grey-light;
 		border-left-width: 1px;
@@ -49,12 +55,22 @@
 		&.selected {
 			position: relative;
 			z-index: 2;
+			// border: 1px solid $primary-blue;
 		}
 	}
 
-	.choice-column {
-		width: 50%;
-		float: left;
+	.choices {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+
+		.choice-column {
+			flex: 1 0 50%;
+		}
+
+		.add-choice {
+			flex: 0 1 100%;
+		}
 	}
 
 	.add-choice {

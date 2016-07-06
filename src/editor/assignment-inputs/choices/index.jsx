@@ -323,7 +323,7 @@ export default class Choices extends React.Component {
 		}
 
 		return (
-			<div key={containerId + '-' + index} className="choice-column">
+			<div key={containerId + '-' + index} className="choice-column no-reorder">
 				{choices.map(renderChoice)}
 			</div>
 		);
