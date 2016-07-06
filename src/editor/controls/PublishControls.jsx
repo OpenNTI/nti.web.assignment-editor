@@ -2,7 +2,9 @@ import React, {PropTypes} from 'react';
 import {Publish, Constants} from 'nti-web-commons';
 import {HOC} from 'nti-web-commons';
 import Logger from 'nti-util-logger';
+
 import PublishLocked from './PublishLocked';
+import {deleteAssignment} from './Actions';
 
 
 const {ItemChanges} = HOC;
@@ -36,10 +38,8 @@ class PublishControls extends React.Component {
 
 	onDeleteClick = () => {
 		const assignment = PublishControls.getItem(this.props);
-		if (assignment.hasLink('edit')) {
-			assignment.delete();
-			// TODO: Find out how to handle after a delete
-		}
+
+		deleteAssignment(assignment);
 	}
 
 

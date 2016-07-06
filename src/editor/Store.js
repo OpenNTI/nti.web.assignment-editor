@@ -9,6 +9,8 @@ import {
 	SAVING,
 	SAVE_ENDED,
 	ASSIGNMENT_ERROR,
+	ASSIGNMENT_DELETING,
+	ASSIGNMENT_DELETED,
 	QUESTION_ERROR,
 	QUESTION_WARNING,
 	UNDO_CREATED,
@@ -24,6 +26,8 @@ const PRIVATE = new WeakMap();
 const logger = Logger.get('lib:asssignment-editor:Store');
 
 const SetAssignment = Symbol('Set Assignment');
+const SetAssignmentDeleting = Symbol('Set Assignment Deleting');
+const SetAssignmentDeleted = Symbol('Set Assignment Deleted');
 const SetSchema = Symbol('Set Assignment Schema');
 const SetSaving = Symbol('Set Saving');
 const SetSaveEnded = Symbol('Set Save Ended');
@@ -89,6 +93,8 @@ class Store extends StorePrototype {
 		PRIVATE.set(this, {
 			assignment: null,
 			schema: null,
+			deleting: false,
+			deleted: false,
 			savingCount: 0,
 			savingStart: null,
 			errors: {},
@@ -106,6 +112,8 @@ class Store extends StorePrototype {
 			[LOADED_SCHEMA]: SetSchema,
 			[SAVING]: SetSaving,
 			[SAVE_ENDED]: SetSaveEnded,
+			[ASSIGNMENT_DELETING]: SetAssignmentDeleting,
+			[ASSIGNMENT_DELETED]: SetAssignmentDeleted,
 			[ASSIGNMENT_ERROR]: 'setAssignmentError',
 			[QUESTION_ERROR]: 'setQuestionError',
 			[QUESTION_WARNING]: 'setQuestionWarning',
@@ -145,6 +153,25 @@ class Store extends StorePrototype {
 		}
 
 		this.emitChange({type: LOADED_SCHEMA});
+	}
+
+
+	[SetAssignmentDeleting] (e) {
+		const deleting = e.action.response;
+		let p = PRIVATE.get(this);
+
+		p.deleting = deleting;
+
+		this.emitChange({type: ASSIGNMENT_DELETING});
+	}
+
+
+	[SetAssignmentDeleted] () {
+		let p = PRIVATE.get(this);
+
+		p.deleted = true;
+
+		this.emitChange({type: ASSIGNMENT_DELETED});
 	}
 
 

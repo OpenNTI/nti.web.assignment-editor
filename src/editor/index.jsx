@@ -10,7 +10,7 @@ import AssignmentEditor from './assignment-editor';
 import Controls from './controls';
 import Sidebar from './sidebar';
 import SelectionManager from './utils/SelectionManager';
-import {LOADED} from './Constants';
+import {LOADED, ASSIGNMENT_DELETING, ASSIGNMENT_DELETED} from './Constants';
 import Store from './Store';
 import {loadAssignment} from './Actions';
 
@@ -18,7 +18,8 @@ const selectionManager = new SelectionManager();
 
 export default class Editor extends React.Component {
 	static propTypes = {
-		NTIID: React.PropTypes.string.isRequired
+		NTIID: React.PropTypes.string.isRequired,
+		onDeleted: React.PropTypes.func
 	}
 
 
@@ -71,11 +72,21 @@ export default class Editor extends React.Component {
 
 
 	onStoreChange (data) {
+		const {onDeleted} = this.props;
+
 		if (data.type === LOADED) {
 			this.setState({
 				assignment: Store.assignment,
 				schema: Store.schema
 			});
+		} else if (data.type === ASSIGNMENT_DELETING) {
+			this.setState({
+				deleting: true
+			});
+		} else if (data.type === ASSIGNMENT_DELETED) {
+			if (onDeleted) {
+				onDeleted();
+			}
 		}
 	}
 
@@ -89,7 +100,7 @@ export default class Editor extends React.Component {
 
 	render () {
 		const {undoQueue} = Store;
-		let {error, assignment, schema} = this.state;
+		let {error, assignment, schema, deleting} = this.state;
 
 		if (error || (Store.isLoaded && !assignment)) {
 			return this.renderError(error || 'No Assignment');
@@ -99,19 +110,22 @@ export default class Editor extends React.Component {
 
 		return (
 			<div className={cls}>
-				{!assignment ? (
-					<Loading/>
-				) : (
-					<div>
-						<AssignmentEditor assignment={assignment} schema={schema} />
-						<FixedElement className="assignment-editing-sidebar-fixed">
-							<Sidebar ref={x => this.sidebar = x} assignment={assignment} schema={schema} />
-						</FixedElement>
-						<ControlBar visible>
-							<Controls assignment={assignment} undoQueue={undoQueue} />
-						</ControlBar>
-					</div>
-				)}
+				{!assignment ?
+					(<Loading/>) :
+					deleting ?
+						(<Loading message="Deleting" />) :
+						(
+							<div>
+								<AssignmentEditor assignment={assignment} schema={schema} />
+								<FixedElement className="assignment-editing-sidebar-fixed">
+									<Sidebar ref={x => this.sidebar = x} assignment={assignment} schema={schema} />
+								</FixedElement>
+								<ControlBar visible>
+									<Controls assignment={assignment} undoQueue={undoQueue} />
+								</ControlBar>
+							</div>
+						)
+				}
 			</div>
 		);
 	}
