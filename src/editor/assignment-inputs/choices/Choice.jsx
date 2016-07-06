@@ -106,6 +106,11 @@ export default class Choice extends React.Component {
 	}
 
 
+	getLabelFromEditor () {
+		return this.editorRef && this.editorRef.getValue();
+	}
+
+
 	getLabelFromState () {
 		const {label} = this.state;
 

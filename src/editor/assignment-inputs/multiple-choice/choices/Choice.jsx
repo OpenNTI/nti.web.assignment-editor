@@ -16,6 +16,8 @@ export default class MultipleChoiceChoice extends React.Component {
 		plainText: React.PropTypes.bool
 	}
 
+	setChoiceCmpRef = x => this.choiceCmp = x;
+
 	constructor (props) {
 		super(props);
 
@@ -62,6 +64,10 @@ export default class MultipleChoiceChoice extends React.Component {
 		const {choice:oldChoice} = this.props;
 		let newChoice = oldChoice.clone();
 
+		if (this.choiceCmp) {
+			newChoice.label = this.choiceCmp.getLabelFromEditor();
+		}
+
 		newChoice.correct = e.target.checked;
 
 		this.onChange(newChoice);
@@ -75,7 +81,14 @@ export default class MultipleChoiceChoice extends React.Component {
 
 		return (
 			<div className={cls}>
-				<Choice choice={choice} onChange={this.onChoiceChange} error={error} plainText={plainText} heightSyncGroup={heightSyncGroup} />
+				<Choice
+					ref={this.setChoiceCmpRef}
+					choice={choice}
+					onChange={this.onChoiceChange}
+					error={error}
+					plainText={plainText}
+					heightSyncGroup={heightSyncGroup}
+				/>
 				{this.renderSolution(correct, multipleAnswers, group)}
 			</div>
 		);
