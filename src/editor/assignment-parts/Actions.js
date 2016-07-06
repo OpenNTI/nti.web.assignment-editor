@@ -2,9 +2,10 @@ import {dispatch} from 'nti-lib-dispatcher';
 import {getService} from  'nti-web-client';
 import Logger from 'nti-util-logger';
 
+import OrderedContents from '../../ordered-contents';
+
 import {saveFieldOn} from '../Actions';
 import {SAVING, SAVE_ENDED, QUESTION_SET_UPDATED, QUESTION_SET_ERROR} from '../Constants';
-import OrderedContents from '../utils/OrderedContents';
 
 const logger = Logger.get('lib:asssignment-editor:assignment-parts:Actions');
 

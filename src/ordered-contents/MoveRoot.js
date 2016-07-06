@@ -1,5 +1,5 @@
 import {getService} from  'nti-web-client';
-import OrderedContents from './OrderedContents';
+import OrderedContents from './WrapperUtil';
 
 const ONMOVE = Symbol('on-move');
 

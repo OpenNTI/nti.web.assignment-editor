@@ -1,6 +1,7 @@
 import {dispatch} from 'nti-lib-dispatcher';
 
-import OrderedContents from '../utils/OrderedContents';
+import OrderedContents from '../../ordered-contents';
+
 import {saveFieldOn, warnIfQuestionEmpty} from '../Actions';
 import {removePartWithQuestionSet} from '../assignment-parts/Actions';
 import {

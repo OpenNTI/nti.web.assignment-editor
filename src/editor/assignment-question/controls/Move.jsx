@@ -1,9 +1,10 @@
 import React from 'react';
 import cx from 'classnames';
 
-import {moveQuestion} from '../../assignment-parts/Actions';
-import MoveRoot from '../../utils/MoveRoot';
+import {MoveRoot} from '../../../ordered-contents';
 import MoveInfo from '../../../dnd/ordering/MoveInfo';
+
+import {moveQuestion} from '../../assignment-parts/Actions';
 
 const TYPES = {
 	UP: 'up',

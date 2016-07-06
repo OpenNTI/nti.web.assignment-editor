@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 
-import {hasOrderedContents} from '../../utils/OrderedContents';
+import {hasOrderedContents} from '../../../ordered-contents';
 
 import Delete from './Delete';
 import Duplicate from './Duplicate';

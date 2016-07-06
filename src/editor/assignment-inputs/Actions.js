@@ -1,9 +1,11 @@
 import {dispatch} from 'nti-lib-dispatcher';
 import Logger from 'nti-util-logger';
 
+import OrderedContents from '../../ordered-contents';
+
 import {getEqualityCheck} from './index';
 import {SAVING, SAVE_ENDED, QUESTION_SET_UPDATED, QUESTION_SET_ERROR, QUESTION_UPDATED, QUESTION_ERROR} from '../Constants';
-import OrderedContents from '../utils/OrderedContents';
+
 import {createPartWithQuestion} from '../assignment-parts/Actions';
 
 const logger = Logger.get('lib:asssignment-editor:assignment-inputs:Actions');
