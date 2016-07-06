@@ -3,6 +3,7 @@ import Logger from 'nti-util-logger';
 import uuid from 'node-uuid';
 import path from 'path';
 import minWait, {SHORT} from 'nti-commons/lib/wait-min';
+import Executor from 'nti-commons/lib/Executor';
 
 const logger = Logger.get('lib:asssignment-editor:utils:OrderedContents');
 
@@ -12,6 +13,21 @@ const FIELDS = [
 	'questions',
 	'parts'
 ];
+
+const QUEUES = new WeakMap();
+const MAX_CONCURRENT = 1;
+
+
+function getQueueFor (obj) {
+	let queue = QUEUES.get(obj);
+
+	if (!queue) {
+		queue = new Executor(MAX_CONCURRENT);
+		QUEUES.set(obj, queue);
+	}
+
+	return queue;
+}
 
 
 function getLinkFromObj (obj) {
@@ -123,6 +139,8 @@ export default class OrderedContents {
 	 */
 	insertAt (item, index) {
 		const obj = this.backingObject;
+		const queue = getQueueFor(obj);
+
 		let {orderedContents, orderedContentsField, link} = this;
 		let postData;
 
@@ -162,8 +180,7 @@ export default class OrderedContents {
 
 		let insertLink = path.join(link, 'index', index.toString(10));
 
-		return getService()
-			.then(service => service.postParseResponse(insertLink, postData))
+		return queue.queueTask(() => getService().then(service => service.postParseResponse(insertLink, postData)))
 			//Make sure we wait at least a little bit
 			.then(minWait(SHORT))
 			.then((savedItem) => {
