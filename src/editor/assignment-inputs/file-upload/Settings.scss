@@ -29,12 +29,6 @@
 		font-size: .875rem;
 		line-height: 2;
 	}
-	.button-row {
-		@extend %dialog-buttons;
-		.button {
-			display: inline-block;
-		}
-	}
 	.radio-group {
 		.label {
 			font-weight: 100;
