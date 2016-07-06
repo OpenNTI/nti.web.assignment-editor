@@ -1,4 +1,4 @@
-import {EventEmitter} from 'events';
+import EventEmitter from 'events';
 
 const HEIGHTS = Symbol('Heights');
 const CURRENT_HEIGHT = Symbol('Current Height');

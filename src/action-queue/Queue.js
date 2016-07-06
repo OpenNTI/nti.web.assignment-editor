@@ -1,4 +1,4 @@
-import {EventEmitter} from 'events';
+import EventEmitter from 'events';
 
 const ACTION_QUEUE = Symbol('QUEUE');
 const START_TIMER = Symbol('Start Timer');

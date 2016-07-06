@@ -1,4 +1,4 @@
-import {EventEmitter} from 'events';
+import EventEmitter from 'events';
 import Logger from 'nti-util-logger';
 
 const PRIVATE = new WeakMap();
