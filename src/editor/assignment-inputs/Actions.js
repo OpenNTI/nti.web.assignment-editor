@@ -33,12 +33,11 @@ function insertAt (assignment, part, index, question) {
 	return save
 		.then(() => {
 			dispatch(QUESTION_SET_UPDATED, questionSet);
+			dispatch(SAVE_ENDED, questionSet);
 		})
 		.catch((reason) => {
 			logger.error('Unable to append question: ', reason);
 			dispatch(QUESTION_SET_ERROR, reason);
-		})
-		.always(() => {
 			dispatch(SAVE_ENDED, questionSet);
 		});
 }
