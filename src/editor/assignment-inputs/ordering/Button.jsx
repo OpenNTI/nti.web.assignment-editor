@@ -7,7 +7,7 @@ import {generatePartFor} from './utils';
 const ICON_CLS = 'ordering';
 
 const defaultLabels = ['Label 1', 'Label 2'];
-const defaultValues = ['Value 1', 'Label 2'];
+const defaultValues = ['Value 1', 'Value 2'];
 const defaultSolution = {'0': 0, '1': 1};
 
 const DEFAULT_TEXT = {
