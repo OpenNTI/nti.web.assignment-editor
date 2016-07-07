@@ -120,7 +120,7 @@ export default class Editor extends React.Component {
 				) : (
 					<div className="assignment-editor-container-inner">
 						<AssignmentEditor assignment={assignment} schema={schema} />
-						<div className="assignment-editing-sidebar">
+						<div className="assignment-editing-sidebar-column">
 							<FixedElement className="assignment-editing-sidebar-fixed">
 								<Sidebar ref={this.attachSidebarRef} assignment={assignment} schema={schema} />
 							</FixedElement>
