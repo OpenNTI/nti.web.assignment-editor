@@ -5,6 +5,14 @@ import Randomize from './options/Randomize';
 import Limits from './options/Limits';
 import Visibility from './options/Visibility';
 
+function getQuestionSet (assignment) {
+	const {parts} = assignment;
+	const part = (parts || [])[0];
+	const {question_set:questionSet} = part || {};
+
+	return questionSet;
+}
+
 class AssignmentOptions extends React.Component {
 	static propTypes = {
 		assignment: PropTypes.object
@@ -16,6 +24,8 @@ class AssignmentOptions extends React.Component {
 
 	render () {
 		const {assignment} = this.props;
+		const questionSet = getQuestionSet(assignment);
+
 
 		return (
 			<div className="assignment-options">
@@ -26,8 +36,8 @@ class AssignmentOptions extends React.Component {
 				<div>
 					<Visibility assignment={assignment} />
 					<Grading assignment={assignment} />
-					<Randomize assignment={assignment} />
-					<Limits assignment={assignment} />
+					{questionSet && (<Randomize assignment={assignment} questionSet={questionSet} />)}
+					{questionSet && (<Limits assignment={assignment} questionSet={questionSet} />)}
 				</div>
 			</div>
 		);

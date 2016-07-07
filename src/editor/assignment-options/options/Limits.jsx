@@ -5,9 +5,6 @@ import {HOC, NumberInput} from 'nti-web-commons';
 import OptionGroup from '../OptionGroup';
 import Option from '../Option';
 
-const getQuestionSet = (props) =>
-	((((props || {}).assignment || {}).parts || [])[0] || {}).question_set;
-
 const LIMIT_NONE = 'limit-none';
 const LIMIT_PORTION = 'limit-porition';
 
@@ -23,12 +20,15 @@ const t = scoped('OPTIONS_LIMITS', DEFAULT_TEXT);
 
 class Limits extends React.Component {
 	static propTypes = {
-		assignment: PropTypes.object.isRequired
+		assignment: PropTypes.object.isRequired,
+		questionSet: PropTypes.object.isRequired
 	}
+
+	static isQuestionSetOption = true
 
 
 	static getItem (props) {
-		return getQuestionSet(props);
+		return props.questionSet;
 	}
 
 
@@ -44,7 +44,8 @@ class Limits extends React.Component {
 
 	setupValue (props = this.props) {
 		const setState = s => this.state ? this.setState(s) : (this.state = s);
-		const {draw} = getQuestionSet(props);
+		const {questionSet} = props;
+		const {draw} = questionSet;
 
 		setState({
 			draw: typeof draw === 'number' ? draw : null
@@ -53,8 +54,8 @@ class Limits extends React.Component {
 
 
 	componentWillReceiveProps (nextProps) {
-		const current = getQuestionSet(this.props);
-		const next = getQuestionSet(nextProps);
+		const {questionSet:current} = this.props;
+		const {questionSet:next} = nextProps;
 
 		if (current !== next) {
 			this.setupValue(nextProps);
@@ -71,7 +72,7 @@ class Limits extends React.Component {
 		if (this.busy) { return;}
 		this.busy = true;
 
-		const qset = getQuestionSet(this.props);
+		const {questionSet:qset} = this.props;
 
 		let work;
 		if (target.name === LIMIT_NONE) {
@@ -94,7 +95,7 @@ class Limits extends React.Component {
 		if (this.busy) { return;}
 		this.busy = true;
 
-		const qset = getQuestionSet(this.props);
+		const {questionSet:qset} = this.props;
 
 		let work;
 		if (target.name === LIMIT_PORTION) {

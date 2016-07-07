@@ -8,10 +8,6 @@ import Option from '../Option';
 const RANDOMIZE_QUESTIONS = 'randomize-questions';
 const RANDOMIZE_ANSWERS = 'randomize-answers';
 
-const getQuestionSet = (props) =>
-	((((props || {}).assignment || {}).parts || [])[0] || {}).question_set;
-
-
 const DEFAULT_TEXT = {
 	content: 'Randomizing will override the order of the questions and answers you created.',
 	labels: {
@@ -25,12 +21,15 @@ const t = scoped('OPTIONS_RANDOMIZE', DEFAULT_TEXT);
 
 class Randomize extends React.Component {
 	static propTypes = {
-		assignment: PropTypes.object.isRequired
+		assignment: PropTypes.object.isRequired,
+		questionSet: PropTypes.object.isRequired
 	}
+
+	static isQuestionSetOption = true
 
 
 	static getItem (props) {
-		return getQuestionSet(props);
+		return props.questionSet;
 	}
 
 
@@ -39,7 +38,7 @@ class Randomize extends React.Component {
 		this.busy = true;
 
 		const {target} = e;
-		const qset = getQuestionSet(this.props);
+		const {questionSet:qset} = this.props;
 
 		let work;
 		if(target.name === RANDOMIZE_QUESTIONS) {
@@ -55,7 +54,7 @@ class Randomize extends React.Component {
 	}
 
 	render () {
-		const qset = getQuestionSet(this.props);
+		const {questionSet:qset} = this.props;
 		const {isRandomized, isPartTypeRandomized} = qset;
 		const editable = qset.hasLink('edit');
 
