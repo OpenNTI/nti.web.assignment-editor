@@ -205,7 +205,7 @@ export default class Choice extends React.Component {
 						error={error}
 					/>
 				</SyncHeight>
-				{onDelete && (<div className="delete" onClick={this.onDelete}><i className="icon-light-x" title="Delete Row"/></div>)}
+				{onDelete && (<div className="delete" onClick={this.onDelete}><i className="icon-remove" title="Delete Row"/></div>)}
 			</Selectable>
 		);
 	}
