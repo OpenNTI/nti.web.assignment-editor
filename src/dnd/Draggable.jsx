@@ -14,9 +14,16 @@ export default class Draggable extends React.Component {
 		onDragEnd: React.PropTypes.func,
 		onMouseDown: React.PropTypes.func,
 		onMouseUp: React.PropTypes.func,
-		handleClassName: React.PropTypes.bool,
 		children: React.PropTypes.any,
 		className: React.PropTypes.string
+	}
+
+
+	static childContextTypes = {
+		addDragHandle: React.PropTypes.func,
+		// removeDragHandle: React.PropTypes.func,
+		enableDrag: React.PropTypes.func,
+		disableDrag: React.PropTypes.func
 	}
 
 	constructor (props) {
@@ -32,6 +39,15 @@ export default class Draggable extends React.Component {
 			'onMouseDown',
 			'onMouseUp'
 		);
+	}
+
+
+	getChildContext () {
+		return {
+			addDragHandle: () => this.hasDragHandle = true,
+			enableDrag: () => this.setDraggable(true),
+			disableDrag: () => this.setDraggable(false)
+		};
 	}
 
 
@@ -125,21 +141,23 @@ export default class Draggable extends React.Component {
 
 
 	onMouseDown (e) {
+		if (this.hasDragHandle) { return; }
+
 		e.stopPropagation();
 
-		const {handleClassName, onMouseDown} = this.props;
+		const {onMouseDown} = this.props;
 
 		if (onMouseDown) {
 			onMouseDown(e);
 		}
 
-		if (!handleClassName || e.target.classList.contains(handleClassName)) {
-			this.setDraggable(true);
-		}
+		this.setDraggable(true);
 	}
 
 
 	onMouseUp (e) {
+		if (this.hasDragHandle) { return; }
+
 		const {onMouseUp} = this.props;
 
 		if (onMouseUp) {

@@ -1,11 +1,13 @@
 import React from 'react';
 
 import Draggable from './Draggable';
+import DragHandle from './DragHandle';
 import Dropzone from './Dropzone';
 import Ordering from './ordering/Ordering';
 
 export {
 	Draggable,
+	DragHandle,
 	Dropzone,
 	Ordering
 };

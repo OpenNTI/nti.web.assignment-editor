@@ -1,0 +1,12 @@
+.drag-handle {
+	i {
+		color: black;
+		opacity: 0.2;
+		cursor: move;
+		cursor: grab;
+
+		&:hover {
+			opacity: 0.4;
+		}
+	}
+}

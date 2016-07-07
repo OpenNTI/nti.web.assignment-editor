@@ -2,6 +2,8 @@ import React from 'react';
 import cx from 'classnames';
 import autobind from 'nti-commons/lib/autobind';
 
+import {DragHandle} from '../../dnd';
+
 import Store from '../Store';
 import {QUESTION_ERROR, QUESTION_WARNING} from '../Constants';
 import Selectable from '../utils/Selectable';
@@ -116,8 +118,11 @@ export default class QuestionComponent extends React.Component {
 			<div className="assignment-editing-question-container">
 				<Before question={question} />
 				<Selectable className={cls} id={selectableId} value={selectableValue}>
-					<Content question={question} onFocus={this.onContentFocus} onBlur={this.onContentBlur} error={contentError} warning={contentWarning}/>
-					<div className="index">{index + 1}</div>
+					<div className="wrap">
+						<DragHandle />
+						<div className="index">{index + 1}</div>
+						<Content question={question} onFocus={this.onContentFocus} onBlur={this.onContentBlur} error={contentError} warning={contentWarning}/>
+					</div>
 					<Parts question={question} error={partError} />
 				</Selectable>
 				{!isSaving && (<Controls question={question} questionSet={questionSet} assignment={assignment} />)}
