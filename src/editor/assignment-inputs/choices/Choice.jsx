@@ -3,6 +3,7 @@ import cx from 'classnames';
 import {TextEditor, valuesEqual} from 'nti-modeled-content';
 import autobind from 'nti-commons/lib/autobind';
 
+import {DragHandle} from '../../../dnd';
 import SyncHeight from '../../../sync-height';
 import Selectable from '../../utils/Selectable';
 import ControlsConfig from '../../controls/ControlsConfig';
@@ -27,6 +28,7 @@ export default class Choice extends React.Component {
 		error: React.PropTypes.object,
 		className: React.PropTypes.string,
 		onChange: React.PropTypes.func,
+		onDelete: React.PropTypes.func,
 		plainText: React.PropTypes.bool
 	}
 
@@ -52,6 +54,7 @@ export default class Choice extends React.Component {
 		autobind(this,
 			'onUnselect',
 			'onSelect',
+			'onDelete',
 			'onEditorFocus',
 			'onEditorChange',
 			'onEditorBlur'
@@ -162,6 +165,15 @@ export default class Choice extends React.Component {
 	}
 
 
+	onDelete () {
+		const {onDelete} = this.props;
+
+		if (onDelete) {
+			onDelete();
+		}
+	}
+
+
 	onSelect () {
 		if (this.inputRef) {
 			this.inputRef.focus();
@@ -175,12 +187,13 @@ export default class Choice extends React.Component {
 
 
 	render () {
-		const {className, choice, heightSyncGroup} = this.props;
+		const {className, choice, heightSyncGroup, onDelete} = this.props;
 		const {label, error, selectableId, selectableValue} = this.state;
 		const cls = cx(className, 'assignment-input-choice', {error, correct: choice.correct});
 
 		return (
 			<Selectable className={cls} id={selectableId} value={selectableValue} onSelect={this.onSelect} onUnselect={this.onUnselect}>
+				<DragHandle className="choice-drag-handle" />
 				<SyncHeight ref={this.setSyncRef} group={heightSyncGroup}>
 					<TextEditor
 						ref={this.setEditorRef}
@@ -192,6 +205,7 @@ export default class Choice extends React.Component {
 						error={error}
 					/>
 				</SyncHeight>
+				{onDelete && (<div className="delete" onClick={this.onDelete}><i className="icon-light-x" title="Delete Row"/></div>)}
 			</Selectable>
 		);
 	}

@@ -12,6 +12,7 @@ export default class MultipleChoiceChoice extends React.Component {
 		error: React.PropTypes.object,
 		group: React.PropTypes.string,
 		onChange: React.PropTypes.func,
+		onDelete: React.PropTypes.func,
 		multipleAnswers: React.PropTypes.bool,
 		plainText: React.PropTypes.bool
 	}
@@ -75,7 +76,7 @@ export default class MultipleChoiceChoice extends React.Component {
 
 
 	render () {
-		const {choice, plainText, multipleAnswers, group, error, heightSyncGroup} = this.props;
+		const {choice, plainText, multipleAnswers, group, error, heightSyncGroup, onDelete} = this.props;
 		const {correct} = this.state;
 		const cls = cx('multiple-choice-choice', {correct});
 
@@ -88,6 +89,7 @@ export default class MultipleChoiceChoice extends React.Component {
 					error={error}
 					plainText={plainText}
 					heightSyncGroup={heightSyncGroup}
+					onDelete={onDelete}
 				/>
 				{this.renderSolution(correct, multipleAnswers, group)}
 			</div>

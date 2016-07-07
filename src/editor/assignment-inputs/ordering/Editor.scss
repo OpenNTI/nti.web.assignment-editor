@@ -1,7 +1,6 @@
 @import "~nti-style-common";
 
 .ordering-editor-choices {
-	padding-right: 30px;
 
 	.ordering-item:first-of-type {
 		.assignment-input-choice {
@@ -25,26 +24,25 @@
 			border-right-width: 1px;
 			border-left-width: 1px;
 			border-bottom-width: 1px;
+
+			.delete {
+				display: block;
+			}
+		}
+
+		.delete {
+			display: none;
 		}
 
 		.nti-rich-text {
 			border: none;
 		}
 
-		&.correct {
-			input {
-				border: none;
-			}
-		}
 
 		&.error {
 			position: relative;
 			z-index: 1;
 			border: 1px solid $border-red;
-
-			input {
-				border: none;
-			}
 
 			&.selected {
 				box-shadow: 0 0 0 1px $border-red;

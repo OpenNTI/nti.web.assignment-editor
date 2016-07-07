@@ -5,29 +5,28 @@
 	margin-bottom: 9px;
 
 	.nti-rich-text {
-		padding-left: 34px;
+		padding-left: rem-calc(32px);
 	}
 
 	.nti-error {
-		padding-left: 34px;
+		padding-left: rem-calc(32px);
 	}
 
 	.radio-component, .checkbox-component {
+		position: absolute;
+		left: rem-calc(32px);
 		transition: opacity 50ms;
 		opacity: 1;
 	}
 
 	.radio-component {
-		position: absolute;
-		top: 10px;
-		left: 15px;
+		top: 12px;
 	}
 
 	.checkbox-component {
-		position: absolute;
-	    top: 14px;
-	    left: 15px;
+		top: 13px;
 	}
+
 
 	.remove {
 		position: absolute;

@@ -172,6 +172,7 @@ export default class OrderingEditor extends React.Component {
 				remove={canRemovePart(question) && this.removeChoice}
 				addLabel={addLabel}
 				reorderable={canMovePart(question)}
+				minAllowed={2}
 			/>
 		);
 	}

@@ -31,13 +31,15 @@ export default class Choices extends React.Component {
 		add: React.PropTypes.func,
 		remove: React.PropTypes.func,
 		reorderable: React.PropTypes.bool,
-		addLabel: React.PropTypes.string
+		addLabel: React.PropTypes.string,
+		minAllowed: React.PropTypes.number
 	}
 
 
 	static defaultProps = {
 		accepts: [],
-		addLabel: defaultLabel
+		addLabel: defaultLabel,
+		minAllowed: 1
 	}
 
 
@@ -47,8 +49,8 @@ export default class Choices extends React.Component {
 	constructor (props) {
 		super(props);
 
-		const {choices, accepts, add, remove, error} = this.props;
-		let {columns, deletes} = this.mapColumns(choices);
+		const {choices, accepts, add, remove, error, minAllowed} = this.props;
+		let {columns, deletes} = this.mapColumns(choices, minAllowed);
 
 		this.state = {
 			columns,
@@ -65,16 +67,15 @@ export default class Choices extends React.Component {
 			'add',
 			'remove',
 			'renderColumn',
-			'renderDelete',
 			'renderAdd'
 		);
 	}
 
 
 	componentWillReceiveProps (nextProps) {
-		const {choices:newChoices, error:newError} = nextProps;
+		const {choices:newChoices, error:newError, minAllowed} = nextProps;
 		const {choices:oldChoices, error:oldError} = this.props;
-		const {columns, deletes} = this.mapColumns(newChoices);
+		const {columns, deletes} = this.mapColumns(newChoices, minAllowed);
 		let state = null;
 
 		if (newChoices !== oldChoices) {
@@ -100,7 +101,7 @@ export default class Choices extends React.Component {
 	}
 
 
-	mapColumns (rows) {
+	mapColumns (rows, minAllowed) {
 		let columns = [];
 		let deletes = [];
 
@@ -119,9 +120,8 @@ export default class Choices extends React.Component {
 				return acc;
 			}, columns);
 
-
 			//Don't allow the last choice to be deleted, since at least one is required
-			if (rows.length > 1) {
+			if (rows.length > minAllowed) {
 				deletes.push(row.map(cell => cell.NTIID || cell.ID));
 			}
 		}
@@ -279,7 +279,7 @@ export default class Choices extends React.Component {
 
 	render () {
 		const {className} = this.props;
-		const {columns, deletes, canAdd, canRemove} = this.state;
+		const {columns, canAdd, canRemove} = this.state;
 		const cls = cx(className, this.className, 'assignment-input-choices',{'can-delete': canRemove});
 
 		return (
@@ -288,15 +288,6 @@ export default class Choices extends React.Component {
 					{columns.map(this.renderColumn)}
 					{canAdd ? this.renderAdd() : null}
 				</div>
-				{
-					canRemove ?
-						(
-							<div className="delete">
-								{deletes.map(this.renderDelete)}
-							</div>
-						) :
-						null
-				}
 			</div>
 		);
 	}
@@ -331,10 +322,11 @@ export default class Choices extends React.Component {
 
 
 	renderChoice (column, choice, row) {
-		const {error} = this.state;
+		const {error, canRemove} = this.state;
 		const onChange = this.choiceChangeHandlers[column];
 		const choiceError = isErrorForChoice(error, choice);
 		const sync = this.getSyncForRow(row);
+		const onDelete = canRemove && this.deleteHandlers[row];
 
 		return (
 			<Choice
@@ -343,6 +335,7 @@ export default class Choices extends React.Component {
 				heightSyncGroup={sync}
 				onChange={onChange}
 				error={choiceError}
+				onDelete={onDelete}
 			/>
 		);
 	}
@@ -355,16 +348,6 @@ export default class Choices extends React.Component {
 			<div className="add-choice" onClick={this.add}>
 				<span>{addLabel}</span>
 			</div>
-		);
-	}
-
-
-	renderDelete (deletes, index) {
-		const key = deletes.join('-');
-		const handler = this.deleteHandlers[index];
-
-		return (
-			<div key={key} onClick={handler}><i className="icon-light-x" /></div>
 		);
 	}
 }
