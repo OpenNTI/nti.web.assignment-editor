@@ -110,22 +110,21 @@ export default class Editor extends React.Component {
 
 		return (
 			<div className={cls}>
-				{!assignment ?
-					(<Loading/>) :
-					deleting ?
-						(<Loading message="Deleting" />) :
-						(
-							<div>
-								<AssignmentEditor assignment={assignment} schema={schema} />
-								<FixedElement className="assignment-editing-sidebar-fixed">
-									<Sidebar ref={x => this.sidebar = x} assignment={assignment} schema={schema} />
-								</FixedElement>
-								<ControlBar visible>
-									<Controls assignment={assignment} undoQueue={undoQueue} />
-								</ControlBar>
-							</div>
-						)
-				}
+				{!assignment ? (
+					<Loading/>
+				) : deleting ? (
+					<Loading message="Deleting" />
+				) : (
+					<div className="assignment-editor-container-inner">
+						<AssignmentEditor assignment={assignment} schema={schema} />
+						<FixedElement className="assignment-editing-sidebar-fixed">
+							<Sidebar ref={x => this.sidebar = x} assignment={assignment} schema={schema} />
+						</FixedElement>
+						<ControlBar visible>
+							<Controls assignment={assignment} undoQueue={undoQueue} />
+						</ControlBar>
+					</div>
+				)}
 			</div>
 		);
 	}

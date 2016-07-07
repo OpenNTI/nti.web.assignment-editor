@@ -1,7 +1,7 @@
 @import "~nti-style-common";
 
 .assignment-editor-container {
-	max-width: 1024px;
+	max-width: rem-calc(1024px);
 	margin: 0 auto;
 	font-family: $body-font-family;
 
@@ -9,13 +9,22 @@
 		box-sizing: border-box;
 	}
 
+	.assignment-editor-container-inner {
+		display: flex;
+
+		//ReactCSSTransitionGroup
+		& > span {
+			flex: none;
+		}
+	}
+
 	.assignment-editor {
-		float: left;
-		width: 75%;
+		flex: 1 1 auto;
 	}
 
 	.assignment-editing-sidebar-fixed  {
-		float: right;
-		width: 24%;
+		flex: 0 0 auto;
+		width: rem-calc(250px);
+		margin-left: rem-calc(5px);
 	}
 }
