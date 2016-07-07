@@ -34,10 +34,10 @@ class AssignmentOptions extends React.Component {
 					<p className="options-assignment-title">{assignment.title}</p>
 				</header>
 				<div>
-					<Visibility assignment={assignment} />
-					<Grading assignment={assignment} />
-					{questionSet && (<Randomize assignment={assignment} questionSet={questionSet} />)}
-					{questionSet && (<Limits assignment={assignment} questionSet={questionSet} />)}
+					<Visibility assignment={assignment} questionSet={questionSet}/>
+					<Grading assignment={assignment} questionSet={questionSet} />
+					<Randomize assignment={assignment} questionSet={questionSet} />
+					<Limits assignment={assignment} questionSet={questionSet} />
 				</div>
 			</div>
 		);

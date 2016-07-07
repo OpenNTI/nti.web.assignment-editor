@@ -6,7 +6,9 @@ class OptionGroup extends React.Component {
 		name: PropTypes.string,
 		content: PropTypes.string,
 		children: PropTypes.any,
-		header: PropTypes.string
+		header: PropTypes.string,
+		disabled: PropTypes.bool,
+		disabledText: PropTypes.string
 	}
 
 
@@ -18,8 +20,8 @@ class OptionGroup extends React.Component {
 
 
 	render () {
-		const {name, content, header} = this.props;
-		const classNames = cx(name, 'assignment-option-group');
+		const {name, content, header, disabled, disabledText} = this.props;
+		const classNames = cx(name, 'assignment-option-group', {disabled});
 
 		return (
 			<div className={classNames}>
@@ -29,6 +31,7 @@ class OptionGroup extends React.Component {
 				</div>
 				<div className="assignment-option-content">
 					<p>{content}</p>
+					<span className="disabled-text">{disabledText}</span>
 				</div>
 			</div>
 		);

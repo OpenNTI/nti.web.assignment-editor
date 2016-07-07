@@ -10,6 +10,7 @@ const LIMIT_PORTION = 'limit-porition';
 
 const DEFAULT_TEXT = {
 	content: 'Setting a max number of questions will result in unqiue quizzes with randomly chosen questions for every student.',
+	disabled: 'Add some questions to enable this option.',
 	labels: {
 		all: 'All of the Questions',
 		portion: 'Portion of the Questions'
@@ -21,7 +22,7 @@ const t = scoped('OPTIONS_LIMITS', DEFAULT_TEXT);
 class Limits extends React.Component {
 	static propTypes = {
 		assignment: PropTypes.object.isRequired,
-		questionSet: PropTypes.object.isRequired
+		questionSet: PropTypes.object
 	}
 
 	static isQuestionSetOption = true
@@ -45,7 +46,7 @@ class Limits extends React.Component {
 	setupValue (props = this.props) {
 		const setState = s => this.state ? this.setState(s) : (this.state = s);
 		const {questionSet} = props;
-		const {draw} = questionSet;
+		const {draw} = questionSet || {};
 
 		setState({
 			draw: typeof draw === 'number' ? draw : null
@@ -69,17 +70,21 @@ class Limits extends React.Component {
 	 * @returns {none} nothing
 	 */
 	onChange = ({target}) => {
-		if (this.busy) { return;}
-		this.busy = true;
+		if (this.busy) { return; }
 
 		const {questionSet:qset} = this.props;
 
+		if (qset) { return; }
+
 		let work;
+
 		if (target.name === LIMIT_NONE) {
 			work = qset.setQuestionLimit(null);
 		}
 
 		if (work) {
+			this.busy = true;
+
 			const clearBusy = () => delete this.busy;
 			work.then(clearBusy, clearBusy);
 		}
@@ -92,17 +97,21 @@ class Limits extends React.Component {
 
 
 	onLimitBlur = ({target}) => {
-		if (this.busy) { return;}
-		this.busy = true;
+		if (this.busy) { return; }
 
 		const {questionSet:qset} = this.props;
 
+		if (!qset) { return; }
+
 		let work;
+
 		if (target.name === LIMIT_PORTION) {
 			work = qset.setQuestionLimit(this.limitInputRef.value);
 		}
 
 		if (work) {
+			this.busy = true;
+
 			const clearBusy = () => delete this.busy;
 			work.then(clearBusy, clearBusy);
 		}
@@ -134,11 +143,18 @@ class Limits extends React.Component {
 
 
 	render () {
+		const {questionSet} = this.props;
 		const {draw} = this.state;
 		const value = typeof draw === 'number' ? true : false;
 
 		return (
-			<OptionGroup name="limiting" header="Max Limit" content={t('content')}>
+			<OptionGroup
+				name="limiting"
+				header="Max Limit"
+				content={t('content')}
+				disabled={!questionSet}
+				disabledText={!questionSet && t('disabled')}
+			>
 				<Option label={t('labels.all')} type="radio" name={LIMIT_NONE} value={!value}  onChange={this.onChange}/>
 				<Option label={t('labels.portion')} type="radio" value={value} onChange={this.onLimitSelect} />
 				<NumberInput
