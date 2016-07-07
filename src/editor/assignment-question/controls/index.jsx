@@ -5,7 +5,7 @@ import {hasOrderedContents} from '../../../ordered-contents';
 
 import Delete from './Delete';
 import Duplicate from './Duplicate';
-import Move from './Move';
+import Move, {UP, DOWN} from './Move';
 
 QuestionControls.propTypes = {
 	question: React.PropTypes.object.isRequired,
@@ -26,8 +26,8 @@ export default function QuestionControls (props) {
 
 	return (
 		<div className={cls}>
-			{canMove && (<Move type="up" question={question} questionSet={questionSet} assignment={assignment} />)}
-			{canMove && (<Move type="down" question={question} questionSet={questionSet} assignment={assignment} />)}
+			{canMove && (<Move type={UP} question={question} questionSet={questionSet} assignment={assignment} />)}
+			{canMove && (<Move type={DOWN} question={question} questionSet={questionSet} assignment={assignment} />)}
 			{canDuplicate && (<Duplicate question={question} questionSet={questionSet} assignment={assignment} />)}
 			{canDelete && (<Delete question={question} questionSet={questionSet} assignment={assignment} />)}
 		</div>

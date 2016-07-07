@@ -6,14 +6,41 @@ import MoveInfo from '../../../dnd/ordering/MoveInfo';
 
 import {moveQuestion} from '../../assignment-parts/Actions';
 
-const TYPES = {
-	UP: 'up',
-	DOWN: 'down'
+
+const UP = 'up';
+const DOWN = 'down';
+
+export {
+	UP,
+	DOWN
 };
+
+function isFirstQuestion (question, questionSet) {
+	const {questions} = questionSet;
+	const first = questions[0];
+
+	return first && first.NTIID === question.NTIID;
+}
+
+function isLastQuestion (question, questionSet) {
+	const {questions} = questionSet;
+	const last = questions[questions.length - 1];
+
+	return last && last.NTIID === question.NTIID;
+}
+
+
+function shouldDisable (type, question, questionSet) {
+	if (type === UP) {
+		return isFirstQuestion(question, questionSet);
+	} else if (type === DOWN) {
+		return isLastQuestion(question, questionSet);
+	}
+}
 
 export default class Move extends React.Component {
 	static propTypes = {
-		type: React.PropTypes.oneOf([TYPES.UP, TYPES.DOWN]),
+		type: React.PropTypes.oneOf([UP, DOWN]),
 		question: React.PropTypes.object.isRequired,
 		questionSet: React.PropTypes.object.isRequired
 	}
@@ -39,27 +66,18 @@ export default class Move extends React.Component {
 			OriginIndex: this.OriginIndex
 		});
 
-		const newIndex = type === TYPES.UP ? moveInfo.originIndex - 1 : moveInfo.originIndex + 1;
+		const newIndex = type === UP ? moveInfo.originIndex - 1 : moveInfo.originIndex + 1;
 
 		moveQuestion(question, questionSet, newIndex, moveInfo, this.moveRoot);
 	}
 
 
 	render () {
-		const {type, questionSet} = this.props;
-		const questions = questionSet.questions;
-		const classNames = cx(`icon-move${type}`, {disable: shouldDisable(type, this.OriginIndex, questions && questions.length)});
+		const {type, question, questionSet} = this.props;
+		const classNames = cx(`icon-move${type}`, {disabled: shouldDisable(type, question, questionSet)});
 
 		return (
 			<i className={classNames} title={type} onClick={this.onClick}/>
 		);
-	}
-}
-
-function shouldDisable (type, index, length) {
-	if (type === TYPES.UP && index === 0) {
-		return true;
-	} else if (type === TYPES.DOWN && index === length - 1) {
-		return true;
 	}
 }
