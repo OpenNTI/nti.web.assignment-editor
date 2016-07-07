@@ -346,6 +346,7 @@ export default class Choices extends React.Component {
 
 		return (
 			<div className="add-choice" onClick={this.add}>
+				<i className="icon-add" />
 				<span>{addLabel}</span>
 			</div>
 		);

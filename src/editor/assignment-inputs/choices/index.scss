@@ -25,17 +25,13 @@
 		background-color: white;
 		font: normal 400 0.875rem/40px $body-font-family;
 		color: $secondary-grey;
-		padding: 0 10px 0 34px;
+		padding: 0 rem-calc(10px) 0 rem-calc(15px);
 		border: 1px solid $border-grey-light;
 		cursor: pointer;
 		transition: color 50ms;
 
-		&::before {
-			content: '+';
-			display: block;
-			position: absolute;
-			top: 0;
-			left: 15px;
+		i {
+			margin-right: rem-calc(7px);
 		}
 	}
 }
