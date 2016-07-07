@@ -82,6 +82,7 @@ export function generatePartFor (mimeType, content, labels, values, solution, hi
 		labels: labels,
 		values: values,
 		solutions: [generateSolutionFor(solution)],
-		hints: hints || []
+		hints: hints || [],
+		randomized: true
 	};
 }
