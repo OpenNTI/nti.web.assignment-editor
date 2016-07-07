@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import cx from 'classnames';
 import autobind from 'nti-commons/lib/autobind';
 
@@ -25,10 +26,6 @@ export default class Draggable extends React.Component {
 
 		this.setDataForTransfer(data);
 
-		this.state = {
-			draggable: false
-		};
-
 		autobind(this,
 			'onDragStart',
 			'onDragEnd',
@@ -47,6 +44,14 @@ export default class Draggable extends React.Component {
 		}
 	}
 
+
+	componentWillUpdate () {
+		if (!this.isDragging) {
+			this.setDraggable(false);
+		}
+	}
+
+
 	setDataForTransfer (data) {
 		if (!Array.isArray(data)) {
 			data = [data];
@@ -60,11 +65,17 @@ export default class Draggable extends React.Component {
 	}
 
 
+	getDOMNode () {
+		return ReactDOM.findDOMNode(this);
+	}
+
+
 	onDragStart (e) {
 		e.stopPropagation();
 
 		const {onDragStart} = this.props;
 		const {dataTransfer} = e;
+		const domNode = this.getDOMNode();
 
 		dataTransfer.effectAllowed = 'all';
 		dataTransfer.dropEffect = 'move';
@@ -76,9 +87,8 @@ export default class Draggable extends React.Component {
 			});
 		}
 
-		this.setState({
-			isDragging: true
-		});
+		this.isDragging = true;
+		domNode.classList.add('dragging');
 
 		if (onDragStart) {
 			onDragStart();
@@ -88,14 +98,29 @@ export default class Draggable extends React.Component {
 
 	onDragEnd (e) {
 		const {onDragEnd} = this.props;
+		const domNode = this.getDOMNode();
 
-		this.setState({
-			isDragging: false
-		});
+		this.isDragging = false;
+		domNode.classList.remove('dragging');
 
 		if (onDragEnd) {
 			onDragEnd(e);
 		}
+	}
+
+
+	setDraggable (add) {
+		const domNode = this.getDOMNode();
+		const listener = add ? 'addEventListener' : 'removeEventListener';
+
+		if (add) {
+			domNode.setAttribute('draggable', true);
+		} else {
+			domNode.removeAttribute('draggable');
+		}
+
+		domNode[listener]('dragstart', this.onDragStart);
+		domNode[listener]('dragend', this.onDragEnd);
 	}
 
 
@@ -109,9 +134,7 @@ export default class Draggable extends React.Component {
 		}
 
 		if (!handleClassName || e.target.classList.contains(handleClassName)) {
-			this.setState({
-				draggable: true
-			});
+			this.setDraggable(true);
 		}
 	}
 
@@ -123,29 +146,19 @@ export default class Draggable extends React.Component {
 			onMouseUp(e);
 		}
 
-		this.setState({
-			draggable: false
-		});
+		this.setDraggable(false);
 	}
 
 
 	render () {
 		const {children, className} = this.props;
-		const {draggable, isDragging} = this.state;
 		const child = React.Children.only(children);
-		const cls = cx(className || '', 'draggable', {dragging: isDragging});
-
+		const cls = cx(className || '', 'draggable');
 		const props = getDomNodeProps(this.props, [DROPZONE]);
 
 		props.className = cls;
 		props.onMouseDown = this.onMouseDown;
 		props.onMouseUp = this.onMouseUp;
-
-		if (draggable) {
-			props.draggable = true;
-			props.onDragStart = this.onDragStart;
-			props.onDragEnd = this.onDragEnd;
-		}
 
 
 		return (
