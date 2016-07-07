@@ -12,7 +12,7 @@ const DEFAULT_TEXT = {
 	content: 'Setting a max number of questions will result in unqiue quizzes with randomly chosen questions for every student.',
 	labels: {
 		all: 'All of the Questions',
-		portion: 'Porition of the Questions'
+		portion: 'Portion of the Questions'
 	}
 };
 
