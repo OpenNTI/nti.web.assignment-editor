@@ -86,6 +86,7 @@ export default class AssignmentEditor extends React.Component {
 		return (
 			<div key="content" className="content-container">
 				<div className="show-options toggle" onClick={this.showOptions}>
+					<i className="icon-settings" />
 					<span>Options</span>
 				</div>
 				<AssignmentContent assignment={assignment} schema={schema} />

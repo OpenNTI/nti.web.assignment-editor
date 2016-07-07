@@ -25,10 +25,27 @@
 
 	.content-container {
 		.show-options.toggle {
+			font: normal 500 0.875rem/2.5rem $body-font-family;
 			line-height: 2.5rem;
+			color: $secondary-grey;
 			box-shadow: 0 0 0 1px $border-grey-light;
+			border-radius: 3px;
 			background: white;
-			padding: 0 0.5rem;
+			padding: 0 0.625rem;
+
+			span, i {
+				vertical-align: middle;
+			}
+
+			span {
+				font-weight: 600;
+			}
+
+			i {
+				font-size: 1rem;
+				line-height: 2.5rem;
+				margin-right: 0.2rem;
+			}
 		}
 	}
 
