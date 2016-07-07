@@ -51,6 +51,9 @@ export default class Editor extends React.Component {
 	}
 
 
+	attachSidebarRef = x => this.sidebar = x
+
+
 	componentDidMount () {
 		Store.addChangeListener(this.onStoreChange);
 		loadAssignment(this.props.NTIID);
@@ -117,9 +120,11 @@ export default class Editor extends React.Component {
 				) : (
 					<div className="assignment-editor-container-inner">
 						<AssignmentEditor assignment={assignment} schema={schema} />
-						<FixedElement className="assignment-editing-sidebar-fixed">
-							<Sidebar ref={x => this.sidebar = x} assignment={assignment} schema={schema} />
-						</FixedElement>
+						<div className="assignment-editing-sidebar">
+							<FixedElement className="assignment-editing-sidebar-fixed">
+								<Sidebar ref={this.attachSidebarRef} assignment={assignment} schema={schema} />
+							</FixedElement>
+						</div>
 						<ControlBar visible>
 							<Controls assignment={assignment} undoQueue={undoQueue} />
 						</ControlBar>
