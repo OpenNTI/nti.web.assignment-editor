@@ -20,7 +20,8 @@ export default class Editor extends React.Component {
 	static propTypes = {
 		NTIID: React.PropTypes.string.isRequired,
 		onDeleted: React.PropTypes.func,
-		gotoRoot: React.PropTypes.func
+		gotoRoot: React.PropTypes.func,
+		pageSource: React.PropTypes.object
 	}
 
 
@@ -104,7 +105,7 @@ export default class Editor extends React.Component {
 
 	render () {
 		const {undoQueue} = Store;
-		const {gotoRoot} = this.props;
+		const {gotoRoot, pageSource} = this.props;
 		let {error, assignment, schema, deleting} = this.state;
 
 		if (error || (Store.isLoaded && !assignment)) {
@@ -121,7 +122,12 @@ export default class Editor extends React.Component {
 					<Loading message="Deleting" />
 				) : (
 					<div className="assignment-editor-container-inner">
-						<AssignmentEditor assignment={assignment} schema={schema} gotoRoot={gotoRoot} />
+						<AssignmentEditor
+							assignment={assignment}
+							schema={schema}
+							gotoRoot={gotoRoot}
+							pageSource={pageSource}
+						/>
 						<div className="assignment-editing-sidebar-column">
 							<FixedElement className="assignment-editing-sidebar-fixed">
 								<Sidebar ref={this.attachSidebarRef} assignment={assignment} schema={schema} />
