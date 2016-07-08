@@ -16,7 +16,8 @@ const OPTIONS_VIEW = 'options';
 export default class AssignmentEditor extends React.Component {
 	static propTypes = {
 		assignment: React.PropTypes.object,
-		schema: React.PropTypes.object
+		schema: React.PropTypes.object,
+		gotoRoot: React.PropTypes.func
 	}
 
 
@@ -49,14 +50,14 @@ export default class AssignmentEditor extends React.Component {
 
 
 	render () {
-		const {assignment, schema} = this.props;
+		const {assignment, schema, gotoRoot} = this.props;
 		const {active} =  this.state;
 		const cls = cx('assignment-editor', {loading: !!assignment});
 
 		return (
 			<StickyContainer className={cls}>
 				<Sticky>
-					<NavBar />
+					<NavBar gotoRoot={gotoRoot}/>
 				</Sticky>
 				<AssignmentInfo assignment={assignment} schema={schema} />
 				<div className="content">

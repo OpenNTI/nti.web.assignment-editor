@@ -3,4 +3,10 @@
 .assignment-editor-nav-bar {
 	box-shadow: 0 1px 0 0 $border-grey-light;
 	background: white;
+	display: flex;
+	padding: 0 rem-calc(30px);
+
+	.assignment-editor-breadcrumb {
+		flex: 1 1 auto;
+	}
 }

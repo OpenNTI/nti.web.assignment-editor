@@ -1,0 +1,11 @@
+@import "~nti-style-common";
+
+.assignment-editor-breadcrumb {
+	font: normal 600 0.75rem/3.125rem $body-font-family;
+
+	.root {
+		text-transform: uppercase;
+		cursor: pointer;
+		color: $primary-blue;
+	}
+}
