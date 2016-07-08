@@ -1,10 +1,13 @@
 import React from 'react';
+import {HOC} from 'nti-web-commons';
 import cx from 'classnames';
 
 import {MoveRoot} from '../../../ordered-contents';
 import MoveInfo from '../../../dnd/ordering/MoveInfo';
 
 import {moveQuestion} from '../../assignment-parts/Actions';
+
+const {ItemChanges} = HOC;
 
 
 const UP = 'up';
@@ -30,6 +33,11 @@ function isLastQuestion (question, questionSet) {
 }
 
 
+function getIndexOf (question, questionSet) {
+	return questionSet.questions.findIndex(q => q.getID() === question.getID());
+}
+
+
 function shouldDisable (type, question, questionSet) {
 	if (type === UP) {
 		return isFirstQuestion(question, questionSet);
@@ -49,21 +57,26 @@ export default class Move extends React.Component {
 	constructor (props) {
 		super();
 
-		const {questionSet, question} = props;
+		const {questionSet, question, type} = props;
 		const moveLink = questionSet && questionSet.getLink('AssessmentMove');
 
 		if (moveLink) {
 			this.moveRoot = new MoveRoot(moveLink);
-			this.OriginIndex = questionSet.questions.findIndex(q => q.getID() === question.getID());
 		}
+
+		this.state = {
+			index: getIndexOf(question, questionSet),
+			disabled: shouldDisable(type, question, questionSet)
+		};
 	}
 
 
 	onClick = () => {
 		const {question, questionSet, type} = this.props;
+		const {index} = this.state;
 		const moveInfo = new MoveInfo({
 			OriginContainer: questionSet.getID(),
-			OriginIndex: this.OriginIndex
+			OriginIndex: index
 		});
 
 		const newIndex = type === UP ? moveInfo.originIndex - 1 : moveInfo.originIndex + 1;
@@ -72,12 +85,25 @@ export default class Move extends React.Component {
 	}
 
 
+	onQuestionSetUpdated = () => {
+		const {question, questionSet, type} = this.props;
+
+		this.setState({
+			index: getIndexOf(question, questionSet),
+			disabled: shouldDisable(type, question, questionSet)
+		});
+	}
+
+
 	render () {
-		const {type, question, questionSet} = this.props;
-		const classNames = cx(`icon-move${type}`, {disabled: shouldDisable(type, question, questionSet)});
+		const {type, questionSet} = this.props;
+		const {disabled} = this.state;
+		const classNames = cx(`icon-move${type}`, {disabled});
 
 		return (
-			<i className={classNames} title={type} onClick={this.onClick}/>
+			<ItemChanges item={questionSet} onItemChanged={this.onQuestionSetUpdated}>
+				<i className={classNames} title={type} onClick={this.onClick}/>
+			</ItemChanges>
 		);
 	}
 }

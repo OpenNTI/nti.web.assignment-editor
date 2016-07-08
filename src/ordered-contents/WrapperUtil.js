@@ -330,6 +330,8 @@ export default class OrderedContents {
 	 */
 	move (item, newIndex, oldIndex, oldParent, moveRoot) {
 		const obj = this.backingObject;
+		const queue = getQueueFor(obj);
+
 		let {orderedContents, orderedContentsField} = this;
 		let currentIndex = this.indexOf(item);
 
@@ -354,10 +356,10 @@ export default class OrderedContents {
 		}
 
 		//Mark the Item as saving
-		Object.defineProperty(item, 'isSaving', {
-			enumerable: false,
-			value: true
-		});
+		// Object.defineProperty(item, 'isSaving', {
+		// 	enumerable: false,
+		// 	value: true
+		// });
 
 		//Optimistically insert the record at the new index
 		orderedContents = [...orderedContents.slice(0, newIndex), item, ...orderedContents.slice(newIndex)];
@@ -365,13 +367,14 @@ export default class OrderedContents {
 		obj[orderedContentsField] = orderedContents;
 		obj.onChange();
 
-		return moveRoot.moveRecord(item, newIndex, oldIndex, obj, oldParent)
+		return queue.queueTask(() => moveRoot.moveRecord(item, newIndex, oldIndex, obj, oldParent))
 			.then(minWait(SHORT))
 			.then((savedItem) => {
-				//after save, replace the optimistic placeholder with the real thing
-				orderedContents[newIndex] = savedItem;
+				//update the item with the new one from the server
+				obj[orderedContentsField] = orderedContents.map((orderedItem) => {
+					return orderedItem.NTIID === savedItem.NTIID ? savedItem : orderedItem;
+				});
 
-				obj[orderedContentsField] = orderedContents;
 				obj.onChange();
 			})
 			.catch((reason) => {
@@ -386,6 +389,15 @@ export default class OrderedContents {
 					enumerable: false,
 					value: reason
 				});
+
+				if (newIndex >= 0) {
+					orderedContents.splice(newIndex, 1);
+				}
+
+				//move the item back...
+				orderedContents = [...orderedContents.slice(0, currentIndex), item, ...orderedContents.slice(currentIndex)];
+
+				obj[orderedContentsField] = orderedContents;
 
 				obj.onChange();
 
