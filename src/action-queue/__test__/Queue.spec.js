@@ -10,7 +10,7 @@ function createAction (label, onComplete) {
 	};
 }
 
-fdescribe('Action Queue Tests', () => {
+describe('Action Queue Tests', () => {
 	it('Queue is never longer than the max size', () => {
 		const queue = new Queue({maxVisible: 2});
 
