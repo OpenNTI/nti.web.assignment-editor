@@ -5,7 +5,7 @@ import BreadCrumb from './BreadCrumb';
 
 NavBar.propTypes = {
 	gotoRoot: React.PropTypes.func,
-	pageSource: React.PropTypes.obj
+	pageSource: React.PropTypes.object
 };
 
 function NavBar (props) {
