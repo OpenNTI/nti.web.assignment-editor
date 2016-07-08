@@ -3,12 +3,12 @@ import {Pager} from 'nti-web-commons';
 
 import BreadCrumb from './BreadCrumb';
 
-NavBar.propTypes = {
+NavigationBar.propTypes = {
 	gotoRoot: React.PropTypes.func,
 	pageSource: React.PropTypes.object
 };
 
-function NavBar (props) {
+export default function NavigationBar (props) {
 	const {gotoRoot, pageSource} = props;
 
 	return (
@@ -18,5 +18,3 @@ function NavBar (props) {
 		</div>
 	);
 }
-
-export default NavBar;
