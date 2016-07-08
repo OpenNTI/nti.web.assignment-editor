@@ -65,10 +65,7 @@ export default class Editor extends React.Component {
 		const {onDeleted} = this.props;
 
 		if (data.type === LOADED) {
-			this.setState({
-				assignment: Store.assignment,
-				schema: Store.schema
-			});
+			this.forceUpdate();
 		} else if (data.type === ASSIGNMENT_DELETING) {
 			this.setState({deleting: true});
 		} else if (data.type === ASSIGNMENT_DELETED) {
@@ -89,7 +86,8 @@ export default class Editor extends React.Component {
 	render () {
 		const {undoQueue} = Store;
 		const {gotoRoot, pageSource} = this.props;
-		let {error, assignment, schema, deleting} = this.state;
+		const {deleting} = this.state;
+		const {assignment, loadError: error, schema} = Store;
 
 		if (error || (Store.isLoaded && !assignment)) {
 			return this.renderError(error || 'No Assignment');

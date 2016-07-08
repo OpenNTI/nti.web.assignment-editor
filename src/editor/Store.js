@@ -134,7 +134,7 @@ class Store extends StorePrototype {
 			p.assignment = response;
 		}
 
-		if (p.schema !== null) {
+		if (p.schema !== null || p.error) {
 			this.emitChange({type: LOADED});
 		}
 	}
@@ -150,7 +150,7 @@ class Store extends StorePrototype {
 			p.schema = response;
 		}
 
-		if (p.assignment !== null) {
+		if (p.assignment !== null || p.error) {
 			this.emitChange({type: LOADED});
 		}
 
@@ -316,6 +316,13 @@ class Store extends StorePrototype {
 	}
 
 
+	get hasLoadError () {
+		const p = PRIVATE.get(this);
+
+		return !!p.error;
+	}
+
+
 	get isLoaded () {
 		const p = PRIVATE.get(this);
 
@@ -341,6 +348,13 @@ class Store extends StorePrototype {
 		const p = PRIVATE.get(this);
 
 		return p.savingCount > 0;
+	}
+
+
+	get loadError () {
+		const p = PRIVATE.get(this);
+
+		return p.error;
 	}
 
 
