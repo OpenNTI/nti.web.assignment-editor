@@ -5,6 +5,7 @@ const DnDSession = uuid.v4();
 const SourceApp = 'application/vnd.nextthought.webapp';
 const Version = 1;
 
+//This is constant until the app is restarted/refreshed... fyi
 export default {
 	MimeType,
 	DnDSession,
