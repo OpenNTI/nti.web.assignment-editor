@@ -8,16 +8,15 @@ const defaultSchema = {};
 
 export function loadAssignment (ntiid) {
 	getService()
-		.then((service) => {
-			return service.getObject(ntiid);
-		})
-		.then((assignment) => {
+		.then(service =>
+			service.getObject(ntiid))
+		.then(assignment => {
 			dispatch(LOADED, assignment);
 			loadSchema(assignment);
 		})
-		.catch((reason) => {
+		.catch(reason => {
 			//TODO: HANDLE THE ERROR CASE
-			dispatch(LOADED, new Error(reason));
+			dispatch(LOADED, reason instanceof Error ? reason : new Error(reason));
 		});
 }
 

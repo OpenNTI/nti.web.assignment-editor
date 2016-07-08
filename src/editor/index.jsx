@@ -1,6 +1,5 @@
 import React from 'react';
 import cx from 'classnames';
-import autobind from 'nti-commons/lib/autobind';
 import {Error, Loading} from 'nti-web-commons';
 
 import ControlBar from '../control-bar';
@@ -37,21 +36,7 @@ export default class Editor extends React.Component {
 		})
 	}
 
-
-	constructor (props) {
-		super(props);
-
-		this.state = {
-			assignment: null,
-			schema: null
-		};
-
-		autobind(this,
-			'onStoreChange',
-			'onWindowScroll'
-		);
-	}
-
+	state = {}
 
 	attachSidebarRef = x => this.sidebar = x
 
@@ -67,7 +52,7 @@ export default class Editor extends React.Component {
 	}
 
 
-	onWindowScroll () {
+	onWindowScroll = () => {
 		const top = window.scrollY;
 
 		if (this.sidebarDOM) {
@@ -76,7 +61,7 @@ export default class Editor extends React.Component {
 	}
 
 
-	onStoreChange (data) {
+	onStoreChange = (data) => {
 		const {onDeleted} = this.props;
 
 		if (data.type === LOADED) {
@@ -85,9 +70,7 @@ export default class Editor extends React.Component {
 				schema: Store.schema
 			});
 		} else if (data.type === ASSIGNMENT_DELETING) {
-			this.setState({
-				deleting: true
-			});
+			this.setState({deleting: true});
 		} else if (data.type === ASSIGNMENT_DELETED) {
 			if (onDeleted) {
 				onDeleted();

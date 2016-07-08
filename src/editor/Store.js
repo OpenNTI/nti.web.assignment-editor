@@ -124,14 +124,14 @@ class Store extends StorePrototype {
 
 
 	[SetAssignment] (e) {
-		const assignment = e.action.response;
+		const {response} = e.action;
 		let p = PRIVATE.get(this);
 
 
-		if (assignment instanceof Error) {
-			p.error = assignment;
+		if (response instanceof Error) {
+			p.error = response;
 		} else {
-			p.assignment = assignment;
+			p.assignment = response;
 		}
 
 		if (p.schema !== null) {
@@ -141,11 +141,13 @@ class Store extends StorePrototype {
 
 
 	[SetSchema] (e) {
-		const schema = e.action.response;
+		const {response} = e.action;
 		let p = PRIVATE.get(this);
 
-		if (!(schema instanceof Error)) {
-			p.schema = schema;
+		if (response instanceof Error) {
+			p.error = response;
+		} else {
+			p.schema = response;
 		}
 
 		if (p.assignment !== null) {
@@ -281,19 +283,19 @@ class Store extends StorePrototype {
 
 
 	[SetError] (type, e) {
-		const error = e.action.response;
+		const {response} = e.action;
 		const p = PRIVATE.get(this);
 
-		p.errors = this[SetMessageOn](p.errors, error, type);
+		p.errors = this[SetMessageOn](p.errors, response, type);
 	}
 
 
 
 	[SetWarning] (type, e) {
-		const warning = e.action.response;
+		const {response} = e.action;
 		const p = PRIVATE.get(this);
 
-		p.warnings = this[SetMessageOn](p.warnings, warning, type);
+		p.warnings = this[SetMessageOn](p.warnings, response, type);
 	}
 
 
