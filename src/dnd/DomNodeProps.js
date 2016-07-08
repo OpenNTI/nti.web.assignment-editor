@@ -3,33 +3,27 @@ export const DROPZONE = 'dropzone';
 export const CLASSNAME = 'classname';
 export const DATA = 'data';
 
-const WHITE_LIST = {};
+const WHITE_LIST = {
+	[DRAGGABLE]: [
+		'onDragStart',
+		'onDragEnd'
+	],
 
-WHITE_LIST[DRAGGABLE] = [
-	'onDragStart',
-	'onDragEnd'
-];
+	[DROPZONE]: [
+		'onDragEnter',
+		'onDragLeave',
+		'onDragOver',
+		'onDrop'
+	],
 
-WHITE_LIST[DROPZONE] = [
-	'onDragEnter',
-	'onDragLeave',
-	'onDragOver',
-	'onDrop'
-];
+	[CLASSNAME]: ['className'],
 
-WHITE_LIST[CLASSNAME] = ['className'];
+	[DATA] (acc, props) {
+		const names = Object.keys(props);
+		const test = RegExp.prototype.test.bind(/^data/);
 
-WHITE_LIST[DATA] = (acc, props) => {
-	const names = Object.keys(props);
-	const regex = /^data/;
-
-	return names.reduce((ac, name) => {
-		if (regex.test(name)) {
-			ac[name] = props[name];
-		}
-
-		return ac;
-	}, acc);
+		return names.reduce((ac, name) => (test(name) && (ac[name] = props[name]), ac), acc);
+	}
 };
 
 export function getDomNodeProps (props, limitTo) {
