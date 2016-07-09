@@ -50,6 +50,13 @@ class Randomize extends React.Component {
 	}
 
 
+	componentWillReceiveProps (nextProps) {
+		if (this.props.questionSet !== nextProps.questionSet) {
+			this.setupValue(nextProps);
+		}
+	}
+
+
 	save = () => {
 		const {questionSet: qset} = this.props;
 		const updaters = {
