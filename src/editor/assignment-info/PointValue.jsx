@@ -14,7 +14,10 @@ export default class PointValue extends React.Component {
 	}
 
 	componentWillReceiveProps (nextProps) {
-		this.setUp(nextProps);
+		const {assignment} = this.props;
+		if (nextProps.assignment !== assignment) {
+			this.setUp(nextProps);
+		}
 	}
 
 	setUp (props = this.props) {
