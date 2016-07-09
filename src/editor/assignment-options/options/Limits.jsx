@@ -66,10 +66,11 @@ class Limits extends React.Component {
 
 	componentDidUpdate (_, prevState) {
 		const {questionSet} = this.props;
-		const {draw} = this.state;
+		const prevValue = prevState.draw || null;
+		const value = this.state.draw || null;
 
 		//draw changed, but the questionSet is the same.
-		if (draw !== prevState.draw && questionSet === _.questionSet) {
+		if (value !== prevValue && questionSet === _.questionSet) {
 			clearTimeout(this.saveDelay);
 			this.saveDelay = setTimeout(this.save, 500);
 		}
