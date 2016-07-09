@@ -26,16 +26,8 @@ class Visibility extends React.Component {
 	}
 
 	onChange = (value) => {
-		if (this.busy) { return; }
-		this.busy = true;
-
 		const {assignment} = this.props;
-		const work = assignment.setVisibility(value);
-
-		if (work) {
-			const clearBusy = () => delete this.busy;
-			work.then(clearBusy, clearBusy);
-		}
+		assignment.setVisibility(value);
 	}
 
 	render () {
