@@ -24,7 +24,7 @@ function insertAt (assignment, part, index, question) {
 		logger.error('Unknown state, assignment part without questionSet!!!');
 		save = Promise.reject();
 	} else if (!orderedContents.canEdit) {
-		logger.warn('Unable to edit question set, dropping it on the floor');
+		save = Promise.reject(new Error('Unable to edit question set, dropping it on the floor'));
 	} else if (index === Infinity) {
 		save = orderedContents.append(question);
 	} else {
