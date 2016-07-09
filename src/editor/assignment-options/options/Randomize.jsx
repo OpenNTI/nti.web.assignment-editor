@@ -34,33 +34,71 @@ class Randomize extends React.Component {
 	}
 
 
-	onChange = (e) => {
-		if (this.busy) { return; }
+	constructor (props) {
+		super();
 
-		const {target} = e;
-		const {questionSet:qset} = this.props;
+		this.setupValue(props);
+	}
 
-		if (!qset) { return; }
+	componentDidUpdate () {
+		const {questionSet: qset} = this.props;
+		const hasChanged = ['isRandomized', 'isPartTypeRandomized'].some(x => qset[x] !== this.state[x]);
 
-		let work;
-
-		if (target.name === RANDOMIZE_QUESTIONS) {
-			work = qset.toggleRandomized();
-		} else if (target.name === RANDOMIZE_ANSWERS) {
-			work = qset.toggleRandomizedPartTypes();
+		if (hasChanged) {
+			this.save();
 		}
+	}
 
-		if (work) {
-			this.busy = true;
 
-			const clearBusy = () => delete this.busy;
-			work.then(clearBusy, clearBusy);
+	save = () => {
+		const {questionSet: qset} = this.props;
+		const updaters = {
+			isRandomized: () => qset.toggleRandomized(),
+			isPartTypeRandomized: () => qset.toggleRandomizedPartTypes()
+		};
+
+		for (let key of Object.keys(updaters)) {
+			if (qset[key] !== this.state[key]) {
+				updaters[key]();
+			}
+		}
+	}
+
+
+	setupValue (props = this.props) {
+		const setState = s => this.state ? this.setState(s) : (this.state = s);
+		const {questionSet: {isRandomized, isPartTypeRandomized}} = props;
+
+		setState({
+			isRandomized,
+			isPartTypeRandomized
+		});
+	}
+
+
+	onItemChanged = () => {
+		this.setupValue();
+	}
+
+
+	onChange = ({target}) => {
+		const map = {
+			[RANDOMIZE_QUESTIONS]: 'isRandomized',
+			[RANDOMIZE_ANSWERS]: 'isPartTypeRandomized'
+		};
+
+		const key = map[target.name];
+
+		if (key) {
+			const checked = !this.state[key];
+
+			this.setState({ [key]: checked });
 		}
 	}
 
 	render () {
+		const {isRandomized, isPartTypeRandomized} = this.state;
 		const {questionSet:qset} = this.props;
-		const {isRandomized, isPartTypeRandomized} = qset || {};
 		const editable = qset && qset.hasLink('edit');
 
 		return (
@@ -71,8 +109,16 @@ class Randomize extends React.Component {
 				disabled={!qset}
 				disabledText={t('disabled')}
 			>
-				<Option label={t('labels.randomizeQuestions')} name={RANDOMIZE_QUESTIONS} value={isRandomized} onChange={this.onChange} disabled={!editable}/>
-				<Option label={t('labels.randomizeAnswers')} name={RANDOMIZE_ANSWERS} value={isPartTypeRandomized} onChange={this.onChange} disabled={!editable}/>
+				<Option label={t('labels.randomizeQuestions')}
+					name={RANDOMIZE_QUESTIONS}
+					value={isRandomized}
+					onChange={this.onChange}
+					disabled={!editable}/>
+				<Option label={t('labels.randomizeAnswers')}
+					name={RANDOMIZE_ANSWERS}
+					value={isPartTypeRandomized}
+					onChange={this.onChange}
+					disabled={!editable}/>
 			</OptionGroup>
 		);
 	}
