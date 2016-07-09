@@ -6,7 +6,7 @@ import {HOC} from 'nti-web-commons';
 import OptionGroup from '../OptionGroup';
 
 const DEFAULT_TEXT = {
-	content: 'Change the who can see the assignment.',
+	content: 'Change who can see the assignment.',
 	label: 'Show For',
 	ForCredit: 'For Credit Only',
 	Everyone: 'Everyone'
