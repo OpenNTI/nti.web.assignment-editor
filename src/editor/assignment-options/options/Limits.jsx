@@ -150,7 +150,7 @@ class Limits extends React.Component {
 				header="Max Limit"
 				content={t('content')}
 				disabled={!questionSet}
-				disabledText={!questionSet && t('disabled')}
+				disabledText={t('disabled')}
 			>
 				<Option label={t('labels.all')} type="radio" name={LIMIT_NONE} value={!value}  onChange={this.onUnlimitedSelected}/>
 				<Option label={t('labels.portion')} type="radio" value={value} onChange={this.onLimitSelect} />
