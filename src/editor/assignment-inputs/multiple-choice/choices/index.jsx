@@ -62,7 +62,7 @@ export default class MultipleChoiceChoices extends Choices {
 		const {error, canRemove} = this.state;
 		const onChange = this.choiceChangeHandlers[column];
 		const sync = this.getSyncForRow(row);
-		const onDelete = canRemove && this.deleteHandlers[row];
+		const onDelete = canRemove ? this.deleteHandlers[row] : null;
 
 		return (
 			<Choice
