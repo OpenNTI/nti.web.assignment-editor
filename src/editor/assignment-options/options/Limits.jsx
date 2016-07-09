@@ -70,11 +70,8 @@ class Limits extends React.Component {
 	 * @returns {none} nothing
 	 */
 	onChange = ({target}) => {
-		if (this.busy) { return; }
-
 		const {questionSet:qset} = this.props;
-
-		if (qset) { return; }
+		if (this.busy || !qset) { return; }
 
 		let work;
 
