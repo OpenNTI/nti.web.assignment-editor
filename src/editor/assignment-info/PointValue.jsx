@@ -35,8 +35,9 @@ export default class PointValue extends React.Component {
 	}
 
 	onChange = () => {
+		const {value} = this.input;
 		this.setState({
-			value: this.input.value
+			value: value || null
 		});
 	}
 
@@ -45,7 +46,7 @@ export default class PointValue extends React.Component {
 		const {value} = this.state;
 		if(assignment.totalPoints !== value) {
 			assignment.save({
-				'total_points': value || 0
+				'total_points': value
 			});
 		}
 	}
@@ -57,7 +58,7 @@ export default class PointValue extends React.Component {
 		return (
 			<div className="field point-value">
 				<LabeledValue label="Value">
-					<NumberInput defaultValue={value}
+					<NumberInput defaultValue={value || ''}
 						ref={this.attachRef}
 						onBlur={this.onBlur}
 						onChange={this.onChange}
