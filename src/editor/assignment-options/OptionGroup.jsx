@@ -3,6 +3,7 @@ import cx from 'classnames';
 
 class OptionGroup extends React.Component {
 	static propTypes = {
+		error: PropTypes.node,
 		name: PropTypes.string,
 		content: PropTypes.string,
 		children: PropTypes.any,
@@ -20,7 +21,7 @@ class OptionGroup extends React.Component {
 
 
 	render () {
-		const {name, content, header, disabled, disabledText} = this.props;
+		const {name, content, header, disabled, disabledText, error} = this.props;
 		const classNames = cx(name, 'assignment-option-group', {disabled});
 
 		return (
@@ -32,6 +33,9 @@ class OptionGroup extends React.Component {
 				<div className="assignment-option-content">
 					<p>{content}</p>
 					{disabled && ( <span className="disabled-text">{disabledText}</span> )}
+					{error && (
+						<p className="error"><i className="icon-alert"/>{error}</p>
+					)}
 				</div>
 			</div>
 		);
