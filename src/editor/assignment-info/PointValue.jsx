@@ -20,6 +20,14 @@ export default class PointValue extends React.Component {
 		}
 	}
 
+	componentDidUpdate (_, prevState) {
+		const {value} = this.state;
+		if (value !== prevState.value) {
+			clearTimeout(this.saveChangeDelay);
+			this.saveChangeDelay = setTimeout(this.save, 500);
+		}
+	}
+
 	setUp (props = this.props) {
 		const {assignment} = props;
 		const value = assignment.totalPoints;
@@ -31,6 +39,7 @@ export default class PointValue extends React.Component {
 	attachRef = x => this.input = x
 
 	onBlur = () => {
+		clearTimeout(this.saveChangeDelay);
 		this.save();
 	}
 
@@ -46,7 +55,7 @@ export default class PointValue extends React.Component {
 		});
 	}
 
-	save () {
+	save = () => {
 		const {assignment} = this.props;
 		const {value} = this.state;
 		if(assignment.totalPoints !== value) {
