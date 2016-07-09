@@ -49,7 +49,7 @@ class Limits extends React.Component {
 		const {draw} = questionSet || {};
 
 		setState({
-			draw: typeof draw === 'number' ? draw : null
+			draw: (typeof draw === 'number' ? draw : 0) || null
 		});
 	}
 
@@ -64,26 +64,14 @@ class Limits extends React.Component {
 	}
 
 
-	/**
-	 * onChange handles the setting of both limit to null, and limiting on a blur from the limit input
-	 * @param  {event} e This is the event from the change or blur.
-	 * @returns {none} nothing
-	 */
-	onChange = ({target}) => {
-		const {questionSet:qset} = this.props;
-		if (this.busy || !qset) { return; }
+	componentDidUpdate (_, prevState) {
+		const {questionSet} = this.props;
+		const {draw} = this.state;
 
-		let work;
-
-		if (target.name === LIMIT_NONE) {
-			work = qset.setQuestionLimit(null);
-		}
-
-		if (work) {
-			this.busy = true;
-
-			const clearBusy = () => delete this.busy;
-			work.then(clearBusy, clearBusy);
+		//draw changed, but the questionSet is the same.
+		if (draw !== prevState.draw && questionSet === _.questionSet) {
+			clearTimeout(this.saveDelay);
+			this.saveDelay = setTimeout(this.save, 500);
 		}
 	}
 
@@ -93,33 +81,16 @@ class Limits extends React.Component {
 	}
 
 
-	onLimitBlur = ({target}) => {
-		if (this.busy) { return; }
-
-		const {questionSet:qset} = this.props;
-
-		if (!qset) { return; }
-
-		let work;
-
-		if (target.name === LIMIT_PORTION) {
-			work = qset.setQuestionLimit(this.limitInputRef.value);
-		}
-
-		if (work) {
-			this.busy = true;
-
-			const clearBusy = () => delete this.busy;
-			work.then(clearBusy, clearBusy);
-		}
+	onLimitBlur = () => {
+		const {value} = this.limitInputRef;
+		this.setState({draw: value || null}, this.save);
 	}
 
 
 	/**
 	 * Upon typing in the limit input field, update the draw number to reflect the new value.
 	 * This is not yet gone to the server to be saved.
-	 * @param  {object} This is the event's target object.
-	 * @returns {none} nothing
+	 * @returns {void}
 	 */
 	onLimitChange = () => {
 		this.setState({ draw: this.limitInputRef.value });
@@ -128,7 +99,7 @@ class Limits extends React.Component {
 
 	/**
 	 * Upon clicking the porition checkbox, set it as checked.
-	 * @returns {none} nothing
+	 * @returns {void}
 	 */
 	onLimitSelect = () => {
 		const {draw} = this.state;
@@ -136,6 +107,32 @@ class Limits extends React.Component {
 			{ draw: draw || 0 },
 			() => this.limitInputRef.focus()
 		);
+	}
+
+
+	onUnlimitedSelected = () => {
+		this.setState({draw: null});
+	}
+
+
+	save = () => {
+		clearTimeout(this.saveDelay);
+		const {props: {questionSet:qset}, state: {draw}} = this;
+		const value = draw || null;
+
+		const afterOthers = () => (this.busy || Promise.resolve()).catch(()=>{}); // the .catch(()=>{}) prevents rejections from interuppting the chain
+
+		let work;
+		if (qset.draw !== value) {
+			work = afterOthers().then(() => qset.setQuestionLimit(value));
+		}
+
+		if (work) {
+			const clearBusy = () => work === this.busy && delete this.busy;
+			work = this.busy = work
+				.catch(() => this.setState({draw: qset.draw}))
+				.then(clearBusy);
+		}
 	}
 
 
@@ -152,7 +149,7 @@ class Limits extends React.Component {
 				disabled={!questionSet}
 				disabledText={!questionSet && t('disabled')}
 			>
-				<Option label={t('labels.all')} type="radio" name={LIMIT_NONE} value={!value}  onChange={this.onChange}/>
+				<Option label={t('labels.all')} type="radio" name={LIMIT_NONE} value={!value}  onChange={this.onUnlimitedSelected}/>
 				<Option label={t('labels.portion')} type="radio" value={value} onChange={this.onLimitSelect} />
 				<NumberInput
 					className="portion-max-input"
