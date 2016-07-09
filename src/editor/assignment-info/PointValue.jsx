@@ -36,6 +36,11 @@ export default class PointValue extends React.Component {
 
 	onChange = () => {
 		const {value} = this.input;
+		//we set the min to 0, but just safe-guard it just in case.
+		if (value < 0) {
+			return;
+		}
+
 		this.setState({
 			value: value || null
 		});
@@ -59,6 +64,7 @@ export default class PointValue extends React.Component {
 			<div className="field point-value">
 				<LabeledValue label="Value">
 					<NumberInput defaultValue={value || ''}
+						min="0"
 						ref={this.attachRef}
 						onBlur={this.onBlur}
 						onChange={this.onChange}
