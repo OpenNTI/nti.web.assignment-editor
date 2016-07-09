@@ -93,7 +93,9 @@ class Limits extends React.Component {
 	 * @returns {void}
 	 */
 	onLimitChange = () => {
-		this.setState({ draw: this.limitInputRef.value });
+		const {value} = this.limitInputRef;
+		if (value < 0) { return; }
+		this.setState({ draw: value });
 	}
 
 
