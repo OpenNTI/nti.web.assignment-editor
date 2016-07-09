@@ -69,7 +69,7 @@ class Randomize extends React.Component {
 				header="Randomize Ordering"
 				content={t('content')}
 				disabled={!qset}
-				disabledText={!qset && t('disabled')}
+				disabledText={t('disabled')}
 			>
 				<Option label={t('labels.randomizeQuestions')} name={RANDOMIZE_QUESTIONS} value={isRandomized} onChange={this.onChange} disabled={!editable}/>
 				<Option label={t('labels.randomizeAnswers')} name={RANDOMIZE_ANSWERS} value={isPartTypeRandomized} onChange={this.onChange} disabled={!editable}/>

@@ -31,7 +31,7 @@ class OptionGroup extends React.Component {
 				</div>
 				<div className="assignment-option-content">
 					<p>{content}</p>
-					<span className="disabled-text">{disabledText}</span>
+					{disabled && ( <span className="disabled-text">{disabledText}</span> )}
 				</div>
 			</div>
 		);
