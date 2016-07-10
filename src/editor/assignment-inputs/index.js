@@ -56,7 +56,7 @@ export function getEditorWidget (part, index, question, error) {
 
 
 	return React.createElement(cmp, {
-		key: part.NTIID,
+		key: part.NTIID || `new-question-${mimeType}-${index}`,
 		index, part, question, error
 	});
 }
