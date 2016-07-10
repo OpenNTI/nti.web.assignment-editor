@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import {TextEditor} from 'nti-modeled-content';
+import {TextEditor, valuesEqual} from 'nti-modeled-content';
 import autobind from 'nti-commons/lib/autobind';
 
 import Selectable from '../utils/Selectable';
@@ -62,9 +62,14 @@ export default class ContentEditor extends React.Component {
 
 	onChange () {
 		const {onChange} = this.props;
+		const value = this.editorRef && this.editorRef.getValue();
 
 		if (onChange && this.editorRef) {
-			onChange(this.editorRef.getValue());
+			onChange(value);
+
+			this.setState({
+				value
+			});
 		}
 	}
 
@@ -75,9 +80,10 @@ export default class ContentEditor extends React.Component {
 
 
 	onEditorChange () {
-		const {error} = this.state;
+		const {error, value:oldValue} = this.state;
+		const newValue = this.editorRef.getValue();
 
-		if (error && error.clear) {
+		if (error && error.clear && !valuesEqual(newValue, oldValue)) {
 			error.clear();
 		}
 	}
@@ -101,12 +107,12 @@ export default class ContentEditor extends React.Component {
 		return (
 			<Selectable className={cls} id={selectableId} value={selectableValue} onUnselect={this.onUnselect}>
 				<TextEditor
-					charLimit={1000}
 					ref={this.setEditorRef}
 					initialValue={value}
 					placeholder={PLACEHOLDER}
 					onFocus={this.onEditorFocus}
 					onChange={this.onEditorChange}
+					error={error}
 				/>
 			</Selectable>
 		);

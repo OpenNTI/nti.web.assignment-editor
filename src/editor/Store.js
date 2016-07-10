@@ -73,8 +73,8 @@ function getLabelForQuestionError (questionId, field, assignment) {
 }
 
 
-function getLabelForError (ntiid, field, type, assignment) {
-	let label = 'Error';
+function getLabelForError (ntiid, field, label, type, assignment) {
+	label = label || 'Error';
 
 	if (type === QUESTION_ERROR) {
 		label = getLabelForQuestionError(ntiid, field, assignment);
@@ -261,7 +261,7 @@ class Store extends StorePrototype {
 
 
 	[SetMessageOn] (messages = {}, message, type) {
-		const {NTIID, field, reason} = message;
+		const {NTIID, field, label, reason} = message;
 
 		if (!messages[NTIID]) {
 			messages[NTIID] = [];
@@ -270,7 +270,7 @@ class Store extends StorePrototype {
 		if (!this[GetMessageFrom](messages, NTIID, field)) {
 			//TODO: update the label when the questionSet's order changes
 			messages[NTIID].push(errorFactory.make(
-				{NTIID, field, type, label: getLabelForError(NTIID, field, type, this.assignment)},
+				{NTIID, field, type, label: getLabelForError(NTIID, field, label, type, this.assignment)},
 				reason,
 				() => this[RemoveMessageFrom](messages, NTIID, field, type)
 			));

@@ -1,6 +1,8 @@
 @import "~nti-style-common";
 
 .assignment-content-editor{
+	min-height: 3.5rem;
+
 	&.error {
 		box-shadow: 0 0 1px 1px $primary-red;
 	}
@@ -8,6 +10,15 @@
 	.nti-rich-text {
 		border: none;
 		background: none;
+
+		.DraftEditor-root {
+			padding-bottom: 0;
+			min-height: 0;
+		}
+	}
+
+	.nti-error {
+		padding: 0 0.6rem 0.6rem;
 	}
 
 	.character-count {

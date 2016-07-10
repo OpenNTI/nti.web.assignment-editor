@@ -74,10 +74,10 @@ export default class TitleEditor extends React.Component {
 		const value = this.editorRef.getValue();
 
 		if (onChange && this.editorRef) {
-			onChange(this.editorRef.getValue(), getMaxLength(schema));
+			onChange(value, getMaxLength(schema));
 
 			this.setState({
-				value: value
+				value
 			});
 		}
 	}
