@@ -36,8 +36,8 @@ function canAddToAssignment (assignment) {
 	const {parts} = assignment;
 	const part = parts && parts[0];
 
-	//TODO: replace true with a condition to check if the assignment can take parts.
-	if (!part && !true) {
+	//TODO: add a condition to check if the assignment can take parts.
+	if (!part) {
 		return true;
 	}
 
