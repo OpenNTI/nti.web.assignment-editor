@@ -1,4 +1,5 @@
 import {dispatch} from 'nti-lib-dispatcher';
+import wait from 'nti-commons/lib/wait';
 
 import OrderedContents from '../../ordered-contents';
 
@@ -75,31 +76,35 @@ export function deleteQuestionFrom (question, questionSet, assignment) {
 
 
 export function duplicateQuestionFrom (question, questionSet) {
-	const orderedContents = new OrderedContents(questionSet);
-
-	if (!orderedContents.canEdit) { return; }
-
-	const clone = cloneQuestion(question);
-	const {questions} = questionSet;
-	let index;
-
-	for (index = 0; index < questions.length; index++) {
-		let q = questions[index];
-
-		if (q.NTIID === question.NTIID) {
-			break;
-		}
-	}
-
-	dispatch(SAVING, questionSet);
-
-	orderedContents.insertAt(clone, index + 1)
+	//Make sure the blur event has been triggered
+	wait(10)
 		.then(() => {
-			dispatch(QUESTION_SET_UPDATED, questionSet);
-			dispatch(SAVE_ENDED);
-		})
-		.catch((reason) => {
-			dispatch(QUESTION_SET_ERROR, reason);
-			dispatch(SAVE_ENDED);
+			const orderedContents = new OrderedContents(questionSet);
+
+			if (!orderedContents.canEdit) { return; }
+
+			const clone = cloneQuestion(question);
+			const {questions} = questionSet;
+			let index;
+
+			for (index = 0; index < questions.length; index++) {
+				let q = questions[index];
+
+				if (q.NTIID === question.NTIID) {
+					break;
+				}
+			}
+
+			dispatch(SAVING, questionSet);
+
+			orderedContents.insertAt(clone, index + 1)
+				.then(() => {
+					dispatch(QUESTION_SET_UPDATED, questionSet);
+					dispatch(SAVE_ENDED);
+				})
+				.catch((reason) => {
+					dispatch(QUESTION_SET_ERROR, reason);
+					dispatch(SAVE_ENDED);
+				});
 		});
 }

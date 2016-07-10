@@ -34,12 +34,13 @@ export function clonePart (part) {
 
 
 export function cloneQuestion (question) {
+	const savingValues = question.savingValues || {};
 	const {parts, MimeType, PublicationState, content} = question;
 
 	return {
 		MimeType,
 		PublicationState,
-		content,
-		parts: parts.map(clonePart)
+		content: savingValues.content || content,
+		parts: savingValues.parts ? savingValues.parts.map(clonePart) : parts.map(clonePart)
 	};
 }
