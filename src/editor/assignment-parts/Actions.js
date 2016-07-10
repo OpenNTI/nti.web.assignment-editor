@@ -36,7 +36,10 @@ function buildPartWithQuestion (questionData) {
 			question.isSaving = true;
 
 			questionSet[QUESTIONS_KEY] = questionSet[QUESTIONS_KEY] || [];
-			questionSet[QUESTIONS_KEY].push(question);
+
+			if (!questionData.NTIID) {
+				questionSet[QUESTIONS_KEY].push(question);
+			}
 
 			part[QUESTION_SET_KEY] = questionSet;
 
@@ -79,11 +82,12 @@ export function createPartWithQuestion (assignment, question) {
 			const save = saveFieldOn(assignment, PARTS_KEY, [part]);
 
 			if (save && save.then) {
-				save.catch((reason) => {
-					assignment.parts = assignment.parts.map(p => setErrorOnPlaceholderPart(p, reason));
+				save
+					.catch((reason) => {
+						assignment.parts = assignment.parts.map(p => setErrorOnPlaceholderPart(p, reason));
 
-					assignment.onChange();
-				});
+						assignment.onChange();
+					});
 			}
 		});
 }
@@ -100,12 +104,23 @@ export function removePartWithQuestionSet (assignment, questionSet) {
 	parts = parts.filter(part => part[QUESTION_SET_KEY].NTIID !== questionSet.NTIID);
 
 	const save = saveFieldOn(assignment, PARTS_KEY, parts);
+	const {questions} = questionSet;
 
 	if (save && save.then) {
 		save.then(deleteQuestionSet);
 	} else {
 		deleteQuestionSet();
 	}
+
+	//If there was only one question left, return an undo method
+	if (questions.length === 1) {
+		// return Promise.resolve(() => {
+		// 	//TODO: get the server to add ability create a question set with an existing question
+		// 	// createPartWithQuestion(assignment, questions[0]);
+		// });
+	}
+
+	return Promise.resolve();
 }
 
 

@@ -39,7 +39,16 @@ export function deleteQuestionFrom (question, questionSet, assignment) {
 	const orderedContents = new OrderedContents(questionSet);
 
 	if (orderedContents.canEdit && orderedContents.length === 1) {
-		removePartWithQuestionSet(assignment, questionSet);
+		removePartWithQuestionSet(assignment, questionSet)
+			.then((undo) => {
+				if (undo) {
+					dispatch(UNDO_CREATED, {
+						label: 'Question Deleted',
+						name: 'Undo',
+						onComplete: undo
+					});
+				}
+			});
 	} else if (orderedContents.canEdit) {
 		dispatch(SAVING, questionSet);
 
