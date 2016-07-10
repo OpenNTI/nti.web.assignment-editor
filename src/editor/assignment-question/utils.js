@@ -34,7 +34,7 @@ export function clonePart (part) {
 
 
 export function cloneQuestion (question) {
-	const savingValues = question.savingValues || {};
+	const savingValues = (question.saving && question.saving.values) || {};
 	const {parts, MimeType, PublicationState, content} = question;
 
 	return {
