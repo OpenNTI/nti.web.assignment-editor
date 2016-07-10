@@ -10,7 +10,7 @@ import {QUESTION_ERROR, QUESTION_WARNING} from '../Constants';
 import Selectable from '../utils/Selectable';
 import ControlsConfig from '../controls/ControlsConfig';
 
-import Before from './Before';
+import Between from './Between';
 import Content from './Content';
 import Parts from './Parts';
 import Controls from './controls';
@@ -24,6 +24,14 @@ function isKnownPartError (error) {
 	const {raw} = error;
 
 	return known[raw.field] && raw.index;
+}
+
+
+function isLastQuestion (question, questionSet) {
+	const {questions} = questionSet;
+	const last = questions[questions.length - 1];
+
+	return last && last.NTIID === question.NTIID;
 }
 
 export default class QuestionComponent extends React.Component {
@@ -143,7 +151,7 @@ export default class QuestionComponent extends React.Component {
 
 		return (
 			<div className="assignment-editing-question-container">
-				<Before question={question} />
+				<Between question={question} before />
 				<Selectable className={cls} id={selectableId} value={selectableValue}>
 					<div className="wrap">
 						<DragHandle className="question-drag-handle" />
@@ -154,6 +162,7 @@ export default class QuestionComponent extends React.Component {
 					{questionError && (<ErrorCmp error={questionError} />)}
 				</Selectable>
 				{!isSaving && (<Controls question={question} questionSet={questionSet} assignment={assignment} />)}
+				{isLastQuestion(question, questionSet) && (<Between question={question} after />)}
 			</div>
 		);
 	}

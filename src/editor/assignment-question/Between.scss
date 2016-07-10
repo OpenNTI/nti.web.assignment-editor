@@ -1,12 +1,19 @@
 @import "~nti-style-common";
 
-.assignment-editor-before-question {
+.assignment-editor-between-question {
 	position: absolute;
-	top: -30px;
 	left: 0;
 	right: 0;
-	min-height: 30px;
+	min-height: rem-calc(30px);
 	padding: 0 rem-calc(15px);
+
+	&.before {
+		top: rem-calc(-30px);
+	}
+
+	&.after {
+		bottom: rem-calc(-30px);
+	}
 
 	&.selected {
 		box-shadow: none;
