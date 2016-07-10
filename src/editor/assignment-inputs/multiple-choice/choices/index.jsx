@@ -4,6 +4,10 @@ import Choices from '../../choices';
 import {isErrorForChoice} from '../../choices/Factory';
 import Choice from './Choice';
 
+function canEditMultipleAnswerSolution (choice, correctCount) {
+	return correctCount > 1 || choice.correct;
+}
+
 export default class MultipleChoiceChoices extends Choices {
 	static propTypes = {
 		...Choices.propTypes,
@@ -18,10 +22,15 @@ export default class MultipleChoiceChoices extends Choices {
 		const {multipleAnswers} = this.props;
 		const {columns} = this.state;
 		const oldColumn = columns[column];
+		let correctCount = 0;
 		let newColumn = [];
 		let solutionChanged = false;
 
 		for (let oldChoice of oldColumn) {
+			if (oldChoice.correct) {
+				correctCount += 1;
+			}
+
 			if (this.isSameChoice(oldChoice, choice)) {
 				if (oldChoice.correct !== choice.correct) {
 					solutionChanged = true;
@@ -35,7 +44,7 @@ export default class MultipleChoiceChoices extends Choices {
 			}
 		}
 
-		if (solutionChanged) {
+		if (solutionChanged && (!multipleAnswers || canEditMultipleAnswerSolution(choice, correctCount))) {
 			newColumn = newColumn.map((newChoice) => {
 				if (this.isSameChoice(newChoice, choice)) {
 					newChoice.correct = choice.correct;
