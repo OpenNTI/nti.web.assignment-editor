@@ -62,9 +62,9 @@ export default class Draggable extends React.Component {
 
 
 	componentWillUpdate () {
-		if (!this.isDragging) {
-			this.setDraggable(false);
-		}
+		// if (!this.isDragging && this.isDraggable) {
+		// 	this.setDraggable(false);
+		// }
 	}
 
 
@@ -128,6 +128,8 @@ export default class Draggable extends React.Component {
 	setDraggable (add) {
 		const domNode = this.getDOMNode();
 		const listener = add ? 'addEventListener' : 'removeEventListener';
+
+		this.isDraggable = true;
 
 		if (add) {
 			domNode.setAttribute('draggable', true);
