@@ -3,7 +3,8 @@ import cx from 'classnames';
 import autobind from 'nti-commons/lib/autobind';
 
 import {SyncHeightGroup} from '../../../sync-height';
-import Ordering from '../../../dnd/ordering/Ordering';
+import {Ordering} from '../../../dnd/';
+
 import Choice from './Choice';
 import {isErrorForChoice} from './Factory';
 

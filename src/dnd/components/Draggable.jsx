@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import cx from 'classnames';
 import autobind from 'nti-commons/lib/autobind';
 
-import DataTransfer from './DataTransfer';
-import DnDInfo from './Info';
-import {getDomNodeProps, DROPZONE} from './DomNodeProps';
+import DataTransfer from '../utils/DataTransfer';
+import DnDInfo from '../utils/Info';
+import {getDomNodeProps, DROPZONE} from '../utils/DomNodeProps';
 
 export default class Draggable extends React.Component {
 	static propTypes = {

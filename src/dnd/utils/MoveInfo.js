@@ -1,7 +1,7 @@
-export const MIME_TYPE = 'application/vnd.nextthought.app.moveinfo';
+export const MimeType = 'application/vnd.nextthought.app.moveinfo';
 
 export default class MoveInfo {
-	static MimeType = MIME_TYPE
+	static MimeType = MimeType
 
 	constructor (origin) {
 		this.originContainer = origin.OriginContainer;
@@ -9,12 +9,12 @@ export default class MoveInfo {
 	}
 
 	get dataTransferKey () {
-		return MIME_TYPE;
+		return MimeType;
 	}
 
 	get dataForTransfer () {
 		return JSON.stringify({
-			MimeType: MIME_TYPE,
+			MimeType: MimeType,
 			OriginContainer: this.originContainer,
 			OriginIndex: this.originIndex
 		});

@@ -2,6 +2,38 @@ import Logger from 'nti-util-logger';
 
 const logger = Logger.get('lib:dnd:DataTransfer');
 
+export function getTransferKey (obj) {
+	let key = '';
+
+	if (obj.getKeyForDataTransfer) {
+		key = obj.getKeyForDataTransfer();
+	} else if (obj.dataTransferKey) {
+		key = obj.dataTransferKey;
+	} else if (obj.mimeType || obj.MimeType) {
+		key = obj.mimeType || obj.MimeType;
+	} else if (typeof obj === 'string') {
+		key = obj;
+	} else {
+		logger.error('Unable to find key for: ', obj);
+	}
+
+	return key;
+}
+
+export function isSameData (a, b) {
+	let equal = false;
+
+	if (a.NTIID != null) {
+		equal = a.NTIID === b.NTIID;
+	} else if (a.ID != null) {
+		equal = a.ID === b.ID;
+	} else {
+		equal = a === b;
+	}
+
+	return equal;
+}
+
 /**
  * Wrap some helper methods around setting and getting data from the dataTransfer object
  *
@@ -16,6 +48,11 @@ export default class DataTransfer {
 	constructor (dataTransfer) {
 		this.dataTransfer = dataTransfer;
 		this.transferData = {};
+	}
+
+
+	get types () {
+		return (this.dataTransfer && this.dataTransfer.types) || Object.keys(this.transferData) || [];
 	}
 
 
@@ -41,19 +78,7 @@ export default class DataTransfer {
 	setData (key, value) {
 		if (!value && key) {
 			value = key;
-			key = '';
-
-			if (value.getKeyForDataTransfer) {
-				key = value.getKeyForDataTransfer();
-			} else if (value.dataTransferKey) {
-				key = value.dataTransferKey;
-			} else if (value.mimeType || value.MimeType) {
-				key = value.mimeType || value.MimeType;
-			} else if (typeof value === 'string') {
-				key = value;
-			} else {
-				logger.error('Unable to find key for: ', value);
-			}
+			key = getTransferKey(value);
 		}
 
 
@@ -101,15 +126,17 @@ export default class DataTransfer {
 	 * @return {String}		the value on data transfer for that key
 	 */
 	getData (key) {
-		let {dataTransfer} = this;
-		let data;
+		const {dataTransfer} = this;
+		const {types} = dataTransfer || {};
+		const data = dataTransfer && dataTransfer.getData(key);
 
-		if (dataTransfer) {
-			data = dataTransfer.getData(key);
-			data = data === '' ? true : data;
+		if (!dataTransfer) { return false; }
+
+		if (types.indexOf(key) >= 0) {
+			return data === '' ? true : data;
 		}
 
-		return data || this.transferData[key];
+		return false;
 	}
 
 

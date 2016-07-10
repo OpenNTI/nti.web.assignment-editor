@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import cx from 'classnames';
 import autobind from 'nti-commons/lib/autobind';
 
-import DnDInfo from './Info';
-import DataTransfer from './DataTransfer';
+import DnDInfo from '../utils/Info';
+import DataTransfer from '../utils/DataTransfer';
+import {setDropHandled} from '../Actions';
 
 export function isValidTransfer (dataTransfer) {
 	return dataTransfer.containsType(DnDInfo.MimeType);
@@ -77,9 +78,6 @@ export default class Dropzone extends React.Component {
 
 
 	onDrop (e) {
-		e.preventDefault();
-		e.stopPropagation();
-
 		const {onDrop, onInvalidDrop, dropHandlers} = this.props;
 		const {dataTransfer} = e;
 		const data = new DataTransfer(dataTransfer);
@@ -91,10 +89,16 @@ export default class Dropzone extends React.Component {
 				onInvalidDrop();
 			}
 		} else {
-			doHandleDataTransfer(dropHandlers, data, e);
+			const handled = doHandleDataTransfer(dropHandlers, data, e);
 
-			if (onDrop) {
-				onDrop(e, data);
+			if (handled) {
+				e.stopPropagation();
+				setDropHandled(data);
+			} else if (onDrop) {
+				e.stopPropagation();
+				onDrop(e, data, () => setDropHandled(data));
+			} else {
+				e.dataTransfer.dropEffect = 'none';
 			}
 		}
 
@@ -106,7 +110,6 @@ export default class Dropzone extends React.Component {
 
 
 	onDragEnter (e) {
-		e.preventDefault();
 		e.stopPropagation();
 
 		const {onDragEnter} = this.props;
@@ -133,7 +136,6 @@ export default class Dropzone extends React.Component {
 
 
 	onDragLeave (e) {
-		e.preventDefault();
 		e.stopPropagation();
 
 		const {onDragLeave} = this.props;

@@ -6,12 +6,12 @@ import Logger from 'nti-util-logger';
 import wait from 'nti-commons/lib/wait';
 import autobind from 'nti-commons/lib/autobind';
 
-import Draggable from '../Draggable';
-import Dropzone from '../Dropzone';
-import MoveInfo from './MoveInfo';
-import Store from './Store';
-import {DRAG_OVER, DRAG_LEAVE} from './Constants';
-import {dragOverOrdering, dragLeaveOrdering} from './Actions';
+import Draggable from '../../components/Draggable';
+import Dropzone from '../../components/Dropzone';
+import MoveInfo from '../../utils/MoveInfo';
+import Store from '../../Store';
+import {ORDERING_DRAG_OVER, ORDERING_DRAG_LEAVE} from '../../Constants';
+import {dragOverOrdering, dragLeaveOrdering} from '../../Actions';
 
 const logger = Logger.get('lib:dnd:ordering:Ordering');
 
@@ -149,7 +149,7 @@ export default class Ordering extends React.Component {
 
 
 	onStoreChange (e) {
-		if (e.type === DRAG_OVER || e.type === DRAG_LEAVE) {
+		if (e.type === ORDERING_DRAG_OVER || e.type === ORDERING_DRAG_LEAVE) {
 			this.maybeRemovePlaceholder();
 		}
 	}
@@ -345,7 +345,6 @@ export default class Ordering extends React.Component {
 	onContainerDragOver (e, canHandle) {
 		if (!canHandle) { return; }
 
-
 		dragOverOrdering(this);
 
 		if (this.isInternalDrag) { return; }
@@ -417,12 +416,11 @@ export default class Ordering extends React.Component {
 	}
 
 
-	onItemDragEnd (dragItem, e) {
+	onItemDragEnd (dragItem) {
 		const {onChange} = this.props;
 		let {items, originalOrder} = this.state;
 		const dragId = dragItem.NTIID || dragItem.ID;
-		const {dataTransfer} = e;
-		const wasHandled = dataTransfer.dropEffect !== 'none';
+		const wasHandled = Store.wasDataHandled(dragItem);
 
 		items = items.slice(0);
 

@@ -3,8 +3,8 @@ import {HOC} from 'nti-web-commons';
 import autobind from 'nti-commons/lib/autobind';
 
 import {MoveRoot} from '../../ordered-contents';
+import {Ordering} from '../../dnd';
 
-import Ordering from '../../dnd/ordering/Ordering';
 import Question from '../assignment-question';
 import {moveQuestion} from './Actions';
 

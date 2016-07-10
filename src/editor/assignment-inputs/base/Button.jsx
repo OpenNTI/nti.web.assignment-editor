@@ -5,7 +5,7 @@ import autobind from 'nti-commons/lib/autobind';
 import {appendQuestionTo} from '../Actions';
 
 import {hasOrderedContents} from '../../../ordered-contents';
-import Draggable from '../../../dnd/Draggable';
+import {Draggable} from '../../../dnd';
 
 const QuestionMimeType = 'application/vnd.nextthought.naquestion';
 

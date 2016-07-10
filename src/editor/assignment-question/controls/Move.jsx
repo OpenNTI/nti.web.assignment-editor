@@ -3,7 +3,7 @@ import {HOC} from 'nti-web-commons';
 import cx from 'classnames';
 
 import {MoveRoot} from '../../../ordered-contents';
-import MoveInfo from '../../../dnd/ordering/MoveInfo';
+import {MoveInfo} from '../../../dnd';
 
 import {moveQuestion} from '../../assignment-parts/Actions';
 

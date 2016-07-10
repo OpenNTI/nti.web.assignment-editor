@@ -1,6 +1,6 @@
 import uuid from 'node-uuid';
 
-const MimeType = 'application/vnd.nextthought.app.dndinfo';
+export const MimeType = 'application/vnd.nextthought.app.dndinfo';
 const DnDSession = uuid.v4();
 const SourceApp = 'application/vnd.nextthought.webapp';
 const Version = 1;
