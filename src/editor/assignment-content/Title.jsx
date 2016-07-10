@@ -1,12 +1,19 @@
 import React from 'react';
 import cx from 'classnames';
-import {TextEditor} from 'nti-modeled-content';
+import {TextEditor, valuesEqual} from 'nti-modeled-content';
 import autobind from 'nti-commons/lib/autobind';
 
 import Selectable from '../utils/Selectable';
 import ControlsConfig from '../controls/ControlsConfig';
 
 const PLACEHOLDER = 'Title';
+
+function getMaxLength (schema = {}) {
+	const {Fields:fields} = schema;
+	const {title} = fields || {};
+
+	return title.max_length || 1000;
+}
 
 export default class TitleEditor extends React.Component {
 	static propTypes = {
@@ -63,10 +70,15 @@ export default class TitleEditor extends React.Component {
 
 
 	onChange () {
-		const {onChange} = this.props;
+		const {onChange, schema} = this.props;
+		const value = this.editorRef.getValue();
 
 		if (onChange && this.editorRef) {
-			onChange(this.editorRef.getValue());
+			onChange(this.editorRef.getValue(), getMaxLength(schema));
+
+			this.setState({
+				value: value
+			});
 		}
 	}
 
@@ -77,10 +89,10 @@ export default class TitleEditor extends React.Component {
 
 
 	onEditorChange () {
-		const {error} = this.state;
+		const {error, value:oldValue} = this.state;
+		const newValue = this.editorRef.getValue();
 
-
-		if (error && error.clear) {
+		if (error && error.clear && !valuesEqual(newValue, oldValue)) {
 			error.clear();
 		}
 	}
@@ -98,18 +110,20 @@ export default class TitleEditor extends React.Component {
 
 
 	render () {
+		const {schema} = this.props;
 		const {selectableId, selectableValue, value, error} = this.state;
 		const cls = cx('assignment-title-editor', {error});
 
 		return (
 			<Selectable className={cls} id={selectableId} value={selectableValue} onUnselect={this.onUnselect}>
 				<TextEditor
-					charLimit={1000}
+					charLimit={getMaxLength(schema)}
 					ref={this.setEditorRef}
 					initialValue={value}
 					placeholder={PLACEHOLDER}
 					onFocus={this.onEditorFocus}
 					onChange={this.onEditorChange}
+					error={error}
 					singleLine
 					plainText
 				/>

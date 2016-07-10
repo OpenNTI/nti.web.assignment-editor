@@ -85,10 +85,10 @@ export default class AssignmentContent extends React.Component {
 	}
 
 
-	onTitleChange (value) {
+	onTitleChange (value, maxLength) {
 		const {assignment} = this.props;
 
-		saveTitle(assignment, value);
+		saveTitle(assignment, value, maxLength);
 	}
 
 

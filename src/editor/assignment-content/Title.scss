@@ -8,6 +8,12 @@
 		box-shadow: 0 0 1px 1px $primary-red;
 	}
 
+	&.selected {
+		.character-count {
+			display: block;
+		}
+	}
+
 	.nti-rich-text {
 		border: none;
 		background: none;
@@ -23,7 +29,12 @@
 	}
 
 	.character-count {
+		padding: 0.2rem 0.6rem;
 		display: none;
+
+		&.over {
+			display: block;
+		}
 	}
 
 	.public-DraftEditorPlaceholder-root {

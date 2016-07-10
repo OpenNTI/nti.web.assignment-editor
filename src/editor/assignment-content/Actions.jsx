@@ -19,8 +19,19 @@ function saveField (assignment, field, value) {
 	}
 }
 
-export function saveTitle (assignment, value) {
-	saveField(assignment, 'title', value);
+export function saveTitle (assignment, value, maxLength) {
+	if (value.length > maxLength) {
+		dispatch(ASSIGNMENT_ERROR, {
+			NTIID: assignment.NTIID,
+			field: 'title',
+			reason: {
+				message: 'Title is too long',
+				doNotShow: true
+			}
+		});
+	} else {
+		saveField(assignment, 'title', value);
+	}
 }
 
 
