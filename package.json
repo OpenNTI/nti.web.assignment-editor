@@ -1,6 +1,6 @@
 {
   "name": "nti-assignment-editor",
-  "version": "0.3.9",
+  "version": "0.3.10",
   "author": "nextthought",
   "description": "ReactJS Editor for non-content backed assignments",
   "license": "UNLICENSED",
