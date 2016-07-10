@@ -92,7 +92,14 @@ export default class TimeLimit extends React.Component {
 
 		return (
 			<div className="field time-limit">
-				<Flyout trigger={this.renderDisplay()} onDismiss={this.onEditorDismiss} ref={x => this.flyout = x}>
+				<Flyout
+					className="assignment-option-flyout"
+					trigger={this.renderDisplay()}
+					onDismiss={this.onEditorDismiss}
+					horizontalAlign={Flyout.ALIGNMENTS.LEFT}
+					sizing={Flyout.SIZES.MATCH_SIDE}
+					ref={x => this.flyout = x}
+				>
 					<div className="time-limit-editor">
 						<Checkbox label="Time Limit" checked={hasTimeLimit} onChange={this.toggleTimeLimit}/>
 						<DurationPicker onChange={this.timeChanged} value={value} />

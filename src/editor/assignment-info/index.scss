@@ -2,13 +2,19 @@
 
 .assignment-info {
 	overflow: hidden;
-	box-shadow: inset 0 -1px 0 0 $border-grey-light;
+	background: $border-grey-light;
+	padding-bottom: 1px;
+	display: flex;
 
 	.field {
 		height: 50px;
-		width: 33%;
-		float: left;
-		box-shadow: 1px 0 0 0 $border-grey-light;
+		flex: 1 1 33%;
+		margin-right: 1px;
+		background: white;
+
+		&:last-of-type {
+			margin-right: 0;
+		}
 	}
 
 	.labeled-value {

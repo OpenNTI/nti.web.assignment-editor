@@ -1,3 +1,5 @@
+@import "~nti-style-common";
+
 .time-limit {
 	.time-limit-display {
 		height: 100%;
@@ -5,11 +7,17 @@
 }
 
 .time-limit-editor {
-	background: white;
 	padding: .5rem;
-	box-shadow: 0 0 0 1px #e2e2e2;
 	font-size: .875rem;
 	.duration-picker {
 		margin: .5rem 0;
+	}
+}
+
+.assignment-option-flyout.flyout {
+	.flyout-inner {
+		box-shadow: 1px 0 0 0 $border-grey-light,
+						-1px 0 0 0 $border-grey-light,
+						0 1px 0 0 $border-grey-light;
 	}
 }
