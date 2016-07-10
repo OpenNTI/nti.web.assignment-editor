@@ -2,6 +2,7 @@
 
 .assignment-editor-nav-bar {
 	box-shadow: 0 1px 0 0 $border-grey-light;
+	margin-bottom: 1px; //leave room for the box-shadow to be visible (it goes behind the siblings)
 	background: white;
 	display: flex;
 	padding: 0 rem-calc(30px);
