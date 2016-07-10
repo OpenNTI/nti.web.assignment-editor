@@ -4,6 +4,9 @@ import {RadioGroup, DialogButtons, TokenEditor} from 'nti-web-commons';
 
 const ALL_TYPES = 'All File Types';
 const SPECIFIC_TYPES = 'Specific File Types';
+const WILDCARD = '*.*';
+
+const WILDCARDS = x => x !== WILDCARD;
 
 export default class Settings extends React.Component {
 
@@ -50,7 +53,7 @@ export default class Settings extends React.Component {
 
 	value () {
 		const option = this.radioGroup.value;
-		const fileExtensions = option === ALL_TYPES ? [] : this.fileExtensions.value;
+		const fileExtensions = option === ALL_TYPES ? [WILDCARD] : this.fileExtensions.value;
 		return {
 			fileExtensions
 		};
@@ -98,7 +101,7 @@ export default class Settings extends React.Component {
 						/>
 						<TokenEditor
 							ref={x => this.fileExtensions = x}
-							tokens={extensions}
+							tokens={extensions.filter(WILDCARDS)}
 							preprocessToken={this.preprocessToken}
 							placeholder="Enter all the file types you want to accept"
 							onFocus={this.activateSpecific}
