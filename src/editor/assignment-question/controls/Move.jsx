@@ -34,7 +34,7 @@ function isLastQuestion (question, questionSet) {
 
 
 function getIndexOf (question, questionSet) {
-	return questionSet.questions.findIndex(q => q.getID() === question.getID());
+	return questionSet.questions.findIndex(q => q.NTIID === question.NTIID);
 }
 
 
