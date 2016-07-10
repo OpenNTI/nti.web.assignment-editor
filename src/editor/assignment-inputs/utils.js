@@ -3,13 +3,13 @@ function getLink (question, name) {
 }
 
 export function canAddPart (question) {
-	return getLink(question, 'InsertPart');
+	return !!getLink(question, 'InsertPart');
 }
 
 export function canMovePart (question) {
-	return getLink(question, 'MovePart');
+	return !!getLink(question, 'MovePart');
 }
 
 export function canRemovePart (question) {
-	return getLink(question, 'RemovePart');
+	return !!getLink(question, 'RemovePart');
 }
