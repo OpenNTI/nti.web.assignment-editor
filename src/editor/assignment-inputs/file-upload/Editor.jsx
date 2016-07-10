@@ -13,20 +13,16 @@ export default class FileUploadEditor extends React.Component {
 		question: React.PropTypes.object.isRequired
 	}
 
-	constructor (props) {
-		super(props);
+	state = {}
 
-		this.onSaveSettings = this.onSaveSettings.bind(this);
-		this.showSettings = this.showSettings.bind(this);
-		this.state = {};
-	}
 
-	showSettings () {
+	showSettings = () => {
 		const {part} = this.props;
 		Prompt.modal(<Settings onSave={this.onSaveSettings} part={part}/>);
 	}
 
-	onSaveSettings (value) {
+
+	onSaveSettings = (value) => {
 		const {question, part} = this.props;
 		const newPart = generatePartFor(
 			part.MimeType,

@@ -10,19 +10,13 @@ const WILDCARDS = x => x !== WILDCARD;
 
 export default class Settings extends React.Component {
 
-	constructor (props) {
-		super(props);
-
-		this.cancel = this.cancel.bind(this);
-		this.save = this.save.bind(this);
-		this.state = {};
-	}
-
 	static propTypes = {
 		onDismiss: React.PropTypes.func,
 		onSave: React.PropTypes.func,
 		part: React.PropTypes.object.isRequired
 	}
+
+	state = {}
 
 	componentWillMount () {
 		this.setup();
@@ -41,11 +35,11 @@ export default class Settings extends React.Component {
 		});
 	}
 
-	cancel () {
+	cancel = () => {
 		this.props.onDismiss();
 	}
 
-	save () {
+	save = () => {
 		if(this.props.onSave(this.value())) {
 			this.props.onDismiss();
 		}
