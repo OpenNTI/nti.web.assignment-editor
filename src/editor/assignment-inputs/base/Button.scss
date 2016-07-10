@@ -11,6 +11,11 @@
 	overflow: hidden;
 	transition: transform 250ms;
 
+	&.disabled {
+		opacity: 0.5;
+		pointer-events: none;
+	}
+
 	&.mousedown {
 		transform: scale(0.9);
 	}

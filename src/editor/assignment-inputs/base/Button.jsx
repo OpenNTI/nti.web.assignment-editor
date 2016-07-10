@@ -3,6 +3,8 @@ import cx from 'classnames';
 import autobind from 'nti-commons/lib/autobind';
 
 import {appendQuestionTo} from '../Actions';
+
+import {hasOrderedContents} from '../../../ordered-contents';
 import Draggable from '../../../dnd/Draggable';
 
 const QuestionMimeType = 'application/vnd.nextthought.naquestion';
@@ -27,6 +29,21 @@ function getCountInPart (part, types) {
 	return (questions || []).reduce((acc, question) => {
 		return acc + getCountInQuestion(question, types);
 	}, 0);
+}
+
+
+function canAddToAssignment (assignment) {
+	const {parts} = assignment;
+	const part = parts && parts[0];
+
+	//TODO: replace true with a condition to check if the assignment can take parts.
+	if (!part && !true) {
+		return true;
+	}
+
+	const {question_set:questionSet} = part;
+
+	return questionSet && hasOrderedContents(questionSet);
 }
 
 export default class BaseButton extends React.Component {
@@ -111,13 +128,13 @@ export default class BaseButton extends React.Component {
 
 
 	render () {
-		let {label, iconCls} = this.props;
+		let {label, iconCls, assignment} = this.props;
 		const {mousedown} = this.state;
 		const icnCls = cx('icon', iconCls);
 		const usedCount = this.getUsedCount();
 		const usedCls = cx('used', {isUsed: usedCount > 0});
 		const data = this.getBlankQuestion() || {};
-		const cls = cx('assigment-editor-sidebar-button', {mousedown});
+		const cls = cx('assigment-editor-sidebar-button', {mousedown, disabled: !canAddToAssignment(assignment)});
 
 		return (
 			<Draggable data={data} className={cls} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} onDragEnd={this.onMouseUp}>
