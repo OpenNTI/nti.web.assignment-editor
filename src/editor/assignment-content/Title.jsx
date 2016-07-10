@@ -118,6 +118,7 @@ export default class TitleEditor extends React.Component {
 			<Selectable className={cls} id={selectableId} value={selectableValue} onUnselect={this.onUnselect}>
 				<TextEditor
 					charLimit={getMaxLength(schema)}
+					countDown
 					ref={this.setEditorRef}
 					initialValue={value}
 					placeholder={PLACEHOLDER}
