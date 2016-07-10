@@ -42,7 +42,7 @@ class Randomize extends React.Component {
 
 	componentDidUpdate () {
 		const {questionSet: qset} = this.props;
-		const hasChanged = ['isRandomized', 'isPartTypeRandomized'].some(x => qset[x] !== this.state[x]);
+		const hasChanged = qset && ['isRandomized', 'isPartTypeRandomized'].some(x => qset[x] !== this.state[x]);
 
 		if (hasChanged) {
 			this.save();
@@ -74,7 +74,8 @@ class Randomize extends React.Component {
 
 	setupValue (props = this.props) {
 		const setState = s => this.state ? this.setState(s) : (this.state = s);
-		const {questionSet: {isRandomized, isPartTypeRandomized}} = props;
+		const {questionSet} = props;
+		const {isRandomized, isPartTypeRandomized} = questionSet || {};
 
 		setState({
 			isRandomized,
