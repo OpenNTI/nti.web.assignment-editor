@@ -32,7 +32,8 @@ export default class Choices extends React.Component {
 		remove: React.PropTypes.func,
 		reorderable: React.PropTypes.bool,
 		addLabel: React.PropTypes.string,
-		minAllowed: React.PropTypes.number
+		minAllowed: React.PropTypes.number,
+		plainText: React.PropTypes.bool
 	}
 
 
@@ -322,6 +323,7 @@ export default class Choices extends React.Component {
 
 
 	renderChoice (column, choice, row) {
+		const {plainText} = this.props;
 		const {error, canRemove} = this.state;
 		const onChange = this.choiceChangeHandlers[column];
 		const choiceError = isErrorForChoice(error, choice);
@@ -336,6 +338,7 @@ export default class Choices extends React.Component {
 				onChange={onChange}
 				error={choiceError}
 				onDelete={onDelete}
+				plainText={plainText}
 			/>
 		);
 	}

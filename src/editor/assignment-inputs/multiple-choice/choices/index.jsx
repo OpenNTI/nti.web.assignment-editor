@@ -58,6 +58,7 @@ export default class MultipleChoiceChoices extends Choices {
 
 
 	renderChoice (column, choice, row) {
+		const {plainText} = this.props;
 		const {multipleAnswers, containerId} = this.props;
 		const {error, canRemove} = this.state;
 		const onChange = this.choiceChangeHandlers[column];
@@ -74,6 +75,7 @@ export default class MultipleChoiceChoices extends Choices {
 				error={isErrorForChoice(error, choice)}
 				multipleAnswers={multipleAnswers}
 				onDelete={onDelete}
+				plainText={plainText}
 			/>
 		);
 	}

@@ -75,6 +75,16 @@
 		padding: 0.6rem;
 		margin-top: -1rem;
 	}
+
+
+	input {
+		background: none;
+		font: normal 400 0.875rem/40px $body-font-family;
+		color: $primary-grey;
+		border: none;
+		width: 100%;
+		padding: 0 0.2rem;
+	}
 }
 
 .assignment-input-choices.can-delete {

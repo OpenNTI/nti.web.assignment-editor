@@ -100,6 +100,7 @@ export default class FreeResponseEditor extends React.Component {
 					add={this.addChoice}
 					remove={this.removeChoice}
 					addLabel={addLabel}
+					plainText
 				/>
 			</div>
 		);

@@ -44,6 +44,7 @@ export default class Choice extends React.Component {
 
 		this.state = {
 			label: choice.label,
+			inputValue: choice.label,
 			selectableId: choice.NTIID || choice.ID,
 			selectableValue: new ControlsConfig(),
 			error
@@ -55,6 +56,7 @@ export default class Choice extends React.Component {
 			'onUnselect',
 			'onSelect',
 			'onDelete',
+			'onInputChange',
 			'onEditorFocus',
 			'onEditorChange',
 			'onEditorBlur'
@@ -110,7 +112,15 @@ export default class Choice extends React.Component {
 
 
 	getLabelFromEditor () {
-		return this.editorRef && this.editorRef.getValue();
+		let value = '';
+
+		if (this.editorRef && this.editorRef.getValue) {
+			value = this.editorRef.getValue();
+		} else if (this.editorRef) {
+			value = this.editorRef.value;
+		}
+
+		return value;
 	}
 
 
@@ -121,12 +131,19 @@ export default class Choice extends React.Component {
 	}
 
 
+	areLabelsEqual (oldLabel, label) {
+		const {plainText} = this.props;
+
+		return plainText ? oldLabel === label : valuesEqual(oldLabel, label);
+	}
+
+
 	onChange () {
 		const {onChange, choice:oldChoice} = this.props;
 		const oldLabel = this.getLabelFromState();
-		const label = this.editorRef && this.editorRef.getValue();
+		const label = this.getLabelFromEditor();
 
-		if (onChange && !valuesEqual(oldLabel, label)) {
+		if (onChange && !this.areLabelsEqual(oldLabel, label)) {
 			let newChoice = oldChoice.clone();
 			newChoice.label = label;
 
@@ -135,12 +152,19 @@ export default class Choice extends React.Component {
 	}
 
 
+	onInputChange (e) {
+		this.setState({
+			inputValue: e.target.value
+		});
+	}
+
+
 	onEditorChange () {
 		const {error} = this.state;
 		const oldLabel = this.getLabelFromState();
-		const newLabel = this.editorRef && this.editorRef.getValue();
+		const newLabel = this.getLabelFromEditor();
 
-		if (!valuesEqual(oldLabel, newLabel)) {
+		if (!this.areLabelsEqual(oldLabel, newLabel)) {
 			if (error && error.clear) {
 				this.onChange();
 				error.clear();
@@ -188,25 +212,46 @@ export default class Choice extends React.Component {
 
 	render () {
 		const {className, choice, heightSyncGroup, onDelete} = this.props;
-		const {label, error, selectableId, selectableValue} = this.state;
+		const {error, selectableId, selectableValue} = this.state;
 		const cls = cx(className, 'assignment-input-choice', {error, correct: choice.correct});
 
 		return (
 			<Selectable className={cls} id={selectableId} value={selectableValue} onSelect={this.onSelect} onUnselect={this.onUnselect}>
 				<DragHandle className="choice-drag-handle" />
 				<SyncHeight ref={this.setSyncRef} group={heightSyncGroup}>
-					<TextEditor
-						ref={this.setEditorRef}
-						initialValue={label}
-						placeholder={PLACEHOLDER}
-						onFocus={this.onEditorFocus}
-						onBlur = {this.onEditorBlur}
-						onChange={this.onEditorChange}
-						error={error}
-					/>
+					{this.renderEditor()}
 				</SyncHeight>
 				{onDelete && (<div className="delete" onClick={this.onDelete}><i className="icon-remove" title="Delete Row"/></div>)}
 			</Selectable>
+		);
+	}
+
+
+	renderEditor () {
+		const {plainText} = this.props;
+		const {label, inputValue, error} = this.state;
+
+		if (plainText) {
+			return (
+				<input
+					type="text"
+					ref={this.setEditorRef}
+					value={inputValue}
+					onChange={this.onInputChange}
+				/>
+			);
+		}
+
+		return (
+			<TextEditor
+				ref={this.setEditorRef}
+				initialValue={label}
+				placeholder={PLACEHOLDER}
+				onFocus={this.onEditorFocus}
+				onBlur = {this.onEditorBlur}
+				onChange={this.onEditorChange}
+				error={error}
+			/>
 		);
 	}
 }
