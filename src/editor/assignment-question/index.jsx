@@ -1,5 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
+import {Errors} from 'nti-web-commons';
 import autobind from 'nti-commons/lib/autobind';
 
 import {DragHandle} from '../../dnd';
@@ -13,6 +14,17 @@ import Before from './Before';
 import Content from './Content';
 import Parts from './Parts';
 import Controls from './controls';
+
+const {Field:{Component:ErrorCmp}} = Errors;
+
+function isKnownPartError (error) {
+	if (!error) { return false; }
+
+	const known = {choices: true, values: true, labels: true};
+	const {raw} = error;
+
+	return known[raw.field] && raw.index;
+}
 
 export default class QuestionComponent extends React.Component {
 	static propTypes = {
@@ -71,7 +83,13 @@ export default class QuestionComponent extends React.Component {
 
 
 	onQuestionChange () {
-		this.forceUpdate();
+		const {questionError} = this.state;
+
+		if (questionError && questionError.clear) {
+			questionError.clear();
+		} else {
+			this.forceUpdate();
+		}
 	}
 
 
@@ -79,12 +97,21 @@ export default class QuestionComponent extends React.Component {
 		const {question} = this.props;
 		const {NTIID} = question;
 		const contentError = Store.getErrorFor(NTIID, 'content');
-		const partError = Store.getErrorFor(NTIID, 'parts');
 		const contentWarning = Store.getWarningFor(NTIID, 'content');
+		const partsError = Store.getErrorFor(NTIID, 'parts');
+		let partError;
+		let questionError;
+
+		if (isKnownPartError(partsError)) {
+			partError = partsError;
+		} else {
+			questionError = partsError;
+		}
 
 		this.setState({
 			contentError,
 			contentWarning,
+			questionError,
 			partError
 		});
 	}
@@ -110,9 +137,9 @@ export default class QuestionComponent extends React.Component {
 
 	render () {
 		const {question, index, questionSet, assignment} = this.props;
-		const {selectableId, selectableValue, contentError, contentWarning, partError} = this.state;
+		const {selectableId, selectableValue, contentError, contentWarning, partError, questionError} = this.state;
 		const {isSaving} = question;
-		const cls = cx('question-editor', {'is-saving': isSaving});
+		const cls = cx('question-editor', {'is-saving': isSaving, error: contentError || questionError || question.error});
 
 		return (
 			<div className="assignment-editing-question-container">
@@ -124,6 +151,7 @@ export default class QuestionComponent extends React.Component {
 						<Content question={question} onFocus={this.onContentFocus} onBlur={this.onContentBlur} error={contentError} warning={contentWarning}/>
 					</div>
 					<Parts question={question} error={partError} />
+					{questionError && (<ErrorCmp error={questionError} />)}
 				</Selectable>
 				{!isSaving && (<Controls question={question} questionSet={questionSet} assignment={assignment} />)}
 			</div>

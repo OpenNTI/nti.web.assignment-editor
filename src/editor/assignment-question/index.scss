@@ -12,6 +12,10 @@
 		&:not(.selected) {
 			box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
 		}
+
+		&.error {
+			box-shadow: 0 0 1px 1px $border-red;
+		}
 	}
 
 	.wrap {
@@ -53,6 +57,11 @@
 		padding: rem-calc(7px) 0;
 		background-color: #ffffff;
 		box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.25);
+	}
+
+	.question-editor > .nti-error {
+		padding: 0 rem-calc(15px) rem-calc(15px);
+		margin-top: rem-calc(-15px);
 	}
 
 
