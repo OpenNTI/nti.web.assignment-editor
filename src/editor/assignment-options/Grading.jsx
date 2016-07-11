@@ -50,10 +50,10 @@ class Grading extends React.Component {
 
 
 	save = () => {
-		const {assignment} = this.props;
+		const {assignment, questionSet} = this.props;
 		const {isAutoGraded} = this.state;
 
-		if (assignment.isAutoGraded !== isAutoGraded) {
+		if (questionSet.isAutoGradable && assignment.isAutoGraded !== isAutoGraded) {
 			assignment.setAutoGrade(isAutoGraded)
 				.catch(error => {
 					this.setState({isAutoGraded: assignment.isAutoGraded, error});
@@ -65,11 +65,15 @@ class Grading extends React.Component {
 	setupValue (props = this.props) {
 		const setState = s => this.state ? this.setState(s) : (this.state = s);
 		const {assignment, questionSet} = props;
-		const {isAutoGraded} = assignment || {};
+		let {isAutoGraded} = assignment || {};
 
 		let conflicts = null;
 
 		if (questionSet && !questionSet.isAutoGradable) {
+			// dance around the model being stale (if they add a question after this is on...
+			// and they confirm that they want to add that question... the server will turn
+			// this off, and we wont know until we refresh the assignment.)
+			isAutoGraded = false;
 			conflicts = questionSet.getAutoGradableConflicts();
 
 			conflicts = t('disabled-conflicting-questions', {
