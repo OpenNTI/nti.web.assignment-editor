@@ -23,6 +23,9 @@ class PublishControls extends React.Component {
 
 	onChange = (value) => {
 		const assignment = PublishControls.getItem(this.props);
+		if (!assignment) {
+			return;
+		}
 
 		const PublishStateMap = {
 			[PUBLISH_STATES.DRAFT]: false,
@@ -38,20 +41,21 @@ class PublishControls extends React.Component {
 
 	onDeleteClick = () => {
 		const assignment = PublishControls.getItem(this.props);
-
-		deleteAssignment(assignment);
+		if (assignment) {
+			deleteAssignment(assignment);
+		}
 	}
 
 
 	render () {
 		const assignment = PublishControls.getItem(this.props);
 		const value = Publish.evaluatePublishStateFor({
-			isPublished: () => assignment.isPublished() && assignment.getPublishDate() < Date.now(),
-			getPublishDate: () => assignment.getPublishDate()
+			isPublished: () => assignment && (assignment.isPublished() && assignment.getPublishDate() < Date.now()),
+			getPublishDate: () => assignment && assignment.getPublishDate()
 		});
 
-		const canDelete = assignment.hasLink('edit');
-		const isPublishable = assignment.hasLink('publish') || assignment.hasLink('unpublish');
+		const canDelete = assignment && assignment.hasLink('edit');
+		const isPublishable = assignment && (assignment.hasLink('publish') || assignment.hasLink('unpublish'));
 		const Control = isPublishable ? Publish : PublishLocked;
 
 		return (
