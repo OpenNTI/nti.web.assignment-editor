@@ -150,6 +150,7 @@ export default class OrderedContents {
 
 		//Go ahead and optimistically add the item with an isSaving flag
 		Object.defineProperty(item, 'isSaving', {
+			configurable: true,
 			enumerable: false,
 			value: true
 		});
@@ -378,7 +379,7 @@ export default class OrderedContents {
 				obj.onChange();
 			})
 			.catch((reason) => {
-				delete item.isSaving;
+				// delete item.isSaving;
 
 				Object.defineProperty(item, 'isNotSaved', {
 					enumerable: false,
