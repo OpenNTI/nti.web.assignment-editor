@@ -7,6 +7,7 @@ import {SyncHeightGroup} from '../../../sync-height';
 import {Ordering} from '../../../dnd/';
 
 import Choice from './Choice';
+import PlainChoice from './PlainChoice';
 import {isErrorForChoice} from './Factory';
 
 function createSyncHeightGroup () {
@@ -363,10 +364,11 @@ export default class Choices extends React.Component {
 		const onChange = this.choiceChangeHandlers[column];
 		const choiceError = isErrorForChoice(error, choice);
 		const sync = this.getSyncForRow(row);
-		const onDelete = canRemove && this.deleteHandlers[row];
+		const onDelete = canRemove ? this.deleteHandlers[row] : void 0;
+		const Cmp = plainText ? PlainChoice : Choice;
 
 		return (
-			<Choice
+			<Cmp
 				key={choice.NTIID || choice.ID}
 				choice={choice}
 				heightSyncGroup={sync}

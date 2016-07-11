@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
-import {TextEditor, valuesEqual} from 'nti-modeled-content';
-import autobind from 'nti-commons/lib/autobind';
+
+import BufferedTextEditor from '../inputs/BufferedTextEditor';
 
 import Selectable from '../utils/Selectable';
 import ControlsConfig from '../controls/ControlsConfig';
@@ -19,52 +19,17 @@ export default class ContentEditor extends React.Component {
 	constructor (props) {
 		super(props);
 
-		const {value, error} = props;
-
-		this.setEditorRef = x => this.editorRef = x;
-
 		this.state = {
 			selectableId: 'description',
-			selectableValue: new ControlsConfig(),
-			value,
-			error
+			selectableValue: new ControlsConfig()
 		};
-
-		autobind(this,
-			'onUnselect',
-			'onEditorChange',
-			'onEditorFocus'
-		);
-	}
-
-	componentWillReceiveProps (nextProps) {
-		const {value:newValue, error:newError} = nextProps;
-		const {value:oldValue, error:oldError} = this.props;
-		let state = null;
-
-		if (newValue !== oldValue) {
-			state = state || {};
-
-			state.value = newValue;
-		}
-
-		if (newError !== oldError) {
-			state = state || {};
-
-			state.error = newError;
-		}
-
-		if (state) {
-			this.setState(state);
-		}
 	}
 
 
-	onChange () {
+	onChange = (value) => {
 		const {onChange} = this.props;
-		const value = this.editorRef && this.editorRef.getValue();
 
-		if (onChange && this.editorRef) {
+		if (onChange) {
 			onChange(value);
 
 			this.setState({
@@ -74,44 +39,29 @@ export default class ContentEditor extends React.Component {
 	}
 
 
-	onUnselect () {
-		this.onChange();
-	}
-
-
-	onEditorChange () {
-		const {error, value:oldValue} = this.state;
-		const newValue = this.editorRef.getValue();
-
-		if (error && error.clear && !valuesEqual(newValue, oldValue)) {
-			error.clear();
-		}
-	}
-
-
-	onEditorFocus () {
+	onEditorFocus = (editor) => {
 		const {selectableValue} = this.state;
 
-		if (this.editorRef && selectableValue.editor !== this.editorRef) {
+		if (editor && selectableValue.editor !== editor) {
 			this.setState({
-				selectableValue: new ControlsConfig(this.editorRef)
+				selectableValue: new ControlsConfig(editor)
 			});
 		}
 	}
 
 
 	render () {
-		const {selectableId, selectableValue, value, error} = this.state;
+		const {value, error} = this.state;
+		const {selectableId, selectableValue} = this.state;
 		const cls = cx('assignment-content-editor', {error});
 
 		return (
-			<Selectable className={cls} id={selectableId} value={selectableValue} onUnselect={this.onUnselect}>
-				<TextEditor
-					ref={this.setEditorRef}
+			<Selectable className={cls} id={selectableId} value={selectableValue}>
+				<BufferedTextEditor
 					initialValue={value}
 					placeholder={PLACEHOLDER}
 					onFocus={this.onEditorFocus}
-					onChange={this.onEditorChange}
+					onChange={this.onChange}
 					error={error}
 				/>
 			</Selectable>

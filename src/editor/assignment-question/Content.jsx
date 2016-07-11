@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
-import {TextEditor, valuesEqual} from 'nti-modeled-content';
-import autobind from 'nti-commons/lib/autobind';
+
+import BufferedTextEditor from '../inputs/BufferedTextEditor';
 
 import {getContentPlaceholderFor} from '../assignment-inputs/';
 
@@ -21,99 +21,37 @@ export default class QuestionContent extends React.Component {
 
 	constructor (props) {
 		super(props);
-
-		this.setEditorRef = x => this.editorRef = x;
-
-		const {question, error, warning} = props;
-
-		this.state = {
-			content: question.content,
-			error,
-			warning
-		};
-
-		autobind(this,
-			'onEditorFocus',
-			'onEditorBlur',
-			'onEditorChange'
-		);
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		const {question:oldQuestion, error:oldError, warning:oldWarning} = this.props;
-		const {question:newQuestion, error:newError, warning:newWarning} = nextProps;
-		let state = null;
+	onEditorFocus = (editor) => {
+		const {onFocus} = this.props;
 
-		if (oldQuestion.content !== newQuestion.content) {
-			state = state || {};
-
-			state.content = newQuestion.content;
-		}
-
-		if (oldError !== newError) {
-			state = state || {};
-
-			state.error = newError;
-		}
-
-		if (oldWarning !== newWarning) {
-			state = state || {};
-
-			state.warning = newWarning;
-		}
-
-		if (state) {
-			this.setState(state);
+		if (onFocus) {
+			onFocus(editor);
 		}
 	}
 
 
-	onChange () {
-		const {onBlur, question} = this.props;
-		const content = this.editorRef.getValue();
+	onEditorBlur = () => {
+		const {onBlur} = this.props;
 
 		if (onBlur) {
 			onBlur();
 		}
-
-		saveQuestionContent(question, content);
 	}
 
 
-	onEditorBlur () {
-		this.onChange();
-	}
+	onChange = (value) => {
+		const {question} = this.props;
 
-
-	onEditorFocus () {
-		const {onFocus} = this.props;
-
-		if (onFocus) {
-			onFocus(this.editorRef);
-		}
-	}
-
-
-	onEditorChange () {
-		const {error, warning, content:oldContent} = this.state;
-		const newContent = this.editorRef && this.editorRef.getValue();
-
-		if (!valuesEqual(oldContent, newContent)) {
-			if (error && error.clear) {
-				error.clear();
-				this.onChange();
-			} else if (warning && warning.clear) {
-				warning.clear();
-				this.onChange();
-			}
-		}
+		saveQuestionContent(question, value);
 	}
 
 
 	render () {
-		const {isSaving, question} = this.props;
-		const {content, error, warning} = this.state;
+		const {isSaving, question, error, warning} = this.props;
+		const {content} = question;
 		const cls = cx('question-content-editor', {error});
 
 		const placeholder = getContentPlaceholderFor(question);
@@ -121,16 +59,14 @@ export default class QuestionContent extends React.Component {
 		return (
 			<div className={cls}>
 				{!isSaving ?
-					<TextEditor
+					<BufferedTextEditor
 						className={cls}
-						ref={this.setEditorRef}
 						initialValue={content}
 						placeholder={placeholder}
 						onFocus={this.onEditorFocus}
-						onBlur={this.onEditorBlur}
-						onChange={this.onEditorChange}
-						error={!warning && error}
-						warning={warning}
+						onChange={this.onChange}
+						error={warning ? void 0 : error || void 0}
+						warning={warning || void 0}
 					/> :
 					null
 				}

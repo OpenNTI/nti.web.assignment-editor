@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
-import {TextEditor, valuesEqual} from 'nti-modeled-content';
+
+import BufferedTextEditor from '../../inputs/BufferedTextEditor';
 
 import {DragHandle} from '../../../dnd';
 import SyncHeight from '../../../sync-height';
@@ -37,49 +38,16 @@ export default class Choice extends React.Component {
 	constructor (props) {
 		super(props);
 
-		const {choice, error} = this.props;
+		const {choice} = this.props;
 
 		this.isNew = choice.isNew;
 
 		this.state = {
-			label: choice.label,
-			inputValue: choice.label,
 			selectableId: choice.NTIID || choice.ID,
-			selectableValue: new ControlsConfig(),
-			error
+			selectableValue: new ControlsConfig()
 		};
 
 		this.setEditorRef = x => this.editorRef = x;
-	}
-
-
-	componentWillReceiveProps (nextProps) {
-		const {choice: newChoice, error:newError} = nextProps;
-		const {choice: oldChoice, error:oldError} = this.props;
-		let state = null;
-
-		this.updatedLabel = newChoice.label;
-
-		if (newChoice !== oldChoice && !this.isFocused) {
-			state = state || {};
-
-			delete this.updatedLabel;
-			state.label = newChoice.label;
-			state.selectableId = newChoice.NTIID || newChoice.ID;
-		}
-
-		if (newError !== oldError) {
-			state = state || {};
-
-			state.error = newError;
-		}
-
-
-		if (state) {
-			this.setState(state, () => {
-				this.syncHeight();
-			});
-		}
 	}
 
 
@@ -93,46 +61,17 @@ export default class Choice extends React.Component {
 	}
 
 
-	syncHeight () {
+	syncHeight = () => {
 		if (this.syncRef && this.syncRef.updateHeight) {
 			this.syncRef.updateHeight();
 		}
 	}
 
 
-	getLabelFromEditor () {
-		let value = '';
-
-		if (this.editorRef && this.editorRef.getValue) {
-			value = this.editorRef.getValue();
-		} else if (this.editorRef) {
-			value = this.editorRef.value;
-		}
-
-		return value;
-	}
-
-
-	getLabelFromState () {
-		const {label} = this.state;
-
-		return this.updatedLabel || label;
-	}
-
-
-	areLabelsEqual (oldLabel, label) {
-		const {plainText} = this.props;
-
-		return plainText ? oldLabel === label : valuesEqual(oldLabel, label);
-	}
-
-
-	onChange () {
+	onChange = (label) => {
 		const {onChange, choice:oldChoice} = this.props;
-		const oldLabel = this.getLabelFromState();
-		const label = this.getLabelFromEditor();
 
-		if (onChange && !this.areLabelsEqual(oldLabel, label)) {
+		if (onChange) {
 			let newChoice = oldChoice.clone();
 			newChoice.label = label;
 
@@ -141,52 +80,10 @@ export default class Choice extends React.Component {
 	}
 
 
-	onInputChange = (e) => {
+	onEditorFocus = (editor) => {
 		this.setState({
-			inputValue: e.target.value
+			selectableValue: new ControlsConfig(editor)
 		});
-	}
-
-
-	onEditorChange = () => {
-		const {error} = this.state;
-		const oldLabel = this.getLabelFromState();
-		const newLabel = this.getLabelFromEditor();
-
-		if (!this.areLabelsEqual(oldLabel, newLabel)) {
-			if (error && error.clear) {
-				this.onChange();
-				error.clear();
-			}
-
-			this.syncHeight();
-		}
-	}
-
-
-	onEditorFocus = () => {
-		this.isFocused = true;
-
-		this.setState({
-			selectableValue: new ControlsConfig(this.editorRef)
-		});
-	}
-
-
-	onEditorBlur = () => {
-		this.isFocused = null;
-		this.onChange();
-	}
-
-
-	onInputFocus = () => {
-		this.isFocused = true;
-	}
-
-
-	onInputBlur = () => {
-		this.isFocused = null;
-		this.onChange();
 	}
 
 
@@ -199,20 +96,13 @@ export default class Choice extends React.Component {
 	}
 
 
-	onSelect = () => {
-		if (this.inputRef) {
-			this.inputRef.focus();
-		}
-	}
-
-
 	render () {
-		const {className, choice, heightSyncGroup, onDelete} = this.props;
-		const {error, selectableId, selectableValue} = this.state;
+		const {className, choice, heightSyncGroup, onDelete, error} = this.props;
+		const {selectableId, selectableValue} = this.state;
 		const cls = cx(className, 'assignment-input-choice', {error, correct: choice.correct});
 
 		return (
-			<Selectable className={cls} id={selectableId} value={selectableValue} onSelect={this.onSelect} onUnselect={this.onUnselect}>
+			<Selectable className={cls} id={selectableId} value={selectableValue}>
 				<DragHandle className="choice-drag-handle hide-when-saving" />
 				<SyncHeight ref={this.setSyncRef} group={heightSyncGroup}>
 					{this.renderEditor()}
@@ -224,31 +114,16 @@ export default class Choice extends React.Component {
 
 
 	renderEditor () {
-		const {plainText} = this.props;
-		const {label, inputValue, error} = this.state;
-
-		if (plainText) {
-			return (
-				<input
-					type="text"
-					className="hide-when-saving"
-					ref={this.setEditorRef}
-					value={inputValue}
-					onChange={this.onInputChange}
-					onFocus={this.onInputFocus}
-					onBlur={this.onInputBlur}
-				/>
-			);
-		}
+		const {choice, error} = this.props;
 
 		return (
-			<TextEditor
+			<BufferedTextEditor
 				ref={this.setEditorRef}
-				initialValue={label}
+				initialValue={choice.label}
 				placeholder={PLACEHOLDER}
 				onFocus={this.onEditorFocus}
-				onBlur = {this.onEditorBlur}
-				onChange={this.onEditorChange}
+				onChange={this.onChange}
+				onEditorChange={this.syncHeight}
 				error={error}
 			/>
 		);
