@@ -23,7 +23,9 @@ export default class Settings extends React.Component {
 	}
 
 	componentWillReceiveProps (nextProps) {
-		this.setup(nextProps);
+		if (nextProps.part !== this.props.part) {
+			this.setup(nextProps);
+		}
 	}
 
 	setup (props = this.props) {
