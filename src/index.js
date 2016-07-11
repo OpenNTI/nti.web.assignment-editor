@@ -1,3 +1,1 @@
-import Editor from './editor';
-
-export {Editor};
+export Editor from './editor';

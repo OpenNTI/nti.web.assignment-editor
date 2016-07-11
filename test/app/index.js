@@ -3,7 +3,7 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {ConflictResolutionHandler} from 'nti-web-commons';
-import {Editor} from '../../src/index';
+import {Editor} from '../../src';
 
 import 'normalize.css';
 import 'nti-style-common/all.scss';
