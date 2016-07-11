@@ -173,9 +173,6 @@ export default class BufferedTextEditor extends React.Component {
 		delete otherProps.onChange;
 		delete otherProps.onBlur;
 		delete otherProps.onFocus;
-		delete otherProps.error;
-		delete otherProps.warning;
-		delete otherProps.ref;
 
 		return (
 			<TextEditor
