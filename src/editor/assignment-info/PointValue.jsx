@@ -46,7 +46,7 @@ export default class PointValue extends React.Component {
 	onChange = () => {
 		const {value} = this.input;
 		//we set the min to 0, but just safe-guard it just in case.
-		if (value < 0) {
+		if (value < 0 || isNaN(value)) {
 			return;
 		}
 
