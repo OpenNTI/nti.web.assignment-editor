@@ -31,7 +31,7 @@ export default class Settings extends React.Component {
 		const extensions = part.allowed_extensions || [];
 		this.setState({
 			extensions,
-			selectedRadio: extensions.length > 0 ? SPECIFIC_TYPES : ALL_TYPES
+			selectedRadio: extensions.filter(x => x !== WILDCARD).length > 0 ? SPECIFIC_TYPES : ALL_TYPES
 		});
 	}
 
