@@ -10,6 +10,7 @@ const logger = Logger.get('lib:asssignment-editor:utils:SelectionManager');
 export class SelectionItem extends EventEmitter {
 	constructor (config) {
 		super();
+		this.setMaxListeners(1000);
 
 		if (!config || config.id === undefined) {
 			throw new Error('No ID provided to selection item');
@@ -22,7 +23,6 @@ export class SelectionItem extends EventEmitter {
 			value: config.value
 		});
 
-		this.setMaxListeners(1000);
 	}
 
 
@@ -49,6 +49,7 @@ export class SelectionItem extends EventEmitter {
 export default class SelectionManager extends EventEmitter {
 	constructor () {
 		super();
+		this.setMaxListeners(1000);
 
 		PRIVATE.set(this, {
 			selectedItems: []
