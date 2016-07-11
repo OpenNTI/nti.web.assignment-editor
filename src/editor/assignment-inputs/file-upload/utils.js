@@ -1,4 +1,4 @@
-export function generatePartFor (MimeType, content, maxSize, mimeTypes = ['*/*'], extensions = ['*.*'], hints = []) {
+export function generatePartFor (MimeType, content, maxSize, mimeTypes = ['*/*'], extensions = ['*'], hints = []) {
 	return {
 		MimeType,
 		'max_file_size': maxSize,

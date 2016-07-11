@@ -36,6 +36,7 @@ export default class FileUploadEditor extends React.Component {
 	}
 
 	getExtensionText (extensions) {
+		//TODO: Localize this mess.
 		let txt;
 		extensions = extensions || [];
 		if (extensions.length > 1) {
@@ -45,7 +46,7 @@ export default class FileUploadEditor extends React.Component {
 			txt = extensions.join(', ') + ' or ' + last;
 			txt = 'Upload your ' + txt + ' here.';
 		}
-		else if (extensions.length === 1 && extensions[0] !== '*.*') {
+		else if (extensions.length === 1 && extensions[0] !== '*') {
 			txt = 'Upload your ' + extensions[0] + ' here.';
 		}
 		else {

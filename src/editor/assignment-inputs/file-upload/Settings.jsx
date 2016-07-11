@@ -4,7 +4,7 @@ import {RadioGroup, DialogButtons, TokenEditor} from 'nti-web-commons';
 
 const ALL_TYPES = 'All File Types';
 const SPECIFIC_TYPES = 'Specific File Types';
-const WILDCARD = '*.*';
+const WILDCARD = '*';
 
 const WILDCARDS = x => x !== WILDCARD;
 
