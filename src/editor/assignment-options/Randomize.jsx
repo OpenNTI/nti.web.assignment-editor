@@ -22,7 +22,7 @@ const t = scoped('OPTIONS_RANDOMIZE', DEFAULT_TEXT);
 
 class Randomize extends React.Component {
 	static propTypes = {
-		assignment: PropTypes.object.isRequired,
+		assignment: PropTypes.object,
 		questionSet: PropTypes.object
 	}
 

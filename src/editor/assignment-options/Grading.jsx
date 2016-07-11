@@ -16,7 +16,8 @@ const t = scoped('OPTIONS_GRADING', DEFAULT_TEXT);
 
 class Grading extends React.Component {
 	static propTypes = {
-		assignment: PropTypes.object.isRequired
+		assignment: PropTypes.object,
+		questionSet: PropTypes.object
 	}
 
 	static getItem = (props) => props.assignment

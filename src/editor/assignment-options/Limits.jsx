@@ -21,7 +21,7 @@ const t = scoped('OPTIONS_LIMITS', DEFAULT_TEXT);
 
 class Limits extends React.Component {
 	static propTypes = {
-		assignment: PropTypes.object.isRequired,
+		assignment: PropTypes.object,
 		questionSet: PropTypes.object
 	}
 
