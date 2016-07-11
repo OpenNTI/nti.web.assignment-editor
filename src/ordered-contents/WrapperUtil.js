@@ -201,12 +201,12 @@ export default class OrderedContents {
 				delete item.isSaving;
 
 				//if there is an error, replace the optimistic placeholder with an error case
-				item.defineProperty(item, 'isNotSaved', {
+				Object.defineProperty(item, 'isNotSaved', {
 					enumerable: false,
 					value: true
 				});
 
-				item.defineProperty(item, 'error', {
+				Object.defineProperty(item, 'error', {
 					enumerable: false,
 					value: reason
 				});
@@ -295,13 +295,13 @@ export default class OrderedContents {
 					delete item.isDeleting;
 
 					//If the server fails, leave it in the ordered contents and mark it with an error
-					item.defineProperty(item, 'isNotDeleted', {
+					Object.defineProperty(item, 'isNotDeleted', {
 						enumerable: false,
 						value: true
 					});
 
 
-					item.defineProperty(item, 'error', {
+					Object.defineProperty(item, 'error', {
 						enumerable: false,
 						value: reason
 					});
