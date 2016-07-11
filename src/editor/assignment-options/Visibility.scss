@@ -7,4 +7,12 @@
 			color: #757474;
 		}
 	}
+
+	.select-box.open {
+		.menu-label.selected {
+			.option-label {
+				color: #FFFFFF;
+			}
+		}
+	}
 }
