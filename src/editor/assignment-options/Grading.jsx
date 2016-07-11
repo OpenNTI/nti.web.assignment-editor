@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import {scoped} from 'nti-lib-locale';
+import {HOC} from 'nti-web-commons';
 
 import OptionGroup from './OptionGroup';
 import Option from './Option';
@@ -13,10 +14,13 @@ const DEFAULT_TEXT = {
 
 const t = scoped('OPTIONS_GRADING', DEFAULT_TEXT);
 
-export default class Grading extends React.Component {
+class Grading extends React.Component {
 	static propTypes = {
 		assignment: PropTypes.object.isRequired
 	}
+
+	static getItem = (props) => props.assignment
+
 
 	constructor (props) {
 		super();
@@ -56,7 +60,8 @@ export default class Grading extends React.Component {
 
 	setupValue (props = this.props) {
 		const setState = s => this.state ? this.setState(s) : (this.state = s);
-		const {assignment: {isAutoGraded}} = props;
+		const {assignment} = props;
+		const {isAutoGraded} = assignment || {};
 
 		setState({ isAutoGraded });
 	}
@@ -76,7 +81,7 @@ export default class Grading extends React.Component {
 	render () {
 		const {assignment} = this.props;
 		const {isAutoGraded, error} = this.state;
-		const disabled = !assignment.hasLink('edit');
+		const disabled = assignment && !assignment.hasLink('edit');
 
 		const errorMessage = error && (
 			error.message
@@ -89,3 +94,5 @@ export default class Grading extends React.Component {
 		);
 	}
 }
+
+export default HOC.ItemChanges.compose(Grading);

@@ -7,7 +7,7 @@ import Limits from './Limits';
 import Visibility from './Visibility';
 
 function getQuestionSet (assignment) {
-	const {parts} = assignment;
+	const {parts} = assignment || {};
 	const part = (parts || [])[0];
 	const {question_set:questionSet} = part || {};
 
@@ -26,13 +26,14 @@ class AssignmentOptions extends React.Component {
 	render () {
 		const {assignment} = this.props;
 		const questionSet = getQuestionSet(assignment);
+		const {title} = assignment || {};
 
 
 		return (
 			<div className="assignment-options">
 				<header>
 					<h1 className="main-header">Options</h1>
-					<p className="options-assignment-title">{assignment.title}</p>
+					<p className="options-assignment-title">{title}</p>
 				</header>
 				<div>
 					<Visibility assignment={assignment} questionSet={questionSet}/>

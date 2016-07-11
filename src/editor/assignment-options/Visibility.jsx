@@ -27,12 +27,14 @@ class Visibility extends React.Component {
 
 	onChange = (value) => {
 		const {assignment} = this.props;
-		assignment.setVisibility(value);
+		if (assignment) {
+			assignment.setVisibility(value);
+		}
 	}
 
 	render () {
 		const {assignment} = this.props;
-		const value = assignment.getVisibility();
+		const value = assignment && assignment.getVisibility();
 
 		const options = [
 			getOption('ForCredit'),
