@@ -2,13 +2,16 @@
 
 .assignment-title-editor {
 	margin-right: 110px;
-	margin-bottom: 0.5rem;
+	margin-bottom: rem-calc(18px);
+	position: relative;
 
 	&.error {
 		box-shadow: 0 0 1px 1px $primary-red;
 	}
 
 	&.selected {
+		background: white;
+
 		.character-count {
 			display: block;
 		}
@@ -21,19 +24,24 @@
 		overflow-y: visible;
 
 		.DraftEditor-root {
-			font: normal 300 1.75rem/2.25rem $body-font-family;
+			font: normal 300 1.5rem/2.125rem $body-font-family;
 			min-height: 0;
 			padding: 0.1rem 0.6rem;
-			padding-bottom: 0.1rem;
+			padding-bottom: 0.2rem;
 		}
 	}
 
 	.nti-error {
-		padding: 0 0.6rem 0.6rem;;
+		padding: 0 0.6rem 0.6rem;
 	}
 
 	.character-count {
 		padding: 0.2rem 0.6rem;
+		position: absolute;
+		top: 100%;
+		font-size: 0.625rem;
+		font-weight: 700;
+		color: $secondary-grey;
 		display: none;
 
 		&.over {

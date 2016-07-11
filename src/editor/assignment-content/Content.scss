@@ -7,12 +7,17 @@
 		box-shadow: 0 0 1px 1px $primary-red;
 	}
 
+	&.selected {
+		background: white;
+	}
+
 	.nti-rich-text {
 		border: none;
 		background: none;
 
 		.DraftEditor-root {
-			padding-bottom: 0;
+			padding: 0.1rem 0.6rem;
+			padding-bottom: 0.2rem;
 			min-height: 0;
 		}
 	}
