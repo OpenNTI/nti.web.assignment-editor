@@ -1,5 +1,4 @@
 import React from 'react';
-import autobind from 'nti-commons/lib/autobind';
 
 import {savePartToQuestion} from '../Actions';
 import {generatePartFor} from './utils';
@@ -11,6 +10,9 @@ const labelsError = 'labels';
 const valuesError = 'values';
 
 const addLabel = 'Add a Row';
+
+const LABELS = 'labels';
+const VALUES = 'values';
 
 
 export default class OrderingEditor extends React.Component {
@@ -31,8 +33,8 @@ export default class OrderingEditor extends React.Component {
 
 		this.partTypes = [this.labelType, this.valueType];
 
-		this.labelFactory = new ChoiceFactory (this.labelType, partId + '-label', labelsError);
-		this.valueFactory = new ChoiceFactory (this.valueType, partId + '-value', valuesError);
+		this.labelFactory = new ChoiceFactory (this.labelType, partId + '-label', labelsError, LABELS);
+		this.valueFactory = new ChoiceFactory (this.valueType, partId + '-value', valuesError, VALUES);
 
 		const choices = this.mapChoices(labels, values, solutions);
 
@@ -40,12 +42,6 @@ export default class OrderingEditor extends React.Component {
 			choices,
 			error
 		};
-
-		autobind(this,
-			'choicesChanged',
-			'addNewChoice',
-			'removeChoice'
-		);
 	}
 
 
@@ -103,7 +99,7 @@ export default class OrderingEditor extends React.Component {
 	}
 
 
-	choicesChanged (choices) {
+	choicesChanged = (choices) => {
 		const {question} = this.props;
 		let labels = [];
 		let values = [];
@@ -126,6 +122,20 @@ export default class OrderingEditor extends React.Component {
 	}
 
 
+	buildBlankChoice = (column) => {
+		const first = column[0];
+		let blank;
+
+		if (first.groupName === LABELS) {
+			blank = this.labelFactory.make('', false, column.length, true);
+		} else {
+			blank = this.valueFactory.make('', true, column.length);
+		}
+
+		return blank;
+	}
+
+
 	addNewChoice () {
 		let {choices} = this.state;
 
@@ -135,22 +145,6 @@ export default class OrderingEditor extends React.Component {
 			this.labelFactory.make('', false, choices.length, true),
 			this.valueFactory.make('', true, choices.length)
 		]);
-
-		this.choicesChanged(choices);
-	}
-
-
-	removeChoice (labelId, valueId) {
-		let {choices} = this.state;
-
-		choices = choices.slice(0);
-
-		choices = choices.filter((choice) => {
-			let label = choice[0];
-			let value = choice[1];
-
-			return label.ID !== labelId || value.ID !== valueId;
-		});
 
 		this.choicesChanged(choices);
 	}
@@ -168,8 +162,8 @@ export default class OrderingEditor extends React.Component {
 				choices={choices}
 				error={error}
 				onChange={this.choicesChanged}
-				add={canAddPart(question) && this.addNewChoice}
-				remove={canRemovePart(question) && this.removeChoice}
+				buildBlankChoice={canAddPart(question) ? this.buildBlankChoice : void 0}
+				canRemove={canRemovePart(question)}
 				addLabel={addLabel}
 				reorderable={canMovePart(question)}
 				minAllowed={2}

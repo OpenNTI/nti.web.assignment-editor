@@ -1,6 +1,7 @@
 class Choice  {
-	constructor (data) {
+	constructor (data, groupName) {
 		this.data = data;
+		this.groupName = groupName;
 	}
 
 	clone () {
@@ -72,10 +73,11 @@ class Choice  {
 
 export default class ChoiceFactory {
 
-	constructor (type, containerId, errorField) {
+	constructor (type, containerId, errorField, name) {
 		this.choiceType = type;
 		this.containerId = containerId;
 		this.errorField = errorField;
+		this.name = name;
 	}
 
 
@@ -88,7 +90,7 @@ export default class ChoiceFactory {
 			label: label,
 			correct,
 			isNew
-		});
+		}, this.name);
 
 		return choice;
 	}

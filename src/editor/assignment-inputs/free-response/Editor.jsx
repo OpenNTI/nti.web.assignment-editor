@@ -1,5 +1,4 @@
 import React from 'react';
-import autobind from 'nti-commons/lib/autobind';
 
 import {savePartToQuestion} from '../Actions';
 import {generatePartFor} from './utils';
@@ -30,12 +29,6 @@ export default class FreeResponseEditor extends React.Component {
 		this.state = {
 			choices: this.mapChoices(part.solutions)
 		};
-
-		autobind(this,
-			'onChange',
-			'addChoice',
-			'removeChoice'
-		);
 	}
 
 
@@ -50,7 +43,7 @@ export default class FreeResponseEditor extends React.Component {
 	}
 
 
-	onChange (choices) {
+	onChange = (choices) => {
 		const {question, part} = this.props;
 		let solutions = choices.map(choice => choice.label);
 
@@ -62,29 +55,8 @@ export default class FreeResponseEditor extends React.Component {
 	}
 
 
-	addChoice () {
-		let {choices} = this.state;
-
-		choices = choices.slice(0);
-
-		choices.push(this.choiceFactory.make('', true, choices.length, true));
-
-		this.setState({
-			choices
-		});
-	}
-
-
-	removeChoice (choiceId) {
-		let {choices} = this.state;
-
-		choices = choices.slice(0);
-
-		choices = choices.filter((choice) => {
-			return choice.ID !== choiceId;
-		});
-
-		this.onChange(choices);
+	buildBlankChoice = (column) => {
+		return this.choiceFactory.make('', true, column.length, true);
 	}
 
 
@@ -97,8 +69,8 @@ export default class FreeResponseEditor extends React.Component {
 				<Choices
 					choices={choices}
 					onChange={this.onChange}
-					add={this.addChoice}
-					remove={this.removeChoice}
+					buildBlankChoice={this.buildBlankChoice}
+					canRemove
 					addLabel={addLabel}
 					plainText
 				/>

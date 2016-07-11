@@ -1,5 +1,4 @@
 import React from 'react';
-import autobind from 'nti-commons/lib/autobind';
 
 import Choices from './choices';
 import ChoiceFactory from '../choices/Factory';
@@ -35,12 +34,6 @@ export default class MultipleChoiceEditor extends React.Component {
 			choices: this.mapChoices(choices, solutions),
 			error
 		};
-
-		autobind(this,
-			'choicesChanged',
-			'addNewChoice',
-			'removeChoice'
-		);
 	}
 
 	//TODO: listen for changes on the question to update the choices
@@ -101,7 +94,7 @@ export default class MultipleChoiceEditor extends React.Component {
 	}
 
 
-	choicesChanged (choices) {
+	choicesChanged = (choices) => {
 		const {question, multipleAnswers} = this.props;
 
 		let values = choices.reduce((acc, choice, index) => {
@@ -128,14 +121,8 @@ export default class MultipleChoiceEditor extends React.Component {
 	}
 
 
-	addNewChoice () {
-		let {choices} = this.state;
-
-		choices = choices.slice(0);
-
-		choices.push(this.choiceFactory.make('', false, choices.length, true));
-
-		this.choicesChanged(choices);
+	buildBlankChoice = (column) => {
+		return this.choiceFactory.make('', false, column.length, true);
 	}
 
 
@@ -163,8 +150,8 @@ export default class MultipleChoiceEditor extends React.Component {
 				choices={choices}
 				error={error}
 				onChange={this.choicesChanged}
-				add={canAddPart(question) && this.addNewChoice}
-				remove={canRemovePart(question) && this.removeChoice}
+				buildBlankChoice={canAddPart(question) ? this.buildBlankChoice : void 0}
+				canRemove={canRemovePart(question)}
 				multipleAnswers={multipleAnswers}
 				reorderable={canMovePart(question)}
 			/>

@@ -1,7 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
 import {TextEditor, valuesEqual} from 'nti-modeled-content';
-import autobind from 'nti-commons/lib/autobind';
 
 import {DragHandle} from '../../../dnd';
 import SyncHeight from '../../../sync-height';
@@ -51,16 +50,6 @@ export default class Choice extends React.Component {
 		};
 
 		this.setEditorRef = x => this.editorRef = x;
-
-		autobind(this,
-			'onUnselect',
-			'onSelect',
-			'onDelete',
-			'onInputChange',
-			'onEditorFocus',
-			'onEditorChange',
-			'onEditorBlur'
-		);
 	}
 
 
@@ -152,14 +141,14 @@ export default class Choice extends React.Component {
 	}
 
 
-	onInputChange (e) {
+	onInputChange = (e) => {
 		this.setState({
 			inputValue: e.target.value
 		});
 	}
 
 
-	onEditorChange () {
+	onEditorChange = () => {
 		const {error} = this.state;
 		const oldLabel = this.getLabelFromState();
 		const newLabel = this.getLabelFromEditor();
@@ -175,7 +164,7 @@ export default class Choice extends React.Component {
 	}
 
 
-	onEditorFocus () {
+	onEditorFocus = () => {
 		this.isFocused = true;
 
 		this.setState({
@@ -184,13 +173,24 @@ export default class Choice extends React.Component {
 	}
 
 
-	onEditorBlur () {
+	onEditorBlur = () => {
 		this.isFocused = null;
 		this.onChange();
 	}
 
 
-	onDelete () {
+	onInputFocus = () => {
+		this.isFocused = true;
+	}
+
+
+	onInputBlur = () => {
+		this.isFocused = null;
+		this.onChange();
+	}
+
+
+	onDelete = () => {
 		const {onDelete} = this.props;
 
 		if (onDelete) {
@@ -199,15 +199,10 @@ export default class Choice extends React.Component {
 	}
 
 
-	onSelect () {
+	onSelect = () => {
 		if (this.inputRef) {
 			this.inputRef.focus();
 		}
-	}
-
-
-	onUnselect () {
-
 	}
 
 
@@ -240,6 +235,8 @@ export default class Choice extends React.Component {
 					ref={this.setEditorRef}
 					value={inputValue}
 					onChange={this.onInputChange}
+					onFocus={this.onInputFocus}
+					onBlur={this.onInputBlur}
 				/>
 			);
 		}

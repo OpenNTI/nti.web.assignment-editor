@@ -30,8 +30,8 @@ export default class Choices extends React.Component {
 		className: React.PropTypes.string,
 		containerId: React.PropTypes.string,
 		onChange: React.PropTypes.func,
-		add: React.PropTypes.func,
-		remove: React.PropTypes.func,
+		buildBlankChoice: React.PropTypes.func,
+		canRemove: React.PropTypes.bool,
 		reorderable: React.PropTypes.bool,
 		addLabel: React.PropTypes.string,
 		minAllowed: React.PropTypes.number,
@@ -52,7 +52,7 @@ export default class Choices extends React.Component {
 	constructor (props) {
 		super(props);
 
-		const {choices, accepts, add, remove, error, minAllowed} = this.props;
+		const {choices, accepts, buildBlankChoice, canRemove, error, minAllowed} = this.props;
 		let {columns, deletes} = this.mapColumns(choices, minAllowed);
 
 		this.state = {
@@ -60,8 +60,8 @@ export default class Choices extends React.Component {
 			deletes,
 			accepts,
 			error,
-			canAdd: !!add,
-			canRemove: !!remove
+			canAdd: !!buildBlankChoice,
+			canRemove
 		};
 
 		this.setUpHandlers(columns, deletes);
@@ -263,20 +263,53 @@ export default class Choices extends React.Component {
 
 
 	add () {
-		const {add} = this.props;
+		const {buildBlankChoice} = this.props;
 
-		if (add) {
-			add();
+		if (!buildBlankChoice) {
+			return;
 		}
+
+		const {columns} = this.state;
+
+		for (let i = 0; i < columns.length; i++) {
+			let column = columns[i];
+
+			column.push(buildBlankChoice(column.slice(0)));
+		}
+
+		this.setState({
+			columns
+		}, () => {
+			this.onChange();
+		});
 	}
 
 
 	remove (ids) {
-		const {remove} = this.props;
+		const {canRemove} = this.props;
 
-		if (remove) {
-			remove(...ids);
+		if (!canRemove) { return; }
+
+		const {columns} = this.state;
+
+		for (let i = 0; i < columns.length; i++) {
+			let column = columns[i];
+			let toRemove = ids[i];
+
+			column = column.filter((choice) => {
+				const choiceId = choice.NTIID || choice.ID;
+
+				return toRemove !== choiceId;
+			});
+
+			columns[i] = column;
 		}
+
+		this.setState({
+			columns
+		}, () => {
+			this.onChange();
+		});
 	}
 
 
