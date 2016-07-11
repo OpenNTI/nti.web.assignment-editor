@@ -97,9 +97,7 @@ export default class Editor extends React.Component {
 
 		return (
 			<div className={cls}>
-				{!assignment ? (
-					<Loading/>
-				) : deleting ? (
+				{deleting ? (
 					<Loading message="Deleting" />
 				) : (
 					<div className="assignment-editor-container-inner">
