@@ -1,12 +1,14 @@
 import React, { PropTypes } from 'react';
 import {scoped} from 'nti-lib-locale';
 
-import OptionGroup from '../OptionGroup';
-import Option from '../Option';
+import OptionGroup from './OptionGroup';
+import Option from './Option';
 
 const DEFAULT_TEXT = {
 	content: 'Save time with auto grading.',
-	label: 'Enable Auto Grading'
+	label: 'Enable Auto Grading',
+	'disabled-no-questions': 'Add some questions to enable this option.',
+	'disabled-conflicting-questions': 'Add some questions to enable this option.'
 };
 
 const t = scoped('OPTIONS_GRADING', DEFAULT_TEXT);

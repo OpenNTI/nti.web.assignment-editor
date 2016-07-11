@@ -2,8 +2,8 @@ import React, { PropTypes } from 'react';
 import {scoped} from 'nti-lib-locale';
 import {HOC, NumberInput} from 'nti-web-commons';
 
-import OptionGroup from '../OptionGroup';
-import Option from '../Option';
+import OptionGroup from './OptionGroup';
+import Option from './Option';
 
 const LIMIT_NONE = 'limit-none';
 const LIMIT_PORTION = 'limit-porition';

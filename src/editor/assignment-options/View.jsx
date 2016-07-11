@@ -1,9 +1,10 @@
 import React, {PropTypes} from 'react';
 import {HOC} from 'nti-web-commons';
-import Grading from './options/Grading';
-import Randomize from './options/Randomize';
-import Limits from './options/Limits';
-import Visibility from './options/Visibility';
+
+import Grading from './Grading';
+import Randomize from './Randomize';
+import Limits from './Limits';
+import Visibility from './Visibility';
 
 function getQuestionSet (assignment) {
 	const {parts} = assignment;

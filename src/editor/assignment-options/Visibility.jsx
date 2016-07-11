@@ -3,7 +3,7 @@ import {scoped} from 'nti-lib-locale';
 import {SelectBox} from 'nti-web-commons';
 import {HOC} from 'nti-web-commons';
 
-import OptionGroup from '../OptionGroup';
+import OptionGroup from './OptionGroup';
 
 const DEFAULT_TEXT = {
 	content: 'Change who can see the assignment.',
