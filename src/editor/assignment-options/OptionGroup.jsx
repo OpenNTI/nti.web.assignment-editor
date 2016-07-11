@@ -34,7 +34,7 @@ class OptionGroup extends React.Component {
 					<p>{content}</p>
 					{disabled && ( <span className="disabled-text">{disabledText}</span> )}
 					{error && (
-						<p className="error"><i className="icon-alert"/>{error}</p>
+						<p className="error"><i className="icon-alert small"/>{error}</p>
 					)}
 				</div>
 			</div>

@@ -9,7 +9,10 @@ const DEFAULT_TEXT = {
 	content: 'Save time with auto grading.',
 	label: 'Enable Auto Grading',
 	'disabled-no-questions': 'Add some questions to enable this option.',
-	'disabled-conflicting-questions': 'Add some questions to enable this option.'
+	'disabled-conflicting-questions': {
+		other: 'Essays and file uploads are question types that are not compatible with auto grading. You must remove questions %(conflicts)s before enabling auto grade.',
+		one: 'Essays and file uploads are question types that are not compatible with auto grading. You must remove question %(conflicts)s before enabling auto grade.'
+	}
 };
 
 const t = scoped('OPTIONS_GRADING', DEFAULT_TEXT);
@@ -61,10 +64,21 @@ class Grading extends React.Component {
 
 	setupValue (props = this.props) {
 		const setState = s => this.state ? this.setState(s) : (this.state = s);
-		const {assignment} = props;
+		const {assignment, questionSet} = props;
 		const {isAutoGraded} = assignment || {};
 
-		setState({ isAutoGraded });
+		let conflicts = null;
+
+		if (questionSet && !questionSet.isAutoGradable) {
+			conflicts = questionSet.getAutoGradableConflicts();
+
+			conflicts = t('disabled-conflicting-questions', {
+				count: conflicts.length,
+				conflicts: conflicts.map(x => x.index + 1).join(', ')
+			});
+		}
+
+		setState({isAutoGraded, conflicts });
 	}
 
 
@@ -80,16 +94,21 @@ class Grading extends React.Component {
 
 
 	render () {
-		const {assignment} = this.props;
-		const {isAutoGraded, error} = this.state;
+		const {assignment, questionSet} = this.props;
+		const {isAutoGraded, conflicts, error} = this.state;
 		const disabled = assignment && !assignment.hasLink('edit');
 
-		const errorMessage = error && (
-			error.message
-		);
+		const errorMessage = error && ( error.message );
 
 		return (
-			<OptionGroup name="grading" header="Grading" content={t('content')} error={errorMessage}>
+			<OptionGroup
+				name="grading"
+				header="Grading"
+				content={t('content')}
+				error={conflicts || errorMessage}
+				disabled={!questionSet || conflicts}
+				disabledText={questionSet ? '' : t('disabled-no-questions')}
+				>
 				<Option label={t('label')} name="auto-grading" value={isAutoGraded} onChange={this.onChange} disabled={disabled}/>
 			</OptionGroup>
 		);
