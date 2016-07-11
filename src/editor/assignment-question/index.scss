@@ -16,6 +16,17 @@
 		&.error {
 			box-shadow: 0 0 1px 1px $border-red;
 		}
+
+		&.is-saving {
+			.hide-when-saving {
+				opacity: 0;
+			}
+		}
+
+		.hide-when-saving {
+			opacity: 1;
+			transition: opacity 50ms;
+		}
 	}
 
 	.wrap {

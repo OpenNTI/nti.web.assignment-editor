@@ -217,11 +217,11 @@ export default class Choice extends React.Component {
 
 		return (
 			<Selectable className={cls} id={selectableId} value={selectableValue} onSelect={this.onSelect} onUnselect={this.onUnselect}>
-				<DragHandle className="choice-drag-handle" />
+				<DragHandle className="choice-drag-handle hide-when-saving" />
 				<SyncHeight ref={this.setSyncRef} group={heightSyncGroup}>
 					{this.renderEditor()}
 				</SyncHeight>
-				{onDelete && (<div className="delete" onClick={this.onDelete}><i className="icon-remove" title="Delete Row"/></div>)}
+				{onDelete && (<div className="delete hide-when-saving" onClick={this.onDelete}><i className="icon-remove" title="Delete Row"/></div>)}
 			</Selectable>
 		);
 	}
@@ -235,6 +235,7 @@ export default class Choice extends React.Component {
 			return (
 				<input
 					type="text"
+					className="hide-when-saving"
 					ref={this.setEditorRef}
 					value={inputValue}
 					onChange={this.onInputChange}

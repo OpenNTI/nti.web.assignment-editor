@@ -60,9 +60,9 @@ export default class FileUploadEditor extends React.Component {
 		const title = this.getExtensionText(part && part.allowed_extensions);
 
 		return (
-			<div className="file-upload">
-				<div>{title}</div>
-				{part.max_file_size && <div>Maximum file size is <span className="filesize">{filesize(part.max_file_size)}</span>.</div>}
+			<div className="file-upload assignment-editing">
+				<div className="title hide-when-saving">{title}</div>
+				{part.max_file_size && <div className="max-size hide-when-saving">Maximum file size is <span className="filesize">{filesize(part.max_file_size)}</span>.</div>}
 				<div className="upload-button">Upload a file</div>
 				<SettingsButton onClick={this.showSettings} />
 			</div>

@@ -154,7 +154,7 @@ export default class QuestionComponent extends React.Component {
 				<Between question={question} before />
 				<Selectable className={cls} id={selectableId} value={selectableValue}>
 					<div className="wrap">
-						<DragHandle className="question-drag-handle" />
+						<DragHandle className="question-drag-handle hide-when-saving" />
 						<div className="index">{index + 1}</div>
 						<Content question={question} onFocus={this.onContentFocus} onBlur={this.onContentBlur} error={contentError} warning={contentWarning}/>
 					</div>

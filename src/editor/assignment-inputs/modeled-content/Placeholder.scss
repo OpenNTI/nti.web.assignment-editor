@@ -6,6 +6,7 @@
 	transition: color 50ms;
 	color: $tertiary-grey;
 	padding: 10px 14px;
+	margin: rem-calc(15px) rem-calc(15px) 0;
 
 	&:not(.single-line) {
 		min-height: 10rem;

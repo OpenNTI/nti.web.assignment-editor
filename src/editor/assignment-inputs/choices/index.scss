@@ -21,11 +21,11 @@
 	}
 
 	.add-choice {
-		position: relative;
 		background-color: white;
 		font: normal 400 0.875rem/40px $body-font-family;
 		color: $secondary-grey;
 		padding: 0 rem-calc(10px) 0 rem-calc(15px);
+		margin: 0 rem-calc(15px);
 		border: 1px solid $border-grey-light;
 		cursor: pointer;
 		transition: color 50ms;
@@ -35,9 +35,13 @@
 		}
 	}
 
-	.choice-column.no-reorder {
-		.drag-handle {
-			display: none;
+	.choice-column {
+		padding: rem-calc(15px) rem-calc(15px) 0;
+
+		&.no-reorder {
+			.drag-handle {
+				display: none;
+			}
 		}
 	}
 }
@@ -46,9 +50,5 @@
 .is-saving .assignment-input-choices {
 	.add-choice {
 		color: transparent;
-	}
-
-	.delete {
-		opacity: 0;
 	}
 }

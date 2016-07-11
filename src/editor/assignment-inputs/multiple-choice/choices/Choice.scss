@@ -39,13 +39,13 @@
 .dragging .multiple-choice-choice {
 	position: static;
 
-	input[type="checkbox"], input[type="radio"] {
+	.radio-component, .checkbox-component {
 		display: none;
 	}
 }
 
 .is-saving .multiple-choice-choice {
-	input[type="checkbox"], input[type="radio"] {
+	.radio-component, .checkbox-component {
 	 	opacity: 0;
 	}
 }
