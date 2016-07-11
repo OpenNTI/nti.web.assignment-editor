@@ -12,6 +12,7 @@ export default class MultipleChoiceChoice extends React.Component {
 		error: React.PropTypes.object,
 		group: React.PropTypes.string,
 		onChange: React.PropTypes.func,
+		onSolutionChange: React.PropTypes.func,
 		onDelete: React.PropTypes.func,
 		multipleAnswers: React.PropTypes.bool,
 		plainText: React.PropTypes.bool
@@ -62,16 +63,14 @@ export default class MultipleChoiceChoice extends React.Component {
 
 
 	onSolutionChange (e) {
-		const {choice:oldChoice} = this.props;
+		const {choice:oldChoice, onSolutionChange} = this.props;
 		let newChoice = oldChoice.clone();
-
-		if (this.choiceCmp) {
-			newChoice.label = this.choiceCmp.getLabelFromEditor();
-		}
 
 		newChoice.correct = e.target.checked;
 
-		this.onChange(newChoice);
+		if (onSolutionChange) {
+			onSolutionChange(newChoice);
+		}
 	}
 
 

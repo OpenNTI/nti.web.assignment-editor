@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import autobind from 'nti-commons/lib/autobind';
+import buffer from 'nti-commons/lib/function-buffer';
 
 import {SyncHeightGroup} from '../../../sync-height';
 import {Ordering} from '../../../dnd/';
@@ -169,7 +170,7 @@ export default class Choices extends React.Component {
 	}
 
 
-	onChange () {
+	onChange = buffer(50, () => {
 		const {onChange} = this.props;
 		const {columns} = this.state;
 		let rows = [];
@@ -197,7 +198,7 @@ export default class Choices extends React.Component {
 		if (onChange) {
 			onChange(rows);
 		}
-	}
+	})
 
 
 	onOrderChange (columnIndex, choices) {

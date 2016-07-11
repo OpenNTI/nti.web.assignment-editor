@@ -17,13 +17,23 @@ export default class MultipleChoiceChoices extends Choices {
 
 	className = 'multiple-choice-choices'
 
+	setUpHandlers (columns, deletes) {
+		super.setUpHandlers(columns, deletes);
 
-	onChoiceChange (column, choice) {
+		this.solutionHandlers = [];
+
+		for (let i = 0; i < columns.length; i++) {
+			this.solutionHandlers[i] = this.onSolutionChange.bind(this, i);
+		}
+	}
+
+
+	onSolutionChange (column, choice) {
 		const {multipleAnswers} = this.props;
 		const {columns} = this.state;
 		const oldColumn = columns[column];
+		const newColumn = [];
 		let correctCount = 0;
-		let newColumn = [];
 		let solutionChanged = false;
 
 		for (let oldChoice of oldColumn) {
@@ -31,21 +41,18 @@ export default class MultipleChoiceChoices extends Choices {
 				correctCount += 1;
 			}
 
-			if (this.isSameChoice(oldChoice, choice)) {
+			if (this.isSameChoice(choice, oldChoice)) {
 				if (oldChoice.correct !== choice.correct) {
 					solutionChanged = true;
 				}
 
-				oldChoice.label = choice.label;
-
-				newColumn.push(oldChoice.clone());
-			} else {
-				newColumn.push(oldChoice.clone());
 			}
+
+			newColumn.push(oldChoice.clone());
 		}
 
 		if (solutionChanged && (!multipleAnswers || canEditMultipleAnswerSolution(choice, correctCount))) {
-			newColumn = newColumn.map((newChoice) => {
+			columns[column] = newColumn.map((newChoice) => {
 				if (this.isSameChoice(newChoice, choice)) {
 					newChoice.correct = choice.correct;
 				} else if (newChoice.correct && !multipleAnswers) {
@@ -54,15 +61,13 @@ export default class MultipleChoiceChoices extends Choices {
 
 				return newChoice;
 			});
+
+			this.setState({
+				columns
+			}, () => {
+				this.onChange();
+			});
 		}
-
-		columns[column] = newColumn;
-
-		this.setState({
-			columns
-		}, () => {
-			this.onChange();
-		});
 	}
 
 
@@ -71,6 +76,7 @@ export default class MultipleChoiceChoices extends Choices {
 		const {multipleAnswers, containerId} = this.props;
 		const {error, canRemove} = this.state;
 		const onChange = this.choiceChangeHandlers[column];
+		const solutionHandler = this.solutionHandlers[column];
 		const sync = this.getSyncForRow(row);
 		const onDelete = canRemove ? this.deleteHandlers[row] : null;
 
@@ -81,6 +87,7 @@ export default class MultipleChoiceChoices extends Choices {
 				heightSyncGroup={sync}
 				group={containerId + '-choice'}
 				onChange={onChange}
+				onSolutionChange={solutionHandler}
 				error={isErrorForChoice(error, choice)}
 				multipleAnswers={multipleAnswers}
 				onDelete={onDelete}
