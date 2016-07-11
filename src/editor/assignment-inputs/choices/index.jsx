@@ -170,7 +170,7 @@ export default class Choices extends React.Component {
 	}
 
 
-	onChange = buffer(50, () => {
+	onChange = buffer(500, () => {
 		const {onChange} = this.props;
 		const {columns} = this.state;
 		let rows = [];

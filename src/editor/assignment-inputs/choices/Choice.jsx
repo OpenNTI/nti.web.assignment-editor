@@ -186,6 +186,7 @@ export default class Choice extends React.Component {
 
 	onEditorBlur () {
 		this.isFocused = null;
+		this.onChange();
 	}
 
 
@@ -206,7 +207,7 @@ export default class Choice extends React.Component {
 
 
 	onUnselect () {
-		this.onChange();
+
 	}
 
 
