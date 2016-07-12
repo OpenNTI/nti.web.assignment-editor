@@ -110,7 +110,7 @@ class Grading extends React.Component {
 				header="Grading"
 				content={t('content')}
 				error={conflicts || errorMessage}
-				disabled={!questionSet || conflicts}
+				disabled={!questionSet || Boolean(conflicts)}
 				disabledText={questionSet ? '' : t('disabled-no-questions')}
 				>
 				<Option label={t('label')} name="auto-grading" value={isAutoGraded} onChange={this.onChange} disabled={disabled}/>
