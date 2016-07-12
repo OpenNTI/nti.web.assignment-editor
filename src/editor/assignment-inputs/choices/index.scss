@@ -40,7 +40,7 @@
 
 		&.no-reorder {
 			.drag-handle {
-				display: none;
+				visibility: hidden; // the radio/checkbox label position is affected by the drag handle's width
 			}
 		}
 	}
