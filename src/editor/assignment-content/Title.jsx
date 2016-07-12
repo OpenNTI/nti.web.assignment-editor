@@ -9,7 +9,7 @@ const PLACEHOLDER = 'Title';
 
 function getMaxLength (schema = {}) {
 	const {Fields:fields} = schema;
-	const {title} = fields || {};
+	const {title = {}} = fields || {};
 
 	return title.max_length || 1000;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Logger from 'nti-util-logger';
 import {savePartToQuestion} from '../Actions';
 import {generatePartFor} from './utils';
 import {canAddPart, canMovePart, canRemovePart} from '../utils';
@@ -14,6 +14,7 @@ const addLabel = 'Add a Row';
 const LABELS = 'labels';
 const VALUES = 'values';
 
+const logger = Logger.get('lib:assignment-editor:assignment-inputs:ordering:Editor');
 
 export default class OrderingEditor extends React.Component {
 	static propTypes = {
@@ -68,11 +69,17 @@ export default class OrderingEditor extends React.Component {
 
 
 	mapChoices (labels, values, solutions) {
-		let solution = solutions[0];//For now just use the first solution
+		let solution = solutions && solutions[0];//For now just use the first solution
 		let choices = [];
+
 
 		solution = solution && solution.value;
 
+		if(!solution) {
+			logger.error('No solution? Defaulting to label order.');
+			solution = Object.keys(labels);
+		}
+		
 		for (let i = 0; i < labels.length; i++) {
 			let label = labels[i];
 			let value = values[solution[i]];
