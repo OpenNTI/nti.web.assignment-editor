@@ -107,6 +107,7 @@ export default class Selectable extends React.Component {
 	select (e) {
 		const selectionManager = this.context.SelectionManager;
 		const item = this.getSelectionItem();
+		const {selected} = this.state;
 		const {onSelect} = this.props;
 
 		clearTimeout(this.doUnselectTimeout);
@@ -116,7 +117,7 @@ export default class Selectable extends React.Component {
 			e.stopPropagation();
 		}
 
-		if (onSelect) {
+		if (onSelect && !selected) {
 			onSelect(item);
 		}
 	}
@@ -144,12 +145,19 @@ export default class Selectable extends React.Component {
 
 
 	render () {
-		let {className, children} = this.props;
+		let {className, children, ...otherProps} = this.props;
 		let {selected} = this.state;
 		let cls = cx(className || '', 'selectable', { selected: selected});
 
+		delete otherProps.onFocus;
+		delete otherProps.onBlur;
+		delete otherProps.id;
+		delete otherProps.value;
+		delete otherProps.onSelect;
+		delete otherProps.onUnselect;
+
 		return (
-			<div className={cls} onFocus={this.select} onBlur={this.unselect} tabIndex="0">
+			<div {...otherProps} className={cls} onFocus={this.select} onBlur={this.unselect}>
 				{children}
 			</div>
 		);
