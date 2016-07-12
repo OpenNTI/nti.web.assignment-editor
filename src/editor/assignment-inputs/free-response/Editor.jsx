@@ -38,8 +38,8 @@ export default class FreeResponseEditor extends React.Component {
 		}
 
 		return solutions.map((solution, index) => {
-			return this.choiceFactory.make(solution.value, true, index);
-		});
+			return solution && solution.value ? this.choiceFactory.make(solution.value, true, index) : null;
+		}).filter(x => x);
 	}
 
 
