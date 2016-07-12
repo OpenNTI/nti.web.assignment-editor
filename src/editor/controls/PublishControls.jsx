@@ -65,7 +65,7 @@ class PublishControls extends React.Component {
 					onChange={this.onChange}
 					assignment={assignment}
 				>
-					{canDelete && <div className="flyout-fullwidth-btn delete" onClick={this.onDeleteClick}>Delete</div>}
+				{canDelete && <div onClick={this.onDeleteClick} className="delete-assignment"><i className="icon-delete small"/>Delete</div>}
 				</Control>
 			</div>
 		);

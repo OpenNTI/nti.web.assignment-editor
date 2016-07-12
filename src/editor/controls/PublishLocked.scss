@@ -1,16 +1,16 @@
 @import "~nti-style-common";
 
-.publish-locked.flyout {
+.publish-locked .flyout-inner {
 	border-radius: 0.25rem;
 	background-color: #ffffff;
 	box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.21);
 	padding: 0.625rem;
 	width: 19.0625rem;
-	
+
 	.reset-label {
 		font-size: 0.875rem;
-	    line-height: 1.9;
-	    color: #757474;
+		line-height: 1.9;
+		color: #757474;
 		font-family: $body-font-family;
 	}
 	.reset-text {
@@ -20,17 +20,8 @@
 		color: #b8b8b8;
 	}
 	.publish-reset {
-		width: 100%;
-		height: 2rem;
-		border-radius: 0.25rem;
 		color: white;
 		text-align: center;
-		vertical-align: middle;
-		line-height: 2rem;
-		font-weight: 100;
-		font-size: 0.875rem;
-		font-family: $body-font-family;
-		cursor: pointer;
 		background-color: $primary-red;
 	}
 }

@@ -13,6 +13,7 @@ const t = scoped('PUBLISH_LOCKED', DEFAULT_TEXT);
 
 export default class PublishLocked extends React.Component {
 	static propTypes = {
+		children: PropTypes.node,
 		value: PropTypes.oneOfType([
 			PropTypes.instanceOf(Date),
 			PropTypes.oneOf(Object.keys(PUBLISH_STATES))
@@ -34,10 +35,6 @@ export default class PublishLocked extends React.Component {
 		}
 	}
 
-	onDeleteClick () {
-
-	}
-
 	closeMenu () {
 		if (this.flyoutRef) {
 			this.flyoutRef.dismiss();
@@ -45,18 +42,23 @@ export default class PublishLocked extends React.Component {
 	}
 
 	render () {
-		const {value} = this.props;
+		const {value, children} = this.props;
 
 		const trigger = <PublishTrigger value={value} />;
 
 		return (
-		<Flyout ref={this.setFlyoutRef} className="publish-locked" alignment="top-right" trigger={trigger} arrow>
-			<span className="reset-label">{t('label')}</span>
-			<p className="reset-text">{t('text')}</p>
+			<Flyout ref={this.setFlyoutRef} className="publish-locked"
+				trigger={trigger}
+				verticalAlign={Flyout.ALIGNMENTS.TOP}
+				horizontalAlign={Flyout.ALIGNMENTS.RIGHT}
+				arrow>
+				<span className="reset-label">{t('label')}</span>
+				<p className="reset-text">{t('text')}</p>
 
-			<div onClick={this.onDeleteClick} className="publish-delete">Delete</div>
-			<div className="publish-reset" onClick={this.onResetClick}>Reset Assignment</div>
-		</Flyout>
+				{children}
+
+				<div className="flyout-fullwidth-btn publish-reset" onClick={this.onResetClick}>Reset Assignment</div>
+			</Flyout>
 		);
 	}
 }
