@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import {scoped} from 'nti-lib-locale';
-import {SelectBox} from 'nti-web-commons';
 import {HOC} from 'nti-web-commons';
 
 import OptionGroup from './OptionGroup';
@@ -25,16 +24,16 @@ class Visibility extends React.Component {
 		return props.assignment;
 	}
 
-	onChange = (value) => {
+	onChange = ({target}) => {
 		const {assignment} = this.props;
 		if (assignment) {
-			assignment.setVisibility(value);
+			assignment.setVisibility(target.value);
 		}
 	}
 
 	render () {
 		const {assignment} = this.props;
-		const value = assignment && assignment.getVisibility();
+		const visibility = assignment && assignment.getVisibility();
 
 		const options = [
 			getOption('ForCredit'),
@@ -43,7 +42,11 @@ class Visibility extends React.Component {
 
 		return (
 			<OptionGroup name="visibility" header="Visibility" content={t('content')}>
-				<SelectBox value={value} options={options} onChange={this.onChange} />
+				<select defaultValue={visibility} onChange={this.onChange}>
+					{options.map(({value, label}) =>
+						<option key={value} value={value}>{label}</option>
+					)}
+				</select>
 			</OptionGroup>
 		);
 	}
