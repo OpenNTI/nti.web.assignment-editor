@@ -39,7 +39,8 @@ export default class TimeLimit extends React.Component {
 		this.setState({
 			value,
 			hasTimeLimit,
-			changed: false
+			changed: false,
+			error: null
 		});
 	}
 
@@ -55,7 +56,11 @@ export default class TimeLimit extends React.Component {
 	}
 
 	onEditorDismiss () {
-		// this.save();
+		this.reset();
+	}
+
+	reset () {
+		this.setUp();
 	}
 
 	save () {
