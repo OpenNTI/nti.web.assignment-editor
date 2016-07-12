@@ -3,7 +3,8 @@ import wait from 'nti-commons/lib/wait';
 
 import OrderedContents from '../../ordered-contents';
 
-import {saveFieldOn, warnIfQuestionEmpty} from '../Actions';
+import {warnIfQuestionEmpty} from '../Actions';
+import {partsEqual} from '../assignment-inputs';
 import {removePartWithQuestionSet} from '../assignment-parts/Actions';
 import {
 	SAVING,
@@ -18,23 +19,39 @@ import {
 import {cloneQuestion} from './utils';
 
 
-export function saveQuestionContent (question, content) {
-	const save = saveFieldOn(question, 'content', content);
+export function updateQuestion (question, fields) {
+	const {content:oldContent, parts:oldParts} = question;
+	const {content:newContent, parts:newParts} = fields;
+	let values = {};
 
-	if (save && save.then) {
-		save.then(() => {
+	if ((newContent || newContent === '') && newContent !== oldContent) {
+		values.content = newContent;
+	}
+
+	if (newParts && !partsEqual(newParts, oldParts)) {
+		values.parts = newParts;
+	}
+
+	if (!values.content && !values.parts) {
+		return;
+	}
+
+	dispatch(SAVING, question);
+
+	question.save(values)
+		.then(() => {
 			dispatch(QUESTION_UPDATED, question);
 			warnIfQuestionEmpty(question);
+			dispatch(SAVE_ENDED, question);
 		}).catch((reason) => {
 			dispatch(QUESTION_ERROR, {
 				NTIID: question.NTIID,
-				field: 'content',
+				field: 'parts',
 				reason
 			});
+			dispatch(SAVE_ENDED, question);
 		});
-	}
 }
-
 
 export function deleteQuestionFrom (question, questionSet, assignment) {
 	const orderedContents = new OrderedContents(questionSet);

@@ -2,7 +2,6 @@ import React from 'react';
 
 import Choices from './choices';
 import ChoiceFactory from '../choices/Factory';
-import {savePartToQuestion} from '../Actions';
 import {generatePartFor} from './utils';
 import {canAddPart, canMovePart, canRemovePart} from '../utils';
 
@@ -15,7 +14,9 @@ export default class MultipleChoiceEditor extends React.Component {
 		question: React.PropTypes.object.isRequired,
 		multipleAnswers: React.PropTypes.bool,
 		error: React.PropTypes.object,
-		generatePart: React.PropTypes.func
+		generatePart: React.PropTypes.func,
+		index: React.PropTypes.number,
+		onChange: React.PropTypes.func
 	}
 
 
@@ -95,7 +96,7 @@ export default class MultipleChoiceEditor extends React.Component {
 
 
 	choicesChanged = (choices) => {
-		const {question, multipleAnswers} = this.props;
+		const {multipleAnswers, onChange, index:partIndex} = this.props;
 
 		let values = choices.reduce((acc, choice, index) => {
 			let label = choice.label;
@@ -113,11 +114,10 @@ export default class MultipleChoiceEditor extends React.Component {
 			values.solutions = values.solutions[0];
 		}
 
-		savePartToQuestion(question, this.generatePart('', values.choices, values.solutions));
+		if (onChange) {
+			onChange(partIndex, this.generatePart('', values.choices, values.solutions));
+		}
 
-		this.setState({
-			choices: choices
-		});
 	}
 
 

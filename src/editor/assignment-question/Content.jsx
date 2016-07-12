@@ -5,8 +5,6 @@ import BufferedTextEditor from '../inputs/BufferedTextEditor';
 
 import {getContentPlaceholderFor} from '../assignment-inputs/';
 
-import {saveQuestionContent} from './Actions';
-
 
 export default class QuestionContent extends React.Component {
 	static propTypes = {
@@ -15,7 +13,8 @@ export default class QuestionContent extends React.Component {
 		onFocus: React.PropTypes.func,
 		onBlur: React.PropTypes.func,
 		error: React.PropTypes.any,
-		warning: React.PropTypes.any
+		warning: React.PropTypes.any,
+		onChange: React.PropTypes.func
 	}
 
 
@@ -43,9 +42,11 @@ export default class QuestionContent extends React.Component {
 
 
 	onChange = (value) => {
-		const {question} = this.props;
+		const {onChange} = this.props;
 
-		saveQuestionContent(question, value);
+		if (onChange) {
+			onChange(value);
+		}
 	}
 
 

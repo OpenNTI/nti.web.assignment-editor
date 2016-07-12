@@ -2,7 +2,6 @@ import React from 'react';
 import filesize from 'filesize';
 import {Prompt} from 'nti-web-commons';
 
-import {savePartToQuestion} from '../Actions';
 import {generatePartFor} from './utils';
 import Settings from './Settings';
 import {SettingsButton} from 'nti-web-commons';
@@ -10,7 +9,9 @@ import {SettingsButton} from 'nti-web-commons';
 export default class FileUploadEditor extends React.Component {
 	static propTypes = {
 		part: React.PropTypes.object.isRequired,
-		question: React.PropTypes.object.isRequired
+		question: React.PropTypes.object.isRequired,
+		onChange: React.PropTypes.func,
+		index: React.PropTypes.number
 	}
 
 	state = {}
@@ -23,7 +24,7 @@ export default class FileUploadEditor extends React.Component {
 
 
 	onSaveSettings = (value) => {
-		const {question, part} = this.props;
+		const {part, onChange, index} = this.props;
 		const newPart = generatePartFor(
 			part.MimeType,
 			part.content,
@@ -31,7 +32,11 @@ export default class FileUploadEditor extends React.Component {
 			part.allowed_mime_types,
 			value.fileExtensions
 		);
-		savePartToQuestion(question, newPart);
+
+		if (onChange) {
+			onChange(index, newPart);
+		}
+
 		return true;
 	}
 

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import {savePartToQuestion} from '../Actions';
 import {generatePartFor} from './utils';
 import ChoiceFactory from '../choices/Factory';
 import Choices from '../choices';
@@ -15,7 +14,9 @@ const addLabel = 'Add a Possible Answer';
 export default class FreeResponseEditor extends React.Component {
 	static propTypes = {
 		part: React.PropTypes.object.isRequired,
-		question: React.PropTypes.object
+		question: React.PropTypes.object,
+		index: React.PropTypes.number,
+		onChange: React.PropTypes.func
 	}
 
 
@@ -44,14 +45,13 @@ export default class FreeResponseEditor extends React.Component {
 
 
 	onChange = (choices) => {
-		const {question, part} = this.props;
+		const {part, onChange, index} = this.props;
 		let solutions = choices.map(choice => choice.label);
 
-		this.setState({
-			choices
-		}, () => {
-			savePartToQuestion(question, generatePartFor(part.MimeType, '', solutions));
-		});
+
+		if (onChange) {
+			onChange(index, generatePartFor(part.MimeType, '', solutions));
+		}
 	}
 
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import Logger from 'nti-util-logger';
-import {savePartToQuestion} from '../Actions';
 import {generatePartFor} from './utils';
 import {canAddPart, canMovePart, canRemovePart} from '../utils';
 import ChoiceFactory from '../choices/Factory';
@@ -20,7 +19,9 @@ export default class OrderingEditor extends React.Component {
 	static propTypes = {
 		part: React.PropTypes.object.isRequired,
 		question: React.PropTypes.object.isRequired,
-		error: React.PropTypes.any
+		error: React.PropTypes.any,
+		index: React.PropTypes.number,
+		onChange: React.PropTypes.onChange
 	}
 
 	constructor (props) {
@@ -79,7 +80,7 @@ export default class OrderingEditor extends React.Component {
 			logger.error('No solution? Defaulting to label order.');
 			solution = Object.keys(labels);
 		}
-		
+
 		for (let i = 0; i < labels.length; i++) {
 			let label = labels[i];
 			let value = values[solution[i]];
@@ -107,7 +108,7 @@ export default class OrderingEditor extends React.Component {
 
 
 	choicesChanged = (choices) => {
-		const {question} = this.props;
+		const {onChange, index} = this.props;
 		let labels = [];
 		let values = [];
 		let solutions = {};
@@ -121,11 +122,10 @@ export default class OrderingEditor extends React.Component {
 			solutions[i] = i;
 		}
 
-		savePartToQuestion(question, this.generatePart('', labels, values, solutions));
 
-		this.setState({
-			choices
-		});
+		if (onChange) {
+			onChange(index, this.generatePart('', labels, values, solutions));
+		}
 	}
 
 

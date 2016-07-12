@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
+import buffer from 'nti-commons/lib/function-buffer';
 import {Errors} from 'nti-web-commons';
-import autobind from 'nti-commons/lib/autobind';
 
 import {DragHandle} from '../../dnd';
 
@@ -10,6 +10,7 @@ import {QUESTION_ERROR, QUESTION_WARNING} from '../Constants';
 import Selectable from '../utils/Selectable';
 import ControlsConfig from '../controls/ControlsConfig';
 
+import {updateQuestion} from './Actions';
 import Between from './Between';
 import Content from './Content';
 import Parts from './Parts';
@@ -51,13 +52,6 @@ export default class QuestionComponent extends React.Component {
 			selectableId: question.NTIID,
 			selectableValue: new ControlsConfig(null, {after: true, item: question})
 		};
-
-		autobind(this,
-			'onContentFocus',
-			'onContentBlur',
-			'onStoreChange',
-			'onQuestionChange'
-		);
 	}
 
 
@@ -83,14 +77,14 @@ export default class QuestionComponent extends React.Component {
 	}
 
 
-	onStoreChange (data) {
+	onStoreChange = (data) => {
 		if (data.type === QUESTION_ERROR || data.type === QUESTION_WARNING) {
 			this.onQuestionMessages();
 		}
 	}
 
 
-	onQuestionChange () {
+	onQuestionChange = () => {
 		const {questionError} = this.state;
 
 		if (questionError && questionError.clear) {
@@ -125,7 +119,33 @@ export default class QuestionComponent extends React.Component {
 	}
 
 
-	onContentFocus (editor) {
+	onChange = buffer(500, () => {
+		const {question} = this.props;
+
+		if (this.pendingChanges) {
+			updateQuestion(question, this.pendingChanges);
+		}
+	})
+
+
+	onContentChange = (content) => {
+		this.pendingChanges = this.pendingChanges || {};
+
+		this.pendingChanges.content = content;
+		this.onChange();
+	}
+
+
+	onPartsChange = (index, part) => {
+		this.pendingChanges = this.pendingChanges || {};
+
+		//When are support multi-part per question we need to revisit this.
+		this.pendingChanges.parts = [part];
+		this.onChange();
+	}
+
+
+	onContentFocus = (editor) => {
 		const {question} = this.props;
 
 		this.setState({
@@ -134,7 +154,7 @@ export default class QuestionComponent extends React.Component {
 	}
 
 
-	onContentBlur () {
+	onContentBlur = () => {
 		const {question} = this.props;
 
 		this.setState({
@@ -156,9 +176,16 @@ export default class QuestionComponent extends React.Component {
 					<div className="wrap">
 						<DragHandle className="question-drag-handle hide-when-saving" />
 						<div className="index">{index + 1}</div>
-						<Content question={question} onFocus={this.onContentFocus} onBlur={this.onContentBlur} error={contentError} warning={contentWarning}/>
+						<Content
+							question={question}
+							onFocus={this.onContentFocus}
+							onBlur={this.onContentBlur}
+							error={contentError}
+							warning={contentWarning}
+							onChange={this.onContentChange}
+						/>
 					</div>
-					<Parts question={question} error={partError} />
+					<Parts question={question} error={partError} onChange={this.onPartsChange} />
 					{questionError && (<ErrorCmp error={questionError} />)}
 				</Selectable>
 				{!isSaving && (<Controls question={question} questionSet={questionSet} assignment={assignment} />)}

@@ -38,7 +38,7 @@ function canHandle (cmp, type) {
 }
 
 
-export function getEditorWidget (part, index, question, error) {
+export function getEditorWidget (part, index, question, error, onChange) {
 	const mimeType = part && part.MimeType && part.MimeType.toLowerCase();
 	let cmp;
 
@@ -57,7 +57,7 @@ export function getEditorWidget (part, index, question, error) {
 
 	return React.createElement(cmp, {
 		key: part.NTIID || `new-question-${mimeType}-${index}`,
-		index, part, question, error
+		index, part, question, error, onChange
 	});
 }
 
@@ -76,7 +76,7 @@ export function getButtons (mimeTypes, assignment, activeInsert) {
 }
 
 
-export function getEqualityCheck (mimeType) {
+function getEqualityCheck (mimeType) {
 	let equal;
 
 	for (let Type of KINDS) {
@@ -92,6 +92,23 @@ export function getEqualityCheck (mimeType) {
 	}
 
 	return equal;
+}
+
+
+export function partsEqual (partsA, partsB) {
+	if (partsA.length !== partsB.lenght) {
+		return false;
+	}
+
+	for (let i = 0; i < partsA.length; i++) {
+		let check = getEqualityCheck(partsA[i].MimeType);
+
+		if (!check || !check(partsA[i], partsB[i])) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 

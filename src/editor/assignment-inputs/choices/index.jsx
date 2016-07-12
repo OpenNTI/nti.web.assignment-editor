@@ -1,7 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
 import autobind from 'nti-commons/lib/autobind';
-import buffer from 'nti-commons/lib/function-buffer';
 
 import {SyncHeightGroup} from '../../../sync-height';
 import {Ordering} from '../../../dnd/';
@@ -16,7 +15,7 @@ function createSyncHeightGroup () {
 
 const defaultLabel = 'Add a choice';
 
-/**
+/*
  * Since a few different question types make use of a similar structure
  * that shares quite a bit of the same logic, this class is alright to extend
  *
@@ -171,7 +170,7 @@ export default class Choices extends React.Component {
 	}
 
 
-	onChange = buffer(500, () => {
+	onChange = () => {
 		const {onChange} = this.props;
 		const {columns} = this.state;
 		let rows = [];
@@ -199,7 +198,7 @@ export default class Choices extends React.Component {
 		if (onChange) {
 			onChange(rows);
 		}
-	})
+	}
 
 
 	onOrderChange (columnIndex, choices) {

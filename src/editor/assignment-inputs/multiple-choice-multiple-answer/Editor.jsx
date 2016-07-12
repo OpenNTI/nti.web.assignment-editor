@@ -8,7 +8,9 @@ export default class MultipleChoiceMultipleAnswerEditor extends React.Component 
 	static propTypes = {
 		part: React.PropTypes.object.isRequired,
 		question: React.PropTypes.object.isRequired,
-		error: React.PropTypes.any
+		error: React.PropTypes.any,
+		index: React.PropTypes.number,
+		onChange: React.PropTypes.func
 	}
 
 
@@ -50,11 +52,19 @@ export default class MultipleChoiceMultipleAnswerEditor extends React.Component 
 
 
 	render () {
-		const {part, question} = this.props;
+		const {part, question, index, onChange} = this.props;
 		const {error} = this.state;
 
 		return (
-			<MultipleChoiceEditor part={part} question={question} multipleAnswers error={error} generatePart={this.generatePart} />
+			<MultipleChoiceEditor
+				part={part}
+				question={question}
+				multipleAnswers
+				error={error}
+				generatePart={this.generatePart}
+				index={index}
+				onChange={onChange}
+			/>
 		);
 	}
 }
