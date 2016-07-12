@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import {Publish, Constants} from 'nti-web-commons';
+import {Publish, Constants, Prompt} from 'nti-web-commons';
 import {HOC} from 'nti-web-commons';
 import Logger from 'nti-util-logger';
 
@@ -35,7 +35,7 @@ class PublishControls extends React.Component {
 		const state = PublishStateMap[value] || (value instanceof Date ? value : void value);
 
 		return assignment.setPublishState(state)
-			.catch((err) => logger.error(err.stack || err.message || err));
+			.catch((err) => Prompt.alert(err.message));
 	}
 
 
