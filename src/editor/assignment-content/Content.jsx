@@ -21,7 +21,8 @@ export default class ContentEditor extends React.Component {
 
 		this.state = {
 			selectableId: 'description',
-			selectableValue: new ControlsConfig()
+			selectableValue: new ControlsConfig(),
+			value: props.value
 		};
 	}
 
