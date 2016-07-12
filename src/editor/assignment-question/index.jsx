@@ -128,6 +128,11 @@ export default class QuestionComponent extends React.Component {
 	})
 
 
+	forceUpdate = () => {
+		this.onChange.flush();
+	}
+
+
 	onContentChange = (content) => {
 		this.pendingChanges = this.pendingChanges || {};
 
@@ -188,7 +193,7 @@ export default class QuestionComponent extends React.Component {
 					<Parts question={question} error={partError} onChange={this.onPartsChange} />
 					{questionError && (<ErrorCmp error={questionError} />)}
 				</Selectable>
-				{!isSaving && (<Controls question={question} questionSet={questionSet} assignment={assignment} />)}
+				{!isSaving && (<Controls question={question} questionSet={questionSet} assignment={assignment} forceUpdate={this.forceUpdate} />)}
 				{isLastQuestion(question, questionSet) && (<Between question={question} after />)}
 			</div>
 		);

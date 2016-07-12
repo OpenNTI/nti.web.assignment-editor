@@ -8,7 +8,8 @@ const TITLE = 'Duplicate';
 export default class DeleteControl extends React.Component {
 	static propTypes = {
 		question: React.PropTypes.object.isRequired,
-		questionSet: React.PropTypes.object.isRequired
+		questionSet: React.PropTypes.object.isRequired,
+		forceUpdate: React.PropTypes.func
 	}
 
 
@@ -21,7 +22,9 @@ export default class DeleteControl extends React.Component {
 
 
 	onClick () {
-		const {question, questionSet} = this.props;
+		const {question, questionSet, forceUpdate} = this.props;
+
+		forceUpdate();
 
 		duplicateQuestionFrom(question, questionSet);
 	}
