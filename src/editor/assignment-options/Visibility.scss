@@ -1,6 +1,10 @@
 @import "~nti-style-common";
 
-.visibility {
+.visibility.assignment-option-group {
+	.assignment-option-content {
+		padding-top: rem-calc(6px);
+	}
+
 	label {
 		position: relative;
 

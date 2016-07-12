@@ -5,6 +5,7 @@ import {HOC} from 'nti-web-commons';
 import OptionGroup from './OptionGroup';
 
 const DEFAULT_TEXT = {
+	header: 'Assign To',
 	content: 'Change who can see the assignment.',
 	label: 'Show For',
 	ForCredit: 'For Credit Only',
@@ -41,7 +42,7 @@ class Visibility extends React.Component {
 		];
 
 		return (
-			<OptionGroup name="visibility" header="Visibility" content={t('content')}>
+			<OptionGroup name="visibility" header={t('header')} content={t('content')}>
 				<label>
 					<select defaultValue={visibility} onChange={this.onChange}>
 						{options.map(({value, label}) =>
