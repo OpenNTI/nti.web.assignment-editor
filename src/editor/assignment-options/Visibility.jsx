@@ -42,11 +42,14 @@ class Visibility extends React.Component {
 
 		return (
 			<OptionGroup name="visibility" header="Visibility" content={t('content')}>
-				<select defaultValue={visibility} onChange={this.onChange}>
-					{options.map(({value, label}) =>
-						<option key={value} value={value}>{label}</option>
-					)}
-				</select>
+				<label>
+					<select defaultValue={visibility} onChange={this.onChange}>
+						{options.map(({value, label}) =>
+							<option key={value} value={value}>{label}</option>
+						)}
+					</select>
+					<div className="arrow"/>
+				</label>
 			</OptionGroup>
 		);
 	}
