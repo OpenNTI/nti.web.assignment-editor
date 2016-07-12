@@ -12,6 +12,11 @@
 	.duration-picker {
 		margin: .5rem 0;
 	}
+	.error {
+		color: $error-text-color;
+		margin: 0 .25rem .5rem;
+		font-style: italic;
+	}
 }
 
 .assignment-option-flyout.flyout {
