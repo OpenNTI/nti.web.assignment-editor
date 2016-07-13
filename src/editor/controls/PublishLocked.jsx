@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react';
+import cx from 'classnames';
 
 import {Flyout, PublishTrigger, Constants} from 'nti-web-commons';
 import {scoped} from 'nti-lib-locale';
@@ -6,7 +7,8 @@ const {PUBLISH_STATES} = Constants;
 
 const DEFAULT_TEXT = {
 	label: 'Students have started your assignment.',
-	text: 'Resetting or deleting this assignment will result in erasing students work and submissions. You cannot undo this action.'
+	text: 'Resetting or deleting this assignment will result in erasing students work and submissions. You cannot undo this action.',
+	error: 'Could not reset the assignment at this time. Please try again later.'
 };
 
 const t = scoped('PUBLISH_LOCKED', DEFAULT_TEXT);
@@ -21,29 +23,33 @@ export default class PublishLocked extends React.Component {
 		assignment: PropTypes.object
 	}
 
-	constructor () {
-		super();
+	state = {}
 
-		this.setFlyoutRef = x => this.flyoutRef = x;
-	}
+	setFlyoutRef = x => this.flyoutRef = x
+
 
 	onResetClick = () => {
 		const {assignment} = this.props;
-		if (assignment.reset) {
-			const r = assignment.resetAllSubmissions();
-			r.then(() => this.closeMenu());
+		if (assignment.hasLink('reset')) {
+			assignment.resetAllSubmissions()
+				.then(this.closeMenu, () => this.setState({error: true}));
 		}
 	}
 
-	closeMenu () {
+	closeMenu = () => {
 		if (this.flyoutRef) {
 			this.flyoutRef.dismiss();
 		}
 	}
 
-	render () {
-		const {value, children} = this.props;
 
+	clearError = () => this.setState({error: false})
+
+
+	render () {
+		const {props: {assignment, value, children}, state: {error}} = this;
+
+		const can = assignment && assignment.hasLink('reset');
 		const trigger = <PublishTrigger value={value} />;
 
 		return (
@@ -51,13 +57,14 @@ export default class PublishLocked extends React.Component {
 				trigger={trigger}
 				verticalAlign={Flyout.ALIGNMENTS.TOP}
 				horizontalAlign={Flyout.ALIGNMENTS.RIGHT}
+				onDismiss={this.clearError}
 				arrow>
 				<span className="reset-label">{t('label')}</span>
 				<p className="reset-text">{t('text')}</p>
 
 				{children}
-
-				<div className="flyout-fullwidth-btn publish-reset" onClick={this.onResetClick}>Reset Assignment</div>
+				{error && ( <div className="reset-error">{t('error')}</div> )}
+				{can && ( <div className={cx('flyout-fullwidth-btn publish-reset', {error})} onClick={this.onResetClick}>Reset Assignment</div> )}
 			</Flyout>
 		);
 	}

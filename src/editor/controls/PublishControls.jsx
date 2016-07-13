@@ -1,14 +1,12 @@
 import React, {PropTypes} from 'react';
 import {Publish, Constants, Prompt} from 'nti-web-commons';
 import {HOC} from 'nti-web-commons';
-import Logger from 'nti-util-logger';
 
 import Delete from './DeleteAssignment';
 import PublishLocked from './PublishLocked';
 
 const {ItemChanges} = HOC;
 const {PUBLISH_STATES} = Constants;
-const logger = Logger.get('lib:asssignment-editor:PublishControls');
 
 class PublishControls extends React.Component {
 	static propTypes = {
@@ -35,6 +33,11 @@ class PublishControls extends React.Component {
 
 		return assignment.setPublishState(state)
 			.catch((err) => Prompt.alert(err.message));
+	}
+
+
+	onItemChanged () {
+		this.forceUpdate();
 	}
 
 
