@@ -132,7 +132,8 @@ export default class DataTransfer {
 
 		if (!dataTransfer) { return false; }
 
-		if (types.indexOf(key) >= 0) {
+		// in firefox 'types' is a 'DOMStringList' which doesn't have an 'indexOf' method but does have 'contains'
+		if (types.indexOf && types.indexOf(key) >= 0 || types.contains && types.contains(key)) {
 			return data === '' ? true : data;
 		}
 
