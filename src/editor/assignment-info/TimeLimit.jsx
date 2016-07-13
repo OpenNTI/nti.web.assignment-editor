@@ -39,8 +39,7 @@ export default class TimeLimit extends React.Component {
 		this.setState({
 			value,
 			hasTimeLimit,
-			changed: false,
-			error: null
+			changed: false
 		});
 	}
 
@@ -108,7 +107,7 @@ export default class TimeLimit extends React.Component {
 					<div className="time-limit-editor">
 						<Checkbox label="Time Limit" checked={hasTimeLimit} onChange={this.toggleTimeLimit}/>
 						<DurationPicker onChange={this.timeChanged} value={value} />
-						{error && <div className="error">{error}</div>}
+						{error && <div className="error">{error.toString()}</div>}
 						{saving ? <Loading /> : <div className={buttonClasses} onClick={this.save}>Save Changes</div>}
 					</div>
 				</Flyout>
