@@ -11,6 +11,7 @@ const RANDOMIZE_ANSWERS = 'randomize-answers';
 const DEFAULT_TEXT = {
 	content: 'Randomizing will override the order of the questions and answers you created.',
 	disabled: 'Add some questions to enable this option.',
+	disabledLimitedEdit: 'You cannot change these settings once students have begun work on this assignment.',
 	labels: {
 		randomizeQuestions: 'Randomize Question Order',
 		randomizeAnswers: 'Randomize Answer Order'
@@ -107,17 +108,18 @@ class Randomize extends React.Component {
 	render () {
 		const {isRandomized, isPartTypeRandomized} = this.state;
 		const {questionSet:qset} = this.props;
-		const editable = qset && qset.hasLink('edit');
+		const editable = qset && (qset.hasLink('Randomize') || qset.hasLink('Unrandomize'));
 		const ableToRandomisze = isRandomized || (qset && qset.hasLink('randomize'));
 		const ableToRandomiszeParts = isPartTypeRandomized || (qset && qset.hasLink('randomizePartsType'));
+		const disabledText = qset && qset.LimitedEditingCapabilities ? t('disabledLimitedEdit') : t('disabled');
 
 		return (
 			<OptionGroup
 				name="ordering"
 				header="Randomize Ordering"
 				content={t('content')}
-				disabled={!qset}
-				disabledText={t('disabled')}
+				disabled={!editable}
+				disabledText={disabledText}
 			>
 				<Option label={t('labels.randomizeQuestions')}
 					name={RANDOMIZE_QUESTIONS}
