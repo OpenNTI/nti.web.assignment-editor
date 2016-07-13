@@ -36,12 +36,19 @@ const Bridge = React.createClass({
 
 });
 
+let assignmentId = localStorage.getItem('assignment-ntiid');
+
+if (!assignmentId) {
+	assignmentId = window.prompt('Enter Assignment NTIID');
+	localStorage.setItem('assignment-ntiid', assignmentId);
+}
+
 
 ReactDOM.render(
 	<Bridge>
 		<div>
 			<ConflictResolutionHandler />
-			<Editor />
+			<Editor NTIID={assignmentId} />
 		</div>
 	</Bridge>,
 	document.getElementById('content')

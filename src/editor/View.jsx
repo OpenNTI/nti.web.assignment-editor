@@ -24,11 +24,6 @@ export default class Editor extends React.Component {
 	}
 
 
-	static defaultProps = {
-		NTIID: 'tag:nextthought.com,2011-10:NTI-NAQ-assignment_andrew_ligon_4743925595936104722_d30688a3'
-	}
-
-
 	static childContextTypes = {
 		SelectionManager: React.PropTypes.shape({
 			select: React.PropTypes.fn,
