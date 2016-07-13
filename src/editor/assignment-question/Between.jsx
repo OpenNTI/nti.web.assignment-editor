@@ -43,7 +43,7 @@ export default class Between extends React.Component {
 		const cls = cx('assignment-editor-between-question', {before, after});
 
 		return (
-			<Selectable className={cls} id={selectableId} value={selectableValue} />
+			<Selectable className={cls} id={selectableId} value={selectableValue} tabIndex="0" />
 		);
 	}
 }
