@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import {Publish, Constants, Prompt} from 'nti-web-commons';
+import {Publish, Constants} from 'nti-web-commons';
 import {HOC} from 'nti-web-commons';
 
 import Delete from './DeleteAssignment';
@@ -18,6 +18,8 @@ class PublishControls extends React.Component {
 		return props.assignment;
 	}
 
+	state = {}
+
 	onChange = (value) => {
 		const assignment = PublishControls.getItem(this.props);
 		if (!assignment) {
@@ -32,7 +34,15 @@ class PublishControls extends React.Component {
 		const state = PublishStateMap[value] || (value instanceof Date ? value : void value);
 
 		return assignment.setPublishState(state)
-			.catch((err) => Prompt.alert(err.message));
+			.catch(err => (
+				this.setState({error: err.message}),
+				Promise.reject(err) //don't swallow the rejection.
+			));
+	}
+
+
+	resetError = () => {
+		this.setState({error: void 0});
 	}
 
 
@@ -42,6 +52,7 @@ class PublishControls extends React.Component {
 
 
 	render () {
+		const {error} = this.state;
 		const assignment = PublishControls.getItem(this.props);
 		const value = Publish.evaluatePublishStateFor({
 			isPublished: () => assignment && (assignment.isPublished() && assignment.getPublishDate() < Date.now()),
@@ -54,8 +65,10 @@ class PublishControls extends React.Component {
 		return (
 			<div className="assignment-publish-controls">
 				<Control alignment="top-right"
+					error={error ? error : void error}
 					value={value}
 					onChange={this.onChange}
+					onDismiss={this.resetError}
 					assignment={assignment}
 				>
 					<Delete assignment={assignment}/>
