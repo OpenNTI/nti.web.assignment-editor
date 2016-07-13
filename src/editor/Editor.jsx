@@ -3,10 +3,10 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import cx from 'classnames';
 
 import {StickyContainer, Sticky} from './utils/StickyElement';
-import AssignmentInfo from './assignment-info';
-import AssignmentParts from './assignment-parts';
 import AssignmentContent from './assignment-content';
-import AssignmentOptions from './assignment-options';
+import AssignmentInfo from './info';
+import AssignmentParts from './assignment-parts';
+import Options from './options';
 import NavBar from './nav-bar';
 
 const CONTENT_VIEW = 'content';
@@ -68,7 +68,7 @@ export default class AssignmentEditor extends React.Component {
 		return (
 			<div key="options" className="option-container">
 				<div className="show-content toggle" onClick={this.showContent}>Done</div>
-				<AssignmentOptions assignment={assignment} schema={schema} />
+				<Options assignment={assignment} schema={schema} />
 			</div>
 		);
 	}

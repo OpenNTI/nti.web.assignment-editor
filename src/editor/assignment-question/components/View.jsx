@@ -3,18 +3,19 @@ import cx from 'classnames';
 import buffer from 'nti-commons/lib/function-buffer';
 import {Errors} from 'nti-web-commons';
 
-import {DragHandle} from '../../dnd';
+import {DragHandle} from '../../../dnd';
 
-import Store from '../Store';
-import {QUESTION_ERROR, QUESTION_WARNING} from '../Constants';
-import Selectable from '../utils/Selectable';
-import ControlsConfig from '../controls/ControlsConfig';
+import Store from '../../Store';
+import {QUESTION_ERROR, QUESTION_WARNING} from '../../Constants';
+import Selectable from '../../utils/Selectable';
+import ControlsConfig from '../../controls/ControlsConfig';
 
-import {updateQuestion} from './Actions';
+import {updateQuestion} from '../Actions';
+
 import Between from './Between';
 import Content from './Content';
 import Parts from './Parts';
-import Controls from './controls';
+import Controls from './controls/View';
 
 const {Field:{Component:ErrorCmp}} = Errors;
 

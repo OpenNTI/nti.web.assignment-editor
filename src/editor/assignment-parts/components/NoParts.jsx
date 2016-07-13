@@ -1,9 +1,9 @@
 import React from 'react';
 import autobind from 'nti-commons/lib/autobind';
 
-import {Dropzone} from '../../dnd';
+import {Dropzone} from '../../../dnd';
 
-import {createPartWithQuestion} from './Actions';
+import {createPartWithQuestion} from '../Actions';
 import {QUESTION_TYPE} from './QuestionSet';
 
 const PLACEHOLDER = 'No questions yet. Select question from the right to add one.';

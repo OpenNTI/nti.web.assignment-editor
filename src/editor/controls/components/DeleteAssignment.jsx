@@ -1,6 +1,6 @@
 import React from 'react';
 import {scoped} from 'nti-lib-locale';
-import {deleteAssignment} from '../Actions';
+import {deleteAssignment} from '../../Actions';
 
 const DEFAULT_TEXT = {
 	deleteWarning: 'Deleting this assignment will remove it, all student progress, and all submissions.'

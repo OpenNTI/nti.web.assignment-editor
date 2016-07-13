@@ -1,8 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
 
-import Selectable from '../utils/Selectable';
-import ControlsConfig from '../controls/ControlsConfig';
+import Selectable from '../../utils/Selectable';
+import ControlsConfig from '../../controls/ControlsConfig';
 
 
 export default class Between extends React.Component {
@@ -47,4 +47,3 @@ export default class Between extends React.Component {
 		);
 	}
 }
-

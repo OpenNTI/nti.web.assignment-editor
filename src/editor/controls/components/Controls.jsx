@@ -1,7 +1,7 @@
 import React from 'react';
 import autobind from 'nti-commons/lib/autobind';
 
-import ActionQueue from '../../action-queue';
+import ActionQueue from '../../../action-queue';
 
 import PublishControls from './PublishControls';
 import FormatControls from './FormatControls';

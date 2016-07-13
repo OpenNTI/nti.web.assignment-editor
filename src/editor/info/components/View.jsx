@@ -5,7 +5,7 @@ import PointValue from './PointValue';
 import DueDate from './DueDate';
 import TimeLimit from './TimeLimit';
 
-export default class AssignmentInfo extends React.Component {
+export default class AssignmentInfoView extends React.Component {
 	static propTypes = {
 		assignment: React.PropTypes.object,
 		schema: React.PropTypes.object

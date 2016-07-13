@@ -1,14 +1,14 @@
 import React from 'react';
 import autobind from 'nti-commons/lib/autobind';
 
-import Store from '../Store';
-import {ASSIGNMENT_ERROR} from '../Constants';
+import Store from '../../Store';
+import {ASSIGNMENT_ERROR} from '../../Constants';
 
-import {saveTitle, saveContent} from './Actions';
+import {saveTitle, saveContent} from '../Actions';
 import Title from './Title';
 import Content from './Content';
 
-export default class AssignmentContent extends React.Component {
+export default class AssignmentContentView extends React.Component {
 	static propTypes = {
 		assignment: React.PropTypes.object,
 		schema: React.PropTypes.object

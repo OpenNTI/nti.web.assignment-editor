@@ -1,2 +1,2 @@
-import Controls from './Controls';
+import Controls from './components/Controls';
 export default Controls;

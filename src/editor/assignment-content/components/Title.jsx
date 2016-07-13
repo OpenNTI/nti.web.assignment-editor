@@ -1,9 +1,9 @@
 import React from 'react';
 import cx from 'classnames';
 
-import BufferedTextEditor from '../inputs/BufferedTextEditor';
-import Selectable from '../utils/Selectable';
-import ControlsConfig from '../controls/ControlsConfig';
+import BufferedTextEditor from '../../inputs/BufferedTextEditor';
+import Selectable from '../../utils/Selectable';
+import ControlsConfig from '../../controls/ControlsConfig';
 
 const PLACEHOLDER = 'Title';
 

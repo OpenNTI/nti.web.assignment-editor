@@ -8,8 +8,8 @@ import {
 	ASSIGNMENT_ERROR,
 	QUESTION_SET_ERROR,
 	QUESTION_ERROR
-} from '../Constants';
-import Store from '../Store';
+} from '../../Constants';
+import Store from '../../Store';
 
 const {Field: {FlyoutList:ErrorFlyoutList}} = Errors;
 

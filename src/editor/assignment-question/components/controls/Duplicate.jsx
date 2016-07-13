@@ -1,7 +1,7 @@
 import React from 'react';
 import autobind from 'nti-commons/lib/autobind';
 
-import {duplicateQuestionFrom} from '../Actions';
+import {duplicateQuestionFrom} from '../../Actions';
 
 const TITLE = 'Duplicate';
 

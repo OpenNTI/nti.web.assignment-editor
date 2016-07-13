@@ -2,10 +2,10 @@ import React from 'react';
 import {HOC} from 'nti-web-commons';
 import cx from 'classnames';
 
-import {MoveRoot} from '../../../ordered-contents';
-import {MoveInfo} from '../../../dnd';
+import {MoveRoot} from '../../../../ordered-contents';
+import {MoveInfo} from '../../../../dnd';
 
-import {moveQuestion} from '../../assignment-parts/Actions';
+import {moveQuestion} from '../../../assignment-parts/Actions';
 
 const {ItemChanges} = HOC;
 

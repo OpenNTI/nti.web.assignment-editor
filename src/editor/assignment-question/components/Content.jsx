@@ -1,9 +1,9 @@
 import React from 'react';
 import cx from 'classnames';
 
-import BufferedTextEditor from '../inputs/BufferedTextEditor';
+import BufferedTextEditor from '../../inputs/BufferedTextEditor';
 
-import {getContentPlaceholderFor} from '../assignment-inputs/';
+import {getContentPlaceholderFor} from '../../assignment-inputs/';
 
 
 export default class QuestionContent extends React.Component {

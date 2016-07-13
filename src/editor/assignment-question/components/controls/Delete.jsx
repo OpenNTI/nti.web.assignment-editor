@@ -1,7 +1,7 @@
 import React from 'react';
 import autobind from 'nti-commons/lib/autobind';
 
-import {deleteQuestionFrom} from '../Actions';
+import {deleteQuestionFrom} from '../../Actions';
 
 const TITLE = 'Delete';
 

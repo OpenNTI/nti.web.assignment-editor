@@ -10,7 +10,7 @@ const {ItemChanges} = HOC;
 
 const logger = Logger.get('lib:asssignment-editor:AssignmentParts');
 
-export default class AssignmentParts extends React.Component {
+export default class AssignmentPartsView extends React.Component {
 	static propTypes = {
 		assignment: React.PropTypes.object
 	}

@@ -2,7 +2,7 @@ import React from 'react';
 import autobind from 'nti-commons/lib/autobind';
 
 import QuestionTypes from './QuestionTypes';
-import TabBar from './header';
+import TabBar from './Header';
 
 const QUESTION_TYPE = 'application/vnd.nextthought.naquestion';
 

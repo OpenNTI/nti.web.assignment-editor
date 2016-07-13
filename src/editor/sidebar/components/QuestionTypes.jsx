@@ -2,7 +2,7 @@ import React from 'react';
 import {HOC} from 'nti-web-commons';
 import autobind from 'nti-commons/lib/autobind';
 
-import {getButtons} from '../assignment-inputs';
+import {getButtons} from '../../assignment-inputs';
 
 const {ItemChanges} = HOC;
 
