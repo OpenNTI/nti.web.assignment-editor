@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 
+import getKeyCode from 'nti-commons/lib/get-key-code';
 import BufferedTextEditor from '../../inputs/BufferedTextEditor';
 
 import {DragHandle} from '../../../dnd';
@@ -29,7 +30,10 @@ export default class Choice extends React.Component {
 		className: React.PropTypes.string,
 		onChange: React.PropTypes.func,
 		onDelete: React.PropTypes.func,
-		plainText: React.PropTypes.bool
+		plainText: React.PropTypes.bool,
+		insertNewChoiceAfter: React.PropTypes.func,
+		focusNext: React.PropTypes.func,
+		focusPrev: React.PropTypes.func
 	}
 
 
@@ -51,12 +55,56 @@ export default class Choice extends React.Component {
 	}
 
 
+	componentWillReceiveProps (nextProps) {
+		const {choice:newChoice} = nextProps;
+		const {choice:oldChoice} = this.props;
+
+		if (oldChoice !== newChoice) {
+			this.addListener(newChoice);
+		}
+	}
+
+
 	componentDidMount () {
+		this.addListener();
 		this.syncHeight();
 
 		if (this.isNew && this.editorRef) {
 			this.editorRef.focus();
 			delete this.isNew;
+		}
+	}
+
+
+	componentWillUnmount () {
+		this.removeListener();
+	}
+
+
+	addListener (choice) {
+		this.removeListener();
+
+		const {choice:propChoice} = this.props;
+		const listenTo = choice || propChoice;
+
+		if (listenTo) {
+			listenTo.addListener('focus', this.doFocus);
+		}
+	}
+
+
+	removeListener () {
+		const {choice} = this.props;
+
+		if (choice) {
+			choice.removeListener('focus', this.doFocus);
+		}
+	}
+
+
+	doFocus = () => {
+		if (this.editorRef) {
+			this.editorRef.focus();
 		}
 	}
 
@@ -96,6 +144,32 @@ export default class Choice extends React.Component {
 	}
 
 
+	onTabKey = () => {
+		const {focusNext, choice} = this.props;
+
+		return focusNext && focusNext(choice);
+	}
+
+
+	onShiftTabKey = () => {
+		const {focusPrev, choice} = this.props;
+
+		return focusPrev && focusPrev(choice);
+	}
+
+
+	onEnterKey = () => {
+		const {insertNewChoiceAfter, choice} = this.props;
+
+		return insertNewChoiceAfter && insertNewChoiceAfter(choice);
+	}
+
+
+	onDeleteKey = () => {
+		//TODO: fill this out
+	}
+
+
 	render () {
 		const {className, choice, heightSyncGroup, onDelete, error} = this.props;
 		const {selectableId, selectableValue} = this.state;
@@ -125,6 +199,12 @@ export default class Choice extends React.Component {
 				onChange={this.onChange}
 				onEditorChange={this.syncHeight}
 				error={error}
+				customBindings={{
+					[getKeyCode.TAB]: this.onTabKey,
+					[getKeyCode.SHIFT_TAB]: this.onShiftTabKey,
+					[getKeyCode.ENTER]: this.onEnterKey,
+					[getKeyCode.DELETE]: this.onDeleteKey
+				}}
 			/>
 		);
 	}

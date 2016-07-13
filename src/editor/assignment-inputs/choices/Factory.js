@@ -1,5 +1,9 @@
-class Choice  {
+import EventEmitter from 'events';
+
+class Choice extends EventEmitter  {
 	constructor (data, groupName) {
+		super();
+
 		this.data = data;
 		this.groupName = groupName;
 	}
@@ -11,6 +15,12 @@ class Choice  {
 
 		return clone;
 	}
+
+
+	focus () {
+		this.emit('focus');
+	}
+
 
 	get MimeType () {
 		return this.data.MimeType;

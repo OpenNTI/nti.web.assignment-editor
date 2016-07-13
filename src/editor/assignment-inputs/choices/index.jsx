@@ -140,12 +140,18 @@ export default class Choices extends React.Component {
 		this.orderChangeHandlers = [];
 		this.choiceChangeHandlers = [];
 		this.choiceRenders = [];
+		this.focusNextHandlers = [];
+		this.focusPrevHandlers = [];
+		this.insertNewHandlers = [];
 		this.deleteHandlers = [];
 
 		for (let i = 0; i < columns.length; i++) {
 			this.choiceRenders[i] = this.renderChoice.bind(this, i);
 			this.orderChangeHandlers[i] = this.onOrderChange.bind(this, i);
 			this.choiceChangeHandlers[i] = this.onChoiceChange.bind(this, i);
+			this.focusNextHandlers[i] = this.focusNext.bind(this, i);
+			this.focusPrevHandlers[i] = this.focusPrev.bind(this, i);
+			this.insertNewHandlers[i] = this.insertNewChoice.bind(this, i);
 		}
 
 		for (let i = 0; i < deletes.length; i++) {
@@ -313,6 +319,61 @@ export default class Choices extends React.Component {
 	}
 
 
+	focusNext = (columnIndex, choice) => {
+		const {columns} = this.state;
+
+		//If we only have one column let the native events handle it
+		if (columns.length === 1) { return false; }
+
+		let column = columns[columnIndex];
+		let index = column.findIndex(x => x.ID === choice.ID);
+
+		if (columnIndex === columns.length - 1) {
+			column = columns[0];
+			index += 1;
+		} else {
+			column = columns[columnIndex + 1];
+		}
+
+		const nextChoice = column && column[index];
+
+		if (nextChoice) {
+			nextChoice.focus();
+			return true;
+		}
+	}
+
+
+	focusPrev = (columnIndex, choice) => {
+		const {columns} = this.state;
+
+		//If we only have one column let the native events handle it
+		if (columns.length === 1) { return false; }
+
+		let column = columns[columnIndex];
+		let index = column.findIndex(x => x.ID === choice.ID);
+
+		if (columnIndex === 0) {
+			column = columns[columns.length - 1];
+			index -= 1;
+		} else {
+			column = columns[columnIndex - 1];
+		}
+
+		const prevChoice = column && column[index];
+
+		if (prevChoice) {
+			prevChoice.focus();
+			return true;
+		}
+	}
+
+
+	insertNewChoice = (column, choice) => {
+		//TODO: fill this out
+	}
+
+
 	render () {
 		const {className} = this.props;
 		const {columns, canAdd, canRemove} = this.state;
@@ -361,6 +422,9 @@ export default class Choices extends React.Component {
 		const {plainText} = this.props;
 		const {error, canRemove} = this.state;
 		const onChange = this.choiceChangeHandlers[column];
+		const focusNext = this.focusNextHandlers[column];
+		const focusPrev = this.focusPrevHandlers[column];
+		const insertNewChoice = this.insertNewChoice[column];
 		const choiceError = isErrorForChoice(error, choice);
 		const sync = this.getSyncForRow(row);
 		const onDelete = canRemove ? this.deleteHandlers[row] : void 0;
@@ -375,6 +439,9 @@ export default class Choices extends React.Component {
 				error={choiceError}
 				onDelete={onDelete}
 				plainText={plainText}
+				focusNext={focusNext}
+				focusPrev={focusPrev}
+				inertNewChoice={insertNewChoice}
 			/>
 		);
 	}

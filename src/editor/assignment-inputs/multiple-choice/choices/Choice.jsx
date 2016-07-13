@@ -15,7 +15,10 @@ export default class MultipleChoiceChoice extends React.Component {
 		onSolutionChange: React.PropTypes.func,
 		onDelete: React.PropTypes.func,
 		multipleAnswers: React.PropTypes.bool,
-		plainText: React.PropTypes.bool
+		plainText: React.PropTypes.bool,
+		insertNewChoiceAfter: React.PropTypes.func,
+		focusNext: React.PropTypes.func,
+		focusPrev: React.PropTypes.func
 	}
 
 	setChoiceCmpRef = x => this.choiceCmp = x;
@@ -75,7 +78,19 @@ export default class MultipleChoiceChoice extends React.Component {
 
 
 	render () {
-		const {choice, plainText, multipleAnswers, group, error, heightSyncGroup, onDelete} = this.props;
+		const {
+			choice,
+			plainText,
+			multipleAnswers,
+			group,
+			error,
+			heightSyncGroup,
+			onDelete,
+			focusNext,
+			focusPrev,
+			insertNewChoiceAfter
+		} = this.props;
+
 		const {correct} = this.state;
 		const cls = cx('multiple-choice-choice', {correct});
 
@@ -89,6 +104,9 @@ export default class MultipleChoiceChoice extends React.Component {
 					plainText={plainText}
 					heightSyncGroup={heightSyncGroup}
 					onDelete={onDelete}
+					focusNext={focusNext}
+					focusPrev={focusPrev}
+					insertNewChoiceAfter={insertNewChoiceAfter}
 				/>
 				{this.renderSolution(correct, multipleAnswers, group)}
 			</div>

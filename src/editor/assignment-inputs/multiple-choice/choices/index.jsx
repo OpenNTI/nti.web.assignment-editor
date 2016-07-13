@@ -76,6 +76,9 @@ export default class MultipleChoiceChoices extends Choices {
 		const {multipleAnswers, containerId} = this.props;
 		const {error, canRemove} = this.state;
 		const onChange = this.choiceChangeHandlers[column];
+		const focusNext = this.focusNextHandlers[column];
+		const focusPrev = this.focusPrevHandlers[column];
+		const insertNewChoice = this.insertNewChoice[column];
 		const solutionHandler = this.solutionHandlers[column];
 		const sync = this.getSyncForRow(row);
 		const onDelete = canRemove ? this.deleteHandlers[row] : null;
@@ -92,6 +95,9 @@ export default class MultipleChoiceChoices extends Choices {
 				multipleAnswers={multipleAnswers}
 				onDelete={onDelete}
 				plainText={plainText}
+				focusNext={focusNext}
+				focusPrev={focusPrev}
+				inertNewChoice={insertNewChoice}
 			/>
 		);
 	}
