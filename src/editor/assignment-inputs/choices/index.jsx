@@ -66,9 +66,8 @@ export default class Choices extends React.Component {
 
 		this.setUpHandlers(columns, deletes);
 
+		//Because of inheritance these have to be bound
 		autobind(this,
-			'add',
-			'remove',
 			'renderColumn',
 			'renderAdd'
 		);
@@ -151,7 +150,7 @@ export default class Choices extends React.Component {
 			this.choiceChangeHandlers[i] = this.onChoiceChange.bind(this, i);
 			this.focusNextHandlers[i] = this.focusNext.bind(this, i);
 			this.focusPrevHandlers[i] = this.focusPrev.bind(this, i);
-			this.insertNewHandlers[i] = this.insertNewChoice.bind(this, i);
+			this.insertNewHandlers[i] = this.insertNewChoiceAfter.bind(this, i);
 		}
 
 		for (let i = 0; i < deletes.length; i++) {
@@ -268,7 +267,43 @@ export default class Choices extends React.Component {
 	}
 
 
-	add () {
+	insertNewChoiceAfter = (columnIndex, choice) => {
+		const {buildBlankChoice} = this.props;
+
+		if (!buildBlankChoice) {
+			return false;
+		}
+
+		const {columns} = this.state;
+		const column = columns[columnIndex];
+		let index = column.findIndex(x => x.ID === choice.ID);
+
+		if (index < 0) {
+			index = column.length;
+		} else {
+			index += 1;
+		}
+
+		for (let i = 0; i < columns.length; i++) {
+			let oldColumn = columns[i];
+			let newItem = buildBlankChoice(oldColumn.slice(0));
+
+			let newColumn = [...oldColumn.slice(0, index), newItem, ...oldColumn.slice(index)];
+
+			columns[i] = newColumn;
+		}
+
+		this.setState({
+			columns
+		}, () => {
+			this.onChange();
+		});
+
+		return true;
+	}
+
+
+	add = () => {
 		const {buildBlankChoice} = this.props;
 
 		if (!buildBlankChoice) {
@@ -291,7 +326,7 @@ export default class Choices extends React.Component {
 	}
 
 
-	remove (ids) {
+	remove = (ids) => {
 		const {canRemove} = this.props;
 
 		if (!canRemove) { return; }
@@ -369,11 +404,6 @@ export default class Choices extends React.Component {
 	}
 
 
-	insertNewChoice = (column, choice) => {
-		//TODO: fill this out
-	}
-
-
 	render () {
 		const {className} = this.props;
 		const {columns, canAdd, canRemove} = this.state;
@@ -390,7 +420,7 @@ export default class Choices extends React.Component {
 	}
 
 
-	renderColumn (choices, index) {
+	renderColumn = (choices, index) => {
 		const {containerId, accepts, reorderable} = this.props;
 		const renderChoice = this.choiceRenders[index];
 		const onChange = this.orderChangeHandlers[index];
@@ -424,7 +454,7 @@ export default class Choices extends React.Component {
 		const onChange = this.choiceChangeHandlers[column];
 		const focusNext = this.focusNextHandlers[column];
 		const focusPrev = this.focusPrevHandlers[column];
-		const insertNewChoice = this.insertNewChoice[column];
+		const insertNewChoice = this.insertNewHandlers[column];
 		const choiceError = isErrorForChoice(error, choice);
 		const sync = this.getSyncForRow(row);
 		const onDelete = canRemove ? this.deleteHandlers[row] : void 0;
@@ -441,7 +471,7 @@ export default class Choices extends React.Component {
 				plainText={plainText}
 				focusNext={focusNext}
 				focusPrev={focusPrev}
-				inertNewChoice={insertNewChoice}
+				insertNewChoiceAfter={insertNewChoice}
 			/>
 		);
 	}
