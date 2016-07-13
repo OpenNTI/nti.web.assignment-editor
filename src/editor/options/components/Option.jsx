@@ -29,7 +29,7 @@ export default class Option extends React.Component {
 		return (
 			<div className="assignment-single-option">
 				<div className="option-input">
-					<Control {...this.props} checked={value} type={void type}/>
+					<Control {...this.props} checked={Boolean(value)} type={void type}/>
 				</div>
 			</div>
 		);
