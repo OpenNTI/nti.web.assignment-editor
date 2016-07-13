@@ -128,7 +128,7 @@ export default class QuestionComponent extends React.Component {
 	})
 
 
-	forceUpdate = () => {
+	flushChanges = () => {
 		this.onChange.flush();
 	}
 
@@ -193,7 +193,7 @@ export default class QuestionComponent extends React.Component {
 					<Parts question={question} error={partError} onChange={this.onPartsChange} />
 					{questionError && (<ErrorCmp error={questionError} />)}
 				</Selectable>
-				{!isSaving && (<Controls question={question} questionSet={questionSet} assignment={assignment} forceUpdate={this.forceUpdate} />)}
+				{!isSaving && (<Controls question={question} questionSet={questionSet} assignment={assignment} flushChanges={this.flushChanges} />)}
 				{isLastQuestion(question, questionSet) && (<Between question={question} after />)}
 			</div>
 		);

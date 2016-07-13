@@ -11,12 +11,12 @@ QuestionControls.propTypes = {
 	question: React.PropTypes.object.isRequired,
 	questionSet: React.PropTypes.object.isRequired,
 	assignment: React.PropTypes.object.isRequired,
-	forceUpdate: React.PropTypes.func
+	flushChanges: React.PropTypes.func
 };
 
 
 export default function QuestionControls (props) {
-	const {question, questionSet, assignment, forceUpdate} = props;
+	const {question, questionSet, assignment, flushChanges} = props;
 
 	const ordered = hasOrderedContents(questionSet);
 	const canMove = ordered;
@@ -29,7 +29,7 @@ export default function QuestionControls (props) {
 		<div className={cls}>
 			{canMove && (<Move type={UP} question={question} questionSet={questionSet} assignment={assignment} />)}
 			{canMove && (<Move type={DOWN} question={question} questionSet={questionSet} assignment={assignment} />)}
-			{canDuplicate && (<Duplicate question={question} questionSet={questionSet} assignment={assignment} forceUpdate={forceUpdate}/>)}
+			{canDuplicate && (<Duplicate question={question} questionSet={questionSet} assignment={assignment} flushChanges={flushChanges}/>)}
 			{canDelete && (<Delete question={question} questionSet={questionSet} assignment={assignment} />)}
 		</div>
 	);
