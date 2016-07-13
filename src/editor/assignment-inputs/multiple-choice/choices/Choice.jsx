@@ -120,12 +120,12 @@ export default class MultipleChoiceChoice extends React.Component {
 	renderSolution (correct, multipleAnswers, group) {
 		if (multipleAnswers) {
 			return (
-				<Checkbox color="green" checked={!!correct} onChange={this.onSolutionChange} />
+				<Checkbox color="green" checked={!!correct} onChange={this.onSolutionChange} tabIndex="-1"/>
 			);
 		}
 
 		return (
-			<Radio color="green" name={group} checked={!!correct} onChange={this.onSolutionChange} />
+			<Radio color="green" name={group} checked={!!correct} onChange={this.onSolutionChange} tabIndex="-1"/>
 		);
 	}
 }
