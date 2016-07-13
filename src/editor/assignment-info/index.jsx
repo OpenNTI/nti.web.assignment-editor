@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'classnames';
 
 import PointValue from './PointValue';
 import DueDate from './DueDate';
@@ -20,17 +21,11 @@ export default class AssignmentInfo extends React.Component {
 	render () {
 		const {assignment, schema} = this.props;
 
-		if (!assignment) {
-			return (
-				<div className="assignment-info loading"></div>
-			);
-		}
-
 		return (
-			<div className="assignment-info">
-				<DueDate assignment={assignment} schema={schema} />
-				<TimeLimit assignment={assignment} schema={schema} />
-				<PointValue assignment={assignment} schema={schema} />
+			<div className={cx('assignment-info', {loading: !assignment})}>
+				{assignment && ( <DueDate assignment={assignment} schema={schema} /> )}
+				{assignment && ( <TimeLimit assignment={assignment} schema={schema} /> )}
+				{assignment && ( <PointValue assignment={assignment} schema={schema} /> )}
 			</div>
 		);
 	}
