@@ -3,9 +3,8 @@ import {Publish, Constants, Prompt} from 'nti-web-commons';
 import {HOC} from 'nti-web-commons';
 import Logger from 'nti-util-logger';
 
+import Delete from './DeleteAssignment';
 import PublishLocked from './PublishLocked';
-import {deleteAssignment} from './Actions';
-
 
 const {ItemChanges} = HOC;
 const {PUBLISH_STATES} = Constants;
@@ -39,14 +38,6 @@ class PublishControls extends React.Component {
 	}
 
 
-	onDeleteClick = () => {
-		const assignment = PublishControls.getItem(this.props);
-		if (assignment) {
-			deleteAssignment(assignment);
-		}
-	}
-
-
 	render () {
 		const assignment = PublishControls.getItem(this.props);
 		const value = Publish.evaluatePublishStateFor({
@@ -54,7 +45,6 @@ class PublishControls extends React.Component {
 			getPublishDate: () => assignment && assignment.getPublishDate()
 		});
 
-		const canDelete = assignment && assignment.hasLink('edit');
 		const isPublishable = assignment && (assignment.hasLink('publish') || assignment.hasLink('unpublish'));
 		const Control = isPublishable ? Publish : PublishLocked;
 
@@ -65,7 +55,7 @@ class PublishControls extends React.Component {
 					onChange={this.onChange}
 					assignment={assignment}
 				>
-				{canDelete && <div onClick={this.onDeleteClick} className="delete-assignment"><i className="icon-delete small"/>Delete</div>}
+					<Delete assignment={assignment}/>
 				</Control>
 			</div>
 		);
