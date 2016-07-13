@@ -1,131 +1,90 @@
 import React from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import cx from 'classnames';
-import {Error, Loading} from 'nti-web-commons';
 
-import ControlBar from '../control-bar';
+import {StickyContainer, Sticky} from './utils/StickyElement';
+import AssignmentInfo from './assignment-info';
+import AssignmentParts from './assignment-parts';
+import AssignmentContent from './assignment-content';
+import AssignmentOptions from './assignment-options';
+import NavBar from './nav-bar';
 
-import FixedElement from './utils/FixedElement';
-import AssignmentEditor from './assignment-editor';
-import Controls from './controls';
-import Sidebar from './sidebar';
-import SelectionManager from './utils/SelectionManager';
-import {LOADED, ASSIGNMENT_DELETING, ASSIGNMENT_DELETED} from './Constants';
-import Store from './Store';
-import {loadAssignment} from './Actions';
+const CONTENT_VIEW = 'content';
+const OPTIONS_VIEW = 'options';
 
-const selectionManager = new SelectionManager();
-
-export default class Editor extends React.Component {
+export default class AssignmentEditor extends React.Component {
 	static propTypes = {
-		NTIID: React.PropTypes.string.isRequired,
-		onDeleted: React.PropTypes.func,
+		assignment: React.PropTypes.object,
+		schema: React.PropTypes.object,
 		gotoRoot: React.PropTypes.func,
 		pageSource: React.PropTypes.object
 	}
 
 
-	static defaultProps = {
-		NTIID: 'tag:nextthought.com,2011-10:NTI-NAQ-assignment_andrew_ligon_4743925595936104722_d30688a3'
+	state = {
+		active: CONTENT_VIEW
 	}
 
 
-	static childContextTypes = {
-		SelectionManager: React.PropTypes.shape({
-			select: React.PropTypes.fn,
-			unselect: React.PropTypes.fn
-		})
-	}
-
-	state = {}
-
-	attachSidebarRef = x => this.sidebar = x
-
-
-	componentDidMount () {
-		Store.addChangeListener(this.onStoreChange);
-		loadAssignment(this.props.NTIID);
+	showContent = () => {
+		this.setState({
+			active: CONTENT_VIEW
+		});
 	}
 
 
-	componenWillUnmount () {
-		Store.removeChangeListener(this.onStoreChange);
-	}
-
-
-	onWindowScroll = () => {
-		const top = window.scrollY;
-
-		if (this.sidebarDOM) {
-			this.sidebarDOM.style.transform = `translate3d(0, ${top}px, 0)`;
-		}
-	}
-
-
-	onStoreChange = (data) => {
-		const {onDeleted} = this.props;
-
-		if (data.type === LOADED) {
-			this.forceUpdate();
-		} else if (data.type === ASSIGNMENT_DELETING) {
-			this.setState({deleting: true});
-		} else if (data.type === ASSIGNMENT_DELETED) {
-			if (onDeleted) {
-				onDeleted();
-			}
-		}
-	}
-
-
-	getChildContext () {
-		return {
-			SelectionManager: selectionManager
-		};
+	showOptions = () => {
+		this.setState({
+			active: OPTIONS_VIEW
+		});
 	}
 
 
 	render () {
-		const {undoQueue} = Store;
-		const {gotoRoot, pageSource} = this.props;
-		const {deleting} = this.state;
-		const {assignment, loadError: error, schema} = Store;
-
-		if (error || (Store.isLoaded && !assignment)) {
-			return this.renderError(error || 'No Assignment');
-		}
-
-		let cls = cx('assignment-editor-container', {loading: Store.isLoaded});
+		const {assignment, schema, gotoRoot, pageSource} = this.props;
+		const {active} =  this.state;
+		const cls = cx('assignment-editor', {loading: !!assignment});
 
 		return (
-			<div className={cls}>
-				{deleting ? (
-					<Loading message="Deleting" />
-				) : (
-					<div className="assignment-editor-container-inner">
-						<AssignmentEditor
-							assignment={assignment}
-							schema={schema}
-							gotoRoot={gotoRoot}
-							pageSource={pageSource}
-						/>
-						<div className="assignment-editing-sidebar-column">
-							<FixedElement className="assignment-editing-sidebar-fixed">
-								<Sidebar ref={this.attachSidebarRef} assignment={assignment} schema={schema} />
-							</FixedElement>
-						</div>
-						<ControlBar visible>
-							<Controls assignment={assignment} undoQueue={undoQueue} />
-						</ControlBar>
-					</div>
-				)}
+			<StickyContainer className={cls}>
+				<Sticky>
+					<NavBar gotoRoot={gotoRoot} pageSource={pageSource}/>
+				</Sticky>
+				<AssignmentInfo assignment={assignment} schema={schema} />
+				<div className="content">
+					<ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
+						{active === CONTENT_VIEW ?
+							this.renderContent(assignment, schema) :
+							this.renderOptions(assignment, schema)
+						}
+					</ReactCSSTransitionGroup>
+				</div>
+			</StickyContainer>
+		);
+	}
+
+
+	renderOptions (assignment, schema) {
+		return (
+			<div key="options" className="option-container">
+				<div className="show-content toggle" onClick={this.showContent}>Done</div>
+				<AssignmentOptions assignment={assignment} schema={schema} />
 			</div>
 		);
 	}
 
 
-	renderError (error) {
+	renderContent (assignment, schema) {
 		return (
-			<div className="assignment-editor error">
-				<Error error={error} />
+			<div key="content" className="content-container">
+				{assignment && (
+					<div className="show-options toggle" onClick={this.showOptions}>
+						<i className="icon-settings" />
+						<span>Options</span>
+					</div>
+				)}
+				<AssignmentContent assignment={assignment} schema={schema} />
+				<AssignmentParts assignment={assignment} schema={schema} />
 			</div>
 		);
 	}

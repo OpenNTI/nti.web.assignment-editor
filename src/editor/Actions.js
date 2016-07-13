@@ -1,7 +1,22 @@
 import {dispatch} from 'nti-lib-dispatcher';
 import {getService} from  'nti-web-client';
 import Logger from 'nti-util-logger';
-import {LOADED, LOADED_SCHEMA, SAVING, SAVE_ENDED, QUESTION_WARNING} from './Constants';
+import {
+	ASSIGNMENT_ERROR,
+	ASSIGNMENT_DELETING,
+	ASSIGNMENT_DELETED,
+	LOADED,
+	LOADED_SCHEMA,
+	SAVING,
+	SAVE_ENDED,
+	QUESTION_WARNING
+} from './Constants';
+
+import {Prompt} from 'nti-web-commons';
+import minWait from 'nti-commons/lib/wait-min';
+
+const SHORT = 3000;
+
 
 const logger = Logger.get('lib:asssignment-editor:Actions');
 const defaultSchema = {};
@@ -79,4 +94,21 @@ export function warnIfQuestionEmpty (question) {
 			}
 		});
 	}
+}
+
+
+export function deleteAssignment (assignment, promptText) {
+	Prompt.areYouSure(promptText)
+			.then(() => {
+				dispatch(ASSIGNMENT_DELETING, true);
+				assignment.delete()
+					.then(minWait(SHORT))
+					.then(() => {
+						dispatch(ASSIGNMENT_DELETED);
+					})
+					.catch((reason) => {
+						dispatch(ASSIGNMENT_ERROR, reason);
+						dispatch(ASSIGNMENT_DELETING, false);
+					});
+			});
 }

@@ -1,6 +1,13 @@
 import React from 'react';
+import {scoped} from 'nti-lib-locale';
+import {deleteAssignment} from '../Actions';
 
-import {deleteAssignment} from './Actions';
+const DEFAULT_TEXT = {
+	deleteWarning: 'Deleting this assignment will remove it, all student progress, and all submissions.'
+};
+
+const t = scoped('assignment.editing.controls', DEFAULT_TEXT);
+
 
 export default class DeleteAssignment extends React.Component {
 	static propTypes = {
@@ -10,7 +17,7 @@ export default class DeleteAssignment extends React.Component {
 	onDeleteClick = () => {
 		const {assignment} = this.props;
 		if (assignment) {
-			deleteAssignment(assignment);
+			deleteAssignment(assignment, t('deleteWarning'));
 		}
 	}
 

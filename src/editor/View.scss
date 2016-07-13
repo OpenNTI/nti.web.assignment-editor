@@ -1,0 +1,32 @@
+@import "~nti-style-common";
+
+.assignment-editor-container {
+	max-width: rem-calc(1024px);
+	min-height: rem-calc(400px);
+	margin: 0 auto;
+	font-family: $body-font-family;
+
+	&, * {
+		box-sizing: border-box;
+	}
+
+	.assignment-editor-container-inner {
+		display: flex;
+
+		//ReactCSSTransitionGroup
+		& > span {
+			flex: none;
+		}
+	}
+
+	.assignment-editor {
+		box-shadow: 0 0 0 1px #f0f0f0;
+		flex: 1 1 auto;
+	}
+
+	.assignment-editing-sidebar-column  {
+		flex: 0 0 auto;
+		width: rem-calc(260px);
+		margin-left: rem-calc(5px);
+	}
+}
