@@ -59,9 +59,19 @@ export default class Choice extends React.Component {
 		const {choice:newChoice} = nextProps;
 		const {choice:oldChoice} = this.props;
 
-		if (oldChoice !== newChoice) {
-			this.addListener(newChoice);
+		if (newChoice !== oldChoice && newChoice.isNew) {
+			this.isNew = true;
 		}
+	}
+
+
+	componentDidUpdate () {
+		if (this.isNew) {
+			this.doFocus();
+			delete this.isNew;
+		}
+
+		this.addListener();
 	}
 
 
@@ -70,7 +80,7 @@ export default class Choice extends React.Component {
 		this.syncHeight();
 
 		if (this.isNew && this.editorRef) {
-			this.editorRef.focus();
+			this.doFocus();
 			delete this.isNew;
 		}
 	}
