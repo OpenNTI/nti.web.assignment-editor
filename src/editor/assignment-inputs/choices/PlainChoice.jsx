@@ -1,5 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
+import getKeyCode from 'nti-commons/lib/get-key-code';
 import buffer from 'nti-commons/lib/function-buffer';
 
 import {DragHandle} from '../../../dnd';
@@ -25,7 +26,10 @@ export default class PlainChoice extends React.Component {
 		error: React.PropTypes.object,
 		className: React.PropTypes.string,
 		onChange: React.PropTypes.func,
-		onDelete: React.PropTypes.func
+		onDelete: React.PropTypes.func,
+		insertNewChoiceAfter: React.PropTypes.func,
+		focusNext: React.PropTypes.func,
+		focusPrev: React.PropTypes.func
 	}
 
 	constructor (props) {
@@ -132,6 +136,20 @@ export default class PlainChoice extends React.Component {
 	}
 
 
+	onInputKeyPress = (e) => {
+		const {focusNext, focusPrev, insertNewChoiceAfter, choice} = this.props;
+		const code = getKeyCode(e);
+
+		if (code === getKeyCode.ENTER && insertNewChoiceAfter) {
+			insertNewChoiceAfter(choice);
+		}  else if (code === getKeyCode.SHIFT_TAB && focusPrev) {
+			focusPrev();
+		} else if (code === getKeyCode.TAB && focusNext) {
+			focusNext();
+		}
+	}
+
+
 	onDelete = () => {
 		const {onDelete} = this.props;
 
@@ -173,6 +191,7 @@ export default class PlainChoice extends React.Component {
 				className="hide-when-saving"
 				ref={this.setEditorRef}
 				value={label}
+				onKeyPress={this.onInputKeyPress}
 				onChange={this.onInputChange}
 				onFocus={this.onInputFocus}
 				onBlur={this.onInputBlur}
