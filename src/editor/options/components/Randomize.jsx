@@ -10,8 +10,10 @@ const RANDOMIZE_ANSWERS = 'randomize-answers';
 
 const DEFAULT_TEXT = {
 	content: 'Randomizing will override the order of the questions and answers you created.',
-	disabled: 'Add some questions to enable this option.',
+	disabledNoQuestions: 'Add some questions to enable this option.',
 	disabledLimitedEdit: 'You cannot change these settings once students have begun work on this assignment.',
+	disabledMaxLimit: 'Max Limit is enabled.',
+	disabled: 'Currently unavailable for this assignment.',
 	labels: {
 		randomizeQuestions: 'Randomize Question Order',
 		randomizeAnswers: 'Randomize Answer Order'
@@ -105,13 +107,26 @@ class Randomize extends React.Component {
 		}
 	}
 
+	disabledText(qset) {
+		if(!qset || qset.questions.length === 0) {
+			return t('disabledNoQuestions');
+		}
+		if(qset.LimitedEditingCapabilities) {
+			return t('disabledLimitedEdit');
+		}
+		if(qset.draw) {
+			return t('disabledMaxLimit');
+		}
+		return t('disabled');
+	}
+
 	render () {
 		const {isRandomized, isPartTypeRandomized} = this.state;
 		const {questionSet:qset} = this.props;
 		const editable = qset && (qset.hasLink('Randomize') || qset.hasLink('Unrandomize'));
 		const ableToRandomize = isRandomized || (qset && qset.hasLink('Randomize'));
 		const ableToRandomizeParts = isPartTypeRandomized || (qset && qset.hasLink('RandomizePartsType'));
-		const disabledText = qset && qset.LimitedEditingCapabilities ? t('disabledLimitedEdit') : t('disabled');
+		const disabledText = this.disabledText(qset);
 
 		return (
 			<OptionGroup
