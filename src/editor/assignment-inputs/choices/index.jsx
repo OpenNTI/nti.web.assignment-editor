@@ -162,6 +162,7 @@ export default class Choices extends React.Component {
 		this.focusPrevHandlers = [];
 		this.insertNewHandlers = [];
 		this.deleteHandlers = [];
+		this.deleteRowHandlers = [];
 
 		for (let i = 0; i < columns.length; i++) {
 			this.choiceRenders[i] = this.renderChoice.bind(this, i);
@@ -170,6 +171,7 @@ export default class Choices extends React.Component {
 			this.focusNextHandlers[i] = this.focusNext.bind(this, i);
 			this.focusPrevHandlers[i] = this.focusPrev.bind(this, i);
 			this.insertNewHandlers[i] = this.insertNewChoiceAfter.bind(this, i);
+			this.deleteRowHandlers[i] = this.maybeDeleteRow.bind(this, i);
 		}
 
 		for (let i = 0; i < deletes.length; i++) {
@@ -198,6 +200,11 @@ export default class Choices extends React.Component {
 		const {onChange} = this.props;
 		const {columns} = this.state;
 		let rows = [];
+
+		if (this.toFocus) {
+			this.toFocus.focus();
+			delete this.toFocus;
+		}
 
 		for (let column of columns) {
 			if (!Array.isArray(column)) {
@@ -363,7 +370,11 @@ export default class Choices extends React.Component {
 				return toRemove !== choiceId;
 			});
 
-			columns[i] = column;
+			columns[i] = column.map((cell, cellIndex) => {
+				cell.index = cellIndex;
+
+				return cell;
+			});
 		}
 
 		const deletes = createDeleteListForColumns(columns, minAllowed);
@@ -379,11 +390,8 @@ export default class Choices extends React.Component {
 	}
 
 
-	focusNext = (columnIndex, choice) => {
+	getChoiceAfter (columnIndex, choice) {
 		const {columns} = this.state;
-
-		//If we only have one column let the native events handle it
-		if (columns.length === 1) { return false; }
 
 		let column = columns[columnIndex];
 		let index = column.findIndex(x => x.ID === choice.ID);
@@ -395,20 +403,12 @@ export default class Choices extends React.Component {
 			column = columns[columnIndex + 1];
 		}
 
-		const nextChoice = column && column[index];
-
-		if (nextChoice) {
-			nextChoice.focus();
-			return true;
-		}
+		return column && column[index];
 	}
 
 
-	focusPrev = (columnIndex, choice) => {
+	getChoiceBefore (columnIndex, choice) {
 		const {columns} = this.state;
-
-		//If we only have one column let the native events handle it
-		if (columns.length === 1) { return false; }
 
 		let column = columns[columnIndex];
 		let index = column.findIndex(x => x.ID === choice.ID);
@@ -420,7 +420,79 @@ export default class Choices extends React.Component {
 			column = columns[columnIndex - 1];
 		}
 
-		const prevChoice = column && column[index];
+		return column && column[index];
+	}
+
+
+	maybeDeleteRow = (columnIndex, choice) => {
+		const {columns} = this.state;
+		const prevChoice = this.getChoiceBefore(columnIndex, choice);
+
+		function focusPrev () {
+			if (prevChoice) {
+				prevChoice.focus();
+			}
+		}
+
+		//If we aren't the first column just focus the previous
+		if (columnIndex !== 0) {
+			focusPrev();
+			return;
+		}
+
+		//If there is only one column, just remove the choice and focus the previous
+		if (columns.length === 1) {
+			this.toFocus = prevChoice;//mark choice to focus after the removals
+			this.remove([choice.NTIID || choice.ID]);
+			return;
+		}
+
+		//If there is more than one row only delete it if the other cells are empty
+		const choiceColumn = columns[columnIndex];
+		const cellIndex = choiceColumn.findIndex(x => x.ID === choice.ID);
+		let toDelete = [choice.NTIID || choice.ID];
+
+		for (let i = 1; i < columns.length; i++) {
+			let cell = columns[i][cellIndex];
+
+			if (cell.label === '') {
+				toDelete.push(cell.NTIID || cell.ID);
+			} else {
+				break;
+			}
+		}
+
+		if (toDelete.length === columns.length) {
+			this.toFocus = prevChoice;//mark choice to focus after the removals
+			this.remove(toDelete);
+		} else if (prevChoice) {
+			focusPrev();
+		}
+	}
+
+
+	focusNext = (columnIndex, choice) => {
+		const {columns} = this.state;
+
+		//If we only have one column let the native events handle it
+		if (columns.length === 1) { return false; }
+
+		const nextChoice = this.getChoiceAfter(columnIndex, choice);
+
+		if (nextChoice) {
+			nextChoice.focus();
+			return true;
+		}
+	}
+
+
+	focusPrev = (columnIndex, choice, force) => {
+		const {columns} = this.state;
+
+		//If we only have one column let the native events handle it
+		if (columns.length === 1 && !force) { return false; }
+
+		const prevChoice = this.getChoiceBefore(columnIndex, choice);
 
 		if (prevChoice) {
 			prevChoice.focus();
@@ -480,6 +552,7 @@ export default class Choices extends React.Component {
 		const focusNext = this.focusNextHandlers[column];
 		const focusPrev = this.focusPrevHandlers[column];
 		const insertNewChoice = this.insertNewHandlers[column];
+		const maybeDeleteRow = this.deleteRowHandlers[column];
 		const choiceError = isErrorForChoice(error, choice);
 		const sync = this.getSyncForRow(row);
 		const onDelete = canRemove ? this.deleteHandlers[row] : void 0;
@@ -497,6 +570,7 @@ export default class Choices extends React.Component {
 				focusNext={focusNext}
 				focusPrev={focusPrev}
 				insertNewChoiceAfter={insertNewChoice}
+				maybeDeleteRow={maybeDeleteRow}
 			/>
 		);
 	}

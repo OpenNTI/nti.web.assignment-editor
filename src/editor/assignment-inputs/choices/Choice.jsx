@@ -33,7 +33,8 @@ export default class Choice extends React.Component {
 		plainText: React.PropTypes.bool,
 		insertNewChoiceAfter: React.PropTypes.func,
 		focusNext: React.PropTypes.func,
-		focusPrev: React.PropTypes.func
+		focusPrev: React.PropTypes.func,
+		maybeDeleteRow: React.PropTypes.func
 	}
 
 
@@ -175,8 +176,15 @@ export default class Choice extends React.Component {
 	}
 
 
-	onDeleteKey = () => {
-		//TODO: fill this out
+	onBackspaceKey = () => {
+		const {maybeDeleteRow, choice} = this.props;
+		const value = this.editorRef.getValue();
+
+		if (!value && maybeDeleteRow) {
+			maybeDeleteRow(choice);
+		}
+
+		return false;
 	}
 
 
@@ -213,7 +221,7 @@ export default class Choice extends React.Component {
 					[getKeyCode.TAB]: this.onTabKey,
 					[getKeyCode.SHIFT_TAB]: this.onShiftTabKey,
 					[getKeyCode.ENTER]: this.onEnterKey,
-					[getKeyCode.DELETE]: this.onDeleteKey
+					[getKeyCode.BACKSPACE]: this.onBackspaceKey
 				}}
 			/>
 		);

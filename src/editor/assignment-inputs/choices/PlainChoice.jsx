@@ -29,7 +29,8 @@ export default class PlainChoice extends React.Component {
 		onDelete: React.PropTypes.func,
 		insertNewChoiceAfter: React.PropTypes.func,
 		focusNext: React.PropTypes.func,
-		focusPrev: React.PropTypes.func
+		focusPrev: React.PropTypes.func,
+		maybeDeleteRow: React.PropTypes.func
 	}
 
 	constructor (props) {
@@ -56,6 +57,7 @@ export default class PlainChoice extends React.Component {
 		let state = null;
 
 		this.updatedLabel = newChoice.label;
+		this.isNew = newChoice.isNew;
 
 		if (newChoice !== oldChoice && !this.isFocused) {
 			state = state || {};
@@ -78,10 +80,55 @@ export default class PlainChoice extends React.Component {
 	}
 
 
-	componentDidMount () {
-		if (this.isNew && this.editorRef) {
-			this.editorRef.focus();
+	componentDidUpdate () {
+		if (this.isNew) {
+			this.doFocus();
 			delete this.isNew;
+		}
+
+		this.addListener();
+	}
+
+
+	componentDidMount () {
+		this.addListener();
+
+		if (this.isNew && this.editorRef) {
+			this.doFocus();
+			delete this.isNew;
+		}
+	}
+
+
+	componentWillUnmount () {
+		this.removeListener();
+	}
+
+
+	addListener (choice) {
+		this.removeListener();
+
+		const {choice:propChoice} = this.props;
+		const listenTo = choice || propChoice;
+
+		if (listenTo) {
+			listenTo.addListener('focus', this.doFocus);
+		}
+	}
+
+
+	removeListener () {
+		const {choice} = this.props;
+
+		if (choice) {
+			choice.removeListener('focus', this.doFocus);
+		}
+	}
+
+
+	doFocus = () => {
+		if (this.editorRef) {
+			this.editorRef.focus();
 		}
 	}
 
@@ -136,16 +183,21 @@ export default class PlainChoice extends React.Component {
 	}
 
 
-	onInputKeyPress = (e) => {
-		const {focusNext, focusPrev, insertNewChoiceAfter, choice} = this.props;
+	onInputKeyDown = (e) => {
+		const {focusNext, focusPrev, insertNewChoiceAfter, maybeDeleteRow, choice} = this.props;
+		const {label} = this.state;
 		const code = getKeyCode(e);
 
 		if (code === getKeyCode.ENTER && insertNewChoiceAfter) {
 			insertNewChoiceAfter(choice);
 		}  else if (code === getKeyCode.SHIFT_TAB && focusPrev) {
-			focusPrev();
+			focusPrev(choice);
 		} else if (code === getKeyCode.TAB && focusNext) {
-			focusNext();
+			focusNext(choice);
+		} else if (code === getKeyCode.BACKSPACE && maybeDeleteRow && (label === '' || label === ' ')) {
+			e.preventDefault();
+			e.stopPropagation();
+			maybeDeleteRow(choice);
 		}
 	}
 
@@ -191,7 +243,7 @@ export default class PlainChoice extends React.Component {
 				className="hide-when-saving"
 				ref={this.setEditorRef}
 				value={label}
-				onKeyPress={this.onInputKeyPress}
+				onKeyDown={this.onInputKeyDown}
 				onChange={this.onInputChange}
 				onFocus={this.onInputFocus}
 				onBlur={this.onInputBlur}

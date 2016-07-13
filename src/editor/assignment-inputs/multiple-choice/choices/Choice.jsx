@@ -18,7 +18,8 @@ export default class MultipleChoiceChoice extends React.Component {
 		plainText: React.PropTypes.bool,
 		insertNewChoiceAfter: React.PropTypes.func,
 		focusNext: React.PropTypes.func,
-		focusPrev: React.PropTypes.func
+		focusPrev: React.PropTypes.func,
+		maybeDeleteRow: React.PropTypes.func,
 	}
 
 	setChoiceCmpRef = x => this.choiceCmp = x;
@@ -88,7 +89,8 @@ export default class MultipleChoiceChoice extends React.Component {
 			onDelete,
 			focusNext,
 			focusPrev,
-			insertNewChoiceAfter
+			insertNewChoiceAfter,
+			maybeDeleteRow
 		} = this.props;
 
 		const {correct} = this.state;
@@ -107,6 +109,7 @@ export default class MultipleChoiceChoice extends React.Component {
 					focusNext={focusNext}
 					focusPrev={focusPrev}
 					insertNewChoiceAfter={insertNewChoiceAfter}
+					maybeDeleteRow={maybeDeleteRow}
 				/>
 				{this.renderSolution(correct, multipleAnswers, group)}
 			</div>

@@ -91,6 +91,11 @@ export default class BufferedTextEditor extends React.Component {
 	}
 
 
+	getValue () {
+		return this.editorRef && this.editorRef.getValue();
+	}
+
+
 	getValueFromState () {
 		const {initialValue} = this.state;
 
@@ -100,7 +105,7 @@ export default class BufferedTextEditor extends React.Component {
 
 	hasValueChanged () {
 		const oldValue = this.getValueFromState();
-		const newValue = this.editorRef.getValue();
+		const newValue = this.getValue();
 
 		return !valuesEqual(oldValue, newValue);
 	}
@@ -108,7 +113,7 @@ export default class BufferedTextEditor extends React.Component {
 
 	onChange () {
 		const {onChange} = this.props;
-		const newValue = this.editorRef.getValue();
+		const newValue = this.getValue();
 
 		if (onChange && this.hasValueChanged()) {
 			onChange(newValue);
