@@ -21,7 +21,7 @@ export default class OrderingEditor extends React.Component {
 		question: React.PropTypes.object.isRequired,
 		error: React.PropTypes.any,
 		index: React.PropTypes.number,
-		onChange: React.PropTypes.onChange
+		onChange: React.PropTypes.func
 	}
 
 	constructor (props) {
