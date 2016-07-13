@@ -9,11 +9,34 @@ import Choice from './Choice';
 import PlainChoice from './PlainChoice';
 import {isErrorForChoice} from './Factory';
 
+const defaultLabel = 'Add a choice';
+
 function createSyncHeightGroup () {
 	return new SyncHeightGroup();
 }
 
-const defaultLabel = 'Add a choice';
+
+function createDeleteListForColumns (columns, minAllowed) {
+	//This assumes all the columns are the same height
+	const firstColumn = columns[0];
+	const columnLength = firstColumn.length;
+
+	if (columnLength <= minAllowed) {
+		return [];
+	}
+
+	let deletes = [];
+
+	for (let i = 0; i < columnLength; i++) {
+		deletes[i] = columns.reduce((acc, column) => {
+			acc.push(column[i].NTIID || column[i].ID);
+
+			return acc;
+		}, []);
+	}
+
+	return deletes;
+}
 
 /*
  * Since a few different question types make use of a similar structure
@@ -105,7 +128,6 @@ export default class Choices extends React.Component {
 
 	mapColumns (rows, minAllowed) {
 		let columns = [];
-		let deletes = [];
 
 		for (let row of rows) {
 			if (!Array.isArray(row)) {
@@ -121,12 +143,9 @@ export default class Choices extends React.Component {
 
 				return acc;
 			}, columns);
-
-			//Don't allow the last choice to be deleted, since at least one is required
-			if (rows.length > minAllowed) {
-				deletes.push(row.map(cell => cell.NTIID || cell.ID));
-			}
 		}
+
+		const deletes = createDeleteListForColumns(columns, minAllowed);
 
 		return {
 			columns,
@@ -207,6 +226,7 @@ export default class Choices extends React.Component {
 
 
 	onOrderChange (columnIndex, choices) {
+		const {minAllowed} = this.props;
 		let {columns} = this.state;
 		const oldColumn = columns[columnIndex];
 		const oldChoices = oldColumn.reduce((acc, choice) => {
@@ -221,8 +241,13 @@ export default class Choices extends React.Component {
 
 		this.clearRowSyncs();
 
+		const deletes = createDeleteListForColumns(columns, minAllowed);
+
+		this.setUpHandlers(columns, deletes);
+
 		this.setState({
-			columns
+			columns,
+			deletes
 		}, () => {
 			this.onChange();
 		});
@@ -268,16 +293,14 @@ export default class Choices extends React.Component {
 
 
 	insertNewChoiceAt = (index) => {
-		const {buildBlankChoice} = this.props;
+		const {buildBlankChoice, minAllowed} = this.props;
 
 		if (!buildBlankChoice) {
 			return false;
 		}
 
-		const {columns, deletes} = this.state;
+		const {columns} = this.state;
 		const column = columns[0];
-
-		let deleteRow = [];
 
 		if (index < 0) {
 			index = column.length;
@@ -292,17 +315,15 @@ export default class Choices extends React.Component {
 				cell.index = cellIndex;
 				return cell;
 			});
-
-			deleteRow.push(newItem.NTIID || newItem.ID);
 		}
 
-		let newDeletes = [...deletes.slice(0, index), deleteRow, ...deletes.slice(index)];
+		const deletes = createDeleteListForColumns(columns, minAllowed);
 
-		this.setUpHandlers(columns, newDeletes);
+		this.setUpHandlers(columns, deletes);
 
 		this.setState({
 			columns,
-			deletes: newDeletes
+			deletes
 		}, () => {
 			this.onChange();
 		});
@@ -326,7 +347,7 @@ export default class Choices extends React.Component {
 
 
 	remove = (ids) => {
-		const {canRemove} = this.props;
+		const {canRemove, minAllowed} = this.props;
 
 		if (!canRemove) { return; }
 
@@ -345,8 +366,13 @@ export default class Choices extends React.Component {
 			columns[i] = column;
 		}
 
+		const deletes = createDeleteListForColumns(columns, minAllowed);
+
+		this.setUpHandlers(columns, deletes);
+
 		this.setState({
-			columns
+			columns,
+			deletes
 		}, () => {
 			this.onChange();
 		});
