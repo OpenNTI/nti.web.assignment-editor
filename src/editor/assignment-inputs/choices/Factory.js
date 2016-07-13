@@ -30,6 +30,10 @@ class Choice extends EventEmitter  {
 		return this.data.containerId + '-' + this.data.index;
 	}
 
+	get containerId () {
+		return this.data.containerId;
+	}
+
 
 	get errorField () {
 		return this.data.errorField;
@@ -81,7 +85,15 @@ class Choice extends EventEmitter  {
 
 
 	get dataForTransfer () {
-		return JSON.stringify(this.data);
+		const data = {
+			MimeType: this.MimeType,
+			ID: this.ID,
+			correct: this.correct,
+			containerId: this.containerId,
+			label: this.label
+		};
+
+		return JSON.stringify(data);
 	}
 }
 
