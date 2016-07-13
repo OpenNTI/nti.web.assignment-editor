@@ -27,7 +27,7 @@ class Choice extends EventEmitter  {
 	}
 
 	get ID () {
-		return this.data.ID;
+		return this.data.containerId + '-' + this.data.index;
 	}
 
 
@@ -75,6 +75,11 @@ class Choice extends EventEmitter  {
 	}
 
 
+	set index (index) {
+		this.data.index = index;
+	}
+
+
 	get dataForTransfer () {
 		return JSON.stringify(this.data);
 	}
@@ -94,7 +99,7 @@ export default class ChoiceFactory {
 	make (label, correct, index, isNew) {
 		const choice = new Choice({
 			MimeType: this.choiceType,
-			ID: this.containerId + '-' + index,
+			containerId: this.containerId,
 			errorField: this.errorField,
 			index,
 			label: label,

@@ -288,7 +288,10 @@ export default class Choices extends React.Component {
 			let newItem = buildBlankChoice(oldColumn.slice(0));
 
 			let newColumn = [...oldColumn.slice(0, index), newItem, ...oldColumn.slice(index)];
-			columns[i] = newColumn;
+			columns[i] = newColumn.map((cell, cellIndex) => {
+				cell.index = cellIndex;
+				return cell;
+			});
 
 			deleteRow.push(newItem.NTIID || newItem.ID);
 		}
