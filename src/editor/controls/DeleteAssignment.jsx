@@ -11,7 +11,7 @@ const t = scoped('assignment.editing.controls', DEFAULT_TEXT);
 
 export default class DeleteAssignment extends React.Component {
 	static propTypes = {
-		assignment: React.PropTypes.string
+		assignment: React.PropTypes.object
 	}
 
 	onDeleteClick = () => {
