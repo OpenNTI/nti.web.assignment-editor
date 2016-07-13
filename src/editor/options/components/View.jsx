@@ -11,7 +11,7 @@ function getQuestionSet (assignment) {
 	const part = (parts || [])[0];
 	const {question_set:questionSet} = part || {};
 
-	return questionSet;
+	return !questionSet || questionSet.isPlaceholder ? void 0 : questionSet;
 }
 
 class AssignmentOptions extends React.Component {
