@@ -108,6 +108,8 @@ class Randomize extends React.Component {
 		const {isRandomized, isPartTypeRandomized} = this.state;
 		const {questionSet:qset} = this.props;
 		const editable = qset && qset.hasLink('edit');
+		const ableToRandomisze = isRandomized || (qset && qset.hasLink('randomize'));
+		const ableToRandomiszeParts = isPartTypeRandomized || (qset && qset.hasLink('randomizePartsType'));
 
 		return (
 			<OptionGroup
@@ -121,12 +123,12 @@ class Randomize extends React.Component {
 					name={RANDOMIZE_QUESTIONS}
 					value={isRandomized}
 					onChange={this.onChange}
-					disabled={!editable}/>
+					disabled={!editable || !ableToRandomisze}/>
 				<Option label={t('labels.randomizeAnswers')}
 					name={RANDOMIZE_ANSWERS}
 					value={isPartTypeRandomized}
 					onChange={this.onChange}
-					disabled={!editable}/>
+					disabled={!editable || !ableToRandomiszeParts}/>
 			</OptionGroup>
 		);
 	}
