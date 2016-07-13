@@ -267,21 +267,20 @@ export default class Choices extends React.Component {
 	}
 
 
-	insertNewChoiceAfter = (columnIndex, choice) => {
+	insertNewChoiceAt = (index) => {
 		const {buildBlankChoice} = this.props;
 
 		if (!buildBlankChoice) {
 			return false;
 		}
 
-		const {columns} = this.state;
-		const column = columns[columnIndex];
-		let index = column.findIndex(x => x.ID === choice.ID);
+		const {columns, deletes} = this.state;
+		const column = columns[0];
+
+		let deleteRow = [];
 
 		if (index < 0) {
 			index = column.length;
-		} else {
-			index += 1;
 		}
 
 		for (let i = 0; i < columns.length; i++) {
@@ -289,12 +288,18 @@ export default class Choices extends React.Component {
 			let newItem = buildBlankChoice(oldColumn.slice(0));
 
 			let newColumn = [...oldColumn.slice(0, index), newItem, ...oldColumn.slice(index)];
-
 			columns[i] = newColumn;
+
+			deleteRow.push(newItem.NTIID || newItem.ID);
 		}
 
+		let newDeletes = [...deletes.slice(0, index), deleteRow, ...deletes.slice(index)];
+
+		this.setUpHandlers(columns, newDeletes);
+
 		this.setState({
-			columns
+			columns,
+			deletes: newDeletes
 		}, () => {
 			this.onChange();
 		});
@@ -303,26 +308,17 @@ export default class Choices extends React.Component {
 	}
 
 
-	add = () => {
-		const {buildBlankChoice} = this.props;
-
-		if (!buildBlankChoice) {
-			return;
-		}
-
+	insertNewChoiceAfter = (columnIndex, choice) => {
 		const {columns} = this.state;
+		const column = columns[columnIndex];
+		let index = column.findIndex(x => x.ID === choice.ID);
 
-		for (let i = 0; i < columns.length; i++) {
-			let column = columns[i];
+		return this.insertNewChoiceAt(index + 1);
+	}
 
-			column.push(buildBlankChoice(column.slice(0)));
-		}
 
-		this.setState({
-			columns
-		}, () => {
-			this.onChange();
-		});
+	add = () => {
+		return this.insertNewChoiceAt(-1);
 	}
 
 
