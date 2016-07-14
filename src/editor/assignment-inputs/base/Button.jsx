@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import autobind from 'nti-commons/lib/autobind';
+import {HOC} from 'nti-web-commons';
 
 import {appendQuestionTo} from '../Actions';
 
@@ -9,44 +9,23 @@ import {Draggable} from '../../../dnd';
 
 const QuestionMimeType = 'application/vnd.nextthought.naquestion';
 
-function getCountInQuestion (question, types) {
-	const {parts} = question || {};
+const getTypes = x => (x || []).reduce((acc, type) => (acc[type] = 1, acc), {});
 
-	return (parts || []).reduce((acc, part) => {
-		if (part && types[part.MimeType.toLowerCase()]) {
-			acc += 1;
-		}
-
-		return acc;
-	}, 0);
-}
-
-
-function getCountInPart (part, types) {
-	const {question_set:questionSet} = part;
-	const {questions} = questionSet;
-
-	return (questions || []).reduce((acc, question) => {
-		return acc + getCountInQuestion(question, types);
-	}, 0);
-}
+const getCountInQuestion = (question, types) =>
+	Array.from(question || []).reduce((acc, part) =>
+		(part && types[part.MimeType.toLowerCase()]) ? acc + 1 : acc, 0);
 
 
 function canAddToAssignment (assignment) {
-	const {parts} = assignment;
-	const part = parts && parts[0];
+	const [part] = (assignment || {}).parts || [];
+	const {question_set:questionSet} = part || {};
 
-	//TODO: add a condition to check if the assignment can take parts.
-	if (!part) {
-		return true;
-	}
-
-	const {question_set:questionSet} = part;
-
-	return questionSet && hasOrderedContents(questionSet);
+	return !assignment.isLocked()
+		&& hasOrderedContents(questionSet);
 }
 
-export default class BaseButton extends React.Component {
+class Button extends React.Component {
+
 	static propTypes = {
 		assignment: React.PropTypes.object.isRequired,
 		part: React.PropTypes.object.isRequired,
@@ -56,23 +35,16 @@ export default class BaseButton extends React.Component {
 		iconCls: React.PropTypes.string
 	}
 
+
 	static defaultProps = {
 		label: 'Add Question'
 	}
 
-	constructor (props) {
-		super(props);
 
-		this.state = {
-			mousedown: false
-		};
+	static getItem = (props) => props.assignment
 
-		autobind(this,
-			'onClick',
-			'onMouseDown',
-			'onMouseUp'
-		);
-	}
+
+	state = {}
 
 
 	getBlankQuestion () {
@@ -87,7 +59,7 @@ export default class BaseButton extends React.Component {
 	}
 
 
-	onClick () {
+	onClick = () => {
 		const {assignment, activeInsert} = this.props;
 		const question = this.getBlankQuestion();
 
@@ -97,14 +69,14 @@ export default class BaseButton extends React.Component {
 	}
 
 
-	onMouseDown () {
+	onMouseDown = () => {
 		this.setState({
 			mousedown: true
 		});
 	}
 
 
-	onMouseUp () {
+	onMouseUp = () => {
 		this.setState({
 			mousedown: false
 		});
@@ -113,17 +85,9 @@ export default class BaseButton extends React.Component {
 
 	getUsedCount () {
 		const {assignment, handles} = this.props;
-		let types = handles || [];
+		const types = getTypes(handles);
 
-		types = types.reduce((acc, type) => {
-			acc[type] = true;
-
-			return acc;
-		}, {});
-
-		return (assignment.parts || []).reduce((acc, part) => {
-			return acc + getCountInPart(part, types);
-		}, 0);
+		return assignment.getQuestions().reduce((acc, question) => acc + getCountInQuestion(question, types), 0);
 	}
 
 
@@ -149,3 +113,5 @@ export default class BaseButton extends React.Component {
 		);
 	}
 }
+
+export default HOC.ItemChanges.compose(Button);
