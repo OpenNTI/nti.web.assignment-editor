@@ -16,6 +16,7 @@ export default class AvailablePicker extends React.Component {
 		value: PropTypes.instanceOf(Date),
 		label: PropTypes.string,
 		onChange: PropTypes.func.isRequired,
+		onReset: PropTypes.func,
 		saving: PropTypes.bool,
 		error: PropTypes.any
 	}
@@ -55,6 +56,12 @@ export default class AvailablePicker extends React.Component {
 
 	reset = () => {
 		this.setupValue();
+
+		const {onReset} = this.props;
+
+		if (onReset) {
+			onReset();
+		}
 	}
 
 
@@ -127,9 +134,10 @@ export default class AvailablePicker extends React.Component {
 
 	render () {
 		const {date, checked} = this.state;
-		const {label, saving, value} = this.props;
+		const {label, saving, value, error} = this.props;
+		const errorMsg = error && error.message;
 		const changed = value !== date;
-		const saveClassNames = cx('available-save flyout-fullwidth-btn', {changed});
+		const saveClassNames = cx('available-save flyout-fullwidth-btn', {changed, error});
 
 		return (
 			<Flyout
@@ -142,6 +150,7 @@ export default class AvailablePicker extends React.Component {
 			>
 				<Checkbox label={label} checked={checked} onChange={this.onCheckChange} />
 				<DayTimePicker value={date} onChange={this.onDateChange} />
+				{errorMsg && (<div className='error-message'>{errorMsg}</div>)}
 				{saving ? <Loading /> : <div className={saveClassNames} onClick={this.onSave}>Save</div>}
 			</Flyout>
 		);

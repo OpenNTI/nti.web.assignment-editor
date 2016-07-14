@@ -12,21 +12,28 @@ export default class DueDate extends React.Component {
 	}
 
 	componentWillMount () {
-		const {assignment} = this.props;
-		const value = assignment.getAvailableForSubmissionEnding();
-		this.setState({
-			value
-		});
+		this.reset();
 	}
 
 	dateChanged = (value) => {
 		this.setState({value});
 	}
 
+	reset = () => {
+		const {assignment} = this.props;
+		const value = assignment.getAvailableForSubmissionEnding();
+		this.setState({
+			value: value,
+			saving: false,
+			error: null
+		});
+	}
+
 	save = (value) => {
 		const {assignment} = this.props;
 
 		this.setState({
+			value: value,
 			saving: true,
 			error: null
 		});
@@ -36,17 +43,20 @@ export default class DueDate extends React.Component {
 		})
 		.then(() => {
 			this.setState({
-				value,
-				saving: false
+				value: value,
+				saving: false,
+				error: null
 			});
 
 			return value;
 		})
 		.catch((error) => {
 			this.setState({
-				error,
-				saving: false
+				value: assignment.getAvailableForSubmissionEnding(),
+				saving: false,
+				error: error
 			});
+			return Promise.reject(error);
 		});
 	}
 
@@ -54,7 +64,14 @@ export default class DueDate extends React.Component {
 		const {value, saving, error} = this.state;
 		return (
 			<div className="field due-date">
-				<AvailablePicker label="Due Date" value={value} onChange={this.save} error={error} saving={saving} />
+				<AvailablePicker
+					label="Due Date"
+					value={value}
+					onChange={this.save}
+					error={error}
+					saving={saving}
+					onReset={this.reset}
+				/>
 			</div>
 		);
 	}
