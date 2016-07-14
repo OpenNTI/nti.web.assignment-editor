@@ -12,7 +12,8 @@ export default class TabBar extends React.Component {
 	render () {
 		return (
 			<div className= "assignment-editing-sidebar-tabbar">
-				<div className= "tab">Types</div>
+				<div className= "tab active">Types</div>
+				<div className= "tab"/>
 			</div>
 		);
 	}

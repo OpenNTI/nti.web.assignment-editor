@@ -18,8 +18,14 @@
 		}
 	}
 
+	.field:first-child {
+		.labeled-value {
+			padding-left: rem-calc(30px);
+		}
+	}
+
 	.labeled-value {
-		padding: 0 .5rem;
+		padding: rem-calc(0 10px 0 15px);
 		height: 100%;
 	}
 }
