@@ -15,12 +15,18 @@ const PARTS_KEY = 'parts';
 
 const blankAssignmentPart = {
 	'Class': 'AssignmentPart',
-	'MimeType': 'application/vnd.nextthought.assessment.assignmentpart'
+	'MimeType': 'application/vnd.nextthought.assessment.assignmentpart',
+	getQuestions () {
+		return this[QUESTION_SET_KEY];
+	}
 };
 
 const blankQuestionSet = {
 	'Class': 'QuestionSet',
-	'MimeType': 'application/vnd.nextthought.naquestionset'
+	'MimeType': 'application/vnd.nextthought.naquestionset',
+	getQuestions () {
+		return this[QUESTIONS_KEY] || [];
+	}
 };
 
 
