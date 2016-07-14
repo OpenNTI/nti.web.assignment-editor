@@ -6,7 +6,7 @@ import BufferedTextEditor from '../../inputs/BufferedTextEditor';
 
 import {DragHandle} from '../../../dnd';
 import SyncHeight from '../../../sync-height';
-import Selectable from '../../utils/Selectable';
+import {Component as Selectable} from '../../../selection';
 import ControlsConfig from '../../controls/ControlsConfig';
 
 const PLACEHOLDER = '';

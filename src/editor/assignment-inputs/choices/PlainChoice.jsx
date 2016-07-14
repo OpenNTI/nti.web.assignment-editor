@@ -4,7 +4,7 @@ import getKeyCode from 'nti-commons/lib/get-key-code';
 import buffer from 'nti-commons/lib/function-buffer';
 
 import {DragHandle} from '../../../dnd';
-import Selectable from '../../utils/Selectable';
+import {Component as Selectable} from '../../../selection';
 import ControlsConfig from '../../controls/ControlsConfig';
 
 const PLACEHOLDER = '';

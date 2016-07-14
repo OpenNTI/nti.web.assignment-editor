@@ -8,7 +8,7 @@ import FixedElement from './utils/FixedElement';
 import AssignmentEditor from './Editor';
 import Controls from './controls';
 import Sidebar from './sidebar';
-import SelectionManager from './utils/SelectionManager';
+import {Manager as SelectionManager} from '../selection';
 import {LOADED, ASSIGNMENT_DELETING, ASSIGNMENT_DELETED} from './Constants';
 import Store from './Store';
 import {loadAssignment} from './Actions';

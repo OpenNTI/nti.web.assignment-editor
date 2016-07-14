@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import autobind from 'nti-commons/lib/autobind';
 
-import {SelectionItem} from './SelectionManager';
+import SelectionItem from '../SelectionItem';
 
 export default class Selectable extends React.Component {
 	static propTypes = {

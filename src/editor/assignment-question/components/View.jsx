@@ -7,7 +7,7 @@ import {DragHandle} from '../../../dnd';
 
 import Store from '../../Store';
 import {QUESTION_ERROR, QUESTION_WARNING} from '../../Constants';
-import Selectable from '../../utils/Selectable';
+import {Component as Selectable} from '../../../selection';
 import ControlsConfig from '../../controls/ControlsConfig';
 
 import {updateQuestion} from '../Actions';
