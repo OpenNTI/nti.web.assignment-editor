@@ -34,6 +34,22 @@ function insertAt (assignment, part, index, question) {
 
 
 	return save
+		.catch(reason => {
+
+			//Drop the question.
+			if (reason.code === 'UngradableInAutoGradeAssignment') {
+				const {questions} = questionSet;
+				const i = questions.indexOf(question);
+				if (i >= 0) {
+					questions.splice(i, 1);
+					questionSet.onChange();
+					// assignment.onChange();
+					return;
+				}
+			}
+
+			return Promise.reject(reason);
+		})
 		.then(() => {
 			dispatch(QUESTION_SET_UPDATED, questionSet);
 			dispatch(SAVE_ENDED, questionSet);
