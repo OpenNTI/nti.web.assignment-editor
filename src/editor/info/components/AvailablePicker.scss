@@ -1,0 +1,30 @@
+@import "~nti-style-common";
+
+.available-picker.flyout {
+	.flyout-inner {
+		box-shadow: 1px 0 0 0 $border-grey-light,
+					0 1px 0 0 $border-grey-light;
+
+		padding: rem-calc(10px 15px 15px);
+	}
+
+
+	.daytime-picker {
+		margin: 0;
+
+		.DayPicker {
+			width: 200px;
+			margin: 0 auto;
+		}
+	}
+
+	.checkbox-component {
+		font-size: rem-calc(14px);
+		margin-left: rem-calc(20px);
+	}
+
+
+	.available-save {
+		margin: 1rem 0 0 0;
+	}
+}

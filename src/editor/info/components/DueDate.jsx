@@ -1,5 +1,5 @@
 import React from 'react';
-import {AvailablePicker} from 'nti-web-commons';
+import AvailablePicker from './AvailablePicker';//TODO: merge this and that component together.
 
 export default class DueDate extends React.Component {
 	static propTypes = {
