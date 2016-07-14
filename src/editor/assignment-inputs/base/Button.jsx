@@ -21,7 +21,7 @@ function canAddToAssignment (assignment) {
 	const {question_set:questionSet} = part || {};
 
 	return !assignment.isLocked()
-		&& hasOrderedContents(questionSet);
+		&& (!questionSet || hasOrderedContents(questionSet));
 }
 
 class Button extends React.Component {
