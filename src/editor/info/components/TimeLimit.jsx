@@ -1,11 +1,35 @@
 import React from 'react';
-import Logger from 'nti-util-logger';
-import {Flyout, Checkbox, LabeledValue, TinyLoader as Loading} from 'nti-web-commons';
 import cx from 'classnames';
 
-import {DurationPicker} from 'nti-web-commons';
+import {scoped} from 'nti-lib-locale';
+import Logger from 'nti-util-logger';
+import {
+	Checkbox,
+	DurationPicker,
+	Flyout,
+	LabeledValue,
+	TinyLoader as Loading
+} from 'nti-web-commons';
 
 const logger = Logger.get('lib:asssignment-editor:TimeLimit');
+
+const DEFAULT_TEXT = {
+	days: {
+		one: '%(count)s Day',
+		other: '%(count)s Days'
+	},
+	hours: {
+		one: '%(count)s Hour',
+		other: '%(count)s Hours'
+	},
+	minutes: {
+		one: '%(count)s Minute',
+		other: '%(count)s Minutes'
+	}
+};
+
+const t = scoped('UNITS', DEFAULT_TEXT);
+
 
 export default class TimeLimit extends React.Component {
 
@@ -113,9 +137,9 @@ export default class TimeLimit extends React.Component {
 		const hours = DurationPicker.hours(value);
 		const minutes = DurationPicker.minutes(value);
 
-		const p = (val, unit) => val > 0 ? `${val} ${unit}` + (val === 1 ? '' : 's') : '';
+		const p = (val, unit) => val ? t(unit, {count:val}) : '';
 
-		const label = error ? 'Error' : (hasTimeLimit && value > 0) ? `${p(days, 'day')} ${p(hours, 'hour')} ${p(minutes, 'minute')}` : 'No Limit';
+		const label = error ? 'Error' : (hasTimeLimit && value > 0) ? `${p(days, 'days')} ${p(hours, 'hours')} ${p(minutes, 'minutes')}` : 'No Limit';
 
 		const labelClasses = cx({
 			'placeholder': !hasTimeLimit || value === 0
