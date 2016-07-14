@@ -64,7 +64,7 @@ export default class PublishLocked extends React.Component {
 				<span className="reset-label">{t('label')}</span>
 				<p className="reset-text">{t('text')}</p>
 
-				{busy && children}
+				{!busy && children}
 				{error && ( <div className="reset-error">{t('error')}</div> )}
 				{busy ? (
 					<Loading/>
