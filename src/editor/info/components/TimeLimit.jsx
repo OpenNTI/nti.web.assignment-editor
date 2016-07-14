@@ -8,31 +8,22 @@ import {DurationPicker} from 'nti-web-commons';
 const logger = Logger.get('lib:asssignment-editor:TimeLimit');
 
 export default class TimeLimit extends React.Component {
-	constructor (props) {
-		super(props);
-
-		this.onEditorDismiss = this.onEditorDismiss.bind(this);
-		this.save = this.save.bind(this);
-		this.setUp = this.setUp.bind(this);
-		this.timeChanged = this.timeChanged.bind(this);
-		this.toggleTimeLimit = this.toggleTimeLimit.bind(this);
-
-		this.state = {};
-	}
 
 	static propTypes = {
 		assignment: React.PropTypes.object.isRequired
 	}
 
+	state = {}
+
 	componentWillMount () {
-		this.setUp();
+		this.setup();
 	}
 
 	componentWillReceiveProps (nextProps) {
-		this.setUp(nextProps);
+		this.setup(nextProps);
 	}
 
-	setUp (props = this.props) {
+	setup = (props = this.props) => {
 		const {assignment} = props;
 		const value = assignment.maximum_time_allowed || 0;
 		const hasTimeLimit = !!assignment.isTimed;
@@ -43,26 +34,26 @@ export default class TimeLimit extends React.Component {
 		});
 	}
 
-	timeChanged (value) {
+	timeChanged = (value) => {
 		this.setState({value, changed: true, hasTimeLimit: value > 0});
 	}
 
-	toggleTimeLimit () {
+	toggleTimeLimit = () => {
 		this.setState({
 			hasTimeLimit: !this.state.hasTimeLimit,
 			changed: true
 		});
 	}
 
-	onEditorDismiss () {
+	onEditorDismiss = () => {
 		this.reset();
 	}
 
-	reset () {
-		this.setUp();
+	reset = () => {
+		this.setup();
 	}
 
-	save () {
+	save = () => {
 		const {assignment} = this.props;
 		const {value, hasTimeLimit} = this.state;
 		this.setState({
