@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import cx from 'classnames';
 
-import {Flyout, PublishTrigger, Constants} from 'nti-web-commons';
+import {Flyout, PublishTrigger, Constants, TinyLoader as Loading} from 'nti-web-commons';
 import {scoped} from 'nti-lib-locale';
 const {PUBLISH_STATES} = Constants;
 
@@ -31,8 +31,10 @@ export default class PublishLocked extends React.Component {
 	onResetClick = () => {
 		const {assignment} = this.props;
 		if (assignment.hasLink('reset')) {
+			this.setState({busy: true});
 			assignment.resetAllSubmissions()
-				.then(this.closeMenu, () => this.setState({error: true}));
+				.then(this.closeMenu, () => this.setState({error: true}))
+				.then(()=> this.setState({busy: false}));
 		}
 	}
 
@@ -47,7 +49,7 @@ export default class PublishLocked extends React.Component {
 
 
 	render () {
-		const {props: {assignment, value, children}, state: {error}} = this;
+		const {props: {assignment, value, children}, state: {error, busy}} = this;
 
 		const can = assignment && assignment.hasLink('reset');
 		const trigger = <PublishTrigger value={value} />;
@@ -62,9 +64,15 @@ export default class PublishLocked extends React.Component {
 				<span className="reset-label">{t('label')}</span>
 				<p className="reset-text">{t('text')}</p>
 
-				{children}
+				{busy && children}
 				{error && ( <div className="reset-error">{t('error')}</div> )}
-				{can && ( <div className={cx('flyout-fullwidth-btn publish-reset', {error})} onClick={this.onResetClick}>Reset Assignment</div> )}
+				{busy ? (
+					<Loading/>
+				) : can && (
+					<div className={cx('flyout-fullwidth-btn publish-reset', {error})} onClick={this.onResetClick}>
+						Reset Assignment
+					</div>
+				)}
 			</Flyout>
 		);
 	}
