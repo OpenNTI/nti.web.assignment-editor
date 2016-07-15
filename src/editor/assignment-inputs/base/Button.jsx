@@ -27,8 +27,8 @@ function canAddToAssignment (assignment) {
 class Button extends React.Component {
 
 	static propTypes = {
-		assignment: React.PropTypes.object.isRequired,
-		part: React.PropTypes.object.isRequired,
+		assignment: React.PropTypes.object,
+		part: React.PropTypes.object,
 		handles: React.PropTypes.array,
 		activeInsert: React.PropTypes.object,
 		label: React.PropTypes.string,
