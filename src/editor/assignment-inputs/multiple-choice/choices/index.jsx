@@ -80,7 +80,7 @@ export default class MultipleChoiceChoices extends Choices {
 		const focusPrev = this.focusPrevHandlers[column];
 		const insertNewChoice = this.insertNewHandlers[column];
 		const solutionHandler = this.solutionHandlers[column];
-		const maybeDeleteRow = this.deleteRowHandlers[column];
+		const maybeDeleteRow = canRemove ? this.deleteRowHandlers[column] : void 0;
 		const sync = this.getSyncForRow(row);
 		const onDelete = canRemove ? this.deleteHandlers[row] : null;
 

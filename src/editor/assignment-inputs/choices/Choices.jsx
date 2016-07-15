@@ -155,6 +155,8 @@ export default class Choices extends React.Component {
 
 
 	setUpHandlers (columns, deletes) {
+		const canDelete = deletes.length > 1;
+
 		this.orderChangeHandlers = [];
 		this.choiceChangeHandlers = [];
 		this.choiceRenders = [];
@@ -171,7 +173,10 @@ export default class Choices extends React.Component {
 			this.focusNextHandlers[i] = this.focusNext.bind(this, i);
 			this.focusPrevHandlers[i] = this.focusPrev.bind(this, i);
 			this.insertNewHandlers[i] = this.insertNewChoiceAfter.bind(this, i);
-			this.deleteRowHandlers[i] = this.maybeDeleteRow.bind(this, i);
+
+			if (canDelete) {
+				this.deleteRowHandlers[i] = this.maybeDeleteRow.bind(this, i);
+			}
 		}
 
 		for (let i = 0; i < deletes.length; i++) {
@@ -556,7 +561,7 @@ export default class Choices extends React.Component {
 		const focusNext = this.focusNextHandlers[column];
 		const focusPrev = this.focusPrevHandlers[column];
 		const insertNewChoice = this.insertNewHandlers[column];
-		const maybeDeleteRow = this.deleteRowHandlers[column];
+		const maybeDeleteRow = canRemove ? this.deleteRowHandlers[column] : void 0;
 		const choiceError = isErrorForChoice(error, choice);
 		const sync = this.getSyncForRow(row);
 		const onDelete = canRemove ? this.deleteHandlers[row] : void 0;
