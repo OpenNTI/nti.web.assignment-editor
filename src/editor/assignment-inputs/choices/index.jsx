@@ -510,6 +510,8 @@ export default class Choices extends React.Component {
 			<div className={cls}>
 				<div className="choices">
 					{columns.map(this.renderColumn)}
+				</div>
+				<div className="choices add">
 					{canAdd ? this.renderAdd() : null}
 				</div>
 			</div>

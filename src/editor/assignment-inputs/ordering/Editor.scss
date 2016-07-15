@@ -60,11 +60,11 @@
 	.choices {
 		display: flex;
 		flex-direction: row;
-		flex-wrap: wrap;
+		flex-wrap: no-wrap;
 
 		.choice-column {
 			flex: 1 0 50%;
-			padding: rem-calc(15px) rem-calc(15px) 0 0;
+			padding: rem-calc(15px 15px 0 0);
 
 			&:first-of-type {
 				padding: rem-calc(15px) 0 0 rem-calc(15px);
