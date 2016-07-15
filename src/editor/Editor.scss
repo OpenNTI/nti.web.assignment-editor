@@ -21,6 +21,8 @@
 
 	.option-container, .content-container {
 		background: white;
+		min-height: 75vh;
+		min-height: calc(100vh - 220px);
 	}
 
 	.content-container {
