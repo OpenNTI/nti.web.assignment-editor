@@ -504,7 +504,13 @@ export default class Ordering extends React.Component {
 				onDragOver={this.onContainerDragOver}
 			>
 				<div>
-					<FlipMove enterAnimation="fade" leaveAnimation="fade" duration={150} easing="ease-in" disableAllAnimations={disableAnimation}>
+					<FlipMove
+						enterAnimation="fade"
+						leaveAnimation="fade"
+						duration={150}
+						easing="ease-in"
+						disableAllAnimations={disableAnimation}
+						>
 						{items.map(this.renderItem)}
 					</FlipMove>
 				</div>
@@ -519,7 +525,14 @@ export default class Ordering extends React.Component {
 		const key = item.ID;
 
 		return (
-			<Draggable key={key} className={cls} data={item.MoveData} handleClassName={handleClassName} onDragStart={item.onDragStart} onDragEnd={item.onDragEnd}>
+			<Draggable
+				key={key}
+				className={cls}
+				data={item.MoveData}
+				handleClassName={handleClassName}
+				onDragStart={item.onDragStart}
+				onDragEnd={item.onDragEnd}
+				>
 				<div ref={this.getAttachRef(key)} data-ordering-key={key}>
 					{ !item.isPlaceholder && !item.isDragging ?
 						renderItem(item.item, index, item.isPlaceholder) :
