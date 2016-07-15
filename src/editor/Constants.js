@@ -1,5 +1,6 @@
 export const LOADED = 'assignment:editor:AssignmentLoaded';
 export const LOADED_SCHEMA = 'assignment:editor:AssignmentSchemaLoaded';
+export const LOADING = 'assignment:editor:AssignmentLoading';
 
 export const SAVING = 'assignment:editor:Saving';
 export const SAVE_ENDED = 'assignment:editor:SaveEnded';
@@ -20,4 +21,3 @@ export const QUESTION_WARNING = 'assignment:editor:QuestionWarning';
 
 export const UNDO_CREATED = 'assignment:editor:UndoCreated';
 export const CLEAR_UNDOS = 'assignment:editor:ClearUndo';
-

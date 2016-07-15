@@ -5,6 +5,7 @@ import {
 	ASSIGNMENT_ERROR,
 	ASSIGNMENT_DELETING,
 	ASSIGNMENT_DELETED,
+	LOADING,
 	LOADED,
 	LOADED_SCHEMA,
 	SAVING,
@@ -22,6 +23,7 @@ const logger = Logger.get('lib:asssignment-editor:Actions');
 const defaultSchema = {};
 
 export function loadAssignment (ntiid) {
+	dispatch(LOADING);
 	getService()
 		.then(service =>
 			service.getObject(ntiid))

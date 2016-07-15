@@ -6,6 +6,7 @@ import Logger from 'nti-util-logger';
 import {
 	LOADED,
 	LOADED_SCHEMA,
+	LOADING,
 	SAVING,
 	SAVE_ENDED,
 	ASSIGNMENT_ERROR,
@@ -38,8 +39,8 @@ const GetMessageFrom = Symbol('Get Message From');
 const RemoveMessageFrom = Symbol('Remove Message From');
 const SetMessageOn = Symbol('Set Message On');
 const AddUndo = Symbol('Add Undo');
+const ClearAssignment = Symbol('Clear Assignment');
 const ClearUndos = Symbol('Clear Undos');
-
 
 function findMessagesForId (id, message) {
 	return message[id] || [];
@@ -86,21 +87,26 @@ function getLabelForError (ntiid, field, label, type, assignment) {
 }
 
 
+function init (instance) {
+	PRIVATE.set(instance, {
+		assignment: null,
+		schema: null,
+		deleting: false,
+		deleted: false,
+		savingCount: 0,
+		savingStart: null,
+		errors: {},
+		warnings: {},
+		undoQueue: new Queue({maxVisible: 1, maxDepth: 5, keepFor: 30000})
+	});
+}
+
+
 class Store extends StorePrototype {
 	constructor () {
 		super();
 
-		PRIVATE.set(this, {
-			assignment: null,
-			schema: null,
-			deleting: false,
-			deleted: false,
-			savingCount: 0,
-			savingStart: null,
-			errors: {},
-			warnings: {},
-			undoQueue: new Queue({maxVisible: 1, maxDepth: 5, keepFor: 30000})
-		});
+		init(this);
 
 		this.setAssignmentError = this[SetError].bind(this, ASSIGNMENT_ERROR);
 		this.setQuestionError = this[SetError].bind(this, QUESTION_ERROR);
@@ -110,6 +116,7 @@ class Store extends StorePrototype {
 		this.registerHandlers({
 			[LOADED]: SetAssignment,
 			[LOADED_SCHEMA]: SetSchema,
+			[LOADING]: ClearAssignment,
 			[SAVING]: SetSaving,
 			[SAVE_ENDED]: SetSaveEnded,
 			[ASSIGNMENT_DELETING]: SetAssignmentDeleting,
@@ -305,6 +312,11 @@ class Store extends StorePrototype {
 		const {undoQueue} = p;
 
 		undoQueue.push(undo);
+	}
+
+
+	[ClearAssignment] () {
+		init(this);
 	}
 
 
