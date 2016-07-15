@@ -3,6 +3,7 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {ConflictResolutionHandler} from 'nti-web-commons';
+import {decodeFromURI} from 'nti-lib-ntiids';
 import {Editor} from '../../src';
 
 import 'normalize.css';
@@ -39,7 +40,7 @@ const Bridge = React.createClass({
 let assignmentId = localStorage.getItem('assignment-ntiid');
 
 if (!assignmentId) {
-	assignmentId = window.prompt('Enter Assignment NTIID');
+	assignmentId = decodeFromURI(window.prompt('Enter Assignment NTIID'));
 	localStorage.setItem('assignment-ntiid', assignmentId);
 }
 
