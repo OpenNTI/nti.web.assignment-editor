@@ -22,6 +22,7 @@
 	.assignment-editor {
 		// box-shadow: 0 0 0 1px #f0f0f0;
 		flex: 1 1 auto;
+		max-width: rem-calc(768px);
 	}
 
 	.assignment-editing-sidebar-column  {
