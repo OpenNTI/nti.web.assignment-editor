@@ -88,7 +88,7 @@ export default class Editor extends React.Component {
 			return this.renderError(error || 'No Assignment');
 		}
 
-		let cls = cx('assignment-editor-container', {loading: Store.isLoaded});
+		let cls = cx('assignment-editor-container', {loading: !Store.isLoaded});
 
 		return (
 			<div className={cls}>
