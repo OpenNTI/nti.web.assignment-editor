@@ -107,7 +107,7 @@ class Randomize extends React.Component {
 		}
 	}
 
-	disabledText(qset) {
+	disabledText (qset) {
 		if(!qset || qset.questions.length === 0) {
 			return t('disabledNoQuestions');
 		}

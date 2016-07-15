@@ -154,9 +154,9 @@ export default class DataTransfer {
 			data = JSON.parse(data);
 		} catch (e) {
 			data = null;
-		} finally {
-			return data;
 		}
+
+		return data;
 	}
 
 	/**

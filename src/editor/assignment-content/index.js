@@ -1,2 +1,2 @@
-import View from './components/View'
+import View from './components/View';
 export default View;
