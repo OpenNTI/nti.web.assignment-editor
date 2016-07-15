@@ -86,11 +86,15 @@ export default class QuestionComponent extends React.Component {
 
 
 	onQuestionChange = () => {
-		const {questionError} = this.state;
+		const {questionError, contentWarning} = this.state;
 
 		if (questionError && questionError.clear) {
 			questionError.clear();
-		} else {
+		}
+		if(contentWarning && contentWarning.clear) {
+			contentWarning.clear();
+		}
+		if((!questionError || !questionError.clear) && (!contentWarning || !contentWarning.clear)) {
 			this.forceUpdate();
 		}
 	}
