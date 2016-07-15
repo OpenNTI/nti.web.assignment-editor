@@ -214,6 +214,8 @@ export default class Choices extends React.Component {
 			rows = column.reduce((acc, cell, index) => {
 				let accVal = acc[index];
 
+				cell.isNew = false;
+
 				if (!accVal) {
 					acc[index] = cell;
 				} else if (!Array.isArray(accVal)) {

@@ -49,6 +49,10 @@ class Choice extends EventEmitter  {
 		return this.data.isNew;
 	}
 
+	set isNew (value) {
+		this.data.isNew = value;
+	}
+
 
 	get correct () {
 		return this.data.correct;
