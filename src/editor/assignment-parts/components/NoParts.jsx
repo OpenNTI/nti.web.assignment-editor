@@ -1,12 +1,18 @@
 import React from 'react';
 import autobind from 'nti-commons/lib/autobind';
+import {scoped} from 'nti-lib-locale';
 
 import {Dropzone} from '../../../dnd';
 
 import {createPartWithQuestion} from '../Actions';
 import {QUESTION_TYPE} from './QuestionSet';
 
-const PLACEHOLDER = 'No questions yet. Select question from the right to add one.';
+
+const DEFAULT_TEXT = {
+	placeholder: 'No questions yet. Select question from the right to add one.'
+};
+
+const t = scoped('NO_PARTS', DEFAULT_TEXT);
 
 export default class NoParts extends React.Component {
 	static propTypes = {
@@ -37,7 +43,7 @@ export default class NoParts extends React.Component {
 		return (
 			<Dropzone className="assignment-editor-no-parts" accepts={this.accepts} dropHandlers={this.dropHandlers}>
 				<div>
-					{PLACEHOLDER}
+					{t('placeholder')}
 				</div>
 			</Dropzone>
 		);
