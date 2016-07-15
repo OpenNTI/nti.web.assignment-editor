@@ -406,6 +406,7 @@ export default class Ordering extends React.Component {
 						if (itemId === dragId) {
 							item.isDragging = true;
 							item.isPlaceholder = true;
+							item.height = (this.getRectForId(itemId) || {}).height;
 						}
 
 						return item;
@@ -523,7 +524,8 @@ export default class Ordering extends React.Component {
 		const {renderItem, handleClassName} = this.props;
 		const cls = cx('ordering-item', {placeholder: item.isPlaceholder, 'is-dragging': item.isDragging});
 		const key = item.ID;
-
+		const style = item.isPlaceholder && item.height ? {height: item.height} : {};
+		
 		return (
 			<Draggable
 				key={key}
@@ -533,7 +535,7 @@ export default class Ordering extends React.Component {
 				onDragStart={item.onDragStart}
 				onDragEnd={item.onDragEnd}
 				>
-				<div ref={this.getAttachRef(key)} data-ordering-key={key}>
+				<div ref={this.getAttachRef(key)} data-ordering-key={key} style={style}>
 					{ !item.isPlaceholder && !item.isDragging ?
 						renderItem(item.item, index, item.isPlaceholder) :
 						null
