@@ -1,5 +1,6 @@
 import SelectionManager, {SelectionItem} from '../SelectionManager';
 
+//These are all failing now.
 describe('Selection Manager tests', () => {
 	let selectionManager;
 	let listeners;
