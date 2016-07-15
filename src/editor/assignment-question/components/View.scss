@@ -35,7 +35,7 @@
 	.wrap {
 		background: white;
 		display: flex;
-		padding: rem-calc(20px) 0 rem-calc(20px) rem-calc(25px);
+		padding: rem-calc(20px 0 20px 25px);
 	}
 
 	.drag-handle.question-drag-handle {

@@ -10,7 +10,7 @@
 		color: $secondary-grey;
 		cursor: pointer;
 		display: block;
-	    padding: rem-calc(14px) rem-calc(17px);
+		padding: rem-calc(14px 17px);
 
 		&:hover {
 			color: $primary-grey;
