@@ -9,9 +9,10 @@
 
 		&.placeholder {
 			height: 40px;
-			background: rgba(0, 0, 0, 0.2);
+			background: none;
 			border: none;
 			margin: 0;
+			margin-bottom: .5625rem;
 		}
 	}
 }
