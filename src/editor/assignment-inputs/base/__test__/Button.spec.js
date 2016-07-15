@@ -2,6 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Button from '../Button';
 
+const render = (node, cmp, props, ...children) => new Promise(next =>
+	void ReactDOM.render(
+		React.createElement(cmp, {...props, ref (x) {cmp = x; props.ref && props.ref(x);}}, ...children),
+		node,
+		() => next(cmp)
+	));
+
 describe('Assignment Sidebar Button Tests', ()=> {
 	let container = document.createElement('div');
 	let newNode;
@@ -102,22 +109,17 @@ describe('Assignment Sidebar Button Tests', ()=> {
 		'title':'Test Assignment With All Questions 2'
 	};
 
+
 	document.body.appendChild(container);
 
-	beforeEach(() => {
-		if (newNode) {
-			document.body.removeChild(newNode);
-		}
+	beforeEach(()=> {
 		newNode = document.createElement('div');
 		document.body.appendChild(newNode);
 	});
 
-	afterEach(() => {
-		if (newNode) {
-			ReactDOM.unmountComponentAtNode(newNode);
-			document.body.removeChild(newNode);
-			newNode = null;
-		}
+	afterEach(()=> {
+		ReactDOM.unmountComponentAtNode(newNode);
+		document.body.removeChild(newNode);
 	});
 
 	afterAll(()=> {
@@ -125,44 +127,45 @@ describe('Assignment Sidebar Button Tests', ()=> {
 		document.body.removeChild(container);
 	});
 
-	it('tests creation of Button', () => {
-		const button1 = ReactDOM.render(
-			React.createElement(Button, {assignment: assignment}),
-			newNode
-		);
 
-		expect(button1).toBeTruthy();
+	const test = (props, ...children) => Promise.all([
+		render(newNode, Button, props, ...children),
+		render(container, Button, props, ...children)
+	]);
+
+	it('tests creation of Button', () => {
+
+		test({assignment: assignment})
+			.then(cmps => cmps.forEach(button =>
+				expect(button).toBeTruthy()
+			));
 	});
 
 	it('tests count of mutlichoice questions', () => {
 		const handles = ['application/vnd.nextthought.assessment.randomizedmultiplechoicepart'];
-		const button = ReactDOM.render(
-			React.createElement(Button, {assignment: assignment, handles: handles}),
-			newNode
-		);
 
-		expect(button.getUsedCount()).toBe(3);
+		test({assignment: assignment, handles: handles})
+			.then(cmps => cmps.forEach(button =>
+				expect(button.getUsedCount()).toBe(3)
+			));
 	});
 
 	it('tests count of essay questions', () => {
 		const handles = ['application/vnd.nextthought.assessment.modeledcontentpart'];
-		const button = ReactDOM.render(
-			React.createElement(Button, {assignment: assignment, handles: handles}),
-			newNode
-		);
 
-		expect(button.getUsedCount()).toBe(1);
+		test({assignment: assignment, handles: handles})
+			.then(cmps => cmps.forEach(button =>
+				expect(button.getUsedCount()).toBe(1)
+			));
+
 	});
 
 	it('tests empty blank question', () => {
 		const handles = ['application/vnd.nextthought.assessment.modeledcontentpart'];
-		const button = ReactDOM.render(
-			React.createElement(Button, {assignment: assignment, handles: handles}),
-			newNode
-		);
-
-		let data = button.getBlankQuestion();
-		expect(data).toBeFalsy();
+		test({assignment: assignment, handles: handles})
+			.then(cmps => cmps.forEach(button =>
+				expect(button.getBlankQuestion()).toBeFalsy()
+			));
 	});
 
 	it('tests blank question', () => {
@@ -174,13 +177,13 @@ describe('Assignment Sidebar Button Tests', ()=> {
 			content: 'Content 1 goes here',
 			hints: []
 		};
-		const button = ReactDOM.render(
-			React.createElement(Button, {assignment: assignment, handles: handles, part: part}),
-			newNode
-		);
 
-		let question = button.getBlankQuestion();
-		expect(question.MimeType).toBe(questionMimeType);
-		expect(question.parts.length).toBe(1);
+		test({assignment: assignment, handles: handles, part: part})
+		.then(cmps => cmps.forEach(button => {
+			let question = button.getBlankQuestion();
+			expect(question.MimeType).toBe(questionMimeType);
+			expect(question.parts.length).toBe(1);
+		}));
+
 	});
 });
