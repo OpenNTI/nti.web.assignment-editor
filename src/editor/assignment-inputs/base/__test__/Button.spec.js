@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Button from '../Button';
+import {Button} from '../Button';
 
 const render = (node, cmp, props, ...children) => new Promise(next =>
 	void ReactDOM.render(
@@ -10,7 +10,7 @@ const render = (node, cmp, props, ...children) => new Promise(next =>
 	));
 
 describe('Assignment Sidebar Button Tests', ()=> {
-	let container = document.createElement('div');
+	let container = document.body.appendChild(document.createElement('div'));
 	let newNode;
 	const assignment = {
 		'Class':'Assignment',
@@ -109,17 +109,25 @@ describe('Assignment Sidebar Button Tests', ()=> {
 		'title':'Test Assignment With All Questions 2'
 	};
 
-
-	document.body.appendChild(container);
+	//Add model mocks.
+	assignment.isLocked = () => false;
+	assignment.getQuestions = () =>
+		assignment.parts[0].question_set.questions;
 
 	beforeEach(()=> {
-		newNode = document.createElement('div');
-		document.body.appendChild(newNode);
+		if (newNode) {
+			document.body.removeChild(newNode);
+		}
+
+		newNode = document.body.appendChild(document.createElement('div'));
 	});
 
 	afterEach(()=> {
-		ReactDOM.unmountComponentAtNode(newNode);
-		document.body.removeChild(newNode);
+		if (newNode) {
+			ReactDOM.unmountComponentAtNode(newNode);
+			document.body.removeChild(newNode);
+			newNode = null;
+		}
 	});
 
 	afterAll(()=> {

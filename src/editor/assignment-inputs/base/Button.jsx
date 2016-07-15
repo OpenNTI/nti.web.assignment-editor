@@ -24,7 +24,7 @@ function canAddToAssignment (assignment) {
 		&& (!questionSet || hasOrderedContents(questionSet));
 }
 
-class Button extends React.Component {
+export class Button extends React.Component {
 
 	static propTypes = {
 		assignment: React.PropTypes.object,
