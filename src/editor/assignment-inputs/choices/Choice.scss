@@ -12,7 +12,7 @@
 		padding-right: 0;
 
 		i {
-			line-height: 39px;
+			line-height: rem-calc(38px);
 		}
 	}
 
@@ -22,7 +22,7 @@
 
 	.delete {
 		flex: 0 0 auto;
-		line-height: 39px;
+		line-height: rem-calc(38px);
 		font-weight: 600;
 		color: $tertiary-grey;
 		opacity: 1;
@@ -51,12 +51,12 @@
 
 	.nti-rich-text {
 		position: static;
-		font: normal 400 0.875rem/40px $body-font-family;
+		font: normal 400 0.875rem/2.5 $body-font-family;
 		color: $primary-grey;
 		background-color: inherit;
 		border: none;
 		width: 100%;
-		padding: 0.6rem 0.2rem;
+		padding: rem-calc(9px 3px);
 
 		.dragging & {
 			position: static;
@@ -79,7 +79,7 @@
 
 	input {
 		background: none;
-		font: normal 400 0.875rem/40px $body-font-family;
+		font: normal 400 0.875rem/2.5 $body-font-family;
 		color: $primary-grey;
 		border: none;
 		width: 100%;
