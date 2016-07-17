@@ -3,7 +3,7 @@ import cx from 'classnames';
 import autobind from 'nti-commons/lib/autobind';
 import {Radio, Checkbox} from 'nti-web-commons';
 
-import Choice from '../../choices/Choice';
+import Choice from '../choices/Choice';
 
 export default class MultipleChoiceChoice extends React.Component {
 	static propTypes = {

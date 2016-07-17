@@ -1,7 +1,8 @@
 import React from 'react';
 
-import Choices from '../../choices';
-import {isErrorForChoice} from '../../choices/Factory';
+import Choices from '../choices';
+import {isErrorForChoice} from '../choices/Factory';
+
 import Choice from './Choice';
 
 export default class MultipleChoiceChoices extends Choices {

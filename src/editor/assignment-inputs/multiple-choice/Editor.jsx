@@ -1,9 +1,10 @@
 import React from 'react';
 
-import Choices from './choices';
 import ChoiceFactory from '../choices/Factory';
-import {generatePartFor} from './utils';
 import {canAddPart, canMovePart, canRemovePart} from '../utils';
+
+import Choices from './Choices';
+import {generatePartFor} from './utils';
 
 const errorField = 'choices';
 
