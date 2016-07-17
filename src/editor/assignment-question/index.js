@@ -1,2 +1,2 @@
-import View from './components/View';
-export default View;
+import Question from './components/Question';
+export default Question;

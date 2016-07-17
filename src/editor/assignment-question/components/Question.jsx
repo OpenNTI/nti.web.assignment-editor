@@ -36,7 +36,7 @@ function isLastQuestion (question, questionSet) {
 	return last && last.NTIID === question.NTIID;
 }
 
-export default class QuestionComponent extends React.Component {
+export default class Question extends React.Component {
 	static propTypes = {
 		question: React.PropTypes.object.isRequired,
 		questionSet: React.PropTypes.object.isRequired,
