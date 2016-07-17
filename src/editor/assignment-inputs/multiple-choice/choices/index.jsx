@@ -4,10 +4,6 @@ import Choices from '../../choices';
 import {isErrorForChoice} from '../../choices/Factory';
 import Choice from './Choice';
 
-function canEditMultipleAnswerSolution (choice, correctCount) {
-	return correctCount > 1 || choice.correct;
-}
-
 export default class MultipleChoiceChoices extends Choices {
 	static propTypes = {
 		...Choices.propTypes,
