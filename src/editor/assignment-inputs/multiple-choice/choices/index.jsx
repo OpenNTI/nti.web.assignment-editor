@@ -33,25 +33,19 @@ export default class MultipleChoiceChoices extends Choices {
 		const {columns} = this.state;
 		const oldColumn = columns[column];
 		const newColumn = [];
-		let correctCount = 0;
 		let solutionChanged = false;
 
 		for (let oldChoice of oldColumn) {
-			if (oldChoice.correct) {
-				correctCount += 1;
-			}
-
 			if (this.isSameChoice(choice, oldChoice)) {
 				if (oldChoice.correct !== choice.correct) {
 					solutionChanged = true;
 				}
-
 			}
 
 			newColumn.push(oldChoice.clone());
 		}
 
-		if (solutionChanged && (!multipleAnswers || canEditMultipleAnswerSolution(choice, correctCount))) {
+		if (solutionChanged) {
 			columns[column] = newColumn.map((newChoice) => {
 				if (this.isSameChoice(newChoice, choice)) {
 					newChoice.correct = choice.correct;
