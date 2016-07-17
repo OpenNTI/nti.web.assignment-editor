@@ -44,7 +44,7 @@
     "nti-modeled-content": "^1.3.10",
     "nti-util-logger": "^1.0.0",
     "nti-web-client": "^1.0.0",
-    "nti-web-commons": ">=0.0.28",
+    "nti-web-commons": ">=0.0.74",
     "react-addons-css-transition-group": "^15.1.0",
     "react-flip-move": "^2.2.0",
     "react-sticky": "^5.0.3"
