@@ -56,6 +56,9 @@ export default class QuestionComponent extends React.Component {
 	}
 
 
+	attachRef = (x) => this.editorRef = x;
+
+
 	componentDidMount () {
 		const {question} = this.props;
 
@@ -74,6 +77,13 @@ export default class QuestionComponent extends React.Component {
 
 		if (question && question.removeListener) {
 			question.removeListener('change', this.onQuestionChange);
+		}
+	}
+
+
+	focusEditor = () => {
+		if (this.editorRef) {
+			this.editorRef.focus();
 		}
 	}
 
@@ -183,10 +193,11 @@ export default class QuestionComponent extends React.Component {
 			<div className="assignment-editing-question-container">
 				<Between question={question} before />
 				<Selectable className={cls} id={selectableId} value={selectableValue} tabIndex="0">
-					<div className="wrap">
+					<div className="wrap" onClick={this.focusEditor}>
 						<DragHandle className="question-drag-handle hide-when-saving" />
 						<div className="index">{index + 1}</div>
 						<Content
+							ref={this.attachRef}
 							question={question}
 							onFocus={this.onContentFocus}
 							onBlur={this.onContentBlur}

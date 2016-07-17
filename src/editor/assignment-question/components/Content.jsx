@@ -18,9 +18,7 @@ export default class QuestionContent extends React.Component {
 	}
 
 
-	constructor (props) {
-		super(props);
-	}
+	attachRef = (x) => this.editor = x;
 
 
 	onEditorFocus = (editor) => {
@@ -49,6 +47,12 @@ export default class QuestionContent extends React.Component {
 		}
 	}
 
+	focus = () => {
+		if(this.editor) {
+			this.editor.focus();
+		}
+	}
+
 
 	render () {
 		const {isSaving, question, error, warning} = this.props;
@@ -61,6 +65,7 @@ export default class QuestionContent extends React.Component {
 			<div className={cls}>
 				{!isSaving ?
 					<BufferedTextEditor
+						ref={this.attachRef}
 						className={cls}
 						initialValue={content}
 						placeholder={placeholder}
