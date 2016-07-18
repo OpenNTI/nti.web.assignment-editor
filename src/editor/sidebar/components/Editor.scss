@@ -6,5 +6,10 @@
 
 	.question-types {
 		padding: rem-calc(10px 5px);
+		display: flex;
+		flex-wrap: wrap;
+		& > .assigment-editor-sidebar-button {
+			flex: none;
+		}
 	}
 }
