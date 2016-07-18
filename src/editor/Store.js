@@ -13,6 +13,7 @@ import {
 	ASSIGNMENT_DELETING,
 	ASSIGNMENT_DELETED,
 	QUESTION_ERROR,
+	QUESTION_UPDATED,
 	QUESTION_WARNING,
 	UNDO_CREATED,
 	CLEAR_UNDOS
@@ -27,6 +28,7 @@ const PRIVATE = new WeakMap();
 const logger = Logger.get('lib:asssignment-editor:Store');
 const UNDO_QUEUE = new Queue({maxVisible: 1, maxDepth: 5, keepFor: 30000});
 
+const ClearQuestionError = Symbol('Clear Question Error');
 const SetAssignment = Symbol('Set Assignment');
 const SetAssignmentDeleting = Symbol('Set Assignment Deleting');
 const SetAssignmentDeleted = Symbol('Set Assignment Deleted');
@@ -125,6 +127,7 @@ class Store extends StorePrototype {
 			[ASSIGNMENT_DELETED]: SetAssignmentDeleted,
 			[ASSIGNMENT_ERROR]: 'setAssignmentError',
 			[QUESTION_ERROR]: 'setQuestionError',
+			[QUESTION_UPDATED]: ClearQuestionError,
 			[QUESTION_WARNING]: 'setQuestionWarning',
 			[UNDO_CREATED]: AddUndo,
 			[CLEAR_UNDOS]: ClearUndos
@@ -253,6 +256,12 @@ class Store extends StorePrototype {
 		}
 
 		return message;
+	}
+
+	[ClearQuestionError] (o) {
+		const p = PRIVATE.get(this);
+		const {response: question} = o.action;
+		this[RemoveMessageFrom](p.errors, question.getID(), null, QUESTION_ERROR);
 	}
 
 
