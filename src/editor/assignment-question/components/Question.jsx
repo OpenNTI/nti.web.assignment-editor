@@ -4,6 +4,7 @@ import buffer from 'nti-commons/lib/function-buffer';
 import {Errors} from 'nti-web-commons';
 
 import {DragHandle} from '../../../dnd';
+import InlineDialog from '../../../inline-dialog';
 
 import Store from '../../Store';
 import {QUESTION_ERROR, QUESTION_WARNING} from '../../Constants';
@@ -36,6 +37,12 @@ function isLastQuestion (question, questionSet) {
 	return last && last.NTIID === question.NTIID;
 }
 
+
+function isVisible (question, assignment) {
+	//TODO: look at if the assignment is published and available
+	return false;
+}
+
 export default class Question extends React.Component {
 	static propTypes = {
 		question: React.PropTypes.object.isRequired,
@@ -51,7 +58,8 @@ export default class Question extends React.Component {
 
 		this.state = {
 			selectableId: question.NTIID,
-			selectableValue: new ControlsConfig(null, {after: true, item: question})
+			selectableValue: new ControlsConfig(null, {after: true, item: question}),
+			modal: false
 		};
 	}
 
@@ -183,32 +191,45 @@ export default class Question extends React.Component {
 	}
 
 
+	onMouseDown = () => {
+		const {question, assignment} = this.props;
+
+		if (isVisible(question, assignment)) {
+			this.setState({
+				modal: true
+			});
+		}
+	}
+
+
 	render () {
 		const {question, index, questionSet, assignment} = this.props;
-		const {selectableId, selectableValue, contentError, contentWarning, partError, questionError} = this.state;
+		const {selectableId, selectableValue, contentError, contentWarning, partError, questionError, modal} = this.state;
 		const {isSaving} = question;
 		const cls = cx('question-editor', {'is-saving': isSaving, error: contentError || questionError || question.error});
 
 		return (
 			<div className="assignment-editing-question-container">
 				<Between question={question} before />
-				<Selectable className={cls} id={selectableId} value={selectableValue} tabIndex="-1">
-					<div className="wrap" onClick={this.focusEditor}>
-						<DragHandle className="question-drag-handle hide-when-saving" />
-						<div className="index">{index + 1}</div>
-						<Content
-							ref={this.attachRef}
-							question={question}
-							onFocus={this.onContentFocus}
-							onBlur={this.onContentBlur}
-							error={contentError}
-							warning={contentWarning}
-							onChange={this.onContentChange}
-						/>
-					</div>
-					<Parts question={question} error={partError} onChange={this.onPartsChange} />
-					{questionError && (<ErrorCmp error={questionError} />)}
-				</Selectable>
+				<InlineDialog active={modal}>
+					<Selectable className={cls} id={selectableId} value={selectableValue} tabIndex="-1" onMouseDown={this.onMouseDown}>
+						<div className="wrap" onClick={this.focusEditor}>
+							<DragHandle className="question-drag-handle hide-when-saving" />
+							<div className="index">{index + 1}</div>
+							<Content
+								ref={this.attachRef}
+								question={question}
+								onFocus={this.onContentFocus}
+								onBlur={this.onContentBlur}
+								error={contentError}
+								warning={contentWarning}
+								onChange={this.onContentChange}
+							/>
+						</div>
+						<Parts question={question} error={partError} onChange={this.onPartsChange} />
+						{questionError && (<ErrorCmp error={questionError} />)}
+					</Selectable>
+				</InlineDialog>
 				{!isSaving && (<Controls question={question} questionSet={questionSet} assignment={assignment} flushChanges={this.flushChanges} />)}
 				{isLastQuestion(question, questionSet) && (<Between question={question} after />)}
 			</div>
