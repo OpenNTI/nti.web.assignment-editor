@@ -30,4 +30,17 @@
 		width: rem-calc(250px);
 		margin-left: rem-calc(5px);
 	}
+
+	&.error {
+		background: white;
+		margin: 0 auto;
+		max-width: 360px;
+		border-radius: 3px;
+		text-align: center;
+		padding: 1rem;
+
+		figure.error figcaption div {
+			text-align: center;
+		}
+	}
 }

@@ -119,7 +119,7 @@ export default class Editor extends React.Component {
 
 	renderError (error) {
 		return (
-			<div className="assignment-editor error">
+			<div className="assignment-editor-container error">
 				<Error error={error} />
 			</div>
 		);
