@@ -175,7 +175,7 @@ export default class Dropzone extends React.Component {
 		const {children, className} = this.props;
 		const {dragOver, isValid} = this.state;
 		const child = React.Children.only(children);
-		const cls = cx(className || '', {'drag-over': dragOver, 'valid-drag': dragOver && isValid, 'invalid-drag': dragOver && !isValid});
+		const cls = cx(className || '', child.props.className, {'drag-over': dragOver, 'valid-drag': dragOver && isValid, 'invalid-drag': dragOver && !isValid});
 
 		const props = {
 			onDrop: this.onDrop,
