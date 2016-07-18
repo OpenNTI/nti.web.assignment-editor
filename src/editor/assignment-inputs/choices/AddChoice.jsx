@@ -25,12 +25,6 @@ export default class AddChoice extends React.Component {
 		this.setState({isFocused: true});
 	}
 
-	componentWillUnmount () {
-		this.removeListener();
-	}
-
-	removeListener () {}
-
 	render () {
 		const {addLabel} = this.props;
 		const {add} = this.props;
