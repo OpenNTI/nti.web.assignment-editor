@@ -20,6 +20,11 @@ export default class ActionStack extends React.Component {
 	}
 
 
+	componentDidUpdate () {
+		this.addQueueListeners();
+	}
+
+
 	componentDidMount () {
 		this.addQueueListeners();
 	}
@@ -31,6 +36,8 @@ export default class ActionStack extends React.Component {
 
 
 	addQueueListeners () {
+		this.removeQueueListeners();
+
 		const {queue} = this.props;
 
 		queue.addListener('changed', this.onQueueChanged);

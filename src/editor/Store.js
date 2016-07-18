@@ -25,6 +25,7 @@ const errorFactory = new ErrorFactory();
 
 const PRIVATE = new WeakMap();
 const logger = Logger.get('lib:asssignment-editor:Store');
+const UNDO_QUEUE = new Queue({maxVisible: 1, maxDepth: 5, keepFor: 30000});
 
 const SetAssignment = Symbol('Set Assignment');
 const SetAssignmentDeleting = Symbol('Set Assignment Deleting');
@@ -88,6 +89,8 @@ function getLabelForError (ntiid, field, label, type, assignment) {
 
 
 function init (instance) {
+	UNDO_QUEUE.clear();
+
 	PRIVATE.set(instance, {
 		assignment: null,
 		schema: null,
@@ -96,8 +99,7 @@ function init (instance) {
 		savingCount: 0,
 		savingStart: null,
 		errors: {},
-		warnings: {},
-		undoQueue: new Queue({maxVisible: 1, maxDepth: 5, keepFor: 30000})
+		warnings: {}
 	});
 }
 
@@ -308,10 +310,8 @@ class Store extends StorePrototype {
 
 	[AddUndo] (e) {
 		const undo = e.action.response;
-		const p = PRIVATE.get(this);
-		const {undoQueue} = p;
 
-		undoQueue.push(undo);
+		UNDO_QUEUE.push(undo);
 	}
 
 
@@ -321,10 +321,7 @@ class Store extends StorePrototype {
 
 
 	[ClearUndos] () {
-		const p = PRIVATE.get(this);
-		const {undoQueue} = p;
-
-		undoQueue.clear();
+		UNDO_QUEUE.clear();
 	}
 
 
@@ -371,9 +368,7 @@ class Store extends StorePrototype {
 
 
 	get undoQueue () {
-		const p = PRIVATE.get(this);
-
-		return p.undoQueue;
+		return UNDO_QUEUE;
 	}
 
 
