@@ -70,7 +70,9 @@ export default class TimeLimit extends React.Component {
 	}
 
 	onEditorDismiss = () => {
-		this.reset();
+		if(this.state.changed) {
+			this.reset();
+		}
 	}
 
 	reset = () => {
