@@ -1,11 +1,15 @@
 import {dispatch} from 'nti-lib-dispatcher';
 import {getService} from  'nti-web-client';
 import Logger from 'nti-util-logger';
+import {isNTIID} from 'nti-lib-ntiids';
 
 import OrderedContents from '../../ordered-contents';
+import {cloneQuestion} from '../assignment-question/utils';
 
 import {saveFieldOn} from '../Actions';
 import {SAVING, SAVE_ENDED, QUESTION_SET_UPDATED, QUESTION_SET_ERROR} from '../Constants';
+
+import {cloneQuestionSet} from './utils';
 
 const logger = Logger.get('lib:asssignment-editor:assignment-parts:Actions');
 
@@ -30,11 +34,11 @@ const blankQuestionSet = {
 };
 
 
-function buildPartWithQuestion (questionData) {
+function buildPartWithQuestion (questionData, oldQuestionSet) {
 	return getService()
 		.then((service) => {
 			const part = service.getObjectPlaceholder({...blankAssignmentPart});
-			const questionSet = service.getObjectPlaceholder({...blankQuestionSet});
+			const questionSet = service.getObjectPlaceholder(oldQuestionSet ? cloneQuestionSet(oldQuestionSet) : {...blankQuestionSet});
 			const question = service.getObjectPlaceholder({...questionData});
 
 			part.isSaving = true;
@@ -43,9 +47,7 @@ function buildPartWithQuestion (questionData) {
 
 			questionSet[QUESTIONS_KEY] = questionSet[QUESTIONS_KEY] || [];
 
-			if (!questionData.NTIID) {
-				questionSet[QUESTIONS_KEY].push(question);
-			}
+			questionSet[QUESTIONS_KEY].push(question);
 
 			part[QUESTION_SET_KEY] = questionSet;
 
@@ -77,15 +79,33 @@ function setErrorOnPlaceholderPart (part, reason) {
 }
 
 
-export function createPartWithQuestion (assignment, question) {
-	buildPartWithQuestion(question)
+function getSaveDataForFakePart (part) {
+	const questionSet = part[QUESTION_SET_KEY];
+	const questions = questionSet[QUESTIONS_KEY];
+	const questionsData = questions.map((x) => {
+		if (isNTIID(x.NTIID)) {
+			return x.NTIID;
+		}
+
+		return cloneQuestion(x);
+	});
+
+	questionSet[QUESTIONS_KEY] = questionsData;
+	part[QUESTION_SET_KEY] = questionSet;
+
+	return part;
+}
+
+
+export function createPartWithQuestion (assignment, question, questionSet) {
+	buildPartWithQuestion(question, questionSet)
 		.then((part) => {
 			assignment.parts = assignment.parts || [];
 			assignment.parts.push(part);
 
 			assignment.onChange();
 
-			const save = saveFieldOn(assignment, PARTS_KEY, [part]);
+			const save = saveFieldOn(assignment, PARTS_KEY, [getSaveDataForFakePart(part)]);
 
 			if (save && save.then) {
 				save
@@ -120,10 +140,9 @@ export function removePartWithQuestionSet (assignment, questionSet) {
 
 	//If there was only one question left, return an undo method
 	if (questions.length === 1) {
-		// return Promise.resolve(() => {
-		// 	//TODO: get the server to add ability create a question set with an existing question
-		// 	// createPartWithQuestion(assignment, questions[0]);
-		// });
+		return Promise.resolve(() => {
+			createPartWithQuestion(assignment, questions[0], questionSet);
+		});
 	}
 
 	return Promise.resolve();
