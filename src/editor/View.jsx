@@ -42,7 +42,7 @@ export default class Editor extends React.Component {
 	}
 
 
-	componenWillUnmount () {
+	componentWillUnmount () {
 		Store.removeChangeListener(this.onStoreChange);
 	}
 

@@ -50,7 +50,7 @@ export default class Editor extends React.Component {
 	}
 
 
-	componenWillUnmount () {
+	componentWillUnmount () {
 		const {SelectionManager} = this.context;
 
 		if (SelectionManager) {
