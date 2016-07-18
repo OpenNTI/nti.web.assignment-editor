@@ -19,7 +19,7 @@ function createSyncHeightGroup () {
 
 function createDeleteListForColumns (columns, minAllowed) {
 	//This assumes all the columns are the same height
-	const firstColumn = columns[0];
+	const firstColumn = columns[0] || [];
 	const columnLength = firstColumn.length;
 
 	if (columnLength <= minAllowed) {

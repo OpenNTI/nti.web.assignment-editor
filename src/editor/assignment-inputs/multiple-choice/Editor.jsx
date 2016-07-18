@@ -64,7 +64,7 @@ export default class MultipleChoiceEditor extends React.Component {
 
 
 	mapChoices (choices, solutions) {
-		let solution = solutions[0];//For now just handle the first solution
+		let solution = (solutions || [])[0];//For now just handle the first solution
 
 		solution = solution && solution.value;
 
