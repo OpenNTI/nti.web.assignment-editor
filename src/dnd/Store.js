@@ -49,7 +49,24 @@ class Store extends StorePrototype {
 
 	[DropHandled] (e) {
 		const data = e.action.response;
-		const types = data.types.filter(x => x !== MoveInfoMimeType && x !== InfoMimeType);
+		const types = filtered(data.types, x => x !== MoveInfoMimeType && x !== InfoMimeType);
+
+		// >< firefox returns a DomStringList for data.types;
+		// DomStringLists don't have a filter method.
+		function filtered (input, filterFn) {
+			if (input.filter) {
+				return input.filter(filterFn);
+			}
+
+			const result = [];
+			for (let i = 0; i < input.length; i++) {
+				let item = input.item(i);
+				if(filterFn(item)) {
+					result.push(item);
+				}
+			}
+			return result;
+		}
 
 		clearTimeout(this[ClearHandlesTimeout]);
 
