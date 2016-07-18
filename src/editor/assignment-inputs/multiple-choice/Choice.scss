@@ -36,13 +36,9 @@
 	}
 }
 
-.dragging .multiple-choice-choice {
-	position: static;
-
-	.radio-component, .checkbox-component {
-		display: none;
-	}
-}
+// .dragging .multiple-choice-choice {
+// 	position: static;
+// }
 
 .is-saving .multiple-choice-choice {
 	.radio-component, .checkbox-component {

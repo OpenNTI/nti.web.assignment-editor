@@ -3,22 +3,22 @@
 .assignment-input-choices {
 	position: relative;
 
-	.dragging & {
-		position: static;
-	}
+	// .dragging & {
+	// 	position: static;
+	// }
 
-	.choices {
-		position: relative;
-		z-index: 0;
-
-		.dragging & {
-			position: static;
-		}
-
-		.dragging & .ordering-container > div{
-			position: static !important;
-		}
-	}
+	// .choices {
+	// 	position: relative;
+	// 	z-index: 0;
+	//
+	// 	.dragging & {
+	// 		position: static;
+	// 	}
+	//
+	// 	.dragging & .ordering-container > div{
+	// 		position: static !important;
+	// 	}
+	// }
 
 	.add-choice {
 		background-color: white;
