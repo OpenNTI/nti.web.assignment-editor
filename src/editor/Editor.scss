@@ -26,6 +26,15 @@
 	}
 
 	.content-container {
+		&, .assignment-parts {
+			display: flex;
+			flex-direction: column;
+		}
+		.assignment-parts,
+		.assignment-editor-no-parts {
+			flex: 1 1 auto;
+		}
+
 		.show-options.toggle {
 			font: normal 500 0.875rem/1 $body-font-family;
 			color: $secondary-grey;

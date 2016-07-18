@@ -41,9 +41,11 @@ export default class NoParts extends React.Component {
 
 	render () {
 		return (
-			<Dropzone className="assignment-editor-no-parts" accepts={this.accepts} dropHandlers={this.dropHandlers}>
-				<div>
-					{t('placeholder')}
+			<Dropzone accepts={this.accepts} dropHandlers={this.dropHandlers}>
+				<div className="assignment-editor-no-parts">
+					<div className="empty-message">
+						{t('placeholder')}
+					</div>
 				</div>
 			</Dropzone>
 		);
