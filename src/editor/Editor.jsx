@@ -79,7 +79,7 @@ export default class AssignmentEditor extends React.Component {
 			<div key="content" className="content-container">
 				{assignment && (
 					<div className="show-options toggle" onClick={this.showOptions}>
-						<i className="icon-settings" />
+						<i className="icon-settings small" />
 						<span>Options</span>
 					</div>
 				)}

@@ -14,26 +14,27 @@
 
 	.toggle {
 		position: absolute;
-		top: 1.375rem;
-		right: 1.875rem;
+		top: rem-calc(20px);
+		right: rem-calc(20px);
 		cursor: pointer;
 	}
 
 	.option-container, .content-container {
 		background: white;
 		min-height: 75vh;
-		min-height: calc(100vh - 220px);
+		min-height: calc(100vh - 125px);
 	}
 
 	.content-container {
 		.show-options.toggle {
-			font: normal 500 0.875rem/2.5rem $body-font-family;
-			line-height: 2.5rem;
+			font: normal 500 0.875rem/1 $body-font-family;
 			color: $secondary-grey;
+			width: rem-calc(103px);
 			box-shadow: 0 0 0 1px $border-grey-light;
-			border-radius: 3px;
+			border-radius: 2px;
 			background: white;
-			padding: 0 0.625rem;
+			padding: rem-calc(11px 0);
+			text-align: center;
 
 			span, i {
 				vertical-align: middle;
@@ -44,9 +45,7 @@
 			}
 
 			i {
-				font-size: 1rem;
-				line-height: 2.5rem;
-				margin-right: 0.2rem;
+				margin-right: rem-calc(4px);
 			}
 		}
 	}
@@ -55,14 +54,14 @@
 	.option-container {
 		.show-content.toggle {
 			width: 103px;
-			height: 39px;
-			border-radius: .125rem;
-			background-color: #3fb3f6;
+			height: 38px;
+			border-radius: 2px;
+			background-color: $primary-blue;
 			text-align: center;
 			color: white;
-			line-height: 39px;
-			font-size: .875rem;
-			font-weight: 300;
+			line-height: 38px;
+			font-size: rem-calc(14px);
+			font-weight: 600;
 		}
 	}
 

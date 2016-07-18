@@ -36,16 +36,23 @@
 
 
 	&.error {
-		border: 1px solid $border-red;
+		border: 1px solid rgba($primary-red, .6);
 
 		&.selected {
-			box-shadow: 0 0 1px 1px $border-red;
+			border-color: $primary-red;
 		}
+	}
+
+	&.selected {
+		border-color: $border-grey;
 	}
 
 	&.correct {
 		background-color: $light-green;
 		border: 1px solid $border-green-light;
+		&.selected {
+			border-color: $border-green-dark;
+		}
 	}
 
 

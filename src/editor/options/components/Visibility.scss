@@ -13,7 +13,7 @@
 			appearance: none;
 			border-radius: rem-calc(2px);
 			background-color: white;
-			border: solid rem-calc(1px) #e2e2e2;
+			border: solid rem-calc(1px) $border-grey-light;
 			font-size: rem-calc(14px);
 			min-width: rem-calc(200px);
 			padding: rem-calc(6px 15px);
@@ -24,7 +24,7 @@
 				width: 0px;
 				height: 0px;
 				border-style: solid;
-				border-color: #e2e2e2 transparent transparent;
+				border-color: $border-grey-light transparent transparent;
 				border-width: rem-calc(5px 4px);
 				right: rem-calc(15px);
 				transform: translateY(rem-calc(-2px));
