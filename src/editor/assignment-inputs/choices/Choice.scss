@@ -76,6 +76,10 @@
 			font-size: 0.875rem;
 			transition: color 50ms;
 		}
+
+		.DraftEditor-editorContainer {
+			z-index: 0;
+		}
 	}
 
 	.nti-error {
