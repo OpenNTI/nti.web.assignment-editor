@@ -8,7 +8,7 @@ const DEFAULT_SOLUTION = ['Answer 1'];
 const ICON_CLS = 'freeresponse';
 
 const DEFAULT_TEXT = {
-	freeResponseButtonLabel: 'Free Response'
+	freeResponseButtonLabel: 'Short Answer'
 };
 
 const t = scoped('ASSIGNMENT_AUTHORING', DEFAULT_TEXT);

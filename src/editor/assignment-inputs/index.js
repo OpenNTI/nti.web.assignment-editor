@@ -13,11 +13,11 @@ const QUESTION = 'Write a question...';
 
 const logger = Logger.get('lib:asssignment-editor:assignment-inputs');
 const KINDS = [
-	ModeledContent,
-	FileUpload,
-	FreeResponse,
 	MultipleChoice,
 	MultipleChoiceMultipleAnwer,
+	ModeledContent,
+	FreeResponse,
+	FileUpload,
 	Ordering
 ];
 
