@@ -106,6 +106,7 @@ export default class Draggable extends React.Component {
 		this.isDragging = true;
 		domNode.classList.add('dragging');
 		domNode.style.position = 'relative';
+		domNode.style.zIndex = 0;
 
 		if (onDragStart) {
 			onDragStart();
@@ -119,7 +120,8 @@ export default class Draggable extends React.Component {
 
 		this.isDragging = false;
 		domNode.classList.remove('dragging');
-		domNode.style.position = void 0;
+		domNode.style.position = '';
+		domNode.style.zIndex = '';
 
 		if (onDragEnd) {
 			onDragEnd(e);
