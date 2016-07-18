@@ -17,7 +17,7 @@ export function generatePartFor (mimeType, content, choices, solution, hints) {
 		MimeType: mimeType,
 		content: content || '',
 		choices: choices,
-		solutions: [generateSolutionFor(solution, mimeType)],
+		solutions: solution.length === 0 ? [] : [generateSolutionFor(solution, mimeType)],
 		hints: hints || []
 	};
 }
