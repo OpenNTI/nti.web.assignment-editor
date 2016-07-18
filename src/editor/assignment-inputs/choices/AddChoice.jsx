@@ -1,4 +1,5 @@
 import React from 'react';
+import getKeyCode from 'nti-commons/lib/get-key-code';
 
 export default class AddChoice extends React.Component {
 	static propTypes = {
@@ -13,6 +14,7 @@ export default class AddChoice extends React.Component {
 
 		this.onBlur = this.onBlur.bind(this);
 		this.onFocus = this.onFocus.bind(this);
+		this.onKeyPress = this.onKeyPress.bind(this);
 	}
 
 	onBlur (e) {
@@ -25,6 +27,14 @@ export default class AddChoice extends React.Component {
 		this.setState({isFocused: true});
 	}
 
+	onKeyPress (e) {
+		e.preventDefault();
+
+		if (getKeyCode(e) === getKeyCode.ENTER && this.props.add) {
+			this.props.add();
+		}
+	}
+
 	render () {
 		const {addLabel} = this.props;
 		const {add} = this.props;
@@ -33,6 +43,7 @@ export default class AddChoice extends React.Component {
 		return (
 			<div
 				className={cls}
+				onKeyPress={this.onKeyPress}
 				onClick={add}
 				onFocus={this.onFocus}
 				onBlur={this.onBlur}

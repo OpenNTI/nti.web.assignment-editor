@@ -30,6 +30,10 @@
 		cursor: pointer;
 		transition: color 50ms;
 
+		&.selected {
+			border-color: $border-grey;
+		}
+
 		i {
 			margin-right: rem-calc(7px);
 		}
