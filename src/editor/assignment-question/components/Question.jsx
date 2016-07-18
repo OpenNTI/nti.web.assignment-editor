@@ -192,7 +192,7 @@ export default class Question extends React.Component {
 		return (
 			<div className="assignment-editing-question-container">
 				<Between question={question} before />
-				<Selectable className={cls} id={selectableId} value={selectableValue} tabIndex="0">
+				<Selectable className={cls} id={selectableId} value={selectableValue} tabIndex="-1">
 					<div className="wrap" onClick={this.focusEditor}>
 						<DragHandle className="question-drag-handle hide-when-saving" />
 						<div className="index">{index + 1}</div>

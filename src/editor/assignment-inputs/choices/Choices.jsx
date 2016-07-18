@@ -8,6 +8,7 @@ import {Ordering} from '../../../dnd/';
 import Choice from './Choice';
 import PlainChoice from './PlainChoice';
 import {isErrorForChoice} from './Factory';
+import AddChoice from './AddChoice';
 
 const defaultLabel = 'Add a choice';
 
@@ -584,15 +585,14 @@ export default class Choices extends React.Component {
 		);
 	}
 
-
 	renderAdd () {
 		const {addLabel} = this.props;
 
 		return (
-			<div className="add-choice" onClick={this.add}>
-				<i className="icon-add" />
-				<span>{addLabel}</span>
-			</div>
+			<AddChoice
+				addLabel={addLabel}
+				add={this.add}
+			/>
 		);
 	}
 }
