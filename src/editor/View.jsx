@@ -79,7 +79,7 @@ export default class Editor extends React.Component {
 
 
 	render () {
-		const {undoQueue} = Store;
+		const {undoStack} = Store;
 		const {gotoRoot, pageSource} = this.props;
 		const {deleting} = this.state;
 		const {assignment, loadError: error, schema} = Store;
@@ -108,7 +108,7 @@ export default class Editor extends React.Component {
 							</FixedElement>
 						</div>
 						<ControlBar visible>
-							<Controls assignment={assignment} undoQueue={undoQueue} />
+							<Controls assignment={assignment} undoStack={undoStack} />
 						</ControlBar>
 					</div>
 				)}

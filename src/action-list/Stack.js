@@ -1,56 +1,56 @@
 import EventEmitter from 'events';
 
-const ACTION_QUEUE = Symbol('QUEUE');
+const ACTION_STACK = Symbol('STACK');
 const START_TIMER = Symbol('Start Timer');
 const STOP_TIMER = Symbol('Stop Timer');
-const SET_QUEUE = Symbol('Set QUEUE');
+const SET_STACK = Symbol('Set Stack');
 
 const DEFAULT_MAX_SHOW = 1;
 const DEFAULT_MAX_DEPTH = 5;
 const DEFAULT_KEEP_FOR = Infinity;
 
-export default class ActionQueue extends EventEmitter {
+export default class ActionStack extends EventEmitter {
 	constructor (config = {}) {
 		super();
 
 		this.seenCount = 0;
 
-		//How many items are visible in the queue
+		//How many items are visible in the stack
 		this.maxVisible = config.maxVisible || DEFAULT_MAX_SHOW;
-		//How deep the queue can get, before we start pushing the next item out
+		//How deep the stack can get, before we start pushing the next item out
 		this.maxDepth = config.maxDepth || DEFAULT_MAX_DEPTH;
 		this.keepFor = config.keepFor || DEFAULT_KEEP_FOR;
 
-		this[ACTION_QUEUE] = [];
+		this[ACTION_STACK] = [];
 	}
 
 
 	get next () {
-		return this.unwrapAction(this[ACTION_QUEUE][0]);
+		return this.unwrapAction(this[ACTION_STACK][0]);
 	}
 
 
 	get items () {
-		const queue = this[ACTION_QUEUE];
+		const stack = this[ACTION_STACK];
 
-		return queue.slice(0, this.maxVisible).map(this.unwrapAction);
+		return stack.slice(0, this.maxVisible).map(this.unwrapAction);
 	}
 
 
 	get length () {
-		const queue = this[ACTION_QUEUE];
+		const stack = this[ACTION_STACK];
 
-		return Math.min(this.maxVisible, queue.length);
+		return Math.min(this.maxVisible, stack.length);
 	}
 
 
 	get depth () {
-		return this[ACTION_QUEUE].length;
+		return this[ACTION_STACK].length;
 	}
 
 
-	[SET_QUEUE] (queue) {
-		this[ACTION_QUEUE] = queue;
+	[SET_STACK] (stack) {
+		this[ACTION_STACK] = stack;
 		this.emit('changed');
 	}
 
@@ -102,9 +102,9 @@ export default class ActionQueue extends EventEmitter {
 
 
 	/**
-	 * Push an action on to the queue.
+	 * Push an action on to the stack.
 	 *
-	 * If the queue is at the max depth, remove the oldest item.
+	 * If the stack is at the max depth, remove the oldest item.
 	 * Start a timer to remove it after the keep for timeout has passed.
 	 *
 	 * Is an object that looks like:
@@ -121,33 +121,33 @@ export default class ActionQueue extends EventEmitter {
 	push (action) {
 		this.seenCount += 1;
 
-		let queue = this[ACTION_QUEUE];
+		let stack = this[ACTION_STACK];
 		let wrapper = this.wrapAction(action);
 
-		if (queue.length === this.maxDepth) {
-			this[STOP_TIMER](queue[0]);
+		if (stack.length === this.maxDepth) {
+			this[STOP_TIMER](stack[0]);
 
-			queue = queue.slice(1);
+			stack = stack.slice(0, -1);
 		}
 
-		queue = [...queue, wrapper];
+		stack = [wrapper, ...stack];
 
-		this[SET_QUEUE](queue);
+		this[SET_STACK](stack);
 	}
 
 
 	/**
-	 * If given an action, remove that action from the queue. Otherwise clear the entire queue.
+	 * If given an action, remove that action from the stack. Otherwise clear the entire stack.
 	 *
 	 * @param  {Object|String} action the action to remove
 	 * @return {void}
 	 */
 	clear (action) {
-		let queue = this[ACTION_QUEUE];
+		let stack = this[ACTION_STACK];
 
 		if (action) {
 			action = action.ID || action;
-			queue = queue.filter((q) => {
+			stack = stack.filter((q) => {
 				let remove = false;
 
 				if (q.ID === action) {
@@ -158,9 +158,9 @@ export default class ActionQueue extends EventEmitter {
 				return !remove;
 			});
 		} else {
-			queue = [];
+			stack = [];
 		}
 
-		this[SET_QUEUE](queue);
+		this[SET_STACK](stack);
 	}
 }

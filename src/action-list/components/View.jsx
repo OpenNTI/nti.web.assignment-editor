@@ -6,56 +6,56 @@ import Item from './Item';
 
 export default class ActionStack extends React.Component {
 	static propTypes = {
-		queue: React.PropTypes.object.isRequired
+		stack: React.PropTypes.object.isRequired
 	}
 
 	constructor (props) {
 		super(props);
 
-		const {queue} = props;
+		const {stack} = props;
 
 		this.state = {
-			items: queue.items
+			items: stack.items
 		};
 	}
 
 
 	componentDidUpdate () {
-		this.addQueueListeners();
+		this.addStackListeners();
 	}
 
 
 	componentDidMount () {
-		this.addQueueListeners();
+		this.addStackListeners();
 	}
 
 
 	componentWillUnmount () {
-		this.removeQueueListeners();
+		this.removeStackListeners();
 	}
 
 
-	addQueueListeners () {
-		this.removeQueueListeners();
+	addStackListeners () {
+		this.removeStackListeners();
 
-		const {queue} = this.props;
+		const {stack} = this.props;
 
-		queue.addListener('changed', this.onQueueChanged);
+		stack.addListener('changed', this.onStackChanged);
 	}
 
 
-	removeQueueListeners () {
-		const {queue} = this.props;
+	removeStackListeners () {
+		const {stack} = this.props;
 
-		queue.removeListener('changed', this.onQueueChanged);
+		stack.removeListener('changed', this.onStackChanged);
 	}
 
 
-	onQueueChanged = () => {
-		const {queue} = this.props;
+	onStackChanged = () => {
+		const {stack} = this.props;
 
 		this.setState({
-			items: queue.items
+			items: stack.items
 		});
 	}
 

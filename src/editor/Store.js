@@ -1,6 +1,6 @@
 import StorePrototype from 'nti-lib-store';
 import {Errors} from 'nti-web-commons';
-import {Queue} from '../action-queue';
+import {Stack} from '../action-list';
 import Logger from 'nti-util-logger';
 
 import {
@@ -26,7 +26,7 @@ const errorFactory = new ErrorFactory();
 
 const PRIVATE = new WeakMap();
 const logger = Logger.get('lib:asssignment-editor:Store');
-const UNDO_QUEUE = new Queue({maxVisible: 1, maxDepth: 5, keepFor: 30000});
+const UNDO_STACK = new Stack({maxVisible: 1, maxDepth: 5, keepFor: 30000});
 
 const ClearQuestionError = Symbol('Clear Question Error');
 const SetAssignment = Symbol('Set Assignment');
@@ -91,7 +91,7 @@ function getLabelForError (ntiid, field, label, type, assignment) {
 
 
 function init (instance) {
-	UNDO_QUEUE.clear();
+	UNDO_STACK.clear();
 
 	PRIVATE.set(instance, {
 		assignment: null,
@@ -320,7 +320,7 @@ class Store extends StorePrototype {
 	[AddUndo] (e) {
 		const undo = e.action.response;
 
-		UNDO_QUEUE.push(undo);
+		UNDO_STACK.push(undo);
 	}
 
 
@@ -330,7 +330,7 @@ class Store extends StorePrototype {
 
 
 	[ClearUndos] () {
-		UNDO_QUEUE.clear();
+		UNDO_STACK.clear();
 	}
 
 
@@ -376,8 +376,8 @@ class Store extends StorePrototype {
 	}
 
 
-	get undoQueue () {
-		return UNDO_QUEUE;
+	get undoStack () {
+		return UNDO_STACK;
 	}
 
 

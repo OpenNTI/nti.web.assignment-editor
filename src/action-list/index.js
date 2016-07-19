@@ -1,8 +1,8 @@
-import Queue from './Queue';
+import Stack from './Stack';
 import View from './components/View';
 
 export {
-	Queue
+	Stack
 };
 
 export default View;

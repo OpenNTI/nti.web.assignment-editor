@@ -1,7 +1,7 @@
 import React from 'react';
 import autobind from 'nti-commons/lib/autobind';
 
-import ActionQueue from '../../../action-queue';
+import ActionStack from '../../../action-list';
 
 import PublishControls from './PublishControls';
 import FormatControls from './FormatControls';
@@ -10,7 +10,7 @@ import EditorStatus from './Status';
 export default class Controls extends React.Component {
 	static propTypes = {
 		assignment: React.PropTypes.object,
-		undoQueue: React.PropTypes.object
+		undoStack: React.PropTypes.object
 	}
 
 	static contextTypes = {
@@ -58,11 +58,11 @@ export default class Controls extends React.Component {
 
 	render () {
 		const {selection} = this.state;
-		const {assignment, undoQueue} = this.props;
+		const {assignment, undoStack} = this.props;
 
 		return (
 			<div className="assignment-editor-controls">
-				<ActionQueue queue={undoQueue} />
+				<ActionStack stack={undoStack} />
 				<FormatControls selection={selection} />
 				<EditorStatus />
 				<PublishControls assignment={assignment} />
