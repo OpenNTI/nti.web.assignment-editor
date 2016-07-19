@@ -38,7 +38,7 @@ export function updateQuestion (question, fields) {
 
 	dispatch(SAVING, question);
 
-	question.save(values)
+	return question.save(values)
 		.then(() => {
 			dispatch(QUESTION_UPDATED, question);
 			warnIfQuestionEmpty(question);
@@ -50,6 +50,8 @@ export function updateQuestion (question, fields) {
 				reason
 			});
 			dispatch(SAVE_ENDED, question);
+
+			return Promise.reject(reason);
 		});
 }
 

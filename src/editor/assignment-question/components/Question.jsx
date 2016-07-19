@@ -160,8 +160,10 @@ export default class Question extends React.Component {
 		const {question} = this.props;
 
 		if (this.pendingChanges) {
-			updateQuestion(question, this.pendingChanges);
+			return updateQuestion(question, this.pendingChanges);
 		}
+
+		return Promise.resolve();
 	}
 
 
@@ -234,7 +236,10 @@ export default class Question extends React.Component {
 
 
 	onDialogSave = () => {
-		debugger;
+		this.onChange()
+			.then(() => {
+				this.setModal(false);
+			});
 	}
 
 
