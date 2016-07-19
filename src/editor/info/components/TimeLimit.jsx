@@ -29,6 +29,7 @@ const DEFAULT_TEXT = {
 };
 
 const t = scoped('UNITS', DEFAULT_TEXT);
+const TIME_LIMIT_KEY = 'maximum_time_allowed';
 
 
 export default class TimeLimit extends React.Component {
@@ -44,13 +45,15 @@ export default class TimeLimit extends React.Component {
 	}
 
 	componentWillReceiveProps (nextProps) {
-		this.setup(nextProps);
+		if (this.props.assignment !== nextProps.assignment) {
+			this.setup(nextProps);
+		}
 	}
 
 	setup = (props = this.props) => {
 		const {assignment} = props;
-		const value = assignment.maximum_time_allowed || 0;
-		const hasTimeLimit = !!assignment.isTimed;
+		const value = assignment[TIME_LIMIT_KEY] || 0;
+		const hasTimeLimit = assignment[TIME_LIMIT_KEY] != null;
 		this.setState({
 			value,
 			hasTimeLimit,
@@ -87,7 +90,7 @@ export default class TimeLimit extends React.Component {
 			error: null
 		});
 		assignment.save({
-			maximum_time_allowed: hasTimeLimit ? value : null //eslint-disable-line
+			[TIME_LIMIT_KEY]: hasTimeLimit ? value : null
 		})
 		.catch((error) => {
 			logger.error(error);
