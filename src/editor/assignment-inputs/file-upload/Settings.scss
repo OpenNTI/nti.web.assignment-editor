@@ -16,11 +16,14 @@
 		}
 		i {
 			position: absolute;
-			top: 0.75rem;
+			top: 0.5rem;
 			right: 1rem;
 			font-size: 1.75rem;
 			color: $tertiary-grey;
 		}
+	}
+	.token-editor {
+		margin: rem-calc(15px 25px 25px);
 	}
 	.content {
 		padding: 1.25rem;

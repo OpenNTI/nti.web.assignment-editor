@@ -28,4 +28,10 @@
 		padding: rem-calc(0 10px 0 15px);
 		height: 100%;
 	}
+
+	input {
+		color: $primary-grey;
+		font-size: rem-calc(13px);
+		width: 100%;
+	}
 }

@@ -43,6 +43,7 @@
 	}
 
 	.character-count {
+		line-height: 1.15; //ExtJS side removes our 1.15 default line-height. Delcare it explicitly.
 		padding: rem-calc(2px 10px);
 		position: absolute;
 		top: 100%;
