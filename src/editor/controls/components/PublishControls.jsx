@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import {Publish, Constants} from 'nti-web-commons';
+import {Publish, Constants, Prompt} from 'nti-web-commons';
 import {HOC} from 'nti-web-commons';
 
 import Delete from './DeleteAssignment';
@@ -7,6 +7,27 @@ import PublishLocked from './PublishLocked';
 
 const {ItemChanges} = HOC;
 const {PUBLISH_STATES} = Constants;
+
+function getQuestionSet (assignment) {
+	const {parts} = assignment || {};
+	const assignmentPart = parts && parts[0];
+	return assignmentPart && assignmentPart.question_set;
+}
+
+function hasBlankQuestion (assignment) {
+	const questionSet = getQuestionSet(assignment);
+	const questions = questionSet && questionSet.questions;
+	let foundBlank = false;
+	console.log(questions);
+	if (questions && Array.isArray(questions)) {
+		questions.forEach((question) => {
+			if (!question.content) {
+				foundBlank = true;
+			}
+		});
+	}
+	return foundBlank;
+}
 
 class PublishControls extends React.Component {
 	static propTypes = {
@@ -33,6 +54,20 @@ class PublishControls extends React.Component {
 
 		const state = PublishStateMap[value] || (value instanceof Date ? value : void value);
 
+		if (state && hasBlankQuestion(assignment)) {
+			return Prompt.areYouSure('Assignment contains blank questions.',
+				'Are you sure?',
+				{iconClass: '', confirmButtonClass: ''})
+				.then(() => {
+					return assignment.setPublishState(state)
+						.catch(err => (
+							this.setState({error: err.message}),
+							Promise.reject(err)
+						));
+				})
+				.catch(() => {});
+		}
+
 		return assignment.setPublishState(state)
 			.catch(err => (
 				this.setState({error: err.message}),
@@ -49,7 +84,6 @@ class PublishControls extends React.Component {
 	onItemChanged () {
 		this.forceUpdate();
 	}
-
 
 	render () {
 		const {error} = this.state;
