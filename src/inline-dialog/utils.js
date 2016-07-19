@@ -48,6 +48,6 @@ export function getScrollOffsetForRect ({top, height}, viewportHeight) {
 export function getDialogPositionForRect (rect) {
 	return {
 		top: Math.floor(rect.top),
-		height: Math.floor(rect.height)
+		height: adjustHeight(Math.floor(rect.height))
 	};
 }

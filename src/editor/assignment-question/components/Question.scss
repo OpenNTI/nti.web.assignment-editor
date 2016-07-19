@@ -8,6 +8,20 @@
 	.inline-dialog {
 		.inner-wrapper {
 			padding-left: rem-calc(30px);
+
+			.question-editor {
+				border-radius: 2px 2px 0 0;
+
+				& > *:first-child { border-radius: 0; }
+				& > *:last-child { border-radius: 0; }
+			}
+
+			.dialog-buttons {
+				max-width: 650px;
+				background: white;
+				border-radius: 0 0 2px 2px;
+				overflow: hidden;
+			}
 		}
 	}
 

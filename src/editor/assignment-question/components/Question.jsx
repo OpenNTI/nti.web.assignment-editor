@@ -2,6 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import buffer from 'nti-commons/lib/function-buffer';
 import {Errors} from 'nti-web-commons';
+import {scoped} from 'nti-lib-locale';
 
 import {DragHandle} from '../../../dnd';
 import InlineDialog from '../../../inline-dialog';
@@ -19,6 +20,13 @@ import Parts from './Parts';
 import Controls from './controls/View';
 
 const {Field:{Component:ErrorCmp}} = Errors;
+
+const DEFAULT_TEXT = {
+	save: 'Save',
+	cancel: 'Cancel'
+};
+
+const t = scoped('ASSIGNMENT_AUTHORING_QUESTION', DEFAULT_TEXT);
 
 function isKnownPartError (error) {
 	if (!error) { return false; }
@@ -40,7 +48,7 @@ function isLastQuestion (question, questionSet) {
 
 function isVisible (question, assignment) {
 	//TODO: look at if the assignment is published and available
-	return false;
+	return true;
 }
 
 export default class Question extends React.Component {
@@ -50,6 +58,12 @@ export default class Question extends React.Component {
 		assignment: React.PropTypes.object.isRequired,
 		index: React.PropTypes.number
 	}
+
+
+	buttons = [
+		{label: t('cancel'), onClick: () => this.onDialogCancel()},
+		{label: t('save'), onClick: () => this.onDialogSave()}
+	]
 
 	constructor (props) {
 		super(props);
@@ -142,13 +156,13 @@ export default class Question extends React.Component {
 	}
 
 
-	onChange = buffer(500, () => {
+	onChange = () => {
 		const {question} = this.props;
 
 		if (this.pendingChanges) {
 			updateQuestion(question, this.pendingChanges);
 		}
-	})
+	}
 
 
 	flushChanges = () => {
@@ -160,7 +174,7 @@ export default class Question extends React.Component {
 		this.pendingChanges = this.pendingChanges || {};
 
 		this.pendingChanges.content = content;
-		this.onChange();
+		this.onChangeBuffered();
 	}
 
 
@@ -169,7 +183,7 @@ export default class Question extends React.Component {
 
 		//When are support multi-part per question we need to revisit this.
 		this.pendingChanges.parts = [part];
-		this.onChange();
+		this.onChangeBuffered();
 	}
 
 
@@ -195,10 +209,37 @@ export default class Question extends React.Component {
 		const {question, assignment} = this.props;
 
 		if (isVisible(question, assignment)) {
-			this.setState({
-				modal: true
-			});
+			this.setModal(true);
+		} else {
+			this.setModal(false);
 		}
+	}
+
+
+	setModal (modal) {
+		const {modal:isModal} = this.state;
+
+		if (isModal === modal) { return; }
+
+		if (modal) {
+			this.onChangeBuffered = () => {};
+		} else {
+			this.onChangeBuffered = buffer(500, () => this.onChange);
+		}
+
+		this.setState({
+			modal
+		});
+	}
+
+
+	onDialogSave = () => {
+		debugger;
+	}
+
+
+	onDialogCancel = () => {
+		this.setModal(false);
 	}
 
 
@@ -211,7 +252,7 @@ export default class Question extends React.Component {
 		return (
 			<div className="assignment-editing-question-container">
 				<Between question={question} before />
-				<InlineDialog active={modal}>
+				<InlineDialog active={modal} dialogButtons={this.buttons}>
 					<Selectable className={cls} id={selectableId} value={selectableValue} tabIndex="-1" onMouseDown={this.onMouseDown}>
 						<div className="wrap" onClick={this.focusEditor}>
 							<DragHandle className="question-drag-handle hide-when-saving" />

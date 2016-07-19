@@ -2,9 +2,11 @@ import React from 'react';
 import cx from 'classnames';
 import jump from 'jump.js';
 import {getViewportHeight} from 'nti-lib-dom';
+import {DialogButtons, LockScroll} from 'nti-web-commons';
+
+import {HeightChange} from '../../sync-height';
 
 import {getDialogPositionForRect, getScrollOffsetForRect} from '../utils';
-
 
 export default class InlineDialog extends React.Component {
 	static propTypes = {
@@ -15,14 +17,20 @@ export default class InlineDialog extends React.Component {
 	}
 
 	setDialogRef = x => this.dialog = x
+	setInnerRef = x => this.innerRef = x
+	setPlaceholderRef = x => this.placeholderRef = x
 
 
 	state = {}
 
+	constructor (props) {
+		super(props);
+	}
+
 
 	componentWillUpdate (nextProps) {
 		const {active} = nextProps;
-		const {active:isActive} = this.props;
+		const {active:isActive} = this.state;
 
 		if (active && !isActive) {
 			this.activateModal();
@@ -32,41 +40,82 @@ export default class InlineDialog extends React.Component {
 	}
 
 
-	activateModal () {
-		const getRect = () => this.dialog && this.dialog.getBoundingClientRect();
-		const setState = () => {
-			this.setState({
-				active: true,
-				dialogPosition: getDialogPositionForRect(getRect())
-			});
-		};
+	getDialogRect () {
+		let rect = null;
 
-		const scrollOffset = getScrollOffsetForRect(getRect(), getViewportHeight());
+		if (this.innerRef && this.placeholderRef) {
+			let placeholderRect = this.placeholderRef.getBoundingClientRect();
 
-
-		if (scrollOffset) {
-			jump(scrollOffset, {
-				duration: 500,
-				callback: setState
-			});
+			rect = {
+				top: placeholderRect.top,
+				height: this.innerRef.firstChild.clientHeight
+			};
 		} else {
-			setState();
+			rect = this.dialog && this.dialog.getBoundingClientRect();
 		}
+
+		return rect;
 	}
 
 
-	deactivateModel () {}
+	updateModal = (force) => {
+		const {active} = this.state;
+
+		if (this.isUpdating || (!active && !force)) { return; }
+
+		this.isUpdating = true;
+
+		const onceScrolled = new Promise((fulfill) => {
+			const scrollOffset = getScrollOffsetForRect(this.getDialogRect(), getViewportHeight());
+
+			if (scrollOffset) {
+				jump(scrollOffset, {
+					duration: 250,
+					callback: fulfill
+				});
+			} else {
+				fulfill();
+			}
+		});
+
+
+		onceScrolled
+			.then(() => {
+				const {dialogPosition:currentPosition} = this.state;
+				const newPosition = getDialogPositionForRect(this.getDialogRect());
+
+				if (!currentPosition || currentPosition.top !== newPosition.top || currentPosition.height !== newPosition.height) {
+					this.setState({
+						active: true,
+						dialogPosition: newPosition
+					}, () => {
+						delete this.isUpdating;
+					});
+				}
+			});
+	}
+
+
+	activateModal () {
+		this.updateModal(true);
+	}
+
+
+	deactivateModal () {
+		this.setState({
+			active: false,
+			dialogPosition: null
+		});
+	}
 
 
 	render () {
-		const {children, className} = this.props;
+		const {children, className, dialogButtons} = this.props;
 		const {dialogPosition, active} = this.state;
 		const child = React.Children.only(children);
 		const cls = cx('inline-dialog', className, {active});
 		let innerStyles = {};
 		let placeholderStyles = {};
-
-		//TODO: render dialog buttons
 
 		if (dialogPosition) {
 			innerStyles.paddingTop = `${dialogPosition.top}px`;
@@ -79,14 +128,18 @@ export default class InlineDialog extends React.Component {
 					active ?
 						(
 							<div className="wrapper">
-								<div className="inner-wrapper" style={innerStyles}>
-									{child}
+								<LockScroll />
+								<div ref={this.setInnerRef} className="inner-wrapper" style={innerStyles}>
+									<HeightChange onChange={this.updateModal}>
+										{child}
+									</HeightChange>
+									<DialogButtons buttons={dialogButtons} />
 								</div>
 							</div>
 						) :
 						child
 				}
-				{ active && (<div className="inline-dialog-placeholder" style={placeholderStyles} />)}
+				{ active && (<div ref={this.setPlaceholderRef} className="inline-dialog-placeholder" style={placeholderStyles} />)}
 			</div>
 		);
 	}
