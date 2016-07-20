@@ -85,7 +85,6 @@ export default class QuestionContent extends React.Component {
 	 * @return {Object} the warning that should be shown, if any
 	 */
 	getWarning () {
-		debugger;
 		const {warning, published, question} = this.props;
 
 		if (!warning) { return null; }
