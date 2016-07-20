@@ -23,7 +23,8 @@ const {Field:{Component:ErrorCmp}} = Errors;
 
 const DEFAULT_TEXT = {
 	save: 'Save',
-	cancel: 'Cancel'
+	cancel: 'Cancel',
+	visibleDisclaimer: 'The assignment is visible to students, so any changes you make will be visible to them.'
 };
 
 const t = scoped('ASSIGNMENT_AUTHORING_QUESTION', DEFAULT_TEXT);
@@ -287,6 +288,7 @@ export default class Question extends React.Component {
 				<Between question={question} before />
 				<InlineDialog active={modal} dialogButtons={this.buttons} topPadding={0} bottomPadding={70}>
 					<Selectable className={cls} id={selectableId} value={selectableValue} tabIndex="-1" onMouseDown={this.onMouseDown}>
+						{modal && (<div className="visible-disclaimer">{t('visibleDisclaimer')}</div>)}
 						<div className="wrap" onClick={this.focusEditor}>
 							<DragHandle className="question-drag-handle hide-when-saving" />
 							<div className="index">{index + 1}</div>
