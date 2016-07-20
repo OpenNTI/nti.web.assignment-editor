@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import cx from 'classnames';
-import autobind from 'nti-commons/lib/autobind';
 
 import DataTransfer from '../utils/DataTransfer';
 import DnDInfo from '../utils/Info';
@@ -28,17 +27,7 @@ export default class Draggable extends React.Component {
 
 	constructor (props) {
 		super(props);
-
-		const {data} = props;
-
-		this.setDataForTransfer(data);
-
-		autobind(this,
-			'onDragStart',
-			'onDragEnd',
-			'onMouseDown',
-			'onMouseUp'
-		);
+		this.setDataForTransfer(props.data);
 	}
 
 
@@ -86,7 +75,7 @@ export default class Draggable extends React.Component {
 	}
 
 
-	onDragStart (e) {
+	onDragStart = (e) => {
 		e.stopPropagation();
 
 		const {onDragStart} = this.props;
@@ -114,7 +103,7 @@ export default class Draggable extends React.Component {
 	}
 
 
-	onDragEnd (e) {
+	onDragEnd = (e) => {
 		const {onDragEnd} = this.props;
 		const domNode = this.getDOMNode();
 
@@ -146,7 +135,7 @@ export default class Draggable extends React.Component {
 	}
 
 
-	onMouseDown (e) {
+	onMouseDown = (e) => {
 		if (this.hasDragHandle) { return; }
 
 		e.stopPropagation();
@@ -161,7 +150,7 @@ export default class Draggable extends React.Component {
 	}
 
 
-	onMouseUp (e) {
+	onMouseUp = (e) => {
 		if (this.hasDragHandle) { return; }
 
 		const {onMouseUp} = this.props;
