@@ -3,11 +3,12 @@
 .assignment-editing-question-container {
 	position: relative;
 	margin-bottom: rem-calc(30px);
-	padding: 0 rem-calc(30px);
+	padding: rem-calc(0 30px);
 
 	.inline-dialog {
 		.inner-wrapper {
 			padding-left: rem-calc(30px);
+			padding-right: rem-calc(285px); //account for the fixed space on the right (for smaller than max-width cases)
 
 			.question-editor {
 				position: relative;
@@ -43,6 +44,7 @@
 			}
 
 			.dialog-buttons {
+				margin-right: rem-calc(58px); //match the question-editor's margins
 				max-width: 650px;
 				background: white;
 				border-radius: 0 0 2px 2px;
