@@ -4,7 +4,6 @@ import cx from 'classnames';
 
 import DataTransfer from '../utils/DataTransfer';
 import DnDInfo from '../utils/Info';
-import {getDomNodeProps, DROPZONE} from '../utils/DomNodeProps';
 
 export default class Draggable extends React.Component {
 	static propTypes = {
@@ -166,15 +165,12 @@ export default class Draggable extends React.Component {
 
 
 	render () {
-		const {children, className} = this.props;
+		const {children, className, ...props} = this.props;
 		const child = React.Children.only(children);
-		const cls = cx(className || '', 'draggable');
-		const props = getDomNodeProps(this.props, [DROPZONE]);
 
-		props.className = cls;
+		props.className = cx(className, 'draggable');
 		props.onMouseDown = this.onMouseDown;
 		props.onMouseUp = this.onMouseUp;
-
 
 		return (
 			React.cloneElement(child, props)
