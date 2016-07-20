@@ -40,7 +40,7 @@ export default class ControlBar extends React.Component {
 		const {children} = this.props;
 
 		return (
-			<div key="control-bar" className="control-bar">
+			<div key="control-bar" className="nti-control-bar">
 				{children}
 			</div>
 		);

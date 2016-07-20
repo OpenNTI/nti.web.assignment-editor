@@ -2,8 +2,10 @@ import React from 'react';
 import cx from 'classnames';
 import buffer from 'nti-commons/lib/function-buffer';
 import {Errors} from 'nti-web-commons';
+import {scoped} from 'nti-lib-locale';
 
 import {DragHandle} from '../../../dnd';
+import InlineDialog from '../../../inline-dialog';
 
 import Store from '../../Store';
 import {QUESTION_ERROR, QUESTION_WARNING} from '../../Constants';
@@ -18,6 +20,14 @@ import Parts from './Parts';
 import Controls from './controls/View';
 
 const {Field:{Component:ErrorCmp}} = Errors;
+
+const DEFAULT_TEXT = {
+	save: 'Save',
+	cancel: 'Cancel',
+	visibleDisclaimer: 'You assignment is currently being viewed. Auto saving is disabled to prevent unfinished work from being seen.'
+};
+
+const t = scoped('ASSIGNMENT_AUTHORING_QUESTION', DEFAULT_TEXT);
 
 function isKnownPartError (error) {
 	if (!error) { return false; }
@@ -36,6 +46,12 @@ function isLastQuestion (question, questionSet) {
 	return last && last.NTIID === question.NTIID;
 }
 
+
+function isVisible (question, assignment) {
+	//TODO: look at if the assignment is published and available
+	return true;
+}
+
 export default class Question extends React.Component {
 	static propTypes = {
 		question: React.PropTypes.object.isRequired,
@@ -44,6 +60,12 @@ export default class Question extends React.Component {
 		index: React.PropTypes.number
 	}
 
+
+	buttons = [
+		{label: t('cancel'), onClick: () => this.onDialogCancel()},
+		{label: t('save'), onClick: () => this.onDialogSave()}
+	]
+
 	constructor (props) {
 		super(props);
 
@@ -51,7 +73,8 @@ export default class Question extends React.Component {
 
 		this.state = {
 			selectableId: question.NTIID,
-			selectableValue: new ControlsConfig(null, {after: true, item: question})
+			selectableValue: new ControlsConfig(null, {after: true, item: question}),
+			modal: false
 		};
 	}
 
@@ -134,13 +157,15 @@ export default class Question extends React.Component {
 	}
 
 
-	onChange = buffer(500, () => {
+	onChange = () => {
 		const {question} = this.props;
 
 		if (this.pendingChanges) {
-			updateQuestion(question, this.pendingChanges);
+			return updateQuestion(question, this.pendingChanges);
 		}
-	})
+
+		return Promise.resolve();
+	}
 
 
 	flushChanges = () => {
@@ -152,7 +177,7 @@ export default class Question extends React.Component {
 		this.pendingChanges = this.pendingChanges || {};
 
 		this.pendingChanges.content = content;
-		this.onChange();
+		this.onChangeBuffered();
 	}
 
 
@@ -161,7 +186,7 @@ export default class Question extends React.Component {
 
 		//When are support multi-part per question we need to revisit this.
 		this.pendingChanges.parts = [part];
-		this.onChange();
+		this.onChangeBuffered();
 	}
 
 
@@ -183,32 +208,104 @@ export default class Question extends React.Component {
 	}
 
 
+	onMouseDown = () => {
+		const {question, assignment} = this.props;
+
+		if (isVisible(question, assignment)) {
+			this.setModal(true);
+		} else {
+			this.setModal(false);
+		}
+	}
+
+
+	setModal (modal) {
+		const {modal:isModal} = this.state;
+
+		if (isModal === modal) { return; }
+
+		if (modal) {
+			this.onChangeBuffered = () => {};
+		} else {
+			this.onChangeBuffered = buffer(500, () => this.onChange);
+		}
+
+		this.setState({
+			savingMask: false,
+			modal
+		});
+	}
+
+
+	onDialogSave = () => {
+		this.setState({
+			savingMask: true
+		});
+
+		this.onChange()
+			.then(() => {
+				this.setModal(false);
+			})
+			.catch(() => {
+				this.setState({
+					savingMask: false
+				});
+			});
+	}
+
+
+	onDialogCancel = () => {
+		this.setModal(false);
+	}
+
+
 	render () {
-		const {question, index, questionSet, assignment} = this.props;
-		const {selectableId, selectableValue, contentError, contentWarning, partError, questionError} = this.state;
+		const {
+			question,
+			index,
+			questionSet,
+			assignment
+		} = this.props;
+		const {
+			selectableId,
+			selectableValue,
+			contentError,
+			contentWarning,
+			partError,
+			questionError,
+			modal,
+			savingMask
+		} = this.state;
 		const {isSaving} = question;
-		const cls = cx('question-editor', {'is-saving': isSaving, error: contentError || questionError || question.error});
+		const cls = cx('question-editor', {
+			'is-saving': isSaving,
+			error: contentError || questionError || question.error,
+			'saving-mask': savingMask
+		});
 
 		return (
 			<div className="assignment-editing-question-container">
 				<Between question={question} before />
-				<Selectable className={cls} id={selectableId} value={selectableValue} tabIndex="-1">
-					<div className="wrap" onClick={this.focusEditor}>
-						<DragHandle className="question-drag-handle hide-when-saving" />
-						<div className="index">{index + 1}</div>
-						<Content
-							ref={this.attachRef}
-							question={question}
-							onFocus={this.onContentFocus}
-							onBlur={this.onContentBlur}
-							error={contentError}
-							warning={contentWarning}
-							onChange={this.onContentChange}
-						/>
-					</div>
-					<Parts question={question} error={partError} onChange={this.onPartsChange} />
-					{questionError && (<ErrorCmp error={questionError} />)}
-				</Selectable>
+				<InlineDialog active={modal} dialogButtons={this.buttons} topPadding={80} bottomPadding={70}>
+					<Selectable className={cls} id={selectableId} value={selectableValue} tabIndex="-1" onMouseDown={this.onMouseDown}>
+						{modal && (<div className="visible-disclaimer">{t('visibleDisclaimer')}</div>)}
+						<div className="wrap" onClick={this.focusEditor}>
+							<DragHandle className="question-drag-handle hide-when-saving" />
+							<div className="index">{index + 1}</div>
+							<Content
+								ref={this.attachRef}
+								question={question}
+								onFocus={this.onContentFocus}
+								onBlur={this.onContentBlur}
+								error={contentError}
+								warning={contentWarning}
+								onChange={this.onContentChange}
+							/>
+						</div>
+						<Parts question={question} error={partError} onChange={this.onPartsChange} />
+						{questionError && (<ErrorCmp error={questionError} />)}
+					</Selectable>
+				</InlineDialog>
 				{!isSaving && (<Controls question={question} questionSet={questionSet} assignment={assignment} flushChanges={this.flushChanges} />)}
 				{isLastQuestion(question, questionSet) && (<Between question={question} after />)}
 			</div>

@@ -92,6 +92,8 @@ export default class SyncHeightView extends React.Component {
 		const {children} = this.props;
 		const {height} = this.state;
 
+		//TODO: use the HeightChange HOC to listen for height changes, instead
+		//of relying on the parent to call updateHeight
 		return (
 			<div className="sync-height" style={{minHeight: height + 'px'}}>
 				<div ref={this.setInnerRef}>
