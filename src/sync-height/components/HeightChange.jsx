@@ -46,8 +46,6 @@ export default class HeightChange extends React.Component {
 		const {onChange} = this.props;
 		const node = this.getDOMNode();
 
-		logger.log('MaybeChanged');
-
 		if (!onChange) { return; }
 
 		wait()
