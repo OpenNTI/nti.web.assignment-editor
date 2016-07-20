@@ -3,9 +3,10 @@ import Logger from 'nti-util-logger';
 
 import OrderedContents from '../../ordered-contents';
 
-import {SAVING, SAVE_ENDED, QUESTION_SET_UPDATED, QUESTION_SET_ERROR, ASSIGNMENT_ERROR} from '../Constants';
+import {SAVING, SAVE_ENDED, QUESTION_SET_UPDATED, QUESTION_SET_ERROR} from '../Constants';
 
 import {createPartWithQuestion} from '../assignment-parts/Actions';
+import {maybeResetAssignmentOnError} from '../Actions';
 
 const logger = Logger.get('lib:asssignment-editor:assignment-inputs:Actions');
 
@@ -34,12 +35,8 @@ function insertAt (assignment, part, index, question) {
 
 
 	return save
+		.catch(maybeResetAssignmentOnError(assignment))
 		.catch(reason => {
-
-			if (reason.code === 'ObjectHasSubmissions') {
-				return assignment.refresh()
-					.then(() => dispatch(ASSIGNMENT_ERROR, reason));
-			}
 
 			//Drop the question.
 			if (reason.code === 'UngradableInAutoGradeAssignment') {

@@ -6,7 +6,7 @@ import {isNTIID} from 'nti-lib-ntiids';
 import OrderedContents from '../../ordered-contents';
 import {cloneQuestion} from '../assignment-question/utils';
 
-import {saveFieldOn} from '../Actions';
+import {saveFieldOn, maybeResetAssignmentOnError} from '../Actions'
 import {SAVING, SAVE_ENDED, QUESTION_SET_UPDATED, QUESTION_SET_ERROR} from '../Constants';
 
 import {cloneQuestionSet} from './utils';
@@ -161,6 +161,7 @@ export function moveQuestion (question, questionSet, index, moveInfo, moveRoot) 
 		dispatch(SAVING, questionSet);
 
 		orderedContents.move(question, index, oldIndex, oldContainer, moveRoot)
+			.catch(maybeResetAssignmentOnError(questionSet))
 			.then(() => {
 				dispatch(QUESTION_SET_UPDATED, questionSet);
 				dispatch(SAVE_ENDED);

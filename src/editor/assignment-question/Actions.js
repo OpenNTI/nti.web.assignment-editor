@@ -3,7 +3,7 @@ import wait from 'nti-commons/lib/wait';
 
 import OrderedContents from '../../ordered-contents';
 
-import {warnIfQuestionEmpty} from '../Actions';
+import {warnIfQuestionEmpty, maybeResetAssignmentOnError} from '../Actions';
 import {partsEqual} from '../assignment-inputs';
 import {removePartWithQuestionSet} from '../assignment-parts/Actions';
 import {
@@ -39,6 +39,7 @@ export function updateQuestion (question, fields) {
 	dispatch(SAVING, question);
 
 	return question.save(values)
+		.catch(maybeResetAssignmentOnError(question))
 		.then(() => {
 			dispatch(QUESTION_UPDATED, question);
 			warnIfQuestionEmpty(question);
@@ -54,6 +55,7 @@ export function updateQuestion (question, fields) {
 			return Promise.reject(reason);
 		});
 }
+
 
 export function deleteQuestionFrom (question, questionSet, assignment) {
 	const orderedContents = new OrderedContents(questionSet);
@@ -73,6 +75,7 @@ export function deleteQuestionFrom (question, questionSet, assignment) {
 		dispatch(SAVING, questionSet);
 
 		orderedContents.remove(question)
+			.catch(maybeResetAssignmentOnError(questionSet))
 			.then((undo) => {
 				dispatch(QUESTION_SET_UPDATED, questionSet);
 
@@ -117,6 +120,7 @@ export function duplicateQuestionFrom (question, questionSet) {
 			dispatch(SAVING, questionSet);
 
 			orderedContents.insertAt(clone, index + 1)
+				.catch(maybeResetAssignmentOnError(questionSet))
 				.then(() => {
 					dispatch(QUESTION_SET_UPDATED, questionSet);
 					dispatch(SAVE_ENDED);

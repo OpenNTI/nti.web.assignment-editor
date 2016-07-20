@@ -37,6 +37,7 @@ export function loadAssignment (ntiid) {
 		});
 }
 
+
 export function loadSchema (assignment) {
 	//TODO: ACTUALLY LOAD THE SCHEMA
 	const link = assignment.getLink('schema');
@@ -59,6 +60,40 @@ export function loadSchema (assignment) {
 }
 
 
+export function maybeResetAssignmentOnError (assignmentOrQuestionSet) {
+
+	function getMainSubmittable (model) {
+		let p;
+		do {
+			p = model && model.parent('getSubmission');
+			if (p) { model = p; }
+		} while (p);
+		return model;
+	}
+
+	const assignment = getMainSubmittable(assignmentOrQuestionSet);
+	if (!/assignment/i.test(assignment.MimeType)) {
+		logger.warn('Could not get assignment!! %o', assignment);
+	}
+
+	return (error) => {
+
+		if (error.code === 'ObjectHasSubmissions' || error.code === 'ObjectHasSavepoints') {
+			return assignment.refresh()
+				.then(() => {
+					assignment.onChange('all');
+					dispatch(ASSIGNMENT_ERROR, {
+						NTIID: assignment.NTIID,
+						field: null,
+						reason: error
+					});
+				});
+		}
+
+		return Promise.reject(error);
+	};
+}
+
 export function saveFieldOn (obj, field, newValue) {
 	if (!obj.save) {
 		throw new Error('Invalid object to save field on');
@@ -75,7 +110,7 @@ export function saveFieldOn (obj, field, newValue) {
 
 	dispatch(SAVING, obj);
 
-	const save = obj.save(values);
+	const save = obj.save(values).catch(maybeResetAssignmentOnError(obj));
 	const afterSave = () => dispatch(SAVE_ENDED, obj);
 
 	save.then(afterSave, afterSave);
