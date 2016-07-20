@@ -1,6 +1,5 @@
 import React from 'react';
 import {HOC} from 'nti-web-commons';
-import autobind from 'nti-commons/lib/autobind';
 
 import {MoveRoot} from '../../../ordered-contents';
 import {Ordering} from '../../../dnd';
@@ -39,13 +38,8 @@ export default class QuestionSetComponent extends React.Component {
 		} else {
 			//TODO: disable moving
 		}
-
-		autobind(this,
-			'onQuestionSetChange',
-			'onQuestionOrderChange',
-			'renderQuestion'
-		);
 	}
+
 
 	componentWillReceiveProps (nextProps) {
 		const {questionSet:newQuestionSet} = nextProps;
@@ -59,7 +53,7 @@ export default class QuestionSetComponent extends React.Component {
 	}
 
 
-	onQuestionSetChange () {
+	onQuestionSetChange = () => {
 		const {questionSet} = this.props;
 		const {questions} = questionSet;
 
@@ -69,7 +63,7 @@ export default class QuestionSetComponent extends React.Component {
 	}
 
 
-	onQuestionOrderChange (newOrder, item, newIndex, moveInfo) {
+	onQuestionOrderChange = (newOrder, item, newIndex, moveInfo) => {
 		const {questionSet} = this.props;
 
 		moveQuestion(item, questionSet, newIndex, moveInfo, this.moveRoot);
@@ -96,7 +90,7 @@ export default class QuestionSetComponent extends React.Component {
 	}
 
 
-	renderQuestion (question, index) {
+	renderQuestion = (question, index) => {
 		const {questionSet, assignment} = this.props;
 
 		return (
