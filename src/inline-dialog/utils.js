@@ -7,9 +7,7 @@ function adjustHeight (height) {
 	return height + 40;
 }
 
-function getMaxHeight (viewHeight, bottomPadding) {
-	const minTop = getMinTop();
-
+function getMaxHeight (viewHeight, minTop, bottomPadding) {
 	return viewHeight - minTop - bottomPadding;
 }
 
@@ -20,7 +18,7 @@ export function getScrollOffsetForRect ({top, height}, viewportHeight, topPaddin
 
 	const minTop = getMinTop() + topPadding;
 	const adjustedHeight = adjustHeight(height);
-	const maxHeight = getMaxHeight(viewportHeight, bottomPadding);
+	const maxHeight = getMaxHeight(viewportHeight, minTop, bottomPadding);
 	let offset = 0;
 
 
