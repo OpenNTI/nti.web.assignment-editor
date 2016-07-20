@@ -1,0 +1,8 @@
+.assignment-editor .assignment-parts {
+	display: flex;
+	flex-direction: column;
+
+	.question-set-editor {
+		flex: 1 1 auto;
+	}
+}
