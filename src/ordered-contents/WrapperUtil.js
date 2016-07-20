@@ -259,6 +259,7 @@ export default class OrderedContents {
 
 		//Mark Item as deleting
 		Object.defineProperty(item, 'isDeleting', {
+			configurable: true,
 			enumerable: false,
 			value: true
 		});
