@@ -18,7 +18,7 @@ function hasBlankQuestion (assignment) {
 	const questionSet = getQuestionSet(assignment);
 	const questions = questionSet && questionSet.questions;
 	let foundBlank = false;
-	console.log(questions);
+
 	if (questions && Array.isArray(questions)) {
 		questions.forEach((question) => {
 			if (!question.content) {
