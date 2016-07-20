@@ -174,7 +174,7 @@ export default class Question extends React.Component {
 
 
 	flushChanges = () => {
-		this.onChange.flush();
+		this.onChangeBuffered.flush();
 	}
 
 
