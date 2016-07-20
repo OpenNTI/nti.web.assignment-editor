@@ -32,7 +32,7 @@ export function updateQuestion (question, fields) {
 		values.parts = newParts;
 	}
 
-	if (!values.content && !values.parts) {
+	if ((!values.content && values.content !== '') && !values.parts) {
 		return;
 	}
 
