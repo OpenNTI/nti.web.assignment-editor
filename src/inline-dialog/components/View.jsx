@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import jump from 'jump.js';
-import {getViewportHeight, viewportHasScrollBars} from 'nti-lib-dom';
+import {getViewportHeight} from 'nti-lib-dom';
 import {DialogButtons, LockScroll} from 'nti-web-commons';
 
 import {HeightChange} from '../../sync-height';

@@ -15,7 +15,6 @@ function getMaxHeight (viewHeight, bottomPadding) {
 
 
 export function getScrollOffsetForRect ({top, height}, viewportHeight, topPadding, bottomPadding) {
-	debugger;
 	top = Math.floor(top);
 	height = Math.floor(height);
 

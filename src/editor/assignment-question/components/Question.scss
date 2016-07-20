@@ -14,6 +14,16 @@
 
 				& > *:first-child { border-radius: 0; }
 				& > *:last-child { border-radius: 0; }
+
+				&.saving-mask {
+					opacity: 0.8;
+					pointer-events: none;
+
+					& ~ .dialog-buttons {
+						opacity: 0.8;
+						pointer-events: none;
+					}
+				}
 			}
 
 			.dialog-buttons {

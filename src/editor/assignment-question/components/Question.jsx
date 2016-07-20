@@ -230,15 +230,25 @@ export default class Question extends React.Component {
 		}
 
 		this.setState({
+			savingMask: false,
 			modal
 		});
 	}
 
 
 	onDialogSave = () => {
+		this.setState({
+			savingMask: true
+		});
+
 		this.onChange()
 			.then(() => {
 				this.setModal(false);
+			})
+			.catch(() => {
+				this.setState({
+					savingMask: false
+				});
 			});
 	}
 
@@ -249,10 +259,28 @@ export default class Question extends React.Component {
 
 
 	render () {
-		const {question, index, questionSet, assignment} = this.props;
-		const {selectableId, selectableValue, contentError, contentWarning, partError, questionError, modal} = this.state;
+		const {
+			question,
+			index,
+			questionSet,
+			assignment
+		} = this.props;
+		const {
+			selectableId,
+			selectableValue,
+			contentError,
+			contentWarning,
+			partError,
+			questionError,
+			modal,
+			savingMask
+		} = this.state;
 		const {isSaving} = question;
-		const cls = cx('question-editor', {'is-saving': isSaving, error: contentError || questionError || question.error});
+		const cls = cx('question-editor', {
+			'is-saving': isSaving,
+			error: contentError || questionError || question.error,
+			'saving-mask': savingMask
+		});
 
 		return (
 			<div className="assignment-editing-question-container">
