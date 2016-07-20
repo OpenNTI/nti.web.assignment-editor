@@ -13,6 +13,8 @@ import {LOADED, ASSIGNMENT_DELETING, ASSIGNMENT_DELETED} from './Constants';
 import Store from './Store';
 import {loadAssignment} from './Actions';
 
+import * as ConflictResolution from './conflict-resolution';
+
 const selectionManager = new SelectionManager();
 
 export default class Editor extends React.Component {
@@ -37,12 +39,14 @@ export default class Editor extends React.Component {
 
 
 	componentDidMount () {
+		ConflictResolution.register();
 		Store.addChangeListener(this.onStoreChange);
 		loadAssignment(this.props.NTIID);
 	}
 
 
 	componentWillUnmount () {
+		ConflictResolution.unregister();
 		Store.removeChangeListener(this.onStoreChange);
 	}
 
