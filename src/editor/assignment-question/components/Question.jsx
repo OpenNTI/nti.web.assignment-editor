@@ -48,11 +48,7 @@ function isLastQuestion (question, questionSet) {
 
 
 function isVisible (question, assignment) {
-	const now = new Date();
-	const available = assignment.getAvailableForSubmissionBeginning();
-
-	//look at if the assignment is published and available
-	return assignment.isPublished() && now > available;
+	return assignment.isAvailable();
 }
 
 export default class Question extends React.Component {
