@@ -278,7 +278,7 @@ class Store extends StorePrototype {
 			messages[id] = messages[id].filter(message => !message.isAttachedToField(field));
 		}
 
-		this.emitChange({type: type});
+		this.emitChange({type: type, NTIID: id});
 
 		return messages;
 	}
