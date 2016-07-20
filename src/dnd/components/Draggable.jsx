@@ -171,6 +171,7 @@ export default class Draggable extends React.Component {
 		props.className = cx(className, 'draggable');
 		props.onMouseDown = this.onMouseDown;
 		props.onMouseUp = this.onMouseUp;
+		delete props.data;
 
 		return (
 			React.cloneElement(child, props)
