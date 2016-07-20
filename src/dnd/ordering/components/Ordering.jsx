@@ -58,7 +58,6 @@ export default class Ordering extends React.Component {
 		items: React.PropTypes.array.isRequired,
 		renderItem: React.PropTypes.func.isRequired,
 		renderPlaceholder: React.PropTypes.func,
-		handleClassName: React.PropTypes.string,
 		accepts: React.PropTypes.array,
 		className: React.PropTypes.string,
 		onChange: React.PropTypes.func
@@ -521,17 +520,16 @@ export default class Ordering extends React.Component {
 
 
 	renderItem (item, index) {
-		const {renderItem, handleClassName} = this.props;
+		const {renderItem} = this.props;
 		const cls = cx('ordering-item', {placeholder: item.isPlaceholder, 'is-dragging': item.isDragging});
 		const key = item.ID;
 		const style = item.isPlaceholder && item.height ? {height: item.height} : {};
-		
+
 		return (
 			<Draggable
 				key={key}
 				className={cls}
 				data={item.MoveData}
-				handleClassName={handleClassName}
 				onDragStart={item.onDragStart}
 				onDragEnd={item.onDragEnd}
 				>
