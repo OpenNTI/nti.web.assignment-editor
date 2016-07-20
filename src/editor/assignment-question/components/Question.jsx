@@ -76,6 +76,12 @@ export default class Question extends React.Component {
 
 		this.onChangeBuffered = buffer(500, () => this.onChange());
 
+		Store.addChangeListener(this.onStoreChange);
+
+		if (question && question.addListener) {
+			question.addListener('change', this.onQuestionChange);
+		}
+
 		this.state = {
 			selectableId: question.NTIID,
 			selectableValue: new ControlsConfig(null, {after: true, item: question}),
@@ -84,18 +90,7 @@ export default class Question extends React.Component {
 	}
 
 
-	attachRef = (x) => this.editorRef = x;
-
-
-	componentDidMount () {
-		const {question} = this.props;
-
-		Store.addChangeListener(this.onStoreChange);
-
-		if (question && question.addListener) {
-			question.addListener('change', this.onQuestionChange);
-		}
-	}
+	attachRef = (x) => this.editorRef = x
 
 
 	componentWillUnmount () {
@@ -117,7 +112,9 @@ export default class Question extends React.Component {
 
 
 	onStoreChange = (data) => {
-		if (data.type === QUESTION_ERROR || data.type === QUESTION_WARNING) {
+		const {question} = this.props;
+
+		if ((data.type === QUESTION_ERROR || data.type === QUESTION_WARNING) && question.NTIID === data.NTIID) {
 			this.onQuestionMessages();
 		}
 	}
@@ -305,6 +302,7 @@ export default class Question extends React.Component {
 								error={contentError}
 								warning={contentWarning}
 								onChange={this.onContentChange}
+								published={assignment.isPublished()}
 							/>
 						</div>
 						<Parts question={question} error={partError} onChange={this.onPartsChange} />

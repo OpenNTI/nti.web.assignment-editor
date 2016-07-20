@@ -102,8 +102,11 @@ function init (instance) {
 		savingCount: 0,
 		savingStart: null,
 		errors: {},
-		warnings: {}
+		warnings: {},
+		openSince: new Date()
 	});
+
+	window.AssignmentStore = instance;
 }
 
 
@@ -296,7 +299,7 @@ class Store extends StorePrototype {
 				() => this[RemoveMessageFrom](messages, NTIID, field, type)
 			));
 
-			this.emitChange({type: type});
+			this.emitChange({type: type, NTIID});
 		}
 
 		return messages;
@@ -334,6 +337,13 @@ class Store extends StorePrototype {
 
 	[ClearUndos] () {
 		UNDO_STACK.clear();
+	}
+
+
+	get openSince () {
+		const p = PRIVATE.get(this);
+
+		return p.openSince;
 	}
 
 

@@ -9,8 +9,7 @@ import {
 	LOADED,
 	LOADED_SCHEMA,
 	SAVING,
-	SAVE_ENDED,
-	QUESTION_WARNING
+	SAVE_ENDED
 } from './Constants';
 
 import {Prompt} from 'nti-web-commons';
@@ -116,21 +115,6 @@ export function saveFieldOn (obj, field, newValue) {
 	save.then(afterSave, afterSave);
 
 	return save;
-}
-
-
-export function warnIfQuestionEmpty (question) {
-	const {content} = question;
-
-	if (!content) {
-		dispatch(QUESTION_WARNING, {
-			NTIID: question.NTIID,
-			field: 'content',
-			reason: {
-				message: 'Questions cannot be blank.'
-			}
-		});
-	}
 }
 
 

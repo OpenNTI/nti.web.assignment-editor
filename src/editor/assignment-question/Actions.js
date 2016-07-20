@@ -3,7 +3,6 @@ import wait from 'nti-commons/lib/wait';
 
 import OrderedContents from '../../ordered-contents';
 
-import {warnIfQuestionEmpty, maybeResetAssignmentOnError} from '../Actions';
 import {partsEqual} from '../assignment-inputs';
 import {removePartWithQuestionSet} from '../assignment-parts/Actions';
 import {
@@ -11,6 +10,7 @@ import {
 	SAVE_ENDED,
 	QUESTION_UPDATED,
 	QUESTION_ERROR,
+	QUESTION_WARNING,
 	QUESTION_SET_UPDATED,
 	QUESTION_SET_ERROR,
 	UNDO_CREATED
@@ -130,4 +130,19 @@ export function duplicateQuestionFrom (question, questionSet) {
 					dispatch(SAVE_ENDED);
 				});
 		});
+}
+
+
+export function warnIfQuestionEmpty (question) {
+	const {content} = question;
+
+	if (!question.isSaving && !content) {
+		dispatch(QUESTION_WARNING, {
+			NTIID: question.NTIID,
+			field: 'content',
+			reason: {
+				message: 'Questions cannot be blank.'
+			}
+		});
+	}
 }
