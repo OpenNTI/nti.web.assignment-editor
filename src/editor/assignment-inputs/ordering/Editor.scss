@@ -52,8 +52,7 @@
 
 		&.selected {
 			position: relative;
-			z-index: 2;
-			// border: 1px solid $primary-blue;
+			z-index: 0;
 		}
 	}
 
