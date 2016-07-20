@@ -53,6 +53,10 @@
 		&.selected {
 			position: relative;
 			z-index: 0;
+			border-color: $border-grey;
+			&.correct {
+				border-color: rgba(63, 179, 79, 0.6);
+			}
 		}
 	}
 
