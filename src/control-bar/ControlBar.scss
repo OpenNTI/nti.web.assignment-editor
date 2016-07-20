@@ -10,6 +10,7 @@
 	background: white;
 	border-radius: 3px 3px 0 0;
 	box-shadow: 0 0 4px 0px rgba(0,0,0,.25);
+	z-index: 1;
 
 	&.slideUp-enter {
 		bottom: -60px;
