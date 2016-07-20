@@ -1,6 +1,3 @@
-//Make sure the bottom is above the tool bar
-const BOTTOM_PADDING = 70;
-
 function getMinTop () {
 	return 10;
 }
@@ -10,20 +7,21 @@ function adjustHeight (height) {
 	return height + 40;
 }
 
-function getMaxHeight (viewHeight) {
+function getMaxHeight (viewHeight, bottomPadding) {
 	const minTop = getMinTop();
 
-	return viewHeight - minTop - BOTTOM_PADDING;
+	return viewHeight - minTop - bottomPadding;
 }
 
 
-export function getScrollOffsetForRect ({top, height}, viewportHeight) {
+export function getScrollOffsetForRect ({top, height}, viewportHeight, topPadding, bottomPadding) {
+	debugger;
 	top = Math.floor(top);
 	height = Math.floor(height);
 
-	const minTop = getMinTop();
+	const minTop = getMinTop() + topPadding;
 	const adjustedHeight = adjustHeight(height);
-	const maxHeight = getMaxHeight(viewportHeight);
+	const maxHeight = getMaxHeight(viewportHeight, bottomPadding);
 	let offset = 0;
 
 

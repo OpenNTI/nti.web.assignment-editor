@@ -257,7 +257,7 @@ export default class Question extends React.Component {
 		return (
 			<div className="assignment-editing-question-container">
 				<Between question={question} before />
-				<InlineDialog active={modal} dialogButtons={this.buttons}>
+				<InlineDialog active={modal} dialogButtons={this.buttons} topPadding={0} bottomPadding={70}>
 					<Selectable className={cls} id={selectableId} value={selectableValue} tabIndex="-1" onMouseDown={this.onMouseDown}>
 						<div className="wrap" onClick={this.focusEditor}>
 							<DragHandle className="question-drag-handle hide-when-saving" />

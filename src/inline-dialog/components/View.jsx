@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import jump from 'jump.js';
-import {getViewportHeight} from 'nti-lib-dom';
+import {getViewportHeight, viewportHasScrollBars} from 'nti-lib-dom';
 import {DialogButtons, LockScroll} from 'nti-web-commons';
 
 import {HeightChange} from '../../sync-height';
@@ -13,7 +13,9 @@ export default class InlineDialog extends React.Component {
 		className: React.PropTypes.string,
 		children: React.PropTypes.node,
 		dialogButtons: React.PropTypes.array,
-		active: React.PropTypes.bool
+		active: React.PropTypes.bool,
+		topPadding: React.PropTypes.number,
+		bottomPadding: React.PropTypes.number
 	}
 
 	setDialogRef = x => this.dialog = x
@@ -59,6 +61,7 @@ export default class InlineDialog extends React.Component {
 
 
 	updateModal = (force) => {
+		const {topPadding, bottomPadding} = this.props;
 		const {active} = this.state;
 
 		if (this.isUpdating || (!active && !force)) { return; }
@@ -66,7 +69,7 @@ export default class InlineDialog extends React.Component {
 		this.isUpdating = true;
 
 		const onceScrolled = new Promise((fulfill) => {
-			const scrollOffset = getScrollOffsetForRect(this.getDialogRect(), getViewportHeight());
+			const scrollOffset = getScrollOffsetForRect(this.getDialogRect(), getViewportHeight(), topPadding, bottomPadding);
 
 			if (scrollOffset) {
 				jump(scrollOffset, {
@@ -110,10 +113,11 @@ export default class InlineDialog extends React.Component {
 
 
 	render () {
-		const {children, className, dialogButtons} = this.props;
+		const {children, className, dialogButtons, bottomPadding} = this.props;
 		const {dialogPosition, active} = this.state;
 		const child = React.Children.only(children);
 		const cls = cx('inline-dialog', className, {active});
+		let wrapperStyles = {};
 		let innerStyles = {};
 		let placeholderStyles = {};
 
@@ -122,12 +126,17 @@ export default class InlineDialog extends React.Component {
 			placeholderStyles.height = `${dialogPosition.height}px`;
 		}
 
+		if (bottomPadding) {
+			wrapperStyles.paddingBottom = `${bottomPadding}px`;
+		}
+
+
 		return (
 			<div ref={this.setDialogRef} className={cls}>
 				{
 					active ?
 						(
-							<div className="wrapper">
+							<div className="wrapper" style={wrapperStyles}>
 								<LockScroll />
 								<div ref={this.setInnerRef} className="inner-wrapper" style={innerStyles}>
 									<HeightChange onChange={this.updateModal}>
