@@ -3,6 +3,8 @@ import wait from 'nti-commons/lib/wait';
 
 import OrderedContents from '../../ordered-contents';
 
+import {maybeResetAssignmentOnError} from '../Actions';
+
 import {partsEqual} from '../assignment-inputs';
 import {removePartWithQuestionSet} from '../assignment-parts/Actions';
 import {
