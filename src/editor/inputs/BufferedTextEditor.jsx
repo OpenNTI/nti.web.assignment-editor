@@ -39,8 +39,8 @@ export default class BufferedTextEditor extends React.Component {
 
 
 	componentWillReceiveProps (nextProps) {
-		const {initialValue:newValue, buffer:newBuffer, error:newError, warning:oldWarning} = nextProps;
-		const {initialValue:oldValue, buffer:oldBuffer, error:oldError, warning:newWarning, onEditorChange} = this.props;
+		const {initialValue:newValue, buffer:newBuffer} = nextProps;
+		const {initialValue:oldValue, buffer:oldBuffer, onEditorChange} = this.props;
 		let state;
 
 
@@ -48,24 +48,12 @@ export default class BufferedTextEditor extends React.Component {
 			this.bufferedChange = buffer(newBuffer, () => this.onChange());
 		}
 
-		this.updatedValue = !this.isFocused && newValue;
+		this.updatedValue = this.updatedValue || (!this.isFocused && newValue);
 
 		if (newValue !== oldValue && !this.isFocused) {
 			state = state || {};
 
 			state.initialValue = newValue;
-		}
-
-		if (newError !== oldError) {
-			state = state || {};
-
-			state.error = newError;
-		}
-
-		if (newWarning !== oldWarning) {
-			state = state || {};
-
-			state.warning !== newWarning;
 		}
 
 
@@ -116,14 +104,14 @@ export default class BufferedTextEditor extends React.Component {
 		const newValue = this.getValue();
 
 		if (onChange && this.hasValueChanged()) {
+			this.updatedValue = newValue;
 			onChange(newValue);
 		}
 	}
 
 
 	onEditorChange = () => {
-		const {onEditorChange} = this.props;
-		const {error, warning} = this.state;
+		const {onEditorChange, error, warning} = this.props;
 
 		if (this.hasValueChanged()) {
 			if (onEditorChange) {
