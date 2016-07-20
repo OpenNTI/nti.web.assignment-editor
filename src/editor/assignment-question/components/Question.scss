@@ -106,6 +106,9 @@
 		flex: 0 0 auto;
 		line-height: 1.25rem;
 		padding-right: 10px;
+		.no-reorder & {
+			display: none;
+		}
 	}
 
 	.index {

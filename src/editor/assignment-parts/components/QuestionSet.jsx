@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'classnames';
 import {HOC} from 'nti-web-commons';
 
 import {MoveRoot} from '../../../ordered-contents';
@@ -77,7 +78,7 @@ export default class QuestionSetComponent extends React.Component {
 			<ItemChanges item={item} onItemChanged={this.onQuestionSetChange}>
 				<Ordering
 					containerId={questionSet.NTIID}
-					className="question-set-editor"
+					className={cx('question-set-editor', {'no-reorder': !this.moveRoot})}
 					items={questions}
 					renderItem={this.renderQuestion}
 					accepts={[QUESTION_TYPE]}
