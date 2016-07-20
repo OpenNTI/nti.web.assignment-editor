@@ -48,8 +48,11 @@ function isLastQuestion (question, questionSet) {
 
 
 function isVisible (question, assignment) {
-	//TODO: look at if the assignment is published and available
-	return true;
+	const now = new Date();
+	const available = assignment.getAvailableForSubmissionBeginning();
+
+	//look at if the assignment is published and available
+	return assignment.isPublished() && now > available;
 }
 
 export default class Question extends React.Component {
@@ -70,6 +73,8 @@ export default class Question extends React.Component {
 		super(props);
 
 		const {question} = this.props;
+
+		this.onChangeBuffered = buffer(500, () => this.onChange());
 
 		this.state = {
 			selectableId: question.NTIID,
@@ -227,7 +232,7 @@ export default class Question extends React.Component {
 		if (modal) {
 			this.onChangeBuffered = () => {};
 		} else {
-			this.onChangeBuffered = buffer(500, () => this.onChange);
+			this.onChangeBuffered = buffer(500, () => this.onChange());
 		}
 
 		this.setState({
