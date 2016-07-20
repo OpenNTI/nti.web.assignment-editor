@@ -112,10 +112,10 @@ class Store extends StorePrototype {
 
 		init(this);
 
-		this.setAssignmentError = this[SetError].bind(this, ASSIGNMENT_ERROR);
-		this.setQuestionError = this[SetError].bind(this, QUESTION_ERROR);
+		this.setAssignmentError = (...e) => this[SetError](ASSIGNMENT_ERROR, ...e);
+		this.setQuestionError = (...e) => this[SetError](QUESTION_ERROR, ...e);
 
-		this.setQuestionWarning = this[SetWarning].bind(this, QUESTION_WARNING);
+		this.setQuestionWarning = (...w) => this[SetWarning](QUESTION_WARNING, ...w);
 
 		this.registerHandlers({
 			[LOADED]: SetAssignment,
@@ -335,44 +335,32 @@ class Store extends StorePrototype {
 
 
 	get hasLoadError () {
-		const p = PRIVATE.get(this);
-
-		return !!p.error;
+		return !!this.loadError;
 	}
 
 
 	get isLoaded () {
-		const p = PRIVATE.get(this);
-
-		return !!p.assignment;
+		return !!this.assignment;
 	}
 
 
 	get assignment () {
-		const p = PRIVATE.get(this);
-
-		return p.assignment;
+		return PRIVATE.get(this).assignment;
 	}
 
 
 	get schema () {
-		const p = PRIVATE.get(this);
-
-		return p.schema;
+		return PRIVATE.get(this).schema;
 	}
 
 
 	get isSaving () {
-		const p = PRIVATE.get(this);
-
-		return p.savingCount > 0;
+		return PRIVATE.get(this).savingCount > 0;
 	}
 
 
 	get loadError () {
-		const p = PRIVATE.get(this);
-
-		return p.error;
+		return PRIVATE.get(this).error;
 	}
 
 
