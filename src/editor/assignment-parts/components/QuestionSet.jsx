@@ -24,19 +24,24 @@ export default class QuestionSetComponent extends React.Component {
 
 	constructor (props) {
 		super(props);
+		this.setup(props);
+	}
+
+
+	setup = (props = this.props) => {
+		const setState = (x) => this.state ? this.setState(x) : (this.state = x);
 
 		const {questionSet} = props;
 		const {questions} = questionSet;
 		const moveLink = questionSet && questionSet.getLink && questionSet.getLink('AssessmentMove');
 
-		this.state = {
-			questions: questions
-		};
+		setState({ questions });
 
 		if (moveLink) {
 			this.moveRoot = new MoveRoot(moveLink);
 		} else {
 			//TODO: disable moving
+			delete this.moveRoot;
 		}
 	}
 
@@ -46,20 +51,13 @@ export default class QuestionSetComponent extends React.Component {
 		const {questionSet:oldQuestionSet} = this.props;
 
 		if (newQuestionSet !== oldQuestionSet) {
-			this.setState({
-				questions: newQuestionSet.questions
-			});
+			this.setup(nextProps);
 		}
 	}
 
 
 	onQuestionSetChange = () => {
-		const {questionSet} = this.props;
-		const {questions} = questionSet;
-
-		this.setState({
-			questions
-		});
+		this.setup();
 	}
 
 
