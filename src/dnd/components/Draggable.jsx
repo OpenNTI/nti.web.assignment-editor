@@ -8,7 +8,7 @@ import {getDomNodeProps, DROPZONE} from '../utils/DomNodeProps';
 
 export default class Draggable extends React.Component {
 	static propTypes = {
-		data: React.PropTypes.any.isRequired,
+		data: React.PropTypes.any,
 		onDragStart: React.PropTypes.func,
 		onDragEnd: React.PropTypes.func,
 		onMouseDown: React.PropTypes.func,
@@ -62,10 +62,12 @@ export default class Draggable extends React.Component {
 			data = [data];
 		}
 
-		this.dataTransfer = this.dataTransfer || new DataTransfer();
+		this.dataTransfer = new DataTransfer();
 
 		for (let d of data) {
-			this.dataTransfer.setData(d);
+			if (d != null) {
+				this.dataTransfer.setData(d);
+			}
 		}
 	}
 
