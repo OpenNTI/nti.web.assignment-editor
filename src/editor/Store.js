@@ -15,6 +15,7 @@ import {
 	QUESTION_ERROR,
 	QUESTION_UPDATED,
 	QUESTION_WARNING,
+	QUESTION_SET_ERROR,
 	UNDO_CREATED,
 	CLEAR_UNDOS
 } from './Constants';
@@ -113,6 +114,7 @@ class Store extends StorePrototype {
 		init(this);
 
 		this.setAssignmentError = (...e) => this[SetError](ASSIGNMENT_ERROR, ...e);
+		this.setQuestionSetError = (...e) => this[SetError](QUESTION_SET_ERROR, ...e);
 		this.setQuestionError = (...e) => this[SetError](QUESTION_ERROR, ...e);
 
 		this.setQuestionWarning = (...w) => this[SetWarning](QUESTION_WARNING, ...w);
@@ -129,6 +131,7 @@ class Store extends StorePrototype {
 			[QUESTION_ERROR]: 'setQuestionError',
 			[QUESTION_UPDATED]: ClearQuestionError,
 			[QUESTION_WARNING]: 'setQuestionWarning',
+			[QUESTION_SET_ERROR]: 'setQuestionSetError',
 			[UNDO_CREATED]: AddUndo,
 			[CLEAR_UNDOS]: ClearUndos
 		});
