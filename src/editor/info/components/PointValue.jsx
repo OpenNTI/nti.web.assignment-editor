@@ -1,5 +1,6 @@
 import React from 'react';
 import {NumberInput, LabeledValue} from 'nti-web-commons';
+import {MAY_EFFECT_PROPERTIES} from 'nti-lib-interfaces';
 
 export default class PointValue extends React.Component {
 
@@ -60,7 +61,8 @@ export default class PointValue extends React.Component {
 		const {value} = this.state;
 		if(assignment.totalPoints !== value) {
 			assignment.save({
-				'total_points': value
+				'total_points': value,
+				[MAY_EFFECT_PROPERTIES]: ['auto_grade']
 			});
 		}
 	}
