@@ -23,7 +23,7 @@ export default class DeleteAssignment extends React.Component {
 
 	render () {
 		const {assignment} = this.props;
-		const canDelete = assignment && assignment.hasLink('edit');
+		const canDelete = assignment && assignment.hasLink('Delete');
 		return !canDelete ? null : (
 			<div onClick={this.onDeleteClick} className="delete-assignment"><i className="icon-delete small"/>Delete</div>
 		);
