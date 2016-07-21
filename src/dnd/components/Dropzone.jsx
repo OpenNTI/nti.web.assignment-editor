@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import cx from 'classnames';
-import autobind from 'nti-commons/lib/autobind';
 
 import DnDInfo from '../utils/Info';
 import DataTransfer from '../utils/DataTransfer';
@@ -21,7 +20,6 @@ export function hasAcceptedType (types, dataTransfer) {
 	return false;
 }
 
-
 export function doHandleDataTransfer (handlers, dataTransfer, e) {
 	const types = Object.keys(handlers);
 
@@ -37,6 +35,7 @@ export function doHandleDataTransfer (handlers, dataTransfer, e) {
 
 	return false;
 }
+
 
 export default class Dropzone extends React.Component {
 	static propTypes = {
@@ -62,13 +61,6 @@ export default class Dropzone extends React.Component {
 
 		this.acceptedTypes = Object.keys(dropHandlers);
 		this.acceptsOrder = dropHandlers.priority || this.acceptedTypes;
-
-		autobind(this,
-			'onDrop',
-			'onDragEnter',
-			'onDragLeave',
-			'onDragOver'
-		);
 	}
 
 
@@ -77,7 +69,7 @@ export default class Dropzone extends React.Component {
 	}
 
 
-	onDrop (e) {
+	onDrop = (e) => {
 		const {onDrop, onInvalidDrop, dropHandlers} = this.props;
 		const {dataTransfer} = e;
 		const data = new DataTransfer(dataTransfer);
@@ -109,7 +101,7 @@ export default class Dropzone extends React.Component {
 	}
 
 
-	onDragEnter (e) {
+	onDragEnter = (e) => {
 		e.stopPropagation();
 
 		const {onDragEnter} = this.props;
@@ -135,7 +127,7 @@ export default class Dropzone extends React.Component {
 	}
 
 
-	onDragLeave (e) {
+	onDragLeave = (e) => {
 		e.stopPropagation();
 
 		const {onDragLeave} = this.props;
@@ -155,7 +147,7 @@ export default class Dropzone extends React.Component {
 	}
 
 
-	onDragOver (e) {
+	onDragOver = (e) => {
 		//These are necessary to get drop events
 		e.preventDefault();
 		e.stopPropagation();
