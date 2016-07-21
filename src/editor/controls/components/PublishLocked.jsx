@@ -1,6 +1,8 @@
 import React, {PropTypes} from 'react';
 import cx from 'classnames';
 
+import {resetAssignmentSubmissions} from '../../Actions';
+
 import {Flyout, PublishTrigger, Constants, TinyLoader as Loading} from 'nti-web-commons';
 import {scoped} from 'nti-lib-locale';
 const {PUBLISH_STATES} = Constants;
@@ -32,7 +34,7 @@ export default class PublishLocked extends React.Component {
 		const {assignment} = this.props;
 		if (assignment.hasLink('reset')) {
 			this.setState({busy: true});
-			assignment.resetAllSubmissions()
+			resetAssignmentSubmissions(assignment)
 				.then(this.closeMenu, () => this.setState({error: true}))
 				.then(()=> this.setState({busy: false}));
 		}

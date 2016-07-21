@@ -8,6 +8,7 @@ import {
 	LOADING,
 	LOADED,
 	LOADED_SCHEMA,
+	REVERT_ERRORS,
 	SAVING,
 	SAVE_ENDED
 } from './Constants';
@@ -132,4 +133,10 @@ export function deleteAssignment (assignment, promptText) {
 						dispatch(ASSIGNMENT_DELETING, false);
 					});
 			});
+}
+
+
+export function resetAssignmentSubmissions (assignment) {
+	return assignment.resetAllSubmissions()
+		.then(() => dispatch(REVERT_ERRORS));
 }
