@@ -161,10 +161,10 @@ export default class Question extends React.Component {
 
 
 	onChange = () => {
-		const {question} = this.props;
+		const {question, assignment} = this.props;
 
 		if (this.pendingChanges) {
-			return updateQuestion(question, this.pendingChanges);
+			return updateQuestion(question, this.pendingChanges, assignment);
 		}
 
 		return Promise.resolve();

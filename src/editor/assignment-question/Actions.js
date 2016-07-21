@@ -32,7 +32,7 @@ function getQuestionSetFrom (NTIID, assignment) {
 	}
 }
 
-export function updateQuestion (question, fields) {
+export function updateQuestion (question, fields, assignment) {
 	const {content:oldContent, parts:oldParts} = question;
 	const {content:newContent, parts:newParts} = fields;
 	let values = {};
@@ -52,7 +52,7 @@ export function updateQuestion (question, fields) {
 	dispatch(SAVING, question);
 
 	return question.save(values)
-		.catch(maybeResetAssignmentOnError(question))
+		.catch(maybeResetAssignmentOnError(assignment || question))
 		.then(() => {
 			dispatch(QUESTION_UPDATED, question);
 			warnIfQuestionEmpty(question);
