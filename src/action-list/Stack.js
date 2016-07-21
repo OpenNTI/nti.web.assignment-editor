@@ -58,6 +58,10 @@ export default class ActionStack extends EventEmitter {
 	[START_TIMER] (action) {
 		if (action && this.keepFor !== Infinity) {
 			action.timer = setTimeout(() => {
+				if (action.onTimeout) {
+					action.onTimeout();
+				}
+
 				this.clear(action);
 			}, this.keepFor);
 		}
@@ -77,7 +81,7 @@ export default class ActionStack extends EventEmitter {
 
 	wrapAction (action) {
 		const id = this.seenCount;
-		const {label, name, onComplete} = action;
+		const {label, name, onComplete, onTimeout} = action;
 
 		return this[START_TIMER]({
 			label, name,
@@ -86,6 +90,9 @@ export default class ActionStack extends EventEmitter {
 				this.clear(id);
 
 				onComplete(...args);
+			},
+			onTimeout: () => {
+				onTimeout();
 			}
 		}, this.keepFor);
 	}
@@ -103,7 +110,7 @@ export default class ActionStack extends EventEmitter {
 	/**
 	 * @callback OnCallback
 	 * @param {*} someparam
-	 * @return {void} 
+	 * @return {void}
 	 */
 
 
