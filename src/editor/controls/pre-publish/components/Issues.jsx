@@ -7,10 +7,10 @@ const {Field: {List:ErrorList}} = Errors;
 
 const DEFAULT_TEXT = {
 	title: 'Are you sure?',
-	errorMessage: 'Some questions were not saved because of errors. Proceeding will revert those questions to a previously saved version.',
-	warningMessage: 'Some questions were not saved because of errors. Proceeding will revert those questions to a previously saved version.',
-	seeErrors: 'See Errors',
-	seeWarnings: 'See Warnings',
+	errorMessage: 'One or more questions could not be saved and will revert to a previous version.',
+	warningMessage: 'One or more questions are blank.',
+	seeErrors: 'View Details',
+	seeWarnings: 'View Details',
 	errorHeader: 'Errors',
 	warningHeader: 'Caution',
 	continue: 'Publish Anyway',
@@ -98,7 +98,8 @@ export default class PrepublishModal extends React.Component {
 
 	render () {
 		const {hasErrors, hasWarnings} = this;
-		const message = hasErrors ? t('errorMessage') : hasWarnings ? t('warningMessage') : null;
+		const errorMessage = hasErrors && t('errorMessage');
+		const warningMessage = hasWarnings && t('warningMessage');
 		const buttonConfig = hasErrors ? this.errorButtons : hasWarnings ? this.warningButtons : null;
 		const cls = cx('inner', {error: hasErrors, warning: !hasErrors && hasWarnings});
 
@@ -110,7 +111,8 @@ export default class PrepublishModal extends React.Component {
 					<i className="icon-alert" />
 					<div className="message">
 						<h3>{t('title')}</h3>
-						<div className="content"> {message}</div>
+						{errorMessage && (<div className="content"> {errorMessage}</div>)}
+						{warningMessage && (<div className="content"> {warningMessage}</div>)}
 						{this.renderExpand()}
 					</div>
 					{(hasErrors || hasWarnings) && this.renderIssues()}
