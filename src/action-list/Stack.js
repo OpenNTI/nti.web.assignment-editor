@@ -71,8 +71,9 @@ export default class ActionStack extends EventEmitter {
 
 
 	[STOP_TIMER] (action) {
-		if (action) {
-			clearTimeout(action);
+		if (action && action.timer) {
+			clearTimeout(action.timer);
+			delete action.timer;
 		}
 
 		return action;
@@ -92,7 +93,9 @@ export default class ActionStack extends EventEmitter {
 				onComplete(...args);
 			},
 			onTimeout: () => {
-				onTimeout();
+				if (onTimeout) {
+					onTimeout();
+				}
 			}
 		}, this.keepFor);
 	}
