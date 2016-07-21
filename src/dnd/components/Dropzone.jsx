@@ -49,18 +49,17 @@ export default class Dropzone extends React.Component {
 		className: React.PropTypes.string
 	}
 
+	state = {}
+
+	dragEnterLock = 0
+
 
 	constructor (props) {
 		super(props);
 
-		this.state = {};
-
-		let {dropHandlers} = props;
-
-		dropHandlers = dropHandlers || {};
-
-		this.acceptedTypes = Object.keys(dropHandlers);
-		this.acceptsOrder = dropHandlers.priority || this.acceptedTypes;
+		const handlers = props.dropHandlers || {};
+		this.acceptedTypes = Object.keys(handlers);
+		this.acceptsOrder = handlers.priority || this.acceptedTypes;
 	}
 
 
@@ -74,7 +73,7 @@ export default class Dropzone extends React.Component {
 		const {dataTransfer} = e;
 		const data = new DataTransfer(dataTransfer);
 
-		this.dragEnterCounter = 0;
+		this.dragEnterLock = 0;
 
 		if (!isValidTransfer(data)) {
 			if (onInvalidDrop) {
@@ -108,6 +107,8 @@ export default class Dropzone extends React.Component {
 		const {dataTransfer} = e;
 		const data = new DataTransfer(dataTransfer);
 
+		this.dragEnterLock ++;
+
 
 		if (isValidTransfer(data) && hasAcceptedType(this.acceptedTypes, data)) {
 			this.setState({
@@ -132,7 +133,12 @@ export default class Dropzone extends React.Component {
 
 		const {onDragLeave} = this.props;
 
-		if (e.target !== this.getDOMNode()) {
+		this.dragEnterLock--;
+		if (this.dragEnterLock <= 0) {
+			this.dragEnterLock = 0; //force 0, unlock
+		}
+
+		if (this.dragEnterLock > 0 || e.target !== this.getDOMNode()) {
 			return;
 		}
 
