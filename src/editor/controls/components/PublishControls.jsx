@@ -77,6 +77,7 @@ class PublishControls extends React.Component {
 					onChange={this.onChange}
 					onDismiss={this.resetError}
 					assignment={assignment}
+					localeContext="assignment"
 				>
 					<Delete assignment={assignment}/>
 				</Control>
