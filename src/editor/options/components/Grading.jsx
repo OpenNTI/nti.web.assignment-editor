@@ -9,6 +9,7 @@ const DEFAULT_TEXT = {
 	content: 'Save time with auto grading.',
 	label: 'Enable Auto Grading',
 	'disabled-no-questions': 'Add some questions to enable this option.',
+	'disabled-total-points': 'Assignment must have a point value to enable auto grading.',
 	'disabled-conflicting-questions': {
 		other: 'Essays and file uploads are question types that are not compatible with auto grading. You must remove questions %(conflicts)s before enabling auto grade.',
 		one: 'Essays and file uploads are question types that are not compatible with auto grading. You must remove question %(conflicts)s before enabling auto grade.'
@@ -82,7 +83,7 @@ class Grading extends React.Component {
 			});
 		}
 
-		setState({isAutoGraded, conflicts });
+		setState({isAutoGraded, conflicts});
 	}
 
 
@@ -100,7 +101,7 @@ class Grading extends React.Component {
 	render () {
 		const {assignment, questionSet} = this.props;
 		const {isAutoGraded, conflicts, error} = this.state;
-		const disabled = assignment && !assignment.hasLink('edit');
+		const disabled = assignment && (!assignment.hasLink('edit') || !assignment.totalPoints);
 
 		const errorMessage = error && ( error.message );
 
@@ -110,8 +111,8 @@ class Grading extends React.Component {
 				header="Grading"
 				content={t('content')}
 				error={conflicts || errorMessage}
-				disabled={!questionSet || Boolean(conflicts)}
-				disabledText={questionSet ? '' : t('disabled-no-questions')}
+				disabled={!questionSet || Boolean(conflicts) || !assignment.totalPoints}
+				disabledText={questionSet ? (assignment.totalPoints ? '' : t('disabled-total-points')) : t('disabled-no-questions')}
 				>
 				<Option label={t('label')} name="auto-grading" value={isAutoGraded} onChange={this.onChange} disabled={disabled}/>
 			</OptionGroup>
