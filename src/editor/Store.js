@@ -17,7 +17,8 @@ import {
 	QUESTION_WARNING,
 	QUESTION_SET_ERROR,
 	UNDO_CREATED,
-	CLEAR_UNDOS
+	CLEAR_UNDOS,
+	REVERT_ERRORS
 } from './Constants';
 
 const SHORT = 3000;
@@ -45,6 +46,7 @@ const SetMessageOn = Symbol('Set Message On');
 const AddUndo = Symbol('Add Undo');
 const ClearAssignment = Symbol('Clear Assignment');
 const ClearUndos = Symbol('Clear Undos');
+const RevertErrors = Symbol('Revert Errors');
 
 function findMessagesForId (id, message) {
 	return message[id] || [];
@@ -81,7 +83,7 @@ function getLabelForQuestionError (questionId, field, assignment) {
 function getLabelForError (ntiid, field, label, type, assignment) {
 	label = label || 'Error';
 
-	if (type === QUESTION_ERROR) {
+	if (type === QUESTION_ERROR || type === QUESTION_WARNING) {
 		label = getLabelForQuestionError(ntiid, field, assignment);
 	}
 
@@ -136,7 +138,8 @@ class Store extends StorePrototype {
 			[QUESTION_WARNING]: 'setQuestionWarning',
 			[QUESTION_SET_ERROR]: 'setQuestionSetError',
 			[UNDO_CREATED]: AddUndo,
-			[CLEAR_UNDOS]: ClearUndos
+			[CLEAR_UNDOS]: ClearUndos,
+			[REVERT_ERRORS]: RevertErrors
 		});
 	}
 
@@ -340,6 +343,15 @@ class Store extends StorePrototype {
 	}
 
 
+	[RevertErrors] () {
+		const p = PRIVATE.get(this);
+
+		p.errors = {};
+
+		this.emitChange({type: REVERT_ERRORS});
+	}
+
+
 	get openSince () {
 		const p = PRIVATE.get(this);
 
@@ -386,6 +398,16 @@ class Store extends StorePrototype {
 		const p = PRIVATE.get(this);
 		const {errors} = p;
 		const values = Object.values(errors);
+
+		return values.reduce((acc, value) => {
+			return [...acc, ...value];
+		}, []);
+	}
+
+	get warnings () {
+		const p = PRIVATE.get(this);
+		const {warnings} = p;
+		const values = Object.values(warnings);
 
 		return values.reduce((acc, value) => {
 			return [...acc, ...value];

@@ -8,7 +8,7 @@ import {DragHandle} from '../../../dnd';
 import InlineDialog from '../../../inline-dialog';
 
 import Store from '../../Store';
-import {QUESTION_ERROR, QUESTION_WARNING} from '../../Constants';
+import {QUESTION_ERROR, QUESTION_WARNING, REVERT_ERRORS} from '../../Constants';
 import {Component as Selectable} from '../../../selection';
 import ControlsConfig from '../../controls/ControlsConfig';
 
@@ -111,6 +111,9 @@ export default class Question extends React.Component {
 		const {question} = this.props;
 
 		if ((data.type === QUESTION_ERROR || data.type === QUESTION_WARNING) && question.NTIID === data.NTIID) {
+			this.onQuestionMessages();
+		} else if (data.type === REVERT_ERRORS) {
+			debugger;
 			this.onQuestionMessages();
 		}
 	}

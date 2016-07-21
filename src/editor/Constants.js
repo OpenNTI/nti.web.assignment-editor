@@ -21,3 +21,5 @@ export const QUESTION_WARNING = 'assignment:editor:QuestionWarning';
 
 export const UNDO_CREATED = 'assignment:editor:UndoCreated';
 export const CLEAR_UNDOS = 'assignment:editor:ClearUndo';
+
+export const REVERT_ERRORS = 'assignment:editor:ClearErrors';
