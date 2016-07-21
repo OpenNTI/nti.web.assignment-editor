@@ -10,7 +10,8 @@ export default class MultipleChoiceMultipleAnswerEditor extends React.Component 
 		question: React.PropTypes.object.isRequired,
 		error: React.PropTypes.any,
 		index: React.PropTypes.number,
-		onChange: React.PropTypes.func
+		onChange: React.PropTypes.func,
+		keepStateHash: React.PropTypes.number
 	}
 
 
@@ -52,7 +53,7 @@ export default class MultipleChoiceMultipleAnswerEditor extends React.Component 
 
 
 	render () {
-		const {part, question, index, onChange} = this.props;
+		const {part, question, index, onChange, keepStateHash} = this.props;
 		const {error} = this.state;
 
 		return (
@@ -64,6 +65,7 @@ export default class MultipleChoiceMultipleAnswerEditor extends React.Component 
 				generatePart={this.generatePart}
 				index={index}
 				onChange={onChange}
+				keepStateHash={keepStateHash}
 			/>
 		);
 	}

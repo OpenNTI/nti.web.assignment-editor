@@ -17,7 +17,8 @@ export default class MultipleChoiceEditor extends React.Component {
 		error: React.PropTypes.object,
 		generatePart: React.PropTypes.func,
 		index: React.PropTypes.number,
-		onChange: React.PropTypes.func
+		onChange: React.PropTypes.func,
+		keepStateHash: React.PropTypes.number
 	}
 
 
@@ -42,12 +43,12 @@ export default class MultipleChoiceEditor extends React.Component {
 
 
 	componentWillReceiveProps (nextProps) {
-		const {part:newPart, error:newError} = nextProps;
-		const {part:oldPart, error:oldError} = this.props;
+		const {part:newPart, error:newError, keepStateHash:newStateHash} = nextProps;
+		const {part:oldPart, error:oldError, keepStateHash:oldStateHash} = this.props;
 		const {choices, solutions} = newPart;
 		let state = null;
 
-		if (newPart !== oldPart) {
+		if (newPart !== oldPart || newStateHash !== oldStateHash) {
 			state = state || {};
 			state.choices = this.mapChoices(choices, solutions);
 		}

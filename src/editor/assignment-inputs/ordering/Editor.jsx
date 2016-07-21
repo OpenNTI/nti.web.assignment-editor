@@ -21,7 +21,8 @@ export default class OrderingEditor extends React.Component {
 		question: React.PropTypes.object.isRequired,
 		error: React.PropTypes.any,
 		index: React.PropTypes.number,
-		onChange: React.PropTypes.func
+		onChange: React.PropTypes.func,
+		keepStateHash: React.PropTypes.number
 	}
 
 	constructor (props) {
@@ -48,12 +49,12 @@ export default class OrderingEditor extends React.Component {
 
 
 	componentWillReceiveProps (nextProps) {
-		const {part:newPart, error:newError} = nextProps;
-		const {part:oldPart, error:oldError} = this.props;
+		const {part:newPart, error:newError, keepStateHash:newStateHash} = nextProps;
+		const {part:oldPart, error:oldError, keepStateHash:oldStateHash} = this.props;
 		const {labels, values, solutions} = newPart;
 		let state = null;
 
-		if (newPart !== oldPart) {
+		if (newPart !== oldPart || newStateHash !== oldStateHash) {
 			state = state || {};
 			state.choices = this.mapChoices(labels, values, solutions);
 		}

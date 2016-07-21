@@ -70,6 +70,8 @@ export default class Question extends React.Component {
 
 		const {question} = this.props;
 
+		this.version = 0;
+
 		this.onChangeBuffered = buffer(500, () => this.onChange());
 
 		Store.addChangeListener(this.onStoreChange);
@@ -113,7 +115,7 @@ export default class Question extends React.Component {
 		if ((data.type === QUESTION_ERROR || data.type === QUESTION_WARNING) && question.NTIID === data.NTIID) {
 			this.onQuestionMessages();
 		} else if (data.type === REVERT_ERRORS) {
-			debugger;
+			this.keepStateHash += 1;
 			this.onQuestionMessages();
 		}
 	}
@@ -304,7 +306,7 @@ export default class Question extends React.Component {
 								published={assignment.isPublished()}
 							/>
 						</div>
-						<Parts question={question} error={partError} onChange={this.onPartsChange} />
+						<Parts question={question} error={partError} onChange={this.onPartsChange} keepStateHash={this.keepStateHash} />
 						{questionError && (<ErrorCmp error={questionError} />)}
 					</Selectable>
 				</InlineDialog>
