@@ -20,6 +20,17 @@ import {
 
 import {cloneQuestion} from './utils';
 
+function getQuestionSetFrom (NTIID, assignment) {
+	const {parts} = assignment;
+
+	if (!parts) { return null; }
+
+	for (let part of parts) {
+		if (part['question_set'].NTIID === NTIID) {
+			return part['question_set'];
+		}
+	}
+}
 
 export function updateQuestion (question, fields) {
 	const {content:oldContent, parts:oldParts} = question;
@@ -64,12 +75,13 @@ export function deleteQuestionFrom (question, questionSet, assignment) {
 
 	if (orderedContents.canEdit && orderedContents.length === 1) {
 		removePartWithQuestionSet(assignment, questionSet)
-			.then((undo) => {
-				if (undo) {
+			.then((methods) => {
+				if (methods.undo) {
 					dispatch(UNDO_CREATED, {
 						label: 'Question Deleted',
 						name: 'Undo',
-						onComplete: undo
+						onComplete: methods.undo,
+						onTimeout: methods.cleanup
 					});
 				}
 			});
@@ -85,7 +97,14 @@ export function deleteQuestionFrom (question, questionSet, assignment) {
 					dispatch(UNDO_CREATED, {
 						label: 'Question Deleted',
 						name: 'Undo',
-						onComplete: undo
+						onComplete: () => {
+							const newQuestionSet = getQuestionSetFrom(questionSet.NTIID, assignment);
+
+							if (newQuestionSet) {
+								orderedContents.updateBackingObject(newQuestionSet);
+								undo();
+							}
+						}
 					});
 				}
 

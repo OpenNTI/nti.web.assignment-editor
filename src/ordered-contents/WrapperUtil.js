@@ -53,6 +53,11 @@ export default class OrderedContents {
 	}
 
 
+	updateBackingObject (obj) {
+		this.backingObject = obj;
+	}
+
+
 	get orderedContentsField () {
 		const obj = this.backingObject;
 

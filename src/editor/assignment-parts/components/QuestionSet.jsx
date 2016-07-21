@@ -79,7 +79,7 @@ export default class QuestionSetComponent extends React.Component {
 				<Ordering
 					containerId={questionSet.NTIID}
 					className={cx('question-set-editor', {'no-reorder': !this.moveRoot})}
-					items={questions}
+					items={questions || []}
 					renderItem={this.renderQuestion}
 					accepts={[QUESTION_TYPE]}
 					onChange={this.onQuestionOrderChange}
