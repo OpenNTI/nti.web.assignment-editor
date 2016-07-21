@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'classnames';
 import {HOC} from 'nti-web-commons';
 import autobind from 'nti-commons/lib/autobind';
 
@@ -18,7 +19,8 @@ export default class QuestionTypes extends React.Component {
 	static propTypes = {
 		assignment: React.PropTypes.object.isRequired,
 		schema: React.PropTypes.object,
-		activeInsert: React.PropTypes.object
+		activeInsert: React.PropTypes.object,
+		readOnly: React.PropTypes.bool
 	}
 
 
@@ -35,13 +37,14 @@ export default class QuestionTypes extends React.Component {
 
 
 	render () {
-		const {assignment, activeInsert} = this.props;
+		const {assignment, activeInsert, readOnly} = this.props;
 		const questionSet = getQuestionSetFrom(assignment);
+		const cls = cx('question-types', {'read-only': readOnly});
 
 		return (
 			<ItemChanges item={assignment} onItemChanged={this.onChange}>
 				<ItemChanges item={questionSet} onItemChanged={this.onChange}>
-					<div className="question-types">
+					<div className={cls}>
 						{getButtons(null, assignment, activeInsert)}
 					</div>
 				</ItemChanges>

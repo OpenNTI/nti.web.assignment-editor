@@ -8,6 +8,7 @@ import AssignmentInfo from './info';
 import AssignmentParts from './assignment-parts';
 import Options from './options';
 import NavBar from './nav-bar';
+import Placeholder from './Placeholder';
 
 const CONTENT_VIEW = 'content';
 const OPTIONS_VIEW = 'options';
@@ -17,7 +18,9 @@ export default class AssignmentEditor extends React.Component {
 		assignment: React.PropTypes.object,
 		schema: React.PropTypes.object,
 		gotoRoot: React.PropTypes.func,
-		pageSource: React.PropTypes.object
+		pageSource: React.PropTypes.object,
+		readOnly: React.PropTypes.bool,
+		previewAssignment: React.PropTypes.func
 	}
 
 
@@ -41,24 +44,31 @@ export default class AssignmentEditor extends React.Component {
 
 
 	render () {
-		const {assignment, schema, gotoRoot, pageSource} = this.props;
+		const {assignment, schema, gotoRoot, pageSource, readOnly, previewAssignment} = this.props;
 		const {active} =  this.state;
-		const cls = cx('assignment-editor', {loading: !!assignment});
+		const cls = cx('assignment-editor', {loading: !!assignment, 'read-only': readOnly});
 
 		return (
 			<StickyContainer className={cls}>
 				<Sticky>
 					<NavBar gotoRoot={gotoRoot} pageSource={pageSource}/>
 				</Sticky>
-				<AssignmentInfo assignment={assignment} schema={schema} />
-				<div className="content">
-					<ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
-						{active === CONTENT_VIEW ?
-							this.renderContent(assignment, schema) :
-							this.renderOptions(assignment, schema)
-						}
-					</ReactCSSTransitionGroup>
-				</div>
+				{readOnly ?
+					this.renderPlaceholder(assignment, previewAssignment) :
+					(
+						<div>
+							<AssignmentInfo assignment={assignment} schema={schema} />
+							<div className="content">
+								<ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
+									{active === CONTENT_VIEW ?
+										this.renderContent(assignment, schema) :
+										this.renderOptions(assignment, schema)
+									}
+								</ReactCSSTransitionGroup>
+							</div>
+						</div>
+					)
+				}
 			</StickyContainer>
 		);
 	}
@@ -86,6 +96,13 @@ export default class AssignmentEditor extends React.Component {
 				<AssignmentContent assignment={assignment} schema={schema} />
 				<AssignmentParts assignment={assignment} schema={schema} />
 			</div>
+		);
+	}
+
+
+	renderPlaceholder (assignment, previewAssignment) {
+		return (
+			<Placeholder assignment={assignment} previewAssignment={previewAssignment} />
 		);
 	}
 }

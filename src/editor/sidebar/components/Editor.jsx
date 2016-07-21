@@ -20,7 +20,8 @@ export default class Editor extends React.Component {
 	static propTypes = {
 		assignment: React.PropTypes.object,
 		schema: React.PropTypes.object,
-		selection: React.PropTypes.any
+		selection: React.PropTypes.any,
+		readOnly: React.PropTypes.bool
 	}
 
 	static contextTypes = {
@@ -67,7 +68,7 @@ export default class Editor extends React.Component {
 
 
 	render () {
-		const {assignment, schema} = this.props;
+		const {assignment, schema, readOnly} = this.props;
 		const {selection} = this.state;
 
 		const activeInsert = getActiveQuestionInsertFromSelection(selection);
@@ -82,7 +83,7 @@ export default class Editor extends React.Component {
 		return (
 			<div className="assignment-editing-sidebar">
 				<TabBar />
-				<QuestionTypes assignment={assignment} schema={schema} selection={selection} activeInsert={activeInsert} />
+				<QuestionTypes assignment={assignment} schema={schema} selection={selection} activeInsert={activeInsert} readOnly={readOnly} />
 			</div>
 		);
 	}

@@ -1,0 +1,124 @@
+@import "~nti-style-common";
+
+.assignment-editing-placeholder {
+	font-size: 1rem;
+	padding: rem-calc(0 60px 0 35px);
+	overflow: hidden;
+	position: relative;
+	background: white;
+
+	.header {
+		color: $primary-grey;
+		font-size: 2rem;
+		font-weight: 300;
+		margin-top: 2rem;
+		margin-bottom: 0.5rem;
+		opacity: 0.2;
+	}
+
+	.alert {
+		position: absolute;
+		width: 58%;
+		top: 250px;
+		transform: translateY(-50%);
+		left: 50%;
+		margin-left: -29%;
+		box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+		padding: 20px 25px;
+		background: white;
+
+		.title {
+			color: $primary-grey;
+			font-size: 1.375rem;
+			font-weight: 300;
+			margin-bottom: 1rem;
+		}
+
+		.message {
+			font-size: 0.875rem;
+			color: $secondary-grey;
+			margin-bottom: 1.25rem;
+		}
+
+		.button {
+			display: inline-block;
+			background: $primary-blue;
+			color: white;
+			font-size: 0.875rem;
+			font-weight: 300;
+			line-height: 40px;
+			border-radius: 2px;
+			padding: 0 1.25rem;
+			cursor: pointer;
+		}
+	}
+
+	.fake-questions {
+		opacity: 0.2;
+
+		.question {
+			background: $panel-background;
+			border: 1px solid $border-grey-light;
+			box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.08);
+			margin-bottom: 30px;
+			border-radius: 3px;
+		}
+
+		.prompt {
+			background: white;
+			overflow: hidden;
+			padding: rem-calc(17px 40px 15px 40px);
+
+			.line {
+				width: 80%;
+				height: 2rem;
+				margin-bottom: 1rem;
+				background-color: #f6f6f6;
+
+				&:last-of-type {
+					margin-bottom: 0;
+				}
+
+				&.long {
+					height: 5rem;
+				}
+			}
+		}
+
+		.answer-container {
+			border-radius: 0 0 3px 3px;
+			border: 0 solid $border-grey-light;
+			border-top: 1px;
+			padding: 20px;
+
+			.answers {
+				min-height: 2.375rem;
+				background: white;
+				border: 1px solid $tertiary-grey;
+
+				.answer {
+					min-height: 2.375rem;
+					position: relative;
+					border: 0 solid $tertiary-grey;
+					border-bottom-width: 1px;
+
+					&:last-of-type {
+						border-bottom-width: 0;
+					}
+
+					&::after {
+						content: '';
+						position: aboslute;
+						top: 50%;
+						transform: translateY(-50%);
+						left: 10px;
+						height: 1.5rem;
+						width: 80%;
+						background-color: #f6f6f6;
+					}
+
+				}
+			}
+		}
+	}
+}

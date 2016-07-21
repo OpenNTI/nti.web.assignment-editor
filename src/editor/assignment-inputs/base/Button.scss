@@ -53,3 +53,8 @@
   		color: $tertiary-grey;
 	}
 }
+
+.read-only .assignment-editor-sidebar-button {
+	opacity: 0.5;
+	pointer-events: none;
+}

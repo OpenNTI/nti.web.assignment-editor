@@ -22,6 +22,7 @@ export default class Editor extends React.Component {
 		NTIID: React.PropTypes.string.isRequired,
 		onDeleted: React.PropTypes.func,
 		gotoRoot: React.PropTypes.func,
+		previewAssignment: React.PropTypes.func,
 		pageSource: React.PropTypes.object
 	}
 
@@ -84,9 +85,10 @@ export default class Editor extends React.Component {
 
 	render () {
 		const {undoStack} = Store;
-		const {gotoRoot, pageSource} = this.props;
+		const {gotoRoot, pageSource, previewAssignment} = this.props;
 		const {deleting} = this.state;
 		const {assignment, loadError: error, schema} = Store;
+		const readOnly = assignment && !assignment.getLink('edit');
 
 		if (error || (Store.isLoaded && !assignment)) {
 			return this.renderError(error || 'No Assignment');
@@ -105,14 +107,16 @@ export default class Editor extends React.Component {
 							schema={schema}
 							gotoRoot={gotoRoot}
 							pageSource={pageSource}
+							readOnly={readOnly}
+							previewAssignment={previewAssignment}
 						/>
 						<div className="assignment-editing-sidebar-column">
 							<FixedElement className="assignment-editing-sidebar-fixed">
-								<Sidebar ref={this.attachSidebarRef} assignment={assignment} schema={schema} />
+								<Sidebar ref={this.attachSidebarRef} assignment={assignment} schema={schema} readOnly="readOnly" />
 							</FixedElement>
 						</div>
-						<ControlBar visible>
-							<Controls assignment={assignment} undoStack={undoStack} />
+						<ControlBar visible={!readOnly}>
+							<Controls assignment={assignment} undoStack={undoStack} previewAssignment={previewAssignment} />
 						</ControlBar>
 					</div>
 				)}
