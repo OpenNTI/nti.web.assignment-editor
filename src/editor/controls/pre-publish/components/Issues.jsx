@@ -96,7 +96,6 @@ export default class PrepublishModal extends React.Component {
 	}
 
 
-
 	render () {
 		const {hasErrors, hasWarnings} = this;
 		const message = hasErrors ? t('errorMessage') : hasWarnings ? t('warningMessage') : null;
@@ -138,11 +137,11 @@ export default class PrepublishModal extends React.Component {
 		const cls = cx('issues', {collapsed, 'has-both': hasErrors && hasWarnings});
 
 		return (
-			<div className={cls}>
+			<div className={cls} onClick={this.onIssueClick}>
 				{hasErrors && hasWarnings && (<div className="header error">{t('errorHeader')}</div>)}
-				{hasErrors && (<ErrorList errors={errors} />)}
+				{hasErrors && (<ErrorList errors={errors} onErrorFocus={this.onCancel} />)}
 				{hasErrors && hasWarnings && (<div className="header warning">{t('warningHeader')}</div>)}
-				{hasWarnings && (<ErrorList errors={warnings} isWarnings />)}
+				{hasWarnings && (<ErrorList errors={warnings} isWarnings onErrorFocus={this.onCancel} />)}
 			</div>
 		);
 	}
