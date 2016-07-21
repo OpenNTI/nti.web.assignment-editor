@@ -4,9 +4,9 @@ import {scoped} from 'nti-lib-locale';
 
 const DEFAULT_TEXT = {
 	title: 'Editing is not available for this assignment.',
-	message: 'Assignments you did not create can only be viewed.',
+	message: 'Assignments you did not create can only be previewed.',
 	defaultTitle: 'Unknown Assignment',
-	buttonText: 'Enter View Mode'
+	buttonText: 'Preview Assignment'
 };
 
 const t = scoped('ASSIGNMENT_PLACEHOLDER', DEFAULT_TEXT);
