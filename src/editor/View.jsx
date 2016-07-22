@@ -112,7 +112,7 @@ export default class Editor extends React.Component {
 						/>
 						<div className="assignment-editing-sidebar-column">
 							<FixedElement className="assignment-editing-sidebar-fixed">
-								<Sidebar ref={this.attachSidebarRef} assignment={assignment} schema={schema} readOnly="readOnly" />
+								<Sidebar ref={this.attachSidebarRef} assignment={assignment} schema={schema} readOnly={readOnly} />
 							</FixedElement>
 						</div>
 						<ControlBar visible={!readOnly}>
