@@ -1,3 +1,5 @@
+export const FREE = 'assignment:editor:FreeAssignment';
+
 export const LOADED = 'assignment:editor:AssignmentLoaded';
 export const LOADED_SCHEMA = 'assignment:editor:AssignmentSchemaLoaded';
 export const LOADING = 'assignment:editor:AssignmentLoading';

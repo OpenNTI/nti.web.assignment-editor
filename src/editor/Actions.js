@@ -1,10 +1,14 @@
 import {dispatch} from 'nti-lib-dispatcher';
 import {getService} from  'nti-web-client';
 import Logger from 'nti-util-logger';
+
+import {SAVE, EVENT_FINISH} from 'nti-lib-interfaces';
+
 import {
 	ASSIGNMENT_ERROR,
 	ASSIGNMENT_DELETING,
 	ASSIGNMENT_DELETED,
+	FREE,
 	LOADING,
 	LOADED,
 	LOADED_SCHEMA,
@@ -22,12 +26,20 @@ const SHORT = 3000;
 const logger = Logger.get('lib:asssignment-editor:Actions');
 const defaultSchema = {};
 
+
+export function freeAssignment (assignment) {
+	dispatch(FREE);
+	assignment.removeListener(EVENT_FINISH, onAssignmentSaved);
+}
+
+
 export function loadAssignment (ntiid) {
 	dispatch(LOADING);
 	getService()
 		.then(service =>
 			service.getObject(ntiid))
 		.then(assignment => {
+			assignment.addListener(EVENT_FINISH, onAssignmentSaved);
 			dispatch(LOADED, assignment);
 			loadSchema(assignment);
 		})
@@ -56,6 +68,15 @@ export function loadSchema (assignment) {
 				logger.error('Failed to load schema: ', reason);
 				dispatch(LOADED_SCHEMA, defaultSchema);
 			});
+	}
+}
+
+
+function onAssignmentSaved (action, data, e) {
+	const assignment = this; //emitters set the scope of the handler to themselves.
+	if (action === SAVE && e) {
+		const fn = maybeResetAssignmentOnError(assignment);
+		fn(e);
 	}
 }
 
@@ -93,6 +114,7 @@ export function maybeResetAssignmentOnError (assignmentOrQuestionSet) {
 		return Promise.reject(error);
 	};
 }
+
 
 export function saveFieldOn (obj, field, newValue) {
 	if (!obj.save) {

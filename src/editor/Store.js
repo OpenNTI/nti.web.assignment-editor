@@ -4,6 +4,7 @@ import {Stack} from '../action-list';
 import Logger from 'nti-util-logger';
 
 import {
+	FREE,
 	LOADED,
 	LOADED_SCHEMA,
 	LOADING,
@@ -128,6 +129,7 @@ class Store extends StorePrototype {
 			[LOADED]: SetAssignment,
 			[LOADED_SCHEMA]: SetSchema,
 			[LOADING]: ClearAssignment,
+			[FREE]: ClearAssignment,
 			[SAVING]: SetSaving,
 			[SAVE_ENDED]: SetSaveEnded,
 			[ASSIGNMENT_DELETING]: SetAssignmentDeleting,

@@ -11,7 +11,7 @@ import Sidebar from './sidebar';
 import {Manager as SelectionManager} from '../selection';
 import {LOADED, ASSIGNMENT_DELETING, ASSIGNMENT_DELETED} from './Constants';
 import Store from './Store';
-import {loadAssignment} from './Actions';
+import {loadAssignment, freeAssignment} from './Actions';
 
 import * as ConflictResolution from './conflict-resolution';
 
@@ -47,6 +47,7 @@ export default class Editor extends React.Component {
 
 
 	componentWillUnmount () {
+		freeAssignment(Store.assignment);
 		ConflictResolution.unregister();
 		Store.removeChangeListener(this.onStoreChange);
 	}
