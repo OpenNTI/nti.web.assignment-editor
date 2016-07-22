@@ -7,7 +7,8 @@ import {
 	SAVE_ENDED,
 	ASSIGNMENT_ERROR,
 	QUESTION_SET_ERROR,
-	QUESTION_ERROR
+	QUESTION_ERROR,
+	REVERT_ERRORS
 } from '../../Constants';
 import Store from '../../Store';
 
@@ -60,7 +61,7 @@ export default class AssignmentStatus extends React.Component {
 
 		if (type === SAVING || type === SAVE_ENDED) {
 			this.onSaveChanged();
-		} else if (type === ASSIGNMENT_ERROR || type === QUESTION_SET_ERROR || type === QUESTION_ERROR) {
+		} else if (type === REVERT_ERRORS || type === ASSIGNMENT_ERROR || type === QUESTION_SET_ERROR || type === QUESTION_ERROR) {
 			this.onErrorsChanged();
 		}
 	}
