@@ -2,6 +2,8 @@ import React, { PropTypes } from 'react';
 import {scoped} from 'nti-lib-locale';
 import {HOC} from 'nti-web-commons';
 
+import {maybeResetAssignmentOnError} from '../../Actions';
+
 import OptionGroup from './OptionGroup';
 import Option from './Option';
 
@@ -69,7 +71,12 @@ class Randomize extends React.Component {
 
 		for (let key of Object.keys(updaters)) {
 			if (qset[key] !== this.state[key]) {
-				updaters[key]();
+				updaters[key]()
+					.catch(maybeResetAssignmentOnError(qset))
+					.catch(error => {
+						this.setState({error});
+						this.setupValue();
+					});
 			}
 		}
 	}
@@ -102,8 +109,7 @@ class Randomize extends React.Component {
 
 		if (key) {
 			const checked = !this.state[key];
-
-			this.setState({ [key]: checked });
+			this.setState({ [key]: checked, error: void 0 });
 		}
 	}
 
@@ -121,12 +127,14 @@ class Randomize extends React.Component {
 	}
 
 	render () {
-		const {isRandomized, isPartTypeRandomized} = this.state;
+		const {isRandomized, isPartTypeRandomized, error} = this.state;
 		const {questionSet:qset} = this.props;
 		const editable = qset && (qset.hasLink('Randomize') || qset.hasLink('Unrandomize'));
 		const ableToRandomize = isRandomized || (qset && qset.hasLink('Randomize'));
 		const ableToRandomizeParts = isPartTypeRandomized || (qset && qset.hasLink('RandomizePartsType'));
 		const disabledText = this.disabledText(qset);
+
+		const errorMessage = error && (error.message || '');
 
 		return (
 			<OptionGroup
@@ -135,6 +143,7 @@ class Randomize extends React.Component {
 				content={t('content')}
 				disabled={!editable}
 				disabledText={disabledText}
+				error={errorMessage}
 			>
 				<Option label={t('labels.randomizeQuestions')}
 					name={RANDOMIZE_QUESTIONS}
