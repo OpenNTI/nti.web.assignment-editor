@@ -268,7 +268,6 @@ export default class Question extends React.Component {
 
 
 	render () {
-		debugger;
 		const {
 			question,
 			index,
