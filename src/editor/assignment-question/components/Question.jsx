@@ -88,6 +88,11 @@ export default class Question extends React.Component {
 	}
 
 
+	componentWillMount () {
+		this.onQuestionMessages();
+	}
+
+
 	attachRef = (x) => this.editorRef = x
 
 
@@ -263,6 +268,7 @@ export default class Question extends React.Component {
 
 
 	render () {
+		debugger;
 		const {
 			question,
 			index,
