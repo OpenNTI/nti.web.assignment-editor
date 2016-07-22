@@ -271,6 +271,7 @@ class Store extends StorePrototype {
 		const p = PRIVATE.get(this);
 		const {response: question} = o.action;
 		this[RemoveMessageFrom](p.errors, question.getID(), null, QUESTION_ERROR);
+		this[RemoveMessageFrom](p.warnings, question.getID(), null, QUESTION_ERROR);
 	}
 
 

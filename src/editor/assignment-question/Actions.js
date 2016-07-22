@@ -73,6 +73,8 @@ export function updateQuestion (question, fields, assignment) {
 export function deleteQuestionFrom (question, questionSet, assignment) {
 	const orderedContents = new OrderedContents(questionSet);
 
+	dispatch(QUESTION_UPDATED, question); // clear question errors/warnings
+
 	if (orderedContents.canEdit && orderedContents.length === 1) {
 		removePartWithQuestionSet(assignment, questionSet)
 			.then((methods) => {
