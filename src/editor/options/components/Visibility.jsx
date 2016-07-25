@@ -37,8 +37,8 @@ class Visibility extends React.Component {
 		const visibility = assignment && assignment.getVisibility();
 
 		const options = [
-			getOption('ForCredit'),
-			getOption('Everyone')
+			getOption('Everyone'),
+			getOption('ForCredit')
 		];
 
 		return (
