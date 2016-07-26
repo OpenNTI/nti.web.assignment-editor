@@ -6,11 +6,13 @@ import ActionStack from '../../../action-list';
 import PublishControls from './PublishControls';
 import FormatControls from './FormatControls';
 import EditorStatus from './Status';
+import PreviewControls from './PreviewControls';
 
 export default class Controls extends React.Component {
 	static propTypes = {
 		assignment: React.PropTypes.object,
-		undoStack: React.PropTypes.object
+		undoStack: React.PropTypes.object,
+		previewAssignment: React.PropTypes.func
 	}
 
 	static contextTypes = {
@@ -55,15 +57,18 @@ export default class Controls extends React.Component {
 		});
 	}
 
-
 	render () {
 		const {selection} = this.state;
-		const {assignment, undoStack} = this.props;
+		const {assignment, undoStack, previewAssignment} = this.props;
 
 		return (
 			<div className="assignment-editor-controls">
 				<ActionStack stack={undoStack} />
 				<FormatControls selection={selection} />
+				{(assignment && assignment.hasLink('edit')) ?
+					<PreviewControls previewAssignment={previewAssignment} /> :
+					null
+				}
 				<EditorStatus />
 				<PublishControls assignment={assignment} />
 			</div>
