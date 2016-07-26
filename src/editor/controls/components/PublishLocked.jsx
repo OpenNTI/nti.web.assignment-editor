@@ -9,7 +9,9 @@ const {PUBLISH_STATES} = Constants;
 
 const DEFAULT_TEXT = {
 	label: 'Students have started your assignment.',
+	editorLabel: 'Students have started this assignment',
 	text: 'Resetting or deleting this assignment will result in erasing students work and submissions. You cannot undo this action.',
+	editorText: 'The instructor must reset this assignment before a publish change can occur.',
 	error: 'Could not reset the assignment at this time. Please try again later.'
 };
 
@@ -49,12 +51,20 @@ export default class PublishLocked extends React.Component {
 
 	clearError = () => this.setState({error: false})
 
+	isNonInstructor () {
+		const {assignment} = this.props;
+		if(!assignment) { return; }
+
+		return !assignment.hasLink('reset') && !assignment.hasLink('publish') && !assignment.hasLink('unpublish');
+	}
 
 	render () {
 		const {props: {assignment, value, children}, state: {error, busy}} = this;
 
 		const can = assignment && assignment.hasLink('reset');
 		const trigger = <PublishTrigger value={value} />;
+		const label =  this.isNonInstructor() ? 'editorLabel' : 'label';
+		const text = this.isNonInstructor() ? 'editorText' : 'text';
 
 		return (
 			<Flyout ref={this.setFlyoutRef} className="publish-locked"
@@ -63,8 +73,8 @@ export default class PublishLocked extends React.Component {
 				horizontalAlign={Flyout.ALIGNMENTS.RIGHT}
 				onDismiss={this.clearError}
 				arrow>
-				<span className="reset-label">{t('label')}</span>
-				<p className="reset-text">{t('text')}</p>
+				<span className="reset-label">{t(label)}</span>
+				<p className="reset-text">{t(text)}</p>
 
 				{!busy && children}
 				{error && ( <div className="reset-error">{t('error')}</div> )}
