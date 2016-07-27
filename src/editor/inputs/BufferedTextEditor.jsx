@@ -79,6 +79,13 @@ export default class BufferedTextEditor extends React.Component {
 	}
 
 
+	focusToEnd () {
+		if (this.editorRef && this.editorRef.focusToEnd) {
+			this.editorRef.focusToEnd();
+		}
+	}
+
+
 	getValue () {
 		return this.editorRef && this.editorRef.getValue();
 	}

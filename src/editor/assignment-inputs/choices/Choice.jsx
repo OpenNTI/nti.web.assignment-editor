@@ -113,9 +113,20 @@ export default class Choice extends React.Component {
 	}
 
 
-	doFocus = () => {
+	doFocus = (where) => {
 		if (this.editorRef) {
-			this.editorRef.focus();
+			if (where && this.editorRef[where]) {
+				this.editorRef[where]();
+			} else {
+				this.editorRef.focus();
+			}
+		}
+	}
+
+
+	focusToEnd = () => {
+		if(this.editorRef) {
+			this.editorRef.focusToEnd();
 		}
 	}
 

@@ -126,12 +126,28 @@ export default class PlainChoice extends React.Component {
 	}
 
 
-	doFocus = () => {
+	doFocus = (where) => {
 		if (this.editorRef) {
-			this.editorRef.focus();
+
+			if (where && this[where]) {
+				this[where]();
+			} else {
+				this.editorRef.focus();
+			}
 		}
 	}
 
+
+	focusToEnd = () => {
+		const dom = this.editorRef;
+		if(dom) {
+			const {value} = dom;
+			const {length} = value;
+
+			dom.focus();
+			dom.setSelectionRange(length, length);
+		}
+	}
 
 	areLabelsEqual (oldLabel, label) {
 		return oldLabel === label;

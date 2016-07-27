@@ -22,6 +22,11 @@ class Choice extends EventEmitter  {
 	}
 
 
+	focusToEnd () {
+		this.emit('focus', 'focusToEnd');
+	}
+
+
 	get MimeType () {
 		return this.data.MimeType;
 	}

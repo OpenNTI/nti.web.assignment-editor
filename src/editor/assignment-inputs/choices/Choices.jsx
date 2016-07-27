@@ -207,8 +207,9 @@ export default class Choices extends React.Component {
 		const {columns} = this.state;
 		let rows = [];
 
+		// toFocus is always the previous choice
 		if (this.toFocus) {
-			this.toFocus.focus();
+			this.toFocus.focusToEnd();
 			delete this.toFocus;
 		}
 
@@ -438,7 +439,7 @@ export default class Choices extends React.Component {
 
 		function focusPrev () {
 			if (prevChoice) {
-				prevChoice.focus();
+				prevChoice.focusToEnd();
 			}
 		}
 
@@ -498,12 +499,12 @@ export default class Choices extends React.Component {
 		const {columns} = this.state;
 
 		//If we only have one column let the native events handle it
-		if (columns.length === 1 && !force) { return false; }
+		// if (columns.length === 1 && !force) { return false; }
 
 		const prevChoice = this.getChoiceBefore(columnIndex, choice);
 
 		if (prevChoice) {
-			prevChoice.focus();
+			prevChoice.focusToEnd();
 			return true;
 		}
 	}
