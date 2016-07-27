@@ -129,7 +129,10 @@ class Randomize extends React.Component {
 	render () {
 		const {isRandomized, isPartTypeRandomized, error} = this.state;
 		const {questionSet:qset} = this.props;
-		const editable = qset && (qset.hasLink('Randomize') || qset.hasLink('Unrandomize'));
+		const editable = qset && (qset.hasLink('Randomize')
+			|| qset.hasLink('Unrandomize')
+			|| qset.hasLink('RandomizePartsType')
+			|| qset.hasLink('UnrandomizePartsType'));
 		const ableToRandomize = isRandomized || (qset && qset.hasLink('Randomize'));
 		const ableToRandomizeParts = isPartTypeRandomized || (qset && qset.hasLink('RandomizePartsType'));
 		const disabledText = this.disabledText(qset);
