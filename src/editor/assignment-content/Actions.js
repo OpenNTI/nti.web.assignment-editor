@@ -2,12 +2,13 @@ import {dispatch} from 'nti-lib-dispatcher';
 import {scoped} from 'nti-lib-locale';
 
 import {saveFieldOn} from '../Actions';
-import {ASSIGNMENT_UPDATED, ASSIGNMENT_ERROR} from '../Constants';
+import {ASSIGNMENT_UPDATED, ASSIGNMENT_ERROR, ASSIGNMENT_WARNING} from '../Constants';
 
 const defaultText = {
 	titleLabel: 'Title',
 	contentLabel: 'Description',
-	tooLong: 'Is limited to %(max)s characters.'
+	tooLong: 'The assignment title is limited to %(max)s characters.',
+	tooShort: 'The assignment title is empty.'
 };
 const t = scoped('ASSIGNMENT_CONTENT', defaultText);
 
@@ -41,6 +42,17 @@ export function saveTitle (assignment, value, maxLength) {
 			}
 		});
 	} else {
+		if (value.length === 0) {
+			dispatch(ASSIGNMENT_WARNING, {
+				NTIID: assignment.NTIID,
+				field: 'title',
+				label: t('titleLabel'),
+				reason: {
+					message: t('tooShort'),
+					doNotShow: true
+				}
+			});
+		}
 		saveField(assignment, 'title', value, t('titleLabel'));
 	}
 }

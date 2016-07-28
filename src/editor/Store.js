@@ -13,6 +13,7 @@ import {
 	ASSIGNMENT_ERROR,
 	ASSIGNMENT_DELETING,
 	ASSIGNMENT_DELETED,
+	ASSIGNMENT_WARNING,
 	QUESTION_ERROR,
 	QUESTION_UPDATED,
 	QUESTION_WARNING,
@@ -120,6 +121,7 @@ class Store extends StorePrototype {
 		init(this);
 
 		this.setAssignmentError = (...e) => this[SetError](ASSIGNMENT_ERROR, ...e);
+		this.setAssignmentWarning = (...e) => this[SetWarning](ASSIGNMENT_WARNING, ...e);
 		this.setQuestionSetError = (...e) => this[SetError](QUESTION_SET_ERROR, ...e);
 		this.setQuestionError = (...e) => this[SetError](QUESTION_ERROR, ...e);
 
@@ -135,6 +137,7 @@ class Store extends StorePrototype {
 			[ASSIGNMENT_DELETING]: SetAssignmentDeleting,
 			[ASSIGNMENT_DELETED]: SetAssignmentDeleted,
 			[ASSIGNMENT_ERROR]: 'setAssignmentError',
+			[ASSIGNMENT_WARNING]: 'setAssignmentWarning',
 			[QUESTION_ERROR]: 'setQuestionError',
 			[QUESTION_UPDATED]: ClearQuestionError,
 			[QUESTION_WARNING]: 'setQuestionWarning',
