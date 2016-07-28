@@ -46,7 +46,7 @@ export function updateQuestion (question, fields, assignment) {
 	}
 
 	if ((!values.content && values.content !== '') && !values.parts) {
-		return;
+		return Promise.resolve();
 	}
 
 	dispatch(SAVING, question);

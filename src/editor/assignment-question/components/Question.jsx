@@ -250,7 +250,7 @@ export default class Question extends React.Component {
 			savingMask: true
 		});
 
-		this.onChange()
+		Promise.resolve(this.onChange()) //protect against non-promise return value
 			.then(() => {
 				this.setModal(false);
 			})
