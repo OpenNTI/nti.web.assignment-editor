@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import {Checkbox, Radio} from 'nti-web-commons';
+import cx from 'classnames';
 
 export default class Option extends React.Component {
 	static propTypes = {
@@ -24,10 +25,12 @@ export default class Option extends React.Component {
 
 	render () {
 		const {type, value, ...props} = this.props;
+		const {disabled} = this.props;
 		const Control = type === 'radio' ? Radio : Checkbox;
+		const classNames = cx('assignment-single-option', (disabled ? 'disabled' : ''));
 
 		return (
-			<div className="assignment-single-option">
+			<div className={classNames}>
 				<div className="option-input">
 					<Control {...props} checked={Boolean(value)} />
 				</div>

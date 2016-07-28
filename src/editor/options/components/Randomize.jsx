@@ -129,12 +129,8 @@ class Randomize extends React.Component {
 	render () {
 		const {isRandomized, isPartTypeRandomized, error} = this.state;
 		const {questionSet:qset} = this.props;
-		const editable = qset && (qset.hasLink('Randomize')
-			|| qset.hasLink('Unrandomize')
-			|| qset.hasLink('RandomizePartsType')
-			|| qset.hasLink('UnrandomizePartsType'));
-		const ableToRandomize = isRandomized || (qset && qset.hasLink('Randomize'));
-		const ableToRandomizeParts = isPartTypeRandomized || (qset && qset.hasLink('RandomizePartsType'));
+		const editRand = qset && (qset.hasLink('Randomize') || qset.hasLink('Unrandomize'));
+		const editRandParts = qset && (qset.hasLink('RandomizePartsType') || qset.hasLink('UnrandomizePartsType'));
 		const disabledText = this.disabledText(qset);
 
 		const errorMessage = error && (error.message || '');
@@ -144,20 +140,20 @@ class Randomize extends React.Component {
 				name="ordering"
 				header="Randomize Ordering"
 				content={t('content')}
-				disabled={!editable}
 				disabledText={disabledText}
 				error={errorMessage}
+				partiallyDisabled={!editRand || !editRandParts}
 			>
 				<Option label={t('labels.randomizeQuestions')}
 					name={RANDOMIZE_QUESTIONS}
 					value={isRandomized}
 					onChange={this.onChange}
-					disabled={!editable || !ableToRandomize}/>
+					disabled={!editRand}/>
 				<Option label={t('labels.randomizeAnswers')}
 					name={RANDOMIZE_ANSWERS}
 					value={isPartTypeRandomized}
 					onChange={this.onChange}
-					disabled={!editable || !ableToRandomizeParts}/>
+					disabled={!editRandParts}/>
 			</OptionGroup>
 		);
 	}
