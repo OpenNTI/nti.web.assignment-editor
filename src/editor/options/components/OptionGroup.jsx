@@ -23,8 +23,11 @@ class OptionGroup extends React.Component {
 
 	render () {
 		const {name, content, header, disabled, disabledText, error, partiallyDisabled} = this.props;
-		const status = disabled ? 'disabled' : partiallyDisabled ? 'partially-disabled' : '';
-		const classNames = cx(name, 'assignment-option-group', status);
+
+		const classNames = cx('assignment-option-group', name, {
+			disabled,
+			'partially-disabled': partiallyDisabled
+		});
 
 		return (
 			<div className={classNames}>

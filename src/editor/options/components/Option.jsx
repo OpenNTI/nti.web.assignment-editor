@@ -24,15 +24,14 @@ export default class Option extends React.Component {
 
 
 	render () {
-		const {type, value, ...props} = this.props;
-		const {disabled} = this.props;
+		const {type, value, disabled, ...props} = this.props;
 		const Control = type === 'radio' ? Radio : Checkbox;
-		const classNames = cx('assignment-single-option', (disabled ? 'disabled' : ''));
+		const classNames = cx('assignment-single-option', {disabled});
 
 		return (
 			<div className={classNames}>
 				<div className="option-input">
-					<Control {...props} checked={Boolean(value)} />
+					<Control {...props} disabled={disabled} checked={Boolean(value)} />
 				</div>
 			</div>
 		);
