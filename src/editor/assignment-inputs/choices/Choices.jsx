@@ -495,8 +495,8 @@ export default class Choices extends React.Component {
 	}
 
 
-	focusPrev = (columnIndex, choice, force) => {
-		const {columns} = this.state;
+	focusPrev = (columnIndex, choice/*, force*/) => {
+		// const {columns} = this.state;
 
 		//If we only have one column let the native events handle it
 		// if (columns.length === 1 && !force) { return false; }
