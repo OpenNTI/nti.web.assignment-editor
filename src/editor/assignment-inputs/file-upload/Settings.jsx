@@ -97,7 +97,7 @@ export default class Settings extends React.Component {
 						/>
 						<TokenEditor
 							ref={x => this.fileExtensions = x}
-							tokens={extensions.filter(WILDCARDS)}
+							value={extensions.filter(WILDCARDS)}
 							preprocessToken={this.preprocessToken}
 							placeholder="Enter all the file types you want to accept"
 							onFocus={this.activateSpecific}
