@@ -46,7 +46,7 @@ export default class FreeResponseEditor extends React.Component {
 
 	onChange = (choices) => {
 		const {part, onChange, index} = this.props;
-		let solutions = choices.map(choice => choice.label);
+		let solutions = choices.map(choice => choice.label.trim());
 
 
 		if (onChange) {
