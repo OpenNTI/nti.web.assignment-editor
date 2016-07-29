@@ -71,7 +71,7 @@ export default class Settings extends React.Component {
 		if (!token.startsWith('.')) {
 			token = '.' + token;
 		}
-		return token;
+		return token.toLowerCase();
 	}
 
 	render () {
