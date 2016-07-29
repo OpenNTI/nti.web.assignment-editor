@@ -301,9 +301,8 @@ class Store extends StorePrototype {
 		}
 
 		if (!this[GetMessageFrom](messages, NTIID, field)) {
-			//TODO: update the label when the questionSet's order changes
 			messages[NTIID].push(errorFactory.make(
-				{NTIID, field, type, label: getLabelForError(NTIID, field, label, type, this.assignment)},
+				{NTIID, field, type, get label () { return getLabelForError(NTIID, field, label, type, this.assignment);}},
 				reason,
 				() => this[RemoveMessageFrom](messages, NTIID, field, type)
 			));
