@@ -35,6 +35,7 @@ class Visibility extends React.Component {
 	render () {
 		const {assignment} = this.props;
 		const visibility = assignment && assignment.getVisibility();
+		const isDisabled = assignment && !assignment.hasLink('IsNonPublic');
 
 		const options = [
 			getOption('Everyone'),
@@ -42,7 +43,7 @@ class Visibility extends React.Component {
 		];
 
 		return (
-			<OptionGroup name="visibility" header={t('header')} content={t('content')}>
+			<OptionGroup disabled={isDisabled} name="visibility" header={t('header')} content={t('content')}>
 				<label>
 					<select defaultValue={visibility} onChange={this.onChange}>
 						{options.map(({value, label}) =>
