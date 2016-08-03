@@ -301,8 +301,9 @@ class Store extends StorePrototype {
 		}
 
 		if (!this[GetMessageFrom](messages, NTIID, field)) {
+			const {assignment} = this;
 			messages[NTIID].push(errorFactory.make(
-				{NTIID, field, type, get label () { return getLabelForError(NTIID, field, label, type, this.assignment);}},
+				{NTIID, field, type, get label () { return getLabelForError(NTIID, field, label, type, assignment);}},
 				reason,
 				() => this[RemoveMessageFrom](messages, NTIID, field, type)
 			));
