@@ -58,6 +58,11 @@ class PublishControls extends React.Component {
 		this.forceUpdate();
 	}
 
+	hasPublishingLinks () {
+		const assignment = PublishControls.getItem(this.props);
+		return assignment.hasLink('publish') || assignment.hasLink('unpublish');
+	}
+
 	render () {
 		const {error} = this.state;
 		const assignment = PublishControls.getItem(this.props);
@@ -66,7 +71,11 @@ class PublishControls extends React.Component {
 			getPublishDate: () => assignment && assignment.getPublishDate()
 		});
 
-		const isPublishable = assignment && (assignment.hasLink('publish') || assignment.hasLink('unpublish'));
+		// Determine weather or not to show the publish controls:
+		// Reset (present when submissions, hidden for content backed & no submissions & non-instructors),
+		// Publishing (present when no submissions, hidden for content backed & submissions),
+		// Date Edit Start (present when no submissions, hidden when there are submissions)
+		const isPublishable = (!assignment.hasLink('Reset') && this.hasPublishingLinks()) || (assignment.hasLink('date-edit-start') && !assignment.hasLink('Reset'));
 		const Control = isPublishable ? Publish : PublishLocked;
 
 		return (
