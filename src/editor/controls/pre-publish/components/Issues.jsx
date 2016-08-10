@@ -133,10 +133,38 @@ export default class PrepublishModal extends React.Component {
 
 
 	renderIssues () {
-		const {errors, warnings} = this.props;
+		let {errors, warnings} = this.props;
 		const {hasErrors, hasWarnings} = this;
 		const {collapsed} = this.state;
 		const cls = cx('issues', {collapsed, 'has-both': hasErrors && hasWarnings});
+
+		const compareWarnings = (a, b) => {
+			a = a && a.attachedTo && a.attachedTo.label;
+			b = b && b.attachedTo && b.attachedTo.label;
+			if (typeof a === 'string' && typeof b === 'string') {
+				a = Number(a.split(' ')[a.split(' ').length - 1]);
+				b = Number(b.split(' ')[b.split(' ').length - 1]);
+				if (!isNaN(a) && !isNaN(b)) {
+					return a < b ? -1 : a === b ? 0 : 1;
+				} else if (!isNaN(a)) {
+					return -1;
+				} else if (!isNaN(b)) {
+					return 1;
+				} else {
+					return 0;
+				}
+			} else if (typeof a === 'string') {
+				return -1;
+			} else if (typeof b === 'string') {
+				return 1;
+			} else {
+				return 0;
+			}
+		};
+
+		if (Array.isArray(warnings)) {
+			warnings = warnings.sort(compareWarnings);
+		}
 
 		return (
 			<div className={cls} onClick={this.onIssueClick}>
