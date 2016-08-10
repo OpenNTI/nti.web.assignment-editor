@@ -64,7 +64,7 @@ export class Button extends React.Component {
 		const question = this.getBlankQuestion();
 
 		if (question) {
-			appendQuestionTo(assignment, question, activeInsert);
+			appendQuestionTo(assignment, question, activeInsert, assignment.isAvailable());
 		}
 	}
 

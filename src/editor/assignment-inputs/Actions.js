@@ -10,7 +10,7 @@ import {maybeResetAssignmentOnError} from '../Actions';
 
 const logger = Logger.get('lib:asssignment-editor:assignment-inputs:Actions');
 
-function insertAt (assignment, part, index, question) {
+function insertAt (assignment, part, index, question, delaySave) {
 	if (!part) {
 		createPartWithQuestion(assignment, question);
 		return;
@@ -27,10 +27,10 @@ function insertAt (assignment, part, index, question) {
 		save = Promise.reject(new Error('Unable to edit question set, dropping it on the floor'));
 	} else if (index === Infinity) {
 		dispatch(SAVING, questionSet);
-		save = orderedContents.append(question);
+		save = orderedContents.append(question, delaySave);
 	} else {
 		dispatch(SAVING, questionSet);
-		save = orderedContents.insertAt(question, index);
+		save = orderedContents.insertAt(question, index, delaySave);
 	}
 
 
@@ -64,15 +64,15 @@ function insertAt (assignment, part, index, question) {
 }
 
 
-function appendQuestion (assignment, question) {
+function appendQuestion (assignment, question, delaySave) {
 	const {parts} = assignment;
 	const part = parts && parts[0];
 
-	insertAt(assignment, part, Infinity, question);
+	insertAt(assignment, part, Infinity, question, delaySave);
 }
 
 
-function insertQuestionAt (assignment, newQuestion, position) {
+function insertQuestionAt (assignment, newQuestion, position, delaySave) {
 	const {parts} = assignment;
 	const {item, before} = position;
 	let insert = {
@@ -99,14 +99,14 @@ function insertQuestionAt (assignment, newQuestion, position) {
 		}
 	}
 
-	return insertAt(assignment, insert.part, insert.index, newQuestion);
+	return insertAt(assignment, insert.part, insert.index, newQuestion, delaySave);
 }
 
 
-export function appendQuestionTo (assignment, question, position) {
+export function appendQuestionTo (assignment, question, position, delaySave) {
 	if (!position || !position.item) {
-		appendQuestion(assignment, question);
+		appendQuestion(assignment, question, delaySave);
 	} else {
-		insertQuestionAt(assignment, question, position);
+		insertQuestionAt(assignment, question, position, delaySave);
 	}
 }

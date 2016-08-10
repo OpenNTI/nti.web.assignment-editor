@@ -3,7 +3,7 @@ function getLink (question, name) {
 }
 
 export function canAddPart (question) {
-	return !!getLink(question, 'InsertPart');
+	return !!getLink(question, 'InsertPart') || question.isSaving;
 }
 
 export function canMovePart (question) {
