@@ -1,11 +1,16 @@
 import {getService} from  'nti-web-client';
 import Logger from 'nti-util-logger';
-import uuid from 'node-uuid';
+import {isNTIID} from 'nti-lib-ntiids';
 import path from 'path';
 import minWait, {SHORT} from 'nti-commons/lib/wait-min';
 import Executor from 'nti-commons/lib/Executor';
 
 const logger = Logger.get('lib:asssignment-editor:utils:OrderedContents');
+
+
+const REPLACE_WITH = Symbol('Replace With');
+const SET_ERROR = Symbol('Set Error');
+const REMOVE = Symbol('Remove');
 
 const LINK_NAME = 'ordered-contents';
 
@@ -134,105 +139,164 @@ export default class OrderedContents {
 		return null;
 	}
 
+
+	optimisticallyAddAt (item, index, delaySave) {
+		const obj = this.backingObject;
+
+		let {orderedContents, orderedContentsField} = this;
+		let createItem;
+
+		const replaceItem = (placeholder, replacement) => {
+			let newContents = this.orderedContents;
+			const placeholderIndex = newContents.findIndex(x => x === placeholder);
+
+			if (placeholderIndex < 0) {
+				logger.error('How did we get here?!?!?!?!');
+			} else if (replacement) {
+				newContents[placeholderIndex] = replacement;
+			} else {
+				newContents.splice(placeholderIndex, 1);
+			}
+
+			obj[orderedContentsField] = newContents;
+			obj.onChange();
+		};
+
+		const setErrorOn = (placeholder, error) => {
+			delete placeholder.isSaving;
+
+			//if there is an error, replace the optimistic placeholder with an error case
+			Object.defineProperty(placeholder, 'isNotSaved', {
+				enumerable: false,
+				value: true
+			});
+
+			Object.defineProperty(placeholder, 'error', {
+				enumerable: false,
+				value: error
+			});
+
+
+			//Fire the on change
+			obj.onChange();
+		};
+
+		if (!item.NTIID) {
+			createItem = getService().then(service => service.getObjectPlaceholder(item));
+		} else {
+			Object.defineProperty(item, 'isSaving', {
+				configurable: true,
+				enumerable: false,
+				value: true
+			});
+
+			createItem = Promise.resolve(item);
+		}
+
+		return createItem
+			.then((placeholder) => {
+				if (delaySave && placeholder.isPlaceholder) {
+					Object.defineProperty(placeholder, 'delaySaving', {
+						configurable: true,
+						enumerable: false,
+						value: true
+					});
+				}
+
+				placeholder[REPLACE_WITH] = replacement => replaceItem(placeholder, replacement);
+				placeholder[SET_ERROR] = error => setErrorOn(placeholder, error);
+				placeholder[REMOVE] = () => replaceItem(placeholder);
+
+				orderedContents = [...orderedContents.slice(0, index), placeholder, ...orderedContents.slice(index)];
+				obj[orderedContentsField] = orderedContents;
+
+				obj.onChange();
+
+				return placeholder;
+			});
+	}
+
 	/**
 	 * Given an item and an index, insert it at the right place and try to save it to the server.
 	 * If it's successful, replace the optimistic placeholder with the item from the server.
 	 * If it fails, add an error to the optimistic placeholder and trigger a change
 	 * @param  {Object} item the item to append
 	 * @param {Number} index the index to insert the item at
+	 * @param {Boolean} delaySave insert the placeholder, but wait to save it
 	 * @return {Promise}      fulfills or rejects if the item is successfully added or not
 	 */
-	insertAt (item, index) {
-		const obj = this.backingObject;
-		const queue = getQueueFor(obj);
-
-		let {orderedContents, orderedContentsField, link} = this;
-		let postData;
+	insertAt (item, index, delaySave) {
+		const queue = getQueueFor(this.backingObject);
+		const {link} = this;
 
 		if (!link) {
 			return Promise.reject('No Ordered Contents Link');
 		}
 
-		//Go ahead and optimistically add the item with an isSaving flag
-		Object.defineProperty(item, 'isSaving', {
-			configurable: true,
-			enumerable: false,
-			value: true
-		});
-
-		//Make sure it has a unique id on it
-		if (!item.NTIID) {
-			Object.defineProperty(item, 'NTIID', {
-				enumerable: false,
-				value: uuid.v4()
-			});
-
-			postData = item;
-		} else {
-			postData = {ntiid: item.NTIID};
-		}
-
 		if (index === Infinity || index === undefined) {
-			index = orderedContents.length;
+			index = this.length;
 		}
+
 		if (index < 0) {
 			index = 0;
 		}
 
-		orderedContents = [...orderedContents.slice(0, index), item, ...orderedContents.slice(index)];
+		const insertLink = path.join(link, 'index', index.toString(10));
 
-		obj[orderedContentsField] = orderedContents;
-		obj.onChange();
+		function getPostData (placeholder) {
+			return isNTIID(placeholder.NTIID) ? {NTIID: placeholder.NTIID} : placeholder.getData();
+		}
 
-		let insertLink = path.join(link, 'index', index.toString(10));
+		function doSave (placeholder) {
+			return queue.queueTask(() => getService().then(service => service.postParseResponse(insertLink, getPostData(placeholder))))
+				//Make sure we wait at least a little bit
+				.then(minWait(SHORT))
+				.then((savedItem) => placeholder[REPLACE_WITH](savedItem))
+				.catch((reason) => {
+					placeholder[SET_ERROR](reason);
 
-		return queue.queueTask(() => getService().then(service => service.postParseResponse(insertLink, postData)))
-			//Make sure we wait at least a little bit
-			.then(minWait(SHORT))
-			.then((savedItem) => {
-				//after it has saved, replace the optimistic placeholder with the real thing
-				const newContents = this.orderedContents.slice();
-				const placeholderIndex = newContents.findIndex(x => x === item);
+					return Promise.reject(reason);
+				});
+		}
 
-				if (placeholderIndex < 0) {
-					logger.error('How did we get here?!?!?!?!');
+
+		return this.optimisticallyAddAt(item, index, delaySave)
+			.then((placeholder) => {
+				let save;
+				if (delaySave) {
+					save = new Promise((fulfill) => {
+						placeholder.save = data => {
+							return doSave({...placeholder, ...data})
+								.then((response) => {
+									fulfill();
+									return response;
+								});
+						};
+
+						placeholder.remove = () => {
+							placeholder[REMOVE]();
+							fulfill();
+						};
+					});
 				} else {
-					newContents[placeholderIndex] = savedItem;
-					obj[orderedContentsField] = newContents;
-					obj.onChange();
+					save = doSave(placeholder);
 				}
-			})
-			.catch((reason) => {
-				delete item.isSaving;
 
-				//if there is an error, replace the optimistic placeholder with an error case
-				Object.defineProperty(item, 'isNotSaved', {
-					enumerable: false,
-					value: true
-				});
-
-				Object.defineProperty(item, 'error', {
-					enumerable: false,
-					value: reason
-				});
-
-
-				//Fire the on change
-				obj.onChange();
-
-				return Promise.reject(reason);
+				return save;
 			});
 	}
+
 
 	/**
 	 * Given an item optimistically add it to the items, and try to save it to the server.
 	 * If it's successful, replace the optimistic placeholder with the item from the server.
 	 * If it fails, add an error to the optimistic placeholder and trigger a change
 	 * @param  {Object} item the item to append
+	 * @param {Boolean} delaySave insert the placeholder, but delay saving
 	 * @return {Promise}      fulfills or rejects if the item is successfully added or not
 	 */
-	append (item) {
-		return this.insertAt(item, Infinity);
+	append (item, delaySave) {
+		return this.insertAt(item, Infinity, delaySave);
 	}
 
 

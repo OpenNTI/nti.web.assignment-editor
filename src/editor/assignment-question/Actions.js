@@ -32,7 +32,7 @@ function getQuestionSetFrom (NTIID, assignment) {
 	}
 }
 
-export function updateQuestion (question, fields, assignment) {
+export function updateQuestion (question, fields, assignment, force) {
 	const {content:oldContent, parts:oldParts} = question;
 	const {content:newContent, parts:newParts} = fields;
 	let values = {};
@@ -45,7 +45,7 @@ export function updateQuestion (question, fields, assignment) {
 		values.parts = newParts;
 	}
 
-	if ((!values.content && values.content !== '') && !values.parts) {
+	if ((!values.content && values.content !== '') && !values.parts && !force) {
 		return Promise.resolve();
 	}
 

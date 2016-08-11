@@ -113,29 +113,77 @@ function getSaveDataForFakePart (part) {
 }
 
 
-function addPartToAssignment (part, assignment) {
+function markPartForDelaySaving (part, save, remove) {
+	const questionSet = part[QUESTION_SET_KEY];
+	const questions = questionSet[QUESTIONS_KEY] || [];
+
+	questionSet[QUESTIONS_KEY] = questions.map((question) => {
+		if (question.isPlaceholder) {
+			Object.defineProperty(question, 'delaySaving', {
+				configurable: true,
+				enumerable: false,
+				value: true
+			});
+
+			question.save = (data) => {
+				Object.assign(question, data);
+
+				return save(part);
+			};
+
+			question.remove = remove;
+
+			return question;
+		}
+	});
+}
+
+
+function addPartToAssignment (part, assignment, delaySave) {
+	function doSave (placeholder) {
+		const save = saveFieldOn(assignment, PARTS_KEY, [getSaveDataForFakePart(placeholder)]);
+
+		if (save && save.then) {
+			save
+				.catch((reason) => {
+					assignment.parts = assignment.parts.map(p => setErrorOnPlaceholderPart(p, reason));
+
+					assignment.onChange();
+				});
+
+			return save;
+		}
+
+		return Promise.resolve();
+	}
+
+	function remove () {
+		assignment.parts = assignment.parts.filter(p => p !== part);
+
+		assignment.onChange();
+	}
+
+	if (delaySave) {
+		markPartForDelaySaving(part, doSave, remove);
+	}
+
 	assignment.parts = assignment.parts || [];
 	assignment.parts.push(part);
 
 	assignment.onChange();
 
-	const save = saveFieldOn(assignment, PARTS_KEY, [getSaveDataForFakePart(part)]);
-
-	if (save && save.then) {
-		save
-			.catch((reason) => {
-				assignment.parts = assignment.parts.map(p => setErrorOnPlaceholderPart(p, reason));
-
-				assignment.onChange();
-			});
+	if (!delaySave) {
+		doSave(part);
 	}
+
+	return;
 }
 
 
 
-export function createPartWithQuestion (assignment, question, questionSet) {
+export function createPartWithQuestion (assignment, question, questionSet, delaySave) {
 	buildPartWithQuestion(question, questionSet)
-		.then((part) => addPartToAssignment(part, assignment));
+		.then((part) => addPartToAssignment(part, assignment, delaySave));
 }
 
 

@@ -69,10 +69,11 @@ export default class Question extends React.Component {
 		super(props);
 
 		const {question} = this.props;
+		const showModal = question.delaySaving;
 
 		this.version = 0;
 
-		this.onChangeBuffered = buffer(500, () => this.onChange());
+		this.onChangeBuffered = showModal ? () => {} : buffer(500, () => this.onChange());
 
 		Store.addChangeListener(this.onStoreChange);
 
@@ -83,7 +84,7 @@ export default class Question extends React.Component {
 		this.state = {
 			selectableId: question.NTIID,
 			selectableValue: new ControlsConfig(null, {after: true, item: question}),
-			modal: false
+			modal: showModal
 		};
 	}
 
@@ -167,9 +168,10 @@ export default class Question extends React.Component {
 
 	onChange = () => {
 		const {question, assignment} = this.props;
+		const {delaySaving} = question;
 
-		if (this.pendingChanges) {
-			return updateQuestion(question, this.pendingChanges, assignment);
+		if (this.pendingChanges || delaySaving) {
+			return updateQuestion(question, this.pendingChanges || {}, assignment, delaySaving);
 		}
 
 		return Promise.resolve();
@@ -263,7 +265,13 @@ export default class Question extends React.Component {
 
 
 	onDialogCancel = () => {
+		const {question} = this.props;
+
 		this.setModal(false);
+
+		if (question.delaySaving && question.remove) {
+			question.remove();
+		}
 	}
 
 
@@ -286,7 +294,7 @@ export default class Question extends React.Component {
 		} = this.state;
 		const {isSaving} = question;
 		const cls = cx('question-editor', {
-			'is-saving': isSaving,
+			'is-saving': isSaving && !modal,
 			error: contentError || questionError || question.error,
 			'saving-mask': savingMask
 		});

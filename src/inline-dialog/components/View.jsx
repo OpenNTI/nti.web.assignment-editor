@@ -25,8 +25,12 @@ export default class InlineDialog extends React.Component {
 
 	state = {}
 
-	constructor (props) {
-		super(props);
+	componentDidMount () {
+		const {active} = this.props;
+
+		if (active) {
+			this.activateModal();
+		}
 	}
 
 
