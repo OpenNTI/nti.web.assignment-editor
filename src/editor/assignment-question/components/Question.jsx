@@ -68,7 +68,7 @@ export default class Question extends React.Component {
 	constructor (props) {
 		super(props);
 
-		const {question, assignment} = this.props;
+		const {question} = this.props;
 		const showModal = question.delaySaving;
 
 		this.version = 0;
@@ -269,8 +269,8 @@ export default class Question extends React.Component {
 
 		this.setModal(false);
 
-		if (question.cancel) {
-			question.cancel();
+		if (question.delaySaving && question.remove) {
+			question.remove();
 		}
 	}
 

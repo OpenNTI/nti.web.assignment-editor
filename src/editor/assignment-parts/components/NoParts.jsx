@@ -35,7 +35,7 @@ export default class NoParts extends React.Component {
 	onQuestionAdded (data) {
 		const {assignment} = this.props;
 
-		createPartWithQuestion(assignment, data);
+		createPartWithQuestion(assignment, data, null, assignment.isAvailable());
 	}
 
 

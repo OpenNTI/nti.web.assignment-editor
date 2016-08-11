@@ -12,7 +12,7 @@ const logger = Logger.get('lib:asssignment-editor:assignment-inputs:Actions');
 
 function insertAt (assignment, part, index, question, delaySave) {
 	if (!part) {
-		createPartWithQuestion(assignment, question);
+		createPartWithQuestion(assignment, question, null, delaySave);
 		return;
 	}
 
