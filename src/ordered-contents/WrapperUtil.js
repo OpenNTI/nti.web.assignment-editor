@@ -1,5 +1,6 @@
 import {getService} from  'nti-web-client';
 import Logger from 'nti-util-logger';
+import {isNTIID} from 'nti-lib-ntiids';
 import path from 'path';
 import minWait, {SHORT} from 'nti-commons/lib/wait-min';
 import Executor from 'nti-commons/lib/Executor';
@@ -243,7 +244,7 @@ export default class OrderedContents {
 		const insertLink = path.join(link, 'index', index.toString(10));
 
 		function getPostData (placeholder) {
-			return placeholder.isPlaceholder ? placeholder : {NTIID: placeholder.NTIID};
+			return isNTIID(placeholder.NTIID) ? {NTIID: placeholder.NTIID} : placeholder.getData();
 		}
 
 		function doSave (placeholder) {
@@ -265,8 +266,13 @@ export default class OrderedContents {
 				if (delaySave) {
 					save = new Promise((fulfill) => {
 						placeholder.save = data => {
-							fulfill(doSave({...placeholder, ...data}));
+							return doSave({...placeholder, ...data})
+								.then((response) => {
+									fulfill();
+									return response;
+								});
 						};
+
 						placeholder.remove = () => {
 							placeholder[REMOVE]();
 							fulfill();
@@ -279,104 +285,7 @@ export default class OrderedContents {
 				return save;
 			});
 	}
-	// xinsertAt (item, index, delaySave) {
-	// 	const obj = this.backingObject;
-	// 	const queue = getQueueFor(obj);
 
-	// 	let {orderedContents, orderedContentsField, link} = this;
-	// 	let postData;
-
-	// 	if (!link) {
-	// 		return Promise.reject('No Ordered Contents Link');
-	// 	}
-
-	// 	//Go ahead and optimistically add the item with an isSaving flag
-	// 	Object.defineProperty(item, 'isSaving', {
-	// 		configurable: true,
-	// 		enumerable: false,
-	// 		value: true
-	// 	});
-
-	// 	//Make sure it has a unique id on it
-	// 	if (!item.NTIID) {
-	// 		Object.defineProperty(item, 'NTIID', {
-	// 			enumerable: false,
-	// 			value: uuid.v4()
-	// 		});
-
-	// 		postData = item;
-	// 	} else {
-	// 		postData = {ntiid: item.NTIID};
-	// 	}
-
-	// 	if (index === Infinity || index === undefined) {
-	// 		index = orderedContents.length;
-	// 	}
-	// 	if (index < 0) {
-	// 		index = 0;
-	// 	}
-
-	// 	orderedContents = [...orderedContents.slice(0, index), item, ...orderedContents.slice(index)];
-
-	// 	obj[orderedContentsField] = orderedContents;
-	// 	obj.onChange();
-
-	// 	let insertLink = path.join(link, 'index', index.toString(10));
-
-	// 	const doSave = (data) => {
-	// 		return queue.queueTask(() => getService().then(service => service.postParseResponse(insertLink, data)))
-	// 			//Make sure we wait at least a little bit
-	// 			.then(minWait(SHORT))
-	// 			.then((savedItem) => {
-	// 				//after it has saved, replace the optimistic placeholder with the real thing
-	// 				const newContents = this.orderedContents.slice();
-	// 				const placeholderIndex = newContents.findIndex(x => x === item);
-
-	// 				if (placeholderIndex < 0) {
-	// 					logger.error('How did we get here?!?!?!?!');
-	// 				} else {
-	// 					newContents[placeholderIndex] = savedItem;
-	// 					obj[orderedContentsField] = newContents;
-	// 					obj.onChange();
-	// 				}
-	// 			})
-	// 			.catch((reason) => {
-	// 				delete item.isSaving;
-
-	// 				//if there is an error, replace the optimistic placeholder with an error case
-	// 				Object.defineProperty(item, 'isNotSaved', {
-	// 					enumerable: false,
-	// 					value: true
-	// 				});
-
-	// 				Object.defineProperty(item, 'error', {
-	// 					enumerable: false,
-	// 					value: reason
-	// 				});
-
-
-	// 				//Fire the on change
-	// 				obj.onChange();
-
-	// 				return Promise.reject(reason);
-	// 			});
-	// 	};
-
-	// 	if (delaySave) {
-	// 		item.save = data => doSave({...postData, ...data});
-	// 		item.cancel = () => {
-	// 			obj[orderedContentsField] = obj[orderedContentsField].filter((x) => {
-	// 				return x !== item;
-	// 			});
-
-	// 			obj.onChange();
-	// 		};
-
-	// 		return Promise.resolve();
-	// 	}
-
-	// 	return doSave(postData);
-	// }
 
 	/**
 	 * Given an item optimistically add it to the items, and try to save it to the server.

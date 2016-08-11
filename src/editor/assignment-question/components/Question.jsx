@@ -69,7 +69,7 @@ export default class Question extends React.Component {
 		super(props);
 
 		const {question, assignment} = this.props;
-		const showModal = question.isSaving && isVisible(question, assignment);
+		const showModal = question.delaySaving;
 
 		this.version = 0;
 
@@ -168,10 +168,10 @@ export default class Question extends React.Component {
 
 	onChange = () => {
 		const {question, assignment} = this.props;
-		const {isSaving} = question;
+		const {delaySaving} = question;
 
-		if (this.pendingChanges || isSaving) {
-			return updateQuestion(question, this.pendingChanges || {}, assignment, isSaving);
+		if (this.pendingChanges || delaySaving) {
+			return updateQuestion(question, this.pendingChanges || {}, assignment, delaySaving);
 		}
 
 		return Promise.resolve();
