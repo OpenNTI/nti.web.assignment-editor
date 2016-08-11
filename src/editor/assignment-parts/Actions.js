@@ -158,7 +158,6 @@ function addPartToAssignment (part, assignment, delaySave) {
 	}
 
 	function remove () {
-		debugger;
 		assignment.parts = assignment.parts.filter(p => p !== part);
 
 		assignment.onChange();
