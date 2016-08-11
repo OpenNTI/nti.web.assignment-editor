@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import {RadioGroup, DialogButtons, TokenEditor} from 'nti-web-commons';
+import Suggestions from './Suggestions';
 
 const ALL_TYPES = 'All File Types';
 const SPECIFIC_TYPES = 'Specific File Types';
@@ -74,8 +75,15 @@ export default class Settings extends React.Component {
 		return token.toLowerCase();
 	}
 
-	render () {
+	onTokenChange = () => {
+		this.suggestionsList.updateList(this.fileExtensions.value);
+	}
 
+	onSuggestionSelect = (value) => {
+		this.fileExtensions.add(value);
+	}
+
+	render () {
 		const {extensions = [], selectedRadio} = this.state;
 		const fileExtensionsClasses = cx({
 			'disabled': selectedRadio === ALL_TYPES
@@ -99,9 +107,14 @@ export default class Settings extends React.Component {
 							ref={x => this.fileExtensions = x}
 							value={extensions.filter(WILDCARDS)}
 							preprocessToken={this.preprocessToken}
+							onChange={this.onTokenChange}
 							placeholder="Enter all the file types you want to accept"
 							onFocus={this.activateSpecific}
 							className={fileExtensionsClasses}
+						/>
+						<Suggestions
+							ref={x => this.suggestionsList = x}
+							onChange={this.onSuggestionSelect}
 						/>
 					</form>
 				</div>
