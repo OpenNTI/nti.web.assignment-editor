@@ -9,6 +9,7 @@ export default class DeleteControl extends React.Component {
 	static propTypes = {
 		question: React.PropTypes.object.isRequired,
 		questionSet: React.PropTypes.object.isRequired,
+		assignment: React.PropTypes.object.isRequired,
 		flushChanges: React.PropTypes.func
 	}
 
@@ -22,11 +23,11 @@ export default class DeleteControl extends React.Component {
 
 
 	onClick () {
-		const {question, questionSet, flushChanges} = this.props;
+		const {question, assignment, questionSet, flushChanges} = this.props;
 
 		flushChanges();
 
-		duplicateQuestionFrom(question, questionSet);
+		duplicateQuestionFrom(question, questionSet, assignment.isAvailable());
 	}
 
 

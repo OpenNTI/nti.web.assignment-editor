@@ -120,7 +120,7 @@ export function deleteQuestionFrom (question, questionSet, assignment) {
 }
 
 
-export function duplicateQuestionFrom (question, questionSet) {
+export function duplicateQuestionFrom (question, questionSet, delaySave) {
 	//Make sure the blur event has been triggered
 	wait(10)
 		.then(() => {
@@ -142,7 +142,7 @@ export function duplicateQuestionFrom (question, questionSet) {
 
 			dispatch(SAVING, questionSet);
 
-			orderedContents.insertAt(clone, index + 1)
+			orderedContents.insertAt(clone, index + 1, delaySave)
 				.catch(maybeResetAssignmentOnError(questionSet))
 				.then(() => {
 					dispatch(QUESTION_SET_UPDATED, questionSet);
