@@ -9,20 +9,15 @@ const TYPE_GROUPS = {
 export default class Suggestions extends React.Component {
 	static propTypes = {
 		tokens: React.PropTypes.array,
-		onChange: React.PropTypes.func
+		onSelect: React.PropTypes.func
 	}
 
 	static defaultProps = {
 		tokens: []
 	}
 
-	constructor (props) {
-		super(props);
-		this.state = {tokens: props.tokens};
-	}
-
 	getSuggestions () {
-		const {tokens = []} = this.state;
+		const {tokens = []} = this.props;
 		const tokenSet = new Set(tokens);
 		const s = tokens.map((token) => {
 			let target = [];
@@ -45,15 +40,11 @@ export default class Suggestions extends React.Component {
 		return s.length > 0 ? s.reduce((prev, curr) => prev.concat(curr)) : [];
 	}
 
-	updateList (tokens) {
-		this.setState({tokens});
-	}
-
 	onClick = (e) => {
 		const value = e.target.getAttribute('value');
-		const {onChange} = this.props;
-		if (value && onChange) {
-			onChange(value);
+		const {onSelect} = this.props;
+		if (value && onSelect) {
+			onSelect(value);
 		}
 	}
 
@@ -63,6 +54,6 @@ export default class Suggestions extends React.Component {
 	}
 
 	renderItem (item) {
-		return <span className="token item" key={`type-${item}`} value={item} onClick={this.onClick}>{item}</span>;
+		return <span className="token item" key={item} value={item} onClick={this.onClick}>{item}</span>;
 	}
 }

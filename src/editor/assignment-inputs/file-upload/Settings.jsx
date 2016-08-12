@@ -33,8 +33,8 @@ export default class Settings extends React.Component {
 		const {part} = props;
 		const extensions = part.allowed_extensions || [];
 		this.setState({
-			extensions,
-			selectedRadio: extensions.filter(x => x !== WILDCARD).length > 0 ? SPECIFIC_TYPES : ALL_TYPES
+			extensions: extensions.filter(WILDCARDS),
+			selectedRadio: extensions.filter(WILDCARDS).length > 0 ? SPECIFIC_TYPES : ALL_TYPES
 		});
 	}
 
@@ -75,8 +75,8 @@ export default class Settings extends React.Component {
 		return token.toLowerCase();
 	}
 
-	onTokenChange = () => {
-		this.suggestionsList.updateList(this.fileExtensions.value);
+	onTokenChange = (values) => {
+		this.setState({extensions: values});
 	}
 
 	onSuggestionSelect = (value) => {
@@ -105,7 +105,7 @@ export default class Settings extends React.Component {
 						/>
 						<TokenEditor
 							ref={x => this.fileExtensions = x}
-							value={extensions.filter(WILDCARDS)}
+							value={extensions}
 							preprocessToken={this.preprocessToken}
 							onChange={this.onTokenChange}
 							placeholder="Enter all the file types you want to accept"
@@ -113,8 +113,8 @@ export default class Settings extends React.Component {
 							className={fileExtensionsClasses}
 						/>
 						<Suggestions
-							ref={x => this.suggestionsList = x}
-							onChange={this.onSuggestionSelect}
+							tokens={extensions}
+							onSelect={this.onSuggestionSelect}
 						/>
 					</form>
 				</div>
