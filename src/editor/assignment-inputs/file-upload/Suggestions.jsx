@@ -50,7 +50,7 @@ export default class Suggestions extends React.Component {
 
 	render () {
 		const list = this.getSuggestions();
-		return list.length > 0 ? <div className="suggestions">{list.map(x => this.renderItem(x))}</div> : <span />;
+		return list.length > 0 ? <div className="assignment-input-fileupload-suggestions">{list.map(x => this.renderItem(x))}</div> : <span />;
 	}
 
 	renderItem (item) {
