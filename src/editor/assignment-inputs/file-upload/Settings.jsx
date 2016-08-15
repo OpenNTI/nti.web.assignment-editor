@@ -49,8 +49,8 @@ export default class Settings extends React.Component {
 	}
 
 	value () {
-		const option = this.radioGroup.value;
-		const fileExtensions = option === ALL_TYPES ? [WILDCARD] : this.fileExtensions.value;
+		const {extensions, selectedRadio: option} = this.state;
+		const fileExtensions = option === ALL_TYPES ? [WILDCARD] : extensions;
 		return {
 			fileExtensions
 		};
@@ -80,7 +80,8 @@ export default class Settings extends React.Component {
 	}
 
 	onSuggestionSelect = (value) => {
-		this.fileExtensions.add(value);
+		const {extensions: values} = this.state;
+		this.setState({extensions: [...values, value]});
 	}
 
 	render () {
@@ -98,13 +99,11 @@ export default class Settings extends React.Component {
 				<div className="content">
 					<form>
 						<RadioGroup name="accepted-file-types"
-							ref={x => this.radioGroup = x}
 							onChange={this.onRadioChange}
 							options={[ALL_TYPES, SPECIFIC_TYPES]}
 							initialValue={selectedRadio}
 						/>
 						<TokenEditor
-							ref={x => this.fileExtensions = x}
 							value={extensions}
 							preprocessToken={this.preprocessToken}
 							onChange={this.onTokenChange}
