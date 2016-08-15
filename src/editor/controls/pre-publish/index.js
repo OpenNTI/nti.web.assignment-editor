@@ -26,29 +26,23 @@ export function hasStateMovedForward (assignment, newState) {
 
 export function allowPublish (assignment, newState) {
 	const {errors, warnings} = Store;
-	const emptyFunction = () => {};
-	let {onDismiss} = Store;
-	if (!onDismiss) {
-		onDismiss = emptyFunction;
-	}
 
-	let allow;
-	//If the publication state hasn't "moved forward"
-	//we don't need to alert about any errors
+	//If the publication state hasn't "moved forward" we don't need to alert about any errors
 	if (!hasStateMovedForward(assignment, newState)) {
-		allow = Promise.resolve();
+
+		return Promise.resolve();
+
 	} else if (!errors.length && !warnings.length) {
-		allow = Promise.resolve();
-	} else {
-		allow = new Promise((fulfill, reject) => {
-			modal(
-				<Issues errors={errors} warnings={warnings} confirm={fulfill} reject={reject} onDismiss={onDismiss}/>,
-				'assignment-publish-confirmation-prompt'
-			);
-		}).then(() => {
-			revertAllErrors();
-		});
+
+		return Promise.resolve();
+
 	}
 
-	return allow;
+	return new Promise((fulfill, reject) =>
+		modal(
+			<Issues errors={errors} warnings={warnings} confirm={fulfill} reject={reject} onDismiss={Store.onDismiss}/>,
+			'assignment-publish-confirmation-prompt'
+		)
+	)
+		.then(() => revertAllErrors());
 }
