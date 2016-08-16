@@ -1,4 +1,5 @@
 import React from 'react';
+import SuggestionItem from './SuggestionItem';
 
 const TYPE_GROUPS = {
 	'Documents': ['.pdf', '.doc', '.docx', '.txt'],
@@ -19,6 +20,7 @@ export default class Suggestions extends React.Component {
 	getSuggestions () {
 		const {tokens = []} = this.props;
 		const tokenSet = new Set(tokens);
+		let result = [];
 		const s = tokens.map((token) => {
 			let target = [];
 			for (let key in TYPE_GROUPS) {
@@ -31,29 +33,41 @@ export default class Suggestions extends React.Component {
 				}
 			}
 			if (target) {
-				target = new Set(target.filter(x => !tokenSet.has(x)));
-				return Array.from(target);
+				return target.filter(x => !tokenSet.has(x));
 			}
 			return target;
 		});
 
-		return s.length > 0 ? s.reduce((prev, curr) => prev.concat(curr)) : [];
+		if (s.length > 0) {
+			result = s.reduce((prev, curr) => prev.concat(curr));
+			result = Array.from(new Set(result));
+		}
+		return result;
 	}
 
-	onClick = (e) => {
-		const value = e.target.getAttribute('value');
+	onAddSuggestion = (value) => {
 		const {onSelect} = this.props;
 		if (value && onSelect) {
 			onSelect(value);
 		}
 	}
 
+
 	render () {
 		const list = this.getSuggestions();
-		return list.length > 0 ? <div className="assignment-input-fileupload-suggestions">{list.map(x => this.renderItem(x))}</div> : <span />;
-	}
-
-	renderItem (item) {
-		return <span className="token item" key={item} value={item} onClick={this.onClick}>{item}</span>;
+		return (
+			<div>
+			{list.length > 0 && (
+				<div className="assignment-input-fileupload-suggestions-wrapper">
+					<div className="title">People who entered these extensions, also added:</div>
+					<div className="suggestions">
+					{list.map((value) =>
+						<SuggestionItem key={'suggestion' + value.replace(/\./g, '-')} value={value} onAdd={this.onAddSuggestion} controls />
+					)}
+					</div>
+				</div>
+			)}
+			</div>
+		);
 	}
 }

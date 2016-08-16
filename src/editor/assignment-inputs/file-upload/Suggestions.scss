@@ -1,3 +1,13 @@
-.assignment-input-fileupload-suggestions {
-	margin: 0 23px;
+@import "~nti-style-common";
+
+.assignment-input-fileupload-suggestions-wrapper {
+	.suggestions {
+		margin: 0 23px;
+	}
+
+	.title {
+		margin: 0 25px;
+		font-size: 16px;
+		color: $secondary-grey;
+	}
 }

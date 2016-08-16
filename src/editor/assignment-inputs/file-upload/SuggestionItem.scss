@@ -1,0 +1,24 @@
+@import "~nti-style-common";
+
+.controls {
+	float: right;
+	padding-right: 20px;
+	font-size: 16px;
+	clear: both;
+
+	.control {
+		padding-left: 15px;
+
+		&.add {
+			color: $border-blue;
+		}
+		&.dismiss {
+			color: $secondary-grey;
+		}
+	}
+}
+.suggestions .value {
+	color: $primary-grey;
+	font-size: 16px;
+	font-weight: bold;
+}
