@@ -8,6 +8,7 @@ import {getContentPlaceholderFor} from '../../assignment-inputs/';
 
 import {warnIfQuestionEmpty} from '../Actions';
 
+import {isNTIID} from 'nti-lib-ntiids';
 
 export default class QuestionContent extends React.Component {
 	static propTypes = {
@@ -28,7 +29,9 @@ export default class QuestionContent extends React.Component {
 	componentDidMount () {
 		const {question} = this.props;
 
-		warnIfQuestionEmpty(question);
+		if (question && isNTIID(question.NTIID)) {
+			warnIfQuestionEmpty(question);
+		}
 	}
 
 
