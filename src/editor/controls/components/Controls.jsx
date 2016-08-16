@@ -12,6 +12,7 @@ export default class Controls extends React.Component {
 	static propTypes = {
 		assignment: React.PropTypes.object,
 		undoStack: React.PropTypes.object,
+		selectionManager: React.PropTypes.object,
 		previewAssignment: React.PropTypes.func
 	}
 
@@ -33,20 +34,20 @@ export default class Controls extends React.Component {
 
 
 	componentDidMount () {
-		const {SelectionManager} = this.context;
+		const {selectionManager} = this.props;
 
-		if (SelectionManager) {
-			SelectionManager.addListener('selection-changed', this.selectionChanged);
-			this.selectionChanged(SelectionManager.getSelection());
+		if (selectionManager) {
+			selectionManager.addListener('selection-changed', this.selectionChanged);
+			this.selectionChanged(selectionManager.getSelection());
 		}
 	}
 
 
 	componentWillUnmount () {
-		const {SelectionManager} = this.context;
+		const {selectionManager} = this.props;
 
-		if (SelectionManager) {
-			SelectionManager.removeListener('selection-changed', this.selectionChanged);
+		if (selectionManager) {
+			selectionManager.removeListener('selection-changed', this.selectionChanged);
 		}
 	}
 

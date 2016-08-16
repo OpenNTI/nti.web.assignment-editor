@@ -1,8 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import {Error, Loading} from 'nti-web-commons';
-
-import ControlBar from '../control-bar';
+import {Error, Loading, ControlBar} from 'nti-web-commons';
 
 import FixedElement from './utils/FixedElement';
 import AssignmentEditor from './Editor';
@@ -117,7 +115,7 @@ export default class Editor extends React.Component {
 							</FixedElement>
 						</div>
 						<ControlBar visible={!readOnly}>
-							<Controls assignment={assignment} undoStack={undoStack} previewAssignment={previewAssignment} />
+							<Controls assignment={assignment} undoStack={undoStack} previewAssignment={previewAssignment} selectionManager={selectionManager} />
 						</ControlBar>
 					</div>
 				)}
