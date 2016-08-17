@@ -8,6 +8,12 @@ const TYPE_GROUPS = {
 };
 
 export default class Suggestions extends React.Component {
+
+	constructor (props) {
+		super(props);
+		this.state = {dismissed:[]};
+	}
+
 	static propTypes = {
 		tokens: React.PropTypes.array,
 		onSelect: React.PropTypes.func
@@ -20,7 +26,9 @@ export default class Suggestions extends React.Component {
 	getSuggestions () {
 		const {tokens = []} = this.props;
 		const tokenSet = new Set(tokens);
-		let result = [];
+		const {dismissed} = this.state;
+		const dismissedSet = new Set(dismissed);
+
 		const s = tokens.map((token) => {
 			let target = [];
 			for (let key in TYPE_GROUPS) {
@@ -33,11 +41,12 @@ export default class Suggestions extends React.Component {
 				}
 			}
 			if (target) {
-				return target.filter(x => !tokenSet.has(x));
+				return target.filter(x => !tokenSet.has(x) && !dismissedSet.has(x));
 			}
 			return target;
 		});
 
+		let result = [];
 		if (s.length > 0) {
 			result = s.reduce((prev, curr) => prev.concat(curr));
 			result = Array.from(new Set(result));
@@ -52,6 +61,11 @@ export default class Suggestions extends React.Component {
 		}
 	}
 
+	onDismiss = (value) => {
+		const {dismissed} = this.state;
+		this.setState({dismissed: [...dismissed, value]});
+	}
+
 
 	render () {
 		const list = this.getSuggestions();
@@ -62,7 +76,12 @@ export default class Suggestions extends React.Component {
 					<div className="title">People who entered these extensions, also added:</div>
 					<div className="suggestions">
 					{list.map((value) =>
-						<SuggestionItem key={'suggestion' + value.replace(/\./g, '-')} value={value} onAdd={this.onAddSuggestion} controls />
+						<SuggestionItem
+							key={'suggestion' + value.replace(/\./g, '-')}
+							value={value}
+							onAdd={this.onAddSuggestion}
+							onDismiss={this.onDismiss} controls
+						/>
 					)}
 					</div>
 				</div>
