@@ -9,11 +9,6 @@ const TYPE_GROUPS = {
 
 export default class Suggestions extends React.Component {
 
-	constructor (props) {
-		super(props);
-		this.state = {dismissed:[]};
-	}
-
 	static propTypes = {
 		tokens: React.PropTypes.array,
 		onSelect: React.PropTypes.func
@@ -23,35 +18,18 @@ export default class Suggestions extends React.Component {
 		tokens: []
 	}
 
+	state = {dismissed:[]}
+
 	getSuggestions () {
 		const {tokens = []} = this.props;
-		const tokenSet = new Set(tokens);
 		const {dismissed} = this.state;
-		const dismissedSet = new Set(dismissed);
 
-		const s = tokens.map((token) => {
-			let target = [];
-			for (let key in TYPE_GROUPS) {
-				if (TYPE_GROUPS.hasOwnProperty(key)) {
-					let group = TYPE_GROUPS[key];
-					if (group.indexOf(token) !== -1)  {
-						target = group;
-						break;
-					}
-				}
-			}
-			if (target) {
-				return target.filter(x => !tokenSet.has(x) && !dismissedSet.has(x));
-			}
-			return target;
+		const suggestions = tokens.map((token) => {
+			const target = Object.values(TYPE_GROUPS).find(x => x.includes(token)) || [];
+			return target.filter(x => !tokens.includes(x) && !dismissed.includes(x));
 		});
 
-		let result = [];
-		if (s.length > 0) {
-			result = s.reduce((prev, curr) => prev.concat(curr));
-			result = Array.from(new Set(result));
-		}
-		return result;
+		return suggestions.reduce((acc, list) => acc.concat(list.filter(x => !acc.includes(x))), []);
 	}
 
 	onAddSuggestion = (value) => {
