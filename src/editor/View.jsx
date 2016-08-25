@@ -26,6 +26,9 @@ export default class Editor extends React.Component {
 
 
 	static childContextTypes = {
+		course: React.PropTypes.shape({
+			getAssignment: React.PropTypes.func
+		}),
 		SelectionManager: React.PropTypes.shape({
 			select: React.PropTypes.fn,
 			unselect: React.PropTypes.fn
@@ -40,7 +43,7 @@ export default class Editor extends React.Component {
 	componentDidMount () {
 		ConflictResolution.register();
 		Store.addChangeListener(this.onStoreChange);
-		loadAssignment(this.props.NTIID);
+		loadAssignment(this.props.NTIID, this.context.course);
 	}
 
 

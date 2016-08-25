@@ -33,11 +33,14 @@ export function freeAssignment (assignment) {
 }
 
 
-export function loadAssignment (ntiid) {
+export function loadAssignment (ntiid, course) {
 	dispatch(LOADING);
-	getService()
-		.then(service =>
-			service.getObject(ntiid))
+
+	const fetch = course
+		? course.getAssignment(ntiid)
+		: getService().then(service => service.getObject(ntiid));
+
+	fetch
 		.then(assignment => {
 			assignment.addListener(EVENT_FINISH, onAssignmentSaved);
 			dispatch(LOADED, assignment);
