@@ -30,8 +30,8 @@ export default class Editor extends React.Component {
 			getAssignment: React.PropTypes.func
 		}),
 		SelectionManager: React.PropTypes.shape({
-			select: React.PropTypes.fn,
-			unselect: React.PropTypes.fn
+			select: React.PropTypes.func,
+			unselect: React.PropTypes.func
 		})
 	}
 
