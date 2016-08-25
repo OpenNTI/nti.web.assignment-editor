@@ -25,10 +25,14 @@ export default class Editor extends React.Component {
 	}
 
 
-	static childContextTypes = {
+	static contextTypes = {
 		course: React.PropTypes.shape({
 			getAssignment: React.PropTypes.func
-		}),
+		})
+	}
+
+
+	static childContextTypes = {
 		SelectionManager: React.PropTypes.shape({
 			select: React.PropTypes.func,
 			unselect: React.PropTypes.func
