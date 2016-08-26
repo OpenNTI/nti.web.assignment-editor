@@ -24,7 +24,7 @@ const {Field:{Component:ErrorCmp}} = Errors;
 const DEFAULT_TEXT = {
 	save: 'Save',
 	cancel: 'Cancel',
-	visibleDisclaimer: 'You assignment is currently being viewed. Auto saving is disabled to prevent unfinished work from being seen.'
+	visibleDisclaimer: 'Your assignment is currently being viewed. Auto saving is disabled to prevent unfinished work from being seen.'
 };
 
 const t = scoped('ASSIGNMENT_AUTHORING_QUESTION', DEFAULT_TEXT);
