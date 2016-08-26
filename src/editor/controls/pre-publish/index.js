@@ -28,7 +28,7 @@ export function allowPublish (assignment, newState) {
 	const {errors, warnings} = Store;
 
 	//If the publication state hasn't "moved forward" we don't need to alert about any errors
-	if (!hasStateMovedForward(assignment, newState)) {
+	if (!assignment || !hasStateMovedForward(assignment, newState)) {
 
 		return Promise.resolve();
 
