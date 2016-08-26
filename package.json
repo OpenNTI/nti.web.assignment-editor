@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "ssh://repos.nextthought.com/nti.web.component.assignment-editor"
+    "url": "https://repos.nextthought.com/git/nti.web.component.assignment-editor"
   },
   "keywords": [
     "react",
