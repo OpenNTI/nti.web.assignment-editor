@@ -25,7 +25,7 @@ export default class SuggestionItem extends React.Component {
 
 	renderControls () {
 		return (
-			<div className="controls">
+			<div className="controls file-suggestion-controls">
 				<span className="control add" onClick={this.onAddClick}>Add Extension</span>
 				<span className="control dismiss" onClick={this.onDismissClick}>Dismiss</span>
 			</div>
