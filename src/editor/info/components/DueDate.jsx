@@ -21,9 +21,15 @@ export default class DueDate extends React.Component {
 
 	reset = () => {
 		const {assignment} = this.props;
+
+		if (!assignment || !assignment.getAvailableForSubmissionEnding) {
+			return;
+		}
+
 		const value = assignment.getAvailableForSubmissionEnding();
+
 		this.setState({
-			value: value,
+			value,
 			saving: false,
 			error: null
 		});
@@ -32,8 +38,12 @@ export default class DueDate extends React.Component {
 	save = (value) => {
 		const {assignment} = this.props;
 
+		if (!assignment || !assignment.getAvailableForSubmissionEnding) {
+			return;
+		}
+
 		this.setState({
-			value: value,
+			value,
 			saving: true,
 			error: null
 		});
@@ -43,7 +53,7 @@ export default class DueDate extends React.Component {
 		})
 		.then(() => {
 			this.setState({
-				value: value,
+				value,
 				saving: false,
 				error: null
 			});
