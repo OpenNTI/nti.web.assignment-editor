@@ -9,7 +9,7 @@ import {Draggable} from '../../../dnd';
 
 const QuestionMimeType = 'application/vnd.nextthought.naquestion';
 
-const getTypes = x => (x || []).reduce((acc, type) => (acc[type] = 1, acc), {});
+const getTypes = x => (x || []).reduce((acc, type) => (acc[type.toLowerCase()] = 1, acc), {});
 
 const getCountInQuestion = (question, types) =>
 	Array.from(question || []).reduce((acc, part) =>

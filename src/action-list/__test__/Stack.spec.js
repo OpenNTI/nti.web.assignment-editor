@@ -1,4 +1,4 @@
-import Queue from '../Queue';
+import Stack from '../Stack';
 
 function createAction (label, onComplete) {
 	label = label || '';
@@ -10,9 +10,9 @@ function createAction (label, onComplete) {
 	};
 }
 
-describe('Action Queue Tests', () => {
-	it('Queue is never longer than the max size', () => {
-		const queue = new Queue({maxVisible: 2});
+describe('Action Stack Tests', () => {
+	it('Stack is never longer than the max size', () => {
+		const queue = new Stack({maxVisible: 2});
 
 		queue.push(createAction('First'));
 
@@ -28,8 +28,8 @@ describe('Action Queue Tests', () => {
 	});
 
 
-	it('Queue is never deeper than the max depth', () => {
-		const queue = new Queue({maxDepth: 2, maxVisible: 1});
+	it('Stack is never deeper than the max depth', () => {
+		const queue = new Stack({maxDepth: 2, maxVisible: 1});
 
 		queue.push(createAction('First'));
 
@@ -54,7 +54,7 @@ describe('Action Queue Tests', () => {
 				changed: () => {}
 			};
 
-			queue = new Queue({maxVisible: 2});
+			queue = new Stack({maxVisible: 2});
 
 			spyOn(listeners, 'changed');
 
@@ -95,7 +95,7 @@ describe('Action Queue Tests', () => {
 
 			action.complete();
 
-			expect(action.label).toEqual(first);
+			expect(action.label).toEqual(third);
 			expect(listeners.changed).toHaveBeenCalledTimes(4);
 			expect(queue.length).toEqual(2);
 
@@ -110,7 +110,7 @@ describe('Action Queue Tests', () => {
 
 			action.complete();
 
-			expect(action.label).toEqual(third);
+			expect(action.label).toEqual(first);
 			expect(listeners.changed).toHaveBeenCalledTimes(6);
 			expect(queue.length).toEqual(0);
 		});
@@ -127,7 +127,7 @@ describe('Action Queue Tests', () => {
 				changed: () => {}
 			};
 
-			queue = new Queue({maxVisible: 2, keepFor: 250});
+			queue = new Stack({maxVisible: 2, keepFor: 250});
 
 			spyOn(listeners, 'changed');
 

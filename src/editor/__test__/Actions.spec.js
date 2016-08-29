@@ -7,6 +7,7 @@ describe('Assignment Editor Action Tests', () => {
 		beforeEach(() => {
 			assignment = {
 				value: 'old',
+				parent () {},
 				save: () => {
 					return Promise.resolve();
 				}

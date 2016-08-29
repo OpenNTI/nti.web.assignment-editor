@@ -111,8 +111,25 @@ describe('Assignment Sidebar Button Tests', ()=> {
 
 	//Add model mocks.
 	assignment.isLocked = () => false;
-	assignment.getQuestions = () =>
-		assignment.parts[0].question_set.questions;
+	assignment.getQuestions = () => assignment.parts[0].question_set.questions.map(x => {
+		x[Symbol.iterator] = function () {
+			let snapshot = this.parts.slice();
+			let {length} = snapshot;
+			let index = 0;
+
+			return {
+
+				next () {
+					let done = index >= length;
+					let value = snapshot[index++];
+
+					return { value, done };
+				}
+
+			};
+		};
+		return x;
+	});
 
 	beforeEach(()=> {
 		if (newNode) {
@@ -141,42 +158,46 @@ describe('Assignment Sidebar Button Tests', ()=> {
 		render(container, Button, props, ...children)
 	]);
 
-	it('tests creation of Button', () => {
+	it('tests creation of Button', (done) => {
 
 		test({assignment: assignment})
 			.then(cmps => cmps.forEach(button =>
 				expect(button).toBeTruthy()
-			));
+			))
+			.then(done, done.fail);
 	});
 
-	it('tests count of mutlichoice questions', () => {
+	it('tests count of mutlichoice questions', (done) => {
 		const handles = ['application/vnd.nextthought.assessment.randomizedmultiplechoicepart'];
 
 		test({assignment: assignment, handles: handles})
-			.then(cmps => cmps.forEach(button =>
-				expect(button.getUsedCount()).toBe(3)
-			));
+			.then(cmps => cmps.forEach(button => {
+				debugger;
+				expect(button.getUsedCount()).toBe(3);
+			}))
+			.then(done, done.fail);
 	});
 
-	it('tests count of essay questions', () => {
+	it('tests count of essay questions', (done) => {
 		const handles = ['application/vnd.nextthought.assessment.modeledcontentpart'];
 
 		test({assignment: assignment, handles: handles})
 			.then(cmps => cmps.forEach(button =>
 				expect(button.getUsedCount()).toBe(1)
-			));
-
+			))
+			.then(done, done.fail);
 	});
 
-	it('tests empty blank question', () => {
+	it('tests empty blank question', (done) => {
 		const handles = ['application/vnd.nextthought.assessment.modeledcontentpart'];
 		test({assignment: assignment, handles: handles})
 			.then(cmps => cmps.forEach(button =>
 				expect(button.getBlankQuestion()).toBeFalsy()
-			));
+			))
+			.then(done, done.fail);
 	});
 
-	it('tests blank question', () => {
+	it('tests blank question', (done) => {
 		const handles = ['application/vnd.nextthought.assessment.modeledcontentpart'];
 		const partMimeType = 'application/vnd.nextthought.assessment.modeledcontentpart';
 		const questionMimeType = 'application/vnd.nextthought.naquestion';
@@ -187,11 +208,12 @@ describe('Assignment Sidebar Button Tests', ()=> {
 		};
 
 		test({assignment: assignment, handles: handles, part: part})
-		.then(cmps => cmps.forEach(button => {
-			let question = button.getBlankQuestion();
-			expect(question.MimeType).toBe(questionMimeType);
-			expect(question.parts.length).toBe(1);
-		}));
+			.then(cmps => cmps.forEach(button => {
+				let question = button.getBlankQuestion();
+				expect(question.MimeType).toBe(questionMimeType);
+				expect(question.parts.length).toBe(1);
+			}))
+			.then(done, done.fail);
 
 	});
 });
