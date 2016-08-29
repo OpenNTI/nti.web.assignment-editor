@@ -1,4 +1,5 @@
-import SelectionManager, {SelectionItem} from '../SelectionManager';
+import SelectionManager from '../SelectionManager';
+import SelectionItem from '../SelectionItem';
 
 //These are all failing now.
 describe('Selection Manager tests', () => {
