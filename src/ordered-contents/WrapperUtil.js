@@ -22,6 +22,13 @@ const FIELDS = [
 const QUEUES = new WeakMap();
 const MAX_CONCURRENT = 1;
 
+function defineNonEnumerableProperty (item, property, value) {
+	Object.defineProperty(item, property, {
+		configurable: true,//allow the property to be reconfigured (aka deleted or redefined)
+		enumerable: false,//it defaults to false, just being explicit (for your benefit)
+		value
+	});
+}
 
 function getQueueFor (obj) {
 	let queue = QUEUES.get(obj);
@@ -166,15 +173,9 @@ export default class OrderedContents {
 			delete placeholder.isSaving;
 
 			//if there is an error, replace the optimistic placeholder with an error case
-			Object.defineProperty(placeholder, 'isNotSaved', {
-				enumerable: false,
-				value: true
-			});
+			defineNonEnumerableProperty(placeholder, 'isNotSaved', true);
 
-			Object.defineProperty(placeholder, 'error', {
-				enumerable: false,
-				value: error
-			});
+			defineNonEnumerableProperty(placeholder, 'error', error);
 
 
 			//Fire the on change
@@ -184,11 +185,7 @@ export default class OrderedContents {
 		if (!item.NTIID) {
 			createItem = getService().then(service => service.getObjectPlaceholder(item));
 		} else {
-			Object.defineProperty(item, 'isSaving', {
-				configurable: true,
-				enumerable: false,
-				value: true
-			});
+			defineNonEnumerableProperty(item, 'isSaving', true);
 
 			createItem = Promise.resolve(item);
 		}
@@ -196,11 +193,7 @@ export default class OrderedContents {
 		return createItem
 			.then((placeholder) => {
 				if (delaySave && placeholder.isPlaceholder) {
-					Object.defineProperty(placeholder, 'delaySaving', {
-						configurable: true,
-						enumerable: false,
-						value: true
-					});
+					defineNonEnumerableProperty(placeholder, 'delaySaving', true);
 				}
 
 				placeholder[REPLACE_WITH] = replacement => replaceItem(placeholder, replacement);
@@ -327,11 +320,7 @@ export default class OrderedContents {
 		item = orderedContents[index];
 
 		//Mark Item as deleting
-		Object.defineProperty(item, 'isDeleting', {
-			configurable: true,
-			enumerable: false,
-			value: true
-		});
+		defineNonEnumerableProperty(item, 'isDeleting', true);
 
 		obj[orderedContentsField] = orderedContents;
 		obj.onChange();
@@ -365,16 +354,10 @@ export default class OrderedContents {
 					delete item.isDeleting;
 
 					//If the server fails, leave it in the ordered contents and mark it with an error
-					Object.defineProperty(item, 'isNotDeleted', {
-						enumerable: false,
-						value: true
-					});
+					defineNonEnumerableProperty(item, 'isNotDeleted', true);
 
 
-					Object.defineProperty(item, 'error', {
-						enumerable: false,
-						value: reason
-					});
+					defineNonEnumerableProperty(item, 'error', reason);
 
 					obj.onChange();
 
@@ -427,10 +410,7 @@ export default class OrderedContents {
 		}
 
 		//Mark the Item as saving
-		// Object.defineProperty(item, 'isSaving', {
-		// 	enumerable: false,
-		// 	value: true
-		// });
+		// defineNonEnumerableProperty(item, 'isSaving', true);
 
 		//Optimistically insert the record at the new index
 		orderedContents = [...orderedContents.slice(0, newIndex), item, ...orderedContents.slice(newIndex)];
@@ -451,15 +431,9 @@ export default class OrderedContents {
 			.catch((reason) => {
 				// delete item.isSaving;
 
-				Object.defineProperty(item, 'isNotSaved', {
-					enumerable: false,
-					value: true
-				});
+				defineNonEnumerableProperty(item, 'isNotSaved', true);
 
-				Object.defineProperty(item, 'error', {
-					enumerable: false,
-					value: reason
-				});
+				defineNonEnumerableProperty(item, 'error', reason);
 
 				if (newIndex >= 0) {
 					orderedContents.splice(newIndex, 1);
