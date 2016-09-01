@@ -26,21 +26,27 @@ export default class SuggestionItem extends React.Component {
 	renderControls () {
 		return (
 			<div className="controls file-suggestion-controls">
-				<span className="control add" onClick={this.onAddClick}>Add Extension</span>
-				<span className="control dismiss" onClick={this.onDismissClick}>Dismiss</span>
+				<a href="#" className="control add" onClick={this.onAddClick}>Add Extension</a>
+				<a href="#" className="control dismiss" onClick={this.onDismissClick}>Dismiss</a>
 			</div>
 		);
 	}
 
-	onAddClick = () => {
+	onAddClick = (e) => {
 		const {onAdd, value} = this.props;
+
+		e.preventDefault();
+		e.stopPropagation();
 		if (onAdd) {
 			onAdd(value);
 		}
 	}
 
-	onDismissClick = () => {
+	onDismissClick = (e) => {
 		const {onDismiss, value} = this.props;
+
+		e.preventDefault();
+		e.stopPropagation();
 		if (onDismiss) {
 			onDismiss(value);
 		}
