@@ -59,11 +59,21 @@ export default class PointValue extends React.Component {
 	save = () => {
 		const {assignment} = this.props;
 		const {value} = this.state;
-		if(assignment.totalPoints !== value) {
+
+		const doneSaving = () => {
+			this.isSaving = null;
+		};
+
+
+		if (assignment.totalPoints !== value && !this.isSaving) {
+			this.isSaving = true;
+
 			assignment.save({
 				'total_points': value,
 				[MAY_EFFECT_PROPERTIES]: ['auto_grade']
-			});
+			})
+				.catch(() => this.setUp())
+				.then(doneSaving, doneSaving);
 		}
 	}
 
