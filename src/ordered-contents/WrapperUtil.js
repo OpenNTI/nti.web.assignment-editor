@@ -257,13 +257,11 @@ export default class OrderedContents {
 			.then((placeholder) => {
 				let save;
 				if (delaySave) {
-					save = new Promise((fulfill) => {
+					save = new Promise((fulfill, reject) => {
 						placeholder.save = data => {
 							return doSave({...placeholder, ...data})
-								.then((response) => {
-									fulfill();
-									return response;
-								});
+								.then(response => (fulfill(), response))
+								.catch(reject);
 						};
 
 						placeholder.remove = () => {
