@@ -50,30 +50,47 @@ export default class Move extends React.Component {
 	static propTypes = {
 		type: React.PropTypes.oneOf([UP, DOWN]),
 		question: React.PropTypes.object.isRequired,
-		questionSet: React.PropTypes.object.isRequired
+		questionSet: React.PropTypes.object.isRequired,
+		disabled: React.PropTypes.bool
 	}
 
 
 	constructor (props) {
 		super();
 
-		const {questionSet, question, type} = props;
+		this.setup(props);
+	}
+
+
+	componentWillReceiveProps (nextProps) {
+		this.setup(nextProps);
+	}
+
+
+	setup (props) {
+		const setState = x => this.state ? this.setState(x) : (this.state = x);
+		const {questionSet, question, type, disabled} = props;
 		const moveLink = questionSet && questionSet.getLink('AssessmentMove');
 
 		if (moveLink) {
 			this.moveRoot = new MoveRoot(moveLink);
+		} else if (this.moveRoot) {
+			delete this.moveRoot;
 		}
 
-		this.state = {
+		setState({
 			index: getIndexOf(question, questionSet),
-			disabled: shouldDisable(type, question, questionSet)
-		};
+			disabled: disabled || shouldDisable(type, question, questionSet)
+		});
 	}
 
 
-	onClick = () => {
+	onClick = (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+
 		const {question, questionSet, type} = this.props;
-		const {index} = this.state;
+		const {index, disabled} = this.state;
 		const moveInfo = new MoveInfo({
 			OriginContainer: questionSet.getID(),
 			OriginIndex: index
@@ -81,7 +98,9 @@ export default class Move extends React.Component {
 
 		const newIndex = type === UP ? moveInfo.originIndex - 1 : moveInfo.originIndex + 1;
 
-		moveQuestion(question, questionSet, newIndex, moveInfo, this.moveRoot);
+		if (!disabled) {
+			moveQuestion(question, questionSet, newIndex, moveInfo, this.moveRoot);
+		}
 	}
 
 

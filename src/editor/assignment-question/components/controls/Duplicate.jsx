@@ -1,5 +1,5 @@
 import React from 'react';
-import autobind from 'nti-commons/lib/autobind';
+import cx from 'classnames';
 
 import {duplicateQuestionFrom} from '../../Actions';
 
@@ -10,20 +10,20 @@ export default class DeleteControl extends React.Component {
 		question: React.PropTypes.object.isRequired,
 		questionSet: React.PropTypes.object.isRequired,
 		assignment: React.PropTypes.object.isRequired,
-		flushChanges: React.PropTypes.func
+		flushChanges: React.PropTypes.func,
+		disabled: React.PropTypes.bool
 	}
 
 
+	onClick = (e) => {
+		e.preventDefault();
+		e.stopPropagation();
 
-	constructor (props) {
-		super(props);
+		const {disabled, question, assignment, questionSet, flushChanges} = this.props;
 
-		autobind(this, 'onClick');
-	}
-
-
-	onClick () {
-		const {question, assignment, questionSet, flushChanges} = this.props;
+		if (disabled) {
+			return;
+		}
 
 		flushChanges();
 
@@ -32,8 +32,9 @@ export default class DeleteControl extends React.Component {
 
 
 	render () {
+		const {disabled} = this.props;
 		return (
-			<i className="icon-duplicate" title={TITLE} onClick={this.onClick}/>
+			<i className={cx('icon-duplicate', {disabled})} title={TITLE} onClick={this.onClick}/>
 		);
 	}
 }

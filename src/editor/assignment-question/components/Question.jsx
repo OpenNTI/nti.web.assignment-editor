@@ -292,9 +292,8 @@ export default class Question extends React.Component {
 			modal,
 			savingMask
 		} = this.state;
-		const {isSaving} = question;
 		const cls = cx('question-editor', {
-			'is-saving': isSaving && !modal,
+			'is-saving': question.isSaving && !modal,
 			error: contentError || questionError || question.error,
 			'saving-mask': savingMask
 		});
@@ -323,7 +322,7 @@ export default class Question extends React.Component {
 						{questionError && (<ErrorCmp error={questionError} />)}
 					</Selectable>
 				</InlineDialog>
-				{!isSaving && (<Controls question={question} questionSet={questionSet} assignment={assignment} flushChanges={this.flushChanges} />)}
+				<Controls question={question} questionSet={questionSet} assignment={assignment} flushChanges={this.flushChanges} />
 				{isLastQuestion(question, questionSet) && (<Between question={question} after />)}
 			</div>
 		);

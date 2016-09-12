@@ -27,10 +27,34 @@ export default function QuestionControls (props) {
 
 	return (
 		<div className={cls}>
-			{canMove && (<Move type={UP} question={question} questionSet={questionSet} assignment={assignment} />)}
-			{canMove && (<Move type={DOWN} question={question} questionSet={questionSet} assignment={assignment} />)}
-			{canDuplicate && (<Duplicate question={question} questionSet={questionSet} assignment={assignment} flushChanges={flushChanges}/>)}
-			{canDelete && (<Delete question={question} questionSet={questionSet} assignment={assignment} />)}
+			<Move type={UP}
+				question={question}
+				questionSet={questionSet}
+				assignment={assignment}
+				disabled={!canMove}
+				/>
+
+			<Move type={DOWN}
+				question={question}
+				questionSet={questionSet}
+				assignment={assignment}
+				disabled={!canMove}
+				/>
+
+			<Duplicate
+				question={question}
+				questionSet={questionSet}
+				assignment={assignment}
+				flushChanges={flushChanges}
+				disabled={!canDuplicate}
+				/>
+
+			<Delete
+				question={question}
+				questionSet={questionSet}
+				assignment={assignment}
+				disabled={!canDelete}
+				/>
 		</div>
 	);
 }

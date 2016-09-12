@@ -1,5 +1,5 @@
 import React from 'react';
-import autobind from 'nti-commons/lib/autobind';
+import cx from 'classnames';
 
 import {deleteQuestionFrom} from '../../Actions';
 
@@ -9,28 +9,29 @@ export default class DeleteControl extends React.Component {
 	static propTypes = {
 		question: React.PropTypes.object.isRequired,
 		questionSet: React.PropTypes.object.isRequired,
-		assignment: React.PropTypes.object.isRequired
+		assignment: React.PropTypes.object.isRequired,
+		disabled: React.PropTypes.bool
 	}
 
 
+	onClick = (e) => {
+		e.preventDefault();
+		e.stopPropagation();
 
-	constructor (props) {
-		super(props);
+		const {disabled, question, questionSet, assignment} = this.props;
 
-		autobind(this, 'onClick');
-	}
-
-
-	onClick () {
-		const {question, questionSet, assignment} = this.props;
+		if (disabled) {
+			return;
+		}
 
 		deleteQuestionFrom(question, questionSet, assignment);
 	}
 
 
 	render () {
+		const {disabled} = this.props;
 		return (
-			<i className="icon-delete" title={TITLE} onClick={this.onClick}/>
+			<i className={cx('icon-delete', {disabled})} title={TITLE} onClick={this.onClick}/>
 		);
 	}
 }
