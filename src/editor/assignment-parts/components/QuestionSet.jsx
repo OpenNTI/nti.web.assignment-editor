@@ -5,7 +5,7 @@ import {HOC} from 'nti-web-commons';
 import {MoveRoot} from '../../../ordered-contents';
 import {Ordering} from '../../../dnd';
 
-import Question from '../../assignment-question';
+import Question from '../../question';
 import {moveQuestion} from '../Actions';
 
 const QUESTION_TYPE = 'application/vnd.nextthought.naquestion';
