@@ -52,7 +52,7 @@ export default class PointValue extends React.Component {
 		}
 
 		this.setState({
-			value: value || null
+			value: typeof value === 'number' ? value : null
 		});
 	}
 
