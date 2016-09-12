@@ -513,7 +513,7 @@ export default class Choices extends React.Component {
 	render () {
 		const {className} = this.props;
 		const {columns, canAdd, canRemove} = this.state;
-		const cls = cx(className, this.className, 'assignment-input-choices',{'can-delete': canRemove});
+		const cls = cx(className, this.className, 'input-type-choices',{'can-delete': canRemove});
 
 		return (
 			<div className={cls}>

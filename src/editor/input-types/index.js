@@ -11,7 +11,7 @@ import Ordering from './ordering';
 const PROMPT = 'Write a prompt...';
 const QUESTION = 'Write a question...';
 
-const logger = Logger.get('lib:asssignment-editor:assignment-inputs');
+const logger = Logger.get('lib:asssignment-editor:input-types');
 const KINDS = [
 	MultipleChoice,
 	MultipleChoiceMultipleAnwer,

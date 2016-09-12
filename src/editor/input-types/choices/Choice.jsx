@@ -202,7 +202,7 @@ export default class Choice extends React.Component {
 	render () {
 		const {className, choice, heightSyncGroup, onDelete, error} = this.props;
 		const {selectableId, selectableValue} = this.state;
-		const cls = cx(className, 'assignment-input-choice', {error, correct: choice.correct});
+		const cls = cx(className, 'input-type-choice', {error, correct: choice.correct});
 
 		return (
 			<Selectable className={cls} id={selectableId} value={selectableValue}>

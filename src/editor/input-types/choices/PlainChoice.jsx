@@ -238,7 +238,7 @@ export default class PlainChoice extends React.Component {
 		const {className, choice, onDelete} = this.props;
 		const {error, selectableId, selectableValue} = this.state;
 		//Use the same class name as the other choice so css will style both
-		const cls = cx(className, 'assignment-input-choice', {error, correct: choice.correct});
+		const cls = cx(className, 'input-type-choice', {error, correct: choice.correct});
 
 		return (
 			<Selectable className={cls} id={selectableId} value={selectableValue} onSelect={this.onSelect} onUnselect={this.onUnselect}>

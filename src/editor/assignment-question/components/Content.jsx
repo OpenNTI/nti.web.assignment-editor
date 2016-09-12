@@ -4,7 +4,7 @@ import cx from 'classnames';
 import BufferedTextEditor from '../../inputs/BufferedTextEditor';
 import Store from '../../Store';
 
-import {getContentPlaceholderFor} from '../../assignment-inputs/';
+import {getContentPlaceholderFor} from '../../input-types/';
 
 import {warnIfQuestionEmpty} from '../Actions';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {getEditorWidget} from '../../assignment-inputs';
+import {getEditorWidget} from '../../input-types';
 
 questionParts.propTypes = {
 	question: React.PropTypes.object.isRequired,

@@ -13,7 +13,7 @@ const addLabel = 'Add a Row';
 const LABELS = 'labels';
 const VALUES = 'values';
 
-const logger = Logger.get('lib:assignment-editor:assignment-inputs:ordering:Editor');
+const logger = Logger.get('lib:assignment-editor:input-types:ordering:Editor');
 
 export default class OrderingEditor extends React.Component {
 	static propTypes = {

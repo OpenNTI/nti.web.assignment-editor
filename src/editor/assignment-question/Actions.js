@@ -5,7 +5,7 @@ import OrderedContents from '../../ordered-contents';
 
 import {maybeResetAssignmentOnError} from '../Actions';
 
-import {partsEqual} from '../assignment-inputs';
+import {partsEqual} from '../input-types';
 import {removePartWithQuestionSet} from '../assignment-parts/Actions';
 import {
 	SAVING,

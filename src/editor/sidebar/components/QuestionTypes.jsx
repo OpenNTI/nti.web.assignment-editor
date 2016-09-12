@@ -3,7 +3,7 @@ import cx from 'classnames';
 import {HOC} from 'nti-web-commons';
 import autobind from 'nti-commons/lib/autobind';
 
-import {getButtons} from '../../assignment-inputs';
+import {getButtons} from '../../input-types';
 
 const {ItemChanges} = HOC;
 

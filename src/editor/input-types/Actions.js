@@ -8,7 +8,7 @@ import {SAVING, SAVE_ENDED, QUESTION_SET_UPDATED, QUESTION_SET_ERROR} from '../C
 import {createPartWithQuestion} from '../assignment-parts/Actions';
 import {maybeResetAssignmentOnError} from '../Actions';
 
-const logger = Logger.get('lib:asssignment-editor:assignment-inputs:Actions');
+const logger = Logger.get('lib:asssignment-editor:input-types:Actions');
 
 function insertAt (assignment, part, index, question, delaySave) {
 	if (!part) {

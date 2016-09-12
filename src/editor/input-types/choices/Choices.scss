@@ -1,6 +1,6 @@
 @import "~nti-style-common";
 
-.assignment-input-choices {
+.input-type-choices {
 	position: relative;
 
 	// .dragging & {
@@ -51,7 +51,7 @@
 }
 
 
-.is-saving .assignment-input-choices {
+.is-saving .input-type-choices {
 	.add-choice {
 		color: transparent;
 	}

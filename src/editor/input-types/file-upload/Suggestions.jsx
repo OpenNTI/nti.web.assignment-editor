@@ -50,7 +50,7 @@ export default class Suggestions extends React.Component {
 		return (
 			<div>
 			{list.length > 0 && (
-				<div className="assignment-input-fileupload-suggestions-wrapper">
+				<div className="input-type-fileupload-suggestions-wrapper">
 					<div className="title">People who entered these extensions also added:</div>
 					<div className="suggestions">
 					{list.map((value) =>
