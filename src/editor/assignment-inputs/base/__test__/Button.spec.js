@@ -172,7 +172,6 @@ describe('Assignment Sidebar Button Tests', ()=> {
 
 		test({assignment: assignment, handles: handles})
 			.then(cmps => cmps.forEach(button => {
-				debugger;
 				expect(button.getUsedCount()).toBe(3);
 			}))
 			.then(done, done.fail);
