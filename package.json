@@ -35,7 +35,7 @@
   "dependencies": {
     "classnames": "^2.0.0",
     "invariant": "^2.1.1",
-    "javascript-natural-sort": "^0.7.1",
+    "node-natural-sort": "^0.8.3",
     "jump.js": "^1.0.1",
     "node-uuid": "^1.4.3",
     "nti-commons": "^1.0.1",
