@@ -6,6 +6,7 @@ import {ASSIGNMENT_ERROR} from '../../Constants';
 import {saveTitle, saveContent} from '../Actions';
 import Title from './Title';
 import Content from './Content';
+import Sharing from './Sharing';
 
 export default class AssignmentContentView extends React.Component {
 	static propTypes = {
@@ -101,6 +102,7 @@ export default class AssignmentContentView extends React.Component {
 
 		return (
 			<div className="assignment-content">
+				<Sharing assignment={assignment} />
 				<Title value={title} schema={schema} onChange={this.onTitleChange} error={titleError} disabled={!assignment.canEdit()} />
 				<Content value={content} schema={schema} onChange={this.onContentChange} error={contentError} disabled={!assignment.canEdit()} />
 			</div>

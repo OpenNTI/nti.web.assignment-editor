@@ -1,0 +1,19 @@
+@import "~nti-style-common";
+
+.assignment-sharing {
+	color: $primary-blue;
+	padding: rem-calc(0 10px);
+	display: inline-block;
+	cursor: pointer;
+
+	i {
+		display: inline;
+		vertical-align: middle;
+		margin-right: 0.5rem;
+	}
+
+	span {
+		font: normal 400 0.875rem/1.25rem $body-font-family;
+		vertical-align: middle;
+	}
+}
