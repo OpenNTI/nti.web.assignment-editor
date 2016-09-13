@@ -31,9 +31,9 @@ export default class PointValue extends React.Component {
 
 	setUp (props = this.props) {
 		const {assignment} = props;
-		const value = assignment.totalPoints;
+
 		this.setState({
-			value
+			value: assignment.totalPoints
 		});
 	}
 
@@ -62,17 +62,18 @@ export default class PointValue extends React.Component {
 
 		const doneSaving = () => {
 			this.savingValue = null;
+			this.setUp();
 		};
 
 
 		if (assignment.totalPoints !== value && this.savingValue !== value) {
 			this.savingValue = value;
 
-			assignment.save({
-				'total_points': value,
-				[MAY_EFFECT_PROPERTIES]: ['auto_grade']
-			})
-				.catch(() => this.setUp())
+			assignment
+				.save({
+					'total_points': value,
+					[MAY_EFFECT_PROPERTIES]: ['auto_grade']
+				})
 				.then(doneSaving, doneSaving);
 		}
 	}
@@ -84,7 +85,8 @@ export default class PointValue extends React.Component {
 		return (
 			<div className="field point-value">
 				<LabeledValue label="Value">
-					<NumberInput defaultValue={value || ''}
+					<NumberInput
+						value={typeof value === 'number' ? value : ''}
 						min="0"
 						ref={this.attachRef}
 						onBlur={this.onBlur}
