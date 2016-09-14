@@ -1,48 +1,19 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-export default class ControlBar extends React.Component {
-	static propTypes = {
-		visible: React.PropTypes.bool,
-		children: React.PropTypes.any
-	}
+ControlBar.propTypes = {
+	visible: PropTypes.bool,
+	children: PropTypes.any
+};
 
-	constructor (props) {
-		super(props);
-
-		this.state = {
-			visible: props.visible
-		};
-	}
-
-
-	componentWillReceiveProps (nextProps) {
-		this.setState({
-			visible: nextProps.visible
-		});
-	}
-
-
-	render () {
-		const {visible} = this.state;
-
-		return (
-			<ReactCSSTransitionGroup transitionName="slideUp" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
-				{visible ?
-					this.renderBar() :
-					null
-				}
-			</ReactCSSTransitionGroup>
-		);
-	}
-
-	renderBar () {
-		const {children} = this.props;
-
-		return (
-			<div key="control-bar" className="nti-control-bar">
-				{children}
-			</div>
-		);
-	}
+export default function ControlBar ({visible, children}) {
+	return (
+		<ReactCSSTransitionGroup transitionName="slideUp" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
+			{visible && (
+				<div key="control-bar" className="nti-control-bar">
+					{children}
+				</div>
+			)}
+		</ReactCSSTransitionGroup>
+	);
 }
