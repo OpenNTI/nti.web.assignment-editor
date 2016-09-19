@@ -44,12 +44,18 @@ if (!assignmentId) {
 	localStorage.setItem('assignment-ntiid', assignmentId);
 }
 
+let courseId = localStorage.getItem('course-ntiid');
+
+if (!courseId) {
+	courseId = decodeFromURI(window.prompt('Enter Course NTIID'));
+	localStorage.setItem('course-ntiid', courseId);
+}
 
 ReactDOM.render(
 	<Bridge>
 		<div>
 			<ConflictResolutionHandler />
-			<Editor NTIID={assignmentId} />
+			<Editor assignmentId={assignmentId} courseId={courseId} />
 		</div>
 	</Bridge>,
 	document.getElementById('content')

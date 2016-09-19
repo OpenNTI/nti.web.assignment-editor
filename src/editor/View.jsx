@@ -1,6 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import {Error, Loading, ControlBar} from 'nti-web-commons';
+import {PropType as NTIID} from 'nti-lib-ntiids';
 
 import FixedElement from './utils/FixedElement';
 import AssignmentEditor from './Editor';
@@ -9,7 +10,7 @@ import Sidebar from './sidebar';
 import {Manager as SelectionManager} from '../selection';
 import {LOADED, ASSIGNMENT_DELETING, ASSIGNMENT_DELETED} from './Constants';
 import Store from './Store';
-import {loadAssignment, freeAssignment} from './Actions';
+import {loadAssignmentWithCourse, freeAssignment} from './Actions';
 
 import * as ConflictResolution from './conflict-resolution';
 
@@ -17,18 +18,12 @@ const selectionManager = new SelectionManager();
 
 export default class Editor extends React.Component {
 	static propTypes = {
-		NTIID: React.PropTypes.string.isRequired,
+		assignmentId: React.PropTypes.string.isRequired,
+		courseId: NTIID.isRequired,
 		onDeleted: React.PropTypes.func,
 		gotoRoot: React.PropTypes.func,
 		previewAssignment: React.PropTypes.func,
 		pageSource: React.PropTypes.object
-	}
-
-
-	static contextTypes = {
-		course: React.PropTypes.shape({
-			getAssignment: React.PropTypes.func
-		})
 	}
 
 
@@ -45,9 +40,11 @@ export default class Editor extends React.Component {
 
 
 	componentDidMount () {
+		const {assignmentId, courseId} = this.props;
+
 		ConflictResolution.register();
 		Store.addChangeListener(this.onStoreChange);
-		loadAssignment(this.props.NTIID, this.context.course);
+		loadAssignmentWithCourse(assignmentId, courseId);
 	}
 
 
@@ -93,7 +90,7 @@ export default class Editor extends React.Component {
 		const {undoStack} = Store;
 		const {gotoRoot, pageSource, previewAssignment} = this.props;
 		const {deleting} = this.state;
-		const {assignment, loadError: error, schema} = Store;
+		const {assignment, course, loadError: error, schema} = Store;
 		const readOnly = assignment && !assignment.getLink('edit');
 
 		if (error || (Store.isLoaded && !assignment)) {
@@ -110,6 +107,7 @@ export default class Editor extends React.Component {
 					<div className="assignment-editor-container-inner">
 						<AssignmentEditor
 							assignment={assignment}
+							course={course}
 							schema={schema}
 							gotoRoot={gotoRoot}
 							pageSource={pageSource}

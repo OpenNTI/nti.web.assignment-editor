@@ -11,6 +11,7 @@ import {
 	FREE,
 	LOADING,
 	LOADED,
+	LOADED_COURSE,
 	LOADED_SCHEMA,
 	REVERT_ERRORS,
 	SAVING,
@@ -30,6 +31,35 @@ const defaultSchema = {};
 export function freeAssignment (assignment) {
 	dispatch(FREE);
 	assignment.removeListener(EVENT_FINISH, onAssignmentSaved);
+}
+
+
+export function loadAssignmentWithCourse (assignmentId, courseId) {
+	dispatch(LOADING);
+
+	let service;
+
+
+	return getService()
+		.then((s) => {
+			service = s;
+
+			return courseId ? service.getObject(courseId) : Promise.reject('No Course Id');
+		})
+		.then((course) => {
+			dispatch(LOADED_COURSE, course);
+
+			return course.getAssignment(assignmentId);
+		}, () => service.getObject(assignmentId))
+		.then((assignment) => {
+			assignment.addListener(EVENT_FINISH, onAssignmentSaved);
+			dispatch(LOADED, assignment);
+			loadSchema(assignment);
+		})
+		.catch((reason) => {
+			//TODO: HANDLE THE ERROR CASE
+			dispatch(LOADED, reason instanceof Error ? reason : new Error(reason));
+		});
 }
 
 

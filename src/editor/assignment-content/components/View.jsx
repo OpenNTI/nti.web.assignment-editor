@@ -11,6 +11,7 @@ import Sharing from './Sharing';
 export default class AssignmentContentView extends React.Component {
 	static propTypes = {
 		assignment: React.PropTypes.object,
+		course: React.PropTypes.object,
 		schema: React.PropTypes.object
 	}
 
@@ -91,7 +92,7 @@ export default class AssignmentContentView extends React.Component {
 
 
 	render () {
-		const {assignment, schema} = this.props;
+		const {assignment, course, schema} = this.props;
 		const {title, content, titleError, contentError} = this.state;
 
 		if (!assignment) {
@@ -102,8 +103,8 @@ export default class AssignmentContentView extends React.Component {
 
 		return (
 			<div className="assignment-content">
-				<Sharing assignment={assignment} />
-				<Title value={title} schema={schema} onChange={this.onTitleChange} error={titleError} disabled={!assignment.canEdit()} />
+				<Sharing assignment={assignment} course={course} />
+				<Title value={title} schema={schema} onChange={this.onTitleChange} error={titleError} disabled={!assignment.canEdit()}  />
 				<Content value={content} schema={schema} onChange={this.onContentChange} error={contentError} disabled={!assignment.canEdit()} />
 			</div>
 		);
