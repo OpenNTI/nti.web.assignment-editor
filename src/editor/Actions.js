@@ -37,26 +37,23 @@ export function freeAssignment (assignment) {
 export function loadAssignmentWithCourse (assignmentId, courseId) {
 	dispatch(LOADING);
 
-	let service;
-
-
 	return getService()
-		.then((s) => {
-			service = s;
-
-			return courseId ? service.getObject(courseId) : Promise.reject('No Course Id');
-		})
-		.then((course) => {
-			dispatch(LOADED_COURSE, course);
-
-			return course.getAssignment(assignmentId);
-		}, () => service.getObject(assignmentId))
-		.then((assignment) => {
+		.then(service =>
+			courseId
+				? service.getObject(courseId)
+					.then(course => (
+						dispatch(LOADED_COURSE, course),
+						course.getAssignment(assignmentId)
+						)
+					)
+				: service.getObject(assignmentId)
+		)
+		.then(assignment => {
 			assignment.addListener(EVENT_FINISH, onAssignmentSaved);
 			dispatch(LOADED, assignment);
 			loadSchema(assignment);
 		})
-		.catch((reason) => {
+		.catch(reason => {
 			//TODO: HANDLE THE ERROR CASE
 			dispatch(LOADED, reason instanceof Error ? reason : new Error(reason));
 		});
