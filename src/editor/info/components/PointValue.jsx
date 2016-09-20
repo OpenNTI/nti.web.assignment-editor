@@ -61,7 +61,7 @@ export default class PointValue extends React.Component {
 		const {value} = this.state;
 
 		const doneSaving = () => {
-			this.savingValue = null;
+			delete this.savingValue;
 			this.setUp();
 		};
 
