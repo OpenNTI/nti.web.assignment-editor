@@ -113,7 +113,6 @@ export default class Editor extends React.Component {
 							schema={schema}
 							gotoRoot={gotoRoot}
 							pageSource={pageSource}
-							readOnly={readOnly}
 							previewAssignment={previewAssignment}
 						/>
 						<div className="assignment-editing-sidebar-column">
@@ -121,7 +120,7 @@ export default class Editor extends React.Component {
 								<Sidebar ref={this.attachSidebarRef} assignment={assignment} schema={schema} readOnly={readOnly} />
 							</FixedElement>
 						</div>
-						<ControlBar visible={!readOnly}>
+						<ControlBar visible>
 							<Controls assignment={assignment} undoStack={undoStack} previewAssignment={previewAssignment} selectionManager={selectionManager} />
 						</ControlBar>
 					</div>
