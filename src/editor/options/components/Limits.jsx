@@ -156,7 +156,7 @@ class Limits extends React.Component {
 
 
 	render () {
-		const {questionSet} = this.props;
+		const {questionSet, assignment} = this.props;
 		const {draw, error} = this.state;
 		const value = typeof draw === 'number' ? true : false;
 
@@ -167,7 +167,7 @@ class Limits extends React.Component {
 				name="limiting"
 				header="Max Limit"
 				content={t('content')}
-				disabled={!questionSet || questionSet.LimitedEditingCapabilities}
+				disabled={!questionSet || questionSet.LimitedEditingCapabilities || !assignment || !assignment.canEdit()}
 				disabledText={this.disabledText(questionSet)}
 				error={errorMessage}
 			>
