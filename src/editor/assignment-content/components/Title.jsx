@@ -19,7 +19,8 @@ export default class TitleEditor extends React.Component {
 		value: React.PropTypes.string.isRequired,
 		schema: React.PropTypes.object,
 		error: React.PropTypes.any,
-		onChange: React.PropTypes.func
+		onChange: React.PropTypes.func,
+		disabled: React.PropTypes.bool
 	}
 
 	constructor (props) {
@@ -57,9 +58,9 @@ export default class TitleEditor extends React.Component {
 
 
 	render () {
-		const {schema, error, value} = this.props;
+		const {schema, error, value, disabled} = this.props;
 		const {selectableId, selectableValue} = this.state;
-		const cls = cx('assignment-title-editor', {error});
+		const cls = cx('assignment-title-editor', {error, disabled});
 
 		return (
 			<Selectable className={cls} id={selectableId} value={selectableValue}>

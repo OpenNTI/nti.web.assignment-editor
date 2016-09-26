@@ -5,6 +5,10 @@
 	border-radius: 2px;
 	padding-top: rem-calc(1px);
 
+	&.disabled {
+		pointer-events: none;
+	}
+
 	.text-editor {
 		min-height: 3.5rem;
 	}

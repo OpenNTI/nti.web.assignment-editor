@@ -7,6 +7,10 @@
 	cursor: text;
 	border-radius: 2px;
 
+	&.disabled {
+		pointer-events: none;
+	}
+
 	&.selected.error,
 	&.error {
 		box-shadow: 0 0 0 1px $primary-red;

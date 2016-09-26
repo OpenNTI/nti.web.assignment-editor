@@ -13,7 +13,8 @@ export default class ContentEditor extends React.Component {
 		value: React.PropTypes.string.isRequired,
 		schema: React.PropTypes.object,
 		error: React.PropTypes.any,
-		onChange: React.PropTypes.func
+		onChange: React.PropTypes.func,
+		disabled: React.PropTypes.bool
 	}
 
 	constructor (props) {
@@ -52,9 +53,10 @@ export default class ContentEditor extends React.Component {
 
 
 	render () {
+		const {disabled} = this.props;
 		const {value, error} = this.state;
 		const {selectableId, selectableValue} = this.state;
-		const cls = cx('assignment-content-editor', {error});
+		const cls = cx('assignment-content-editor', {error, disabled});
 
 		return (
 			<Selectable className={cls} id={selectableId} value={selectableValue}>
