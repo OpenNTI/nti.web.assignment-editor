@@ -1,2 +1,3 @@
-import Question from './components/Question';
+import Question, {Placeholder} from './components/Question';
 export default Question;
+export {Placeholder};

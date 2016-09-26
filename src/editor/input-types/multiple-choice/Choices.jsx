@@ -1,9 +1,9 @@
 import React from 'react';
 
-import Choices from '../choices';
+import Choices, {Placeholder as ChoicesPlaceholder} from '../choices';
 import {isErrorForChoice} from '../choices/Factory';
 
-import Choice from './Choice';
+import Choice, {Placeholder as ChoicePlaceholder} from './Choice';
 
 export default class MultipleChoiceChoices extends Choices {
 	static propTypes = {
@@ -94,4 +94,15 @@ export default class MultipleChoiceChoices extends Choices {
 			/>
 		);
 	}
+}
+
+
+export function Placeholder () {
+	return (
+		<ChoicesPlaceholder className="multiple-choice-placeholder">
+			<ChoicePlaceholder correct />
+			<ChoicePlaceholder />
+			<ChoicePlaceholder />
+		</ChoicesPlaceholder>
+	);
 }

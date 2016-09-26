@@ -1,5 +1,6 @@
 import React from 'react';
 import QuestionSet from './QuestionSet';
+import Placeholder from './PlaceholderQuestionSet';
 
 export default class AssignmentPart extends React.Component {
 
@@ -18,6 +19,12 @@ export default class AssignmentPart extends React.Component {
 	render () {
 		const {part, assignment} = this.props;
 		const questionSet = part.question_set;
+
+		if (!assignment.hasLink('edit')) {
+			return (
+				<Placeholder />
+			);
+		}
 
 		return (
 			<QuestionSet questionSet={questionSet} assignment={assignment} />

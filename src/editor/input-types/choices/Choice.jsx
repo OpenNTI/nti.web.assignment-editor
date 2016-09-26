@@ -238,3 +238,16 @@ export default class Choice extends React.Component {
 		);
 	}
 }
+
+Placeholder.propTypes = {
+	correct: React.PropTypes.bool
+};
+export function Placeholder ({correct}) {
+	return (
+		<div className={cx('input-type-choice', 'placeholder', {correct})}>
+			<DragHandle className="choice-drag-handle" force />
+			<div className="placeholder-text"></div>
+			<div className="delete hide-when-saving"><i className="icon-remove" title="Delete Row"/></div>
+		</div>
+	);
+}

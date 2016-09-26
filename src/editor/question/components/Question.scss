@@ -157,6 +157,14 @@
 	}
 }
 
+.assignment-editing-question-container.placeholder {
+	.wrap > .placeholder-text {
+		flex: 1 1 auto;
+		background-color: $border-grey-light;
+		margin: rem-calc(4px 14px 4px 0);
+	}
+}
+
 .dragging .assignment-editing-question-container  {
 // 	position: static;
 

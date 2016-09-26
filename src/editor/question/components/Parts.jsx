@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {getEditorWidget} from '../../input-types';
+import {getEditorWidget, Placeholder as InputPlaceholder} from '../../input-types';
 
 questionParts.propTypes = {
 	question: React.PropTypes.object.isRequired,
@@ -25,6 +25,14 @@ export default function questionParts (props) {
 			{parts.map((part, index) => {
 				return getEditorWidget(part, index, question, error, onChange, keepStateHash);
 			})}
+		</div>
+	);
+}
+
+export function Placeholder () {
+	return (
+		<div className="question-editor-parts placeholder">
+			<InputPlaceholder />
 		</div>
 	);
 }

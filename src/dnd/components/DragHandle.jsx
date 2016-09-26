@@ -4,7 +4,8 @@ import cx from 'classnames';
 export default class DragHandle extends React.Component {
 	static propTypes = {
 		className: React.PropTypes.string,
-		disabled: React.PropTypes.bool
+		disabled: React.PropTypes.bool,
+		force: React.PropTypes.bool
 	}
 
 	static contextTypes = {
@@ -44,11 +45,11 @@ export default class DragHandle extends React.Component {
 
 
 	render () {
-		const {className, disabled} = this.props;
+		const {className, disabled, force} = this.props;
 		const {enableDrag, disableDrag} = this.context;
 		const cls = cx('drag-handle', className, {disabled});
 
-		if (!enableDrag || !disableDrag) {
+		if ((!enableDrag || !disableDrag) && !force) {
 			return null;
 		}
 

@@ -50,6 +50,10 @@
 	}
 }
 
+.input-type-choices.placeholder {
+	pointer-events: none;
+}
+
 
 .is-saving .input-type-choices {
 	.add-choice {

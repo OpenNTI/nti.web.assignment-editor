@@ -4,7 +4,7 @@ import Logger from 'nti-util-logger';
 import ModeledContent from './modeled-content';
 import FileUpload from './file-upload';
 import FreeResponse from './free-response';
-import MultipleChoice from './multiple-choice';
+import MultipleChoice, {Placeholder} from './multiple-choice';
 import MultipleChoiceMultipleAnwer from './multiple-choice-multiple-answer';
 import Ordering from './ordering';
 
@@ -23,7 +23,8 @@ const KINDS = [
 
 export {
 	PROMPT,
-	QUESTION
+	QUESTION,
+	Placeholder
 };
 
 

@@ -58,3 +58,14 @@ export default function QuestionControls (props) {
 		</div>
 	);
 }
+
+export function Placeholder () {
+	return (
+		<div className="assignment-editing-controls placeholder">
+			<i className="icon-moveup" />
+			<i className="icon-movedown" />
+			<i className="icon-duplicate" />
+			<i className="icon-delete" />
+		</div>
+	);
+}

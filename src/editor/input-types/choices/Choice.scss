@@ -109,3 +109,21 @@
 		color: transparent;
 	}
 }
+
+.input-type-choice.placeholder {
+	pointer-events: none;
+
+	.placeholder-text {
+		background-color: $border-grey-light;
+		flex: 1 1 100%;
+		margin: rem-calc(13px 10px 13px 31px);
+		opacity: 0.7
+	}
+
+	&.correct {
+		.placeholder-text {
+			background-color: $primary-green;
+			opacity: 0.3;
+		}
+	}
+}

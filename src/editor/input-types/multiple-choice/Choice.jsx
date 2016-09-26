@@ -3,7 +3,7 @@ import cx from 'classnames';
 import autobind from 'nti-commons/lib/autobind';
 import {Radio, Checkbox} from 'nti-web-commons';
 
-import Choice from '../choices/Choice';
+import Choice, {Placeholder as ChoicePlaceholder} from '../choices/Choice';
 
 export default class MultipleChoiceChoice extends React.Component {
 	static propTypes = {
@@ -128,4 +128,16 @@ export default class MultipleChoiceChoice extends React.Component {
 			<Radio green name={group} checked={!!correct} onChange={this.onSolutionChange} tabIndex="-1"/>
 		);
 	}
+}
+
+Placeholder.propTypes = {
+	correct: React.PropTypes.bool
+};
+export function Placeholder ({correct}) {
+	return (
+		<div className={cx('multiple-choice-choice placeholder', {correct})}>
+			<ChoicePlaceholder correct={correct} />
+			<Radio green name="placeholder-group" checked={correct} />
+		</div>
+	);
 }

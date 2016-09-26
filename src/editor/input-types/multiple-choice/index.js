@@ -1,4 +1,4 @@
-import Editor from './Editor';
+import Editor, {Placeholder} from './Editor';
 import Button from './Button';
 import {partsEqual} from './utils';
 
@@ -28,3 +28,5 @@ export default class MultipleChoicePart {
 
 Button.handles = MultipleChoicePart.handles;
 Editor.handles = MultipleChoicePart.handles;
+
+export {Placeholder};

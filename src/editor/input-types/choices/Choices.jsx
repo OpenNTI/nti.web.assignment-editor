@@ -597,3 +597,17 @@ export default class Choices extends React.Component {
 		);
 	}
 }
+
+Placeholder.propTypes = {
+	children: React.PropTypes.any
+};
+export function Placeholder ({children}) {
+	return (
+		<div className="input-type-choices">
+			<div className="choice-column">
+				{children}
+			</div>
+			<AddChoice addLabel="Add a Choice" />
+		</div>
+	);
+}

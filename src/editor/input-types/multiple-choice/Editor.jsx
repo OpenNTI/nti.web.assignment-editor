@@ -3,11 +3,12 @@ import React from 'react';
 import ChoiceFactory from '../choices/Factory';
 import {canAddPart, canMovePart, canRemovePart} from '../utils';
 
-import Choices from './Choices';
+import Choices, {Placeholder} from './Choices';
 import {generatePartFor} from './utils';
 
 const errorField = 'choices';
 
+export {Placeholder};
 
 export default class MultipleChoiceEditor extends React.Component {
 	static propTypes = {

@@ -16,8 +16,8 @@ import {updateQuestion} from '../Actions';
 
 import Between from './Between';
 import Content from './Content';
-import Parts from './Parts';
-import Controls from './controls/View';
+import Parts, {Placeholder as PartsPlaceholder} from './Parts';
+import Controls, {Placeholder as ControlsPlaceholder} from './controls/View';
 
 const {Field:{Component:ErrorCmp}} = Errors;
 
@@ -327,4 +327,21 @@ export default class Question extends React.Component {
 			</div>
 		);
 	}
+}
+
+
+export function Placeholder () {
+	return (
+		<div className="assignment-editing-question-container placeholder">
+			<div className="question-editor">
+				<div className="wrap">
+					<DragHandle className="question-drag-handle" force />
+					<div className="index">1</div>
+					<div className="placeholder-text"></div>
+				</div>
+				<PartsPlaceholder />
+			</div>
+			<ControlsPlaceholder />
+		</div>
+	);
 }
