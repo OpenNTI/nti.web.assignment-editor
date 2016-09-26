@@ -101,7 +101,7 @@ class Grading extends React.Component {
 	render () {
 		const {assignment, questionSet} = this.props;
 		const {isAutoGraded, conflicts, error} = this.state;
-		const disabled = assignment && (!assignment.hasLink('edit') || !assignment.totalPoints);
+		const disabled = assignment && (!assignment.canSetAutoGrade() || !assignment.totalPoints);
 
 		const errorMessage = error && ( error.message );
 
@@ -111,7 +111,7 @@ class Grading extends React.Component {
 				header="Grading"
 				content={t('content')}
 				error={conflicts || errorMessage}
-				disabled={!questionSet || Boolean(conflicts) || !assignment.totalPoints}
+				disabled={!questionSet || Boolean(conflicts) || !assignment.totalPoints || !assignment.canSetAutoGrade()}
 				disabledText={questionSet ? (assignment.totalPoints ? '' : t('disabled-total-points')) : t('disabled-no-questions')}
 				>
 				<Option label={t('label')} name="auto-grading" value={isAutoGraded} onChange={this.onChange} disabled={disabled}/>
