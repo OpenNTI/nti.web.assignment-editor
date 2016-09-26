@@ -66,10 +66,7 @@ export default class Controls extends React.Component {
 			<div className="assignment-editor-controls">
 				<ActionStack stack={undoStack} />
 				<FormatControls selection={selection} />
-				{(assignment && assignment.hasLink('edit')) ?
-					<PreviewControls previewAssignment={previewAssignment} /> :
-					null
-				}
+				{previewAssignment && (<PreviewControls previewAssignment={previewAssignment} />)}
 				<EditorStatus />
 				<PublishControls assignment={assignment} />
 			</div>
