@@ -1,5 +1,7 @@
 import React from 'react';
+import {Panels} from 'nti-web-commons';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import {scoped} from 'nti-lib-locale';
 import cx from 'classnames';
 
 import {StickyContainer, Sticky} from './utils/StickyElement';
@@ -12,6 +14,12 @@ import Placeholder from './Placeholder';
 
 const CONTENT_VIEW = 'content';
 const OPTIONS_VIEW = 'options';
+
+const DEFAULT_TEXT = {
+	legacy: 'You’re editing a legacy assignment. Some features may be disabled.'
+};
+
+const t = scoped('ASSIGNMENT_EDITOR', DEFAULT_TEXT);
 
 export default class AssignmentEditor extends React.Component {
 	static propTypes = {
@@ -57,6 +65,7 @@ export default class AssignmentEditor extends React.Component {
 					this.renderPlaceholder(assignment, previewAssignment) :
 					(
 						<div>
+							{assignment && !assignment.canEdit() && (<Panels.MessageBar message={t('legacy')} />)}
 							<AssignmentInfo assignment={assignment} schema={schema} />
 							<div className="content">
 								<ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
