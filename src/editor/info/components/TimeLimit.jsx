@@ -136,7 +136,7 @@ export default class TimeLimit extends React.Component {
 	}
 
 	renderDisplay () {
-
+		const {assignment} = this.props;
 		const {value, hasTimeLimit, error} = this.state;
 		const days = DurationPicker.days(value);
 		const hours = DurationPicker.hours(value);
@@ -151,7 +151,9 @@ export default class TimeLimit extends React.Component {
 		});
 
 		return (
-			<LabeledValue label="Time Limit" arrow><span className={labelClasses}>{label}</span></LabeledValue>
+			<LabeledValue label="Time Limit" arrow disabled={!assignment.canEdit()}>
+				<span className={labelClasses}>{label}</span>
+			</LabeledValue>
 		);
 	}
 }

@@ -48,9 +48,7 @@ export default class DueDate extends React.Component {
 			error: null
 		});
 
-		return assignment.save({
-			'available_for_submission_ending': value
-		})
+		return assignment.setDueDate(value)
 		.then(() => {
 			this.setState({
 				value,
@@ -71,6 +69,7 @@ export default class DueDate extends React.Component {
 	}
 
 	render () {
+		const {assignment} = this.props;
 		const {value, saving, error} = this.state;
 		return (
 			<div className="field due-date">
@@ -81,6 +80,7 @@ export default class DueDate extends React.Component {
 					error={error}
 					saving={saving}
 					onReset={this.reset}
+					disabled={!assignment.canSetDueDate()}
 				/>
 			</div>
 		);

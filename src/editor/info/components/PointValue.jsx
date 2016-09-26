@@ -79,12 +79,12 @@ export default class PointValue extends React.Component {
 	}
 
 	render () {
-
+		const {assignment} = this.props;
 		const {value} = this.state;
 
 		return (
 			<div className="field point-value">
-				<LabeledValue label="Value">
+				<LabeledValue label="Value" disabled={!assignment.canSetTotalPoints()}>
 					<NumberInput
 						value={typeof value === 'number' ? value : ''}
 						min="0"

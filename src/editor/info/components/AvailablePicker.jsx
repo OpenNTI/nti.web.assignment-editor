@@ -18,7 +18,8 @@ export default class AvailablePicker extends React.Component {
 		onChange: PropTypes.func.isRequired,
 		onReset: PropTypes.func,
 		saving: PropTypes.bool,
-		error: PropTypes.any
+		error: PropTypes.any,
+		disabled: PropTypes.bool
 	}
 
 	static defaultProps = {
@@ -116,7 +117,7 @@ export default class AvailablePicker extends React.Component {
 	renderTrigger () {
 		const {
 			state: {date},
-			props: {label}
+			props: {label, disabled}
 		} = this;
 		const hasValue = date !== null;
 		const placeholder = 'No Due Date';
@@ -125,7 +126,7 @@ export default class AvailablePicker extends React.Component {
 		});
 
 		return (
-			<LabeledValue label={label} className="available-trigger" arrow>
+			<LabeledValue label={label} className="available-trigger" arrow disabled={disabled}>
 				{hasValue ? <DateTime date={date} format="L"/> : <span className={labelClasses}>{placeholder}</span>}
 			</LabeledValue>
 		);
