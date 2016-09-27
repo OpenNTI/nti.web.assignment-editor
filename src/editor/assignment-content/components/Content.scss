@@ -4,6 +4,7 @@
 	cursor: text;
 	border-radius: 2px;
 	padding-top: rem-calc(1px);
+	min-height: 60px;
 
 	&.disabled {
 		pointer-events: none;

@@ -60,13 +60,16 @@ export default class ContentEditor extends React.Component {
 
 		return (
 			<Selectable className={cls} id={selectableId} value={selectableValue}>
-				<BufferedTextEditor
-					initialValue={value}
-					placeholder={PLACEHOLDER}
-					onFocus={this.onEditorFocus}
-					onChange={this.onChange}
-					error={error}
-				/>
+				{disabled ?
+					null :
+					<BufferedTextEditor
+						initialValue={value}
+						placeholder={PLACEHOLDER}
+						onFocus={this.onEditorFocus}
+						onChange={this.onChange}
+						error={error}
+					/>
+				}
 			</Selectable>
 		);
 	}
