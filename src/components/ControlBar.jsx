@@ -10,9 +10,8 @@ const DEFAULT_TEXT = {
 
 const t = scoped('ASSIGNMENT_CONTROL_BAR', DEFAULT_TEXT);
 
-function getSubmissionText (data) {
-	return t('submission', data);
-}
+const getSubmissionText = (data) => t('submission', data);
+
 
 export default class AssignmentControlBar extends React.Component {
 	static propTypes = {
@@ -44,7 +43,7 @@ export default class AssignmentControlBar extends React.Component {
 						{
 							student ?
 								(<DisplayName tag="span" entity={student} localeKey={getSubmissionText} />) :
-								(<span>{t('message')}</span>)
+								(<span>{t('preview')}</span>)
 						}
 					</div>
 					<Button rounded onClick={this.onClick} href="./edit">{t('button')}</Button>
