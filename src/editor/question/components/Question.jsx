@@ -18,6 +18,7 @@ import Between from './Between';
 import Content from './Content';
 import Parts, {Placeholder as PartsPlaceholder} from './Parts';
 import Controls, {Placeholder as ControlsPlaceholder} from './controls/View';
+import Sharing from './Sharing';
 
 const {Field:{Component:ErrorCmp}} = Errors;
 
@@ -56,6 +57,7 @@ export default class Question extends React.Component {
 		question: React.PropTypes.object.isRequired,
 		questionSet: React.PropTypes.object.isRequired,
 		assignment: React.PropTypes.object.isRequired,
+		course: React.PropTypes.object,
 		index: React.PropTypes.number
 	}
 
@@ -280,7 +282,8 @@ export default class Question extends React.Component {
 			question,
 			index,
 			questionSet,
-			assignment
+			assignment,
+			course
 		} = this.props;
 		const {
 			selectableId,
@@ -304,6 +307,7 @@ export default class Question extends React.Component {
 				<InlineDialog active={modal} dialogButtons={this.buttons} topPadding={80} bottomPadding={70}>
 					<Selectable className={cls} id={selectableId} value={selectableValue} tabIndex="-1" onMouseDown={this.onMouseDown}>
 						{modal && (<div className="visible-disclaimer">{t('visibleDisclaimer')}</div>)}
+						<Sharing question={question} course={course} />
 						<div className="wrap" onClick={this.focusEditor}>
 							<DragHandle className="question-drag-handle hide-when-saving" />
 							<div className="index">{index + 1}</div>
@@ -322,7 +326,7 @@ export default class Question extends React.Component {
 						{questionError && (<ErrorCmp error={questionError} />)}
 					</Selectable>
 				</InlineDialog>
-				<Controls question={question} questionSet={questionSet} assignment={assignment} flushChanges={this.flushChanges} />
+				<Controls question={question} questionSet={questionSet} assignment={assignment} flushChanges={this.flushChanges} course={course} />
 				{isLastQuestion(question, questionSet) && (<Between question={question} after />)}
 			</div>
 		);

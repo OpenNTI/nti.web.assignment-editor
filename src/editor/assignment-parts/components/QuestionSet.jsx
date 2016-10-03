@@ -19,7 +19,8 @@ export default class QuestionSetComponent extends React.Component {
 
 	static propTypes = {
 		questionSet: React.PropTypes.object.isRequired,
-		assignment: React.PropTypes.object.isRequired
+		assignment: React.PropTypes.object.isRequired,
+		course: React.PropTypes.object
 	}
 
 
@@ -90,10 +91,10 @@ export default class QuestionSetComponent extends React.Component {
 
 
 	renderQuestion = (question, index) => {
-		const {questionSet, assignment} = this.props;
+		const {questionSet, assignment, course} = this.props;
 
 		return (
-			<Question index={index} question={question} questionSet={questionSet} assignment={assignment} />
+			<Question index={index} question={question} questionSet={questionSet} assignment={assignment} course={course} />
 		);
 	}
 }

@@ -6,17 +6,20 @@ import {hasOrderedContents} from '../../../../ordered-contents';
 import Delete from './Delete';
 import Duplicate from './Duplicate';
 import Move, {UP, DOWN} from './Move';
+import More from './More';
+import Share from './Share';
 
 QuestionControls.propTypes = {
 	question: React.PropTypes.object.isRequired,
 	questionSet: React.PropTypes.object.isRequired,
 	assignment: React.PropTypes.object.isRequired,
+	course: React.PropTypes.object,
 	flushChanges: React.PropTypes.func
 };
 
 
 export default function QuestionControls (props) {
-	const {question, questionSet, assignment, flushChanges} = props;
+	const {question, questionSet, assignment, flushChanges, course} = props;
 
 	const ordered = hasOrderedContents(questionSet);
 	const canMove = ordered;
@@ -55,6 +58,10 @@ export default function QuestionControls (props) {
 				assignment={assignment}
 				disabled={!canDelete}
 				/>
+
+			<More>
+				<Share question={question} course={course} />
+			</More>
 		</div>
 	);
 }

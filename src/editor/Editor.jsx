@@ -104,7 +104,7 @@ export default class AssignmentEditor extends React.Component {
 					</div>
 				)}
 				<AssignmentContent assignment={assignment} course={course} schema={schema} />
-				<AssignmentParts assignment={assignment} schema={schema} />
+				<AssignmentParts assignment={assignment} course={course} schema={schema} />
 			</div>
 		);
 	}
