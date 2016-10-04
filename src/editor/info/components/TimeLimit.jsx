@@ -1,7 +1,5 @@
 import React from 'react';
 import cx from 'classnames';
-
-import {scoped} from 'nti-lib-locale';
 import Logger from 'nti-util-logger';
 import {
 	Checkbox,
@@ -13,22 +11,6 @@ import {
 
 const logger = Logger.get('lib:asssignment-editor:TimeLimit');
 
-const DEFAULT_TEXT = {
-	days: {
-		one: '%(count)s Day',
-		other: '%(count)s Days'
-	},
-	hours: {
-		one: '%(count)s Hour',
-		other: '%(count)s Hours'
-	},
-	minutes: {
-		one: '%(count)s Minute',
-		other: '%(count)s Minutes'
-	}
-};
-
-const t = scoped('UNITS', DEFAULT_TEXT);
 const TIME_LIMIT_KEY = 'maximum_time_allowed';
 
 
@@ -138,13 +120,8 @@ export default class TimeLimit extends React.Component {
 	renderDisplay () {
 		const {assignment} = this.props;
 		const {value, hasTimeLimit, error} = this.state;
-		const days = DurationPicker.days(value);
-		const hours = DurationPicker.hours(value);
-		const minutes = DurationPicker.minutes(value);
 
-		const p = (val, unit) => val ? t(unit, {count:val}) : '';
-
-		const label = error ? 'Error' : (hasTimeLimit && value > 0) ? `${p(days, 'days')} ${p(hours, 'hours')} ${p(minutes, 'minutes')}` : 'No Limit';
+		const label = error ? 'Error' : (hasTimeLimit && value > 0) ? DurationPicker.getDisplay(value) : 'No Limit';
 
 		const labelClasses = cx({
 			'placeholder': !hasTimeLimit || value === 0
