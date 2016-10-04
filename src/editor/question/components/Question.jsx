@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import buffer from 'nti-commons/lib/function-buffer';
+import {buffer} from 'nti-commons';
 import {Errors} from 'nti-web-commons';
 import {scoped} from 'nti-lib-locale';
 

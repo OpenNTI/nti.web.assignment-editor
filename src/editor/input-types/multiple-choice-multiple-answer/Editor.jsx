@@ -1,5 +1,4 @@
 import React from 'react';
-import autobind from 'nti-commons/lib/autobind';
 
 import MultipleChoiceEditor from '../multiple-choice/Editor';
 import {generatePartFor} from './utils';
@@ -23,8 +22,6 @@ export default class MultipleChoiceMultipleAnswerEditor extends React.Component 
 		this.state = {
 			error
 		};
-
-		autobind(this, 'generatePart');
 	}
 
 
@@ -40,7 +37,7 @@ export default class MultipleChoiceMultipleAnswerEditor extends React.Component 
 	}
 
 
-	generatePart (content, choices, solutions) {
+	generatePart = (content, choices, solutions) => {
 		const {part} = this.props;
 		const mimeType = part && part.MimeType;
 

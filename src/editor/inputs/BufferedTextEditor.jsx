@@ -1,6 +1,6 @@
 import React from 'react';
 import {TextEditor, valuesEqual} from 'nti-modeled-content';
-import buffer from 'nti-commons/lib/function-buffer';
+import {buffer} from 'nti-commons';
 
 const DEFAULT_BUFFER = 5000;
 

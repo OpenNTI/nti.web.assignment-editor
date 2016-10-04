@@ -1,5 +1,4 @@
 import React from 'react';
-import autobind from 'nti-commons/lib/autobind';
 
 import Store from '../../Store';
 import {ASSIGNMENT_ERROR} from '../../Constants';
@@ -32,13 +31,6 @@ export default class AssignmentContentView extends React.Component {
 			content: content,
 			errors: {}
 		};
-
-		autobind(this,
-			'onStoreChange',
-			'onAssignmentChange',
-			'onTitleChange',
-			'onContentChange'
-		);
 	}
 
 
@@ -62,16 +54,14 @@ export default class AssignmentContentView extends React.Component {
 	}
 
 
-	onStoreChange (data) {
+	onStoreChange = (data) => {
 		if (data.type === ASSIGNMENT_ERROR) {
 			this.onAssignmentError();
 		}
 	}
 
 
-	onAssignmentChange () {
-
-	}
+	onAssignmentChange = () => {}
 
 
 	onAssignmentError () {
@@ -85,14 +75,14 @@ export default class AssignmentContentView extends React.Component {
 	}
 
 
-	onTitleChange (value, maxLength) {
+	onTitleChange = (value, maxLength) => {
 		const {assignment} = this.props;
 
 		saveTitle(assignment, value, maxLength);
 	}
 
 
-	onContentChange (value) {
+	onContentChange = (value) => {
 		const {assignment} = this.props;
 
 		saveContent(assignment, value);

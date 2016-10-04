@@ -1,7 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
 import {HOC} from 'nti-web-commons';
-import autobind from 'nti-commons/lib/autobind';
 
 import {getButtons} from '../../input-types';
 
@@ -26,12 +25,10 @@ export default class QuestionTypes extends React.Component {
 
 	constructor (props) {
 		super(props);
-
-		autobind(this, 'onChange');
 	}
 
 
-	onChange () {
+	onChange = () => {
 		this.forceUpdate();
 	}
 

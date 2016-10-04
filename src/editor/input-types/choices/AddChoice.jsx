@@ -1,5 +1,7 @@
 import React from 'react';
-import getKeyCode from 'nti-commons/lib/get-key-code';
+import {Events} from 'nti-commons';
+
+const {getKeyCode} = Events;
 
 export default class AddChoice extends React.Component {
 	static propTypes = {

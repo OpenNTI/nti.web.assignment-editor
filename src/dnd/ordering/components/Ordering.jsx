@@ -3,8 +3,7 @@ import ReactDom from 'react-dom';
 import FlipMove from 'react-flip-move';
 import cx from 'classnames';
 import Logger from 'nti-util-logger';
-import wait from 'nti-commons/lib/wait';
-import autobind from 'nti-commons/lib/autobind';
+import {wait} from 'nti-commons';
 
 import Draggable from '../../components/Draggable';
 import Dropzone from '../../components/Dropzone';
@@ -70,14 +69,6 @@ export default class Ordering extends React.Component {
 		let {items} = props;
 
 		this.componentRefs = {};
-
-		autobind(this,
-			'renderItem',
-			'onContainerDrop',
-			'onContainerDragLeave',
-			'onContainerDragOver',
-			'onStoreChange'
-		);
 
 		this.dropHandlers = this.getDropHandlers(this.onContainerDrop.bind(this));
 
@@ -147,7 +138,7 @@ export default class Ordering extends React.Component {
 	}
 
 
-	onStoreChange (e) {
+	onStoreChange = (e) => {
 		if (e.type === ORDERING_DRAG_OVER || e.type === ORDERING_DRAG_LEAVE) {
 			this.maybeRemovePlaceholder();
 		}
@@ -303,7 +294,7 @@ export default class Ordering extends React.Component {
 	}
 
 
-	onContainerDrop (data, dataTransfer, e) {
+	onContainerDrop = (data, dataTransfer, e) => {
 		const {onChange} = this.props;
 		const {clientX, clientY} = e;
 		const moveInfo = dataTransfer.findDataFor(MoveInfo.MimeType);
@@ -340,8 +331,7 @@ export default class Ordering extends React.Component {
 	}
 
 
-
-	onContainerDragOver (e, canHandle) {
+	onContainerDragOver = (e, canHandle) => {
 		if (!canHandle) { return; }
 
 		dragOverOrdering(this);
@@ -373,14 +363,14 @@ export default class Ordering extends React.Component {
 	}
 
 
-	onContainerDragLeave () {
+	onContainerDragLeave = () => {
 		dragLeaveOrdering(this);
 
 		this.removePlaceholder();
 	}
 
 
-	onItemDragStart (dragItem) {
+	onItemDragStart = (dragItem) => {
 		//wait a little bit so the ghost image will be there
 		//For html5 drag and drop to work correctly the node that is dragging needs to still be in the dom,
 		//since we are using the same node for the placeholder, if it originated from here we need to keep the node
@@ -416,7 +406,7 @@ export default class Ordering extends React.Component {
 	}
 
 
-	onItemDragEnd (dragItem) {
+	onItemDragEnd = (dragItem) => {
 		const {onChange} = this.props;
 		let {items, originalOrder} = this.state;
 		const dragId = dragItem.NTIID || dragItem.ID;
@@ -490,7 +480,6 @@ export default class Ordering extends React.Component {
 	}
 
 
-
 	render () {
 		const {className} = this.props;
 		const {items, disableAnimation} = this.state;
@@ -519,7 +508,7 @@ export default class Ordering extends React.Component {
 	}
 
 
-	renderItem (item, index) {
+	renderItem = (item, index) => {
 		const {renderItem} = this.props;
 		const cls = cx('ordering-item', {placeholder: item.isPlaceholder, 'is-dragging': item.isDragging});
 		const key = item.ID;

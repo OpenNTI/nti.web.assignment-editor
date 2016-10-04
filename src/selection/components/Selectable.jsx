@@ -1,6 +1,5 @@
 import React from 'react';
 import cx from 'classnames';
-import autobind from 'nti-commons/lib/autobind';
 
 import SelectionItem from '../SelectionItem';
 
@@ -35,12 +34,6 @@ export default class Selectable extends React.Component {
 		this.state = {
 			selected: false
 		};
-
-		autobind(this,
-			'onSelectionChanged',
-			'select',
-			'unselect'
-		);
 	}
 
 
@@ -78,7 +71,7 @@ export default class Selectable extends React.Component {
 	}
 
 
-	onSelectionChanged () {
+	onSelectionChanged = () => {
 		const {selected:wasSelected} = this.state;
 		const item = this.getSelectionItem();
 		const selectionManager = this.context.SelectionManager;
@@ -104,7 +97,7 @@ export default class Selectable extends React.Component {
 	}
 
 
-	select (e) {
+	select = (e) => {
 		const selectionManager = this.context.SelectionManager;
 		const item = this.getSelectionItem();
 		const {selected} = this.state;
@@ -123,7 +116,7 @@ export default class Selectable extends React.Component {
 	}
 
 
-	unselect (e) {
+	unselect = (e) => {
 		const selectionManager = this.context.SelectionManager;
 		const item = this.getSelectionItem();
 		const {onUnselect} = this.props;

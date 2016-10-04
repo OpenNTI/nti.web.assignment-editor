@@ -18,7 +18,7 @@ import {
 } from './Constants';
 
 import {Prompt} from 'nti-web-commons';
-import minWait from 'nti-commons/lib/wait-min';
+import {wait} from 'nti-commons';
 
 const SHORT = 3000;
 
@@ -149,7 +149,7 @@ export function deleteAssignment (assignment, promptText) {
 			.then(() => {
 				dispatch(ASSIGNMENT_DELETING, true);
 				assignment.delete()
-					.then(minWait(SHORT))
+					.then(wait.min(SHORT))
 					.then(() => {
 						dispatch(ASSIGNMENT_DELETED);
 					})

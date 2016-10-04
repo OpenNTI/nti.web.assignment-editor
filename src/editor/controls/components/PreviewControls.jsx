@@ -1,5 +1,4 @@
 import React, {PropTypes} from 'react';
-import autobind from 'nti-commons/lib/autobind';
 import Logger from 'nti-util-logger';
 
 const logger = Logger.get('lib:assignment-editor:controls:components:PreviewControls');
@@ -9,13 +8,8 @@ export default class PreviewControls extends React.Component {
 		previewAssignment: PropTypes.func
 	}
 
-	constructor (props) {
-		super(props);
 
-		autobind(this, 'handleClick');
-	}
-
-	handleClick () {
+	handleClick = () => {
 		if (this.props.previewAssignment) {
 			this.props.previewAssignment();
 		} else {

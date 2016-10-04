@@ -1,6 +1,5 @@
 import React from 'react';
 import cx from 'classnames';
-import autobind from 'nti-commons/lib/autobind';
 import {Radio, Checkbox} from 'nti-web-commons';
 
 import Choice, {Placeholder as ChoicePlaceholder} from '../choices/Choice';
@@ -32,11 +31,6 @@ export default class MultipleChoiceChoice extends React.Component {
 		this.state = {
 			correct: choice.correct
 		};
-
-		autobind(this,
-			'onSolutionChange',
-			'onChoiceChange'
-		);
 	}
 
 
@@ -61,12 +55,12 @@ export default class MultipleChoiceChoice extends React.Component {
 	}
 
 
-	onChoiceChange (choice) {
+	onChoiceChange = (choice) => {
 		this.onChange(choice);
 	}
 
 
-	onSolutionChange (e) {
+	onSolutionChange = (e) => {
 		const {choice:oldChoice, onSolutionChange} = this.props;
 		let newChoice = oldChoice.clone();
 

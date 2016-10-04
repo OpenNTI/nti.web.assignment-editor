@@ -1,5 +1,5 @@
 import {dispatch} from 'nti-lib-dispatcher';
-import wait from 'nti-commons/lib/wait';
+import {wait} from 'nti-commons';
 
 import OrderedContents from '../../ordered-contents';
 

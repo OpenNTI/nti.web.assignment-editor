@@ -1,5 +1,4 @@
 import React from 'react';
-import autobind from 'nti-commons/lib/autobind';
 
 import QuestionTypes from './QuestionTypes';
 import TabBar from './Header';
@@ -36,8 +35,6 @@ export default class Editor extends React.Component {
 		super(props);
 
 		this.state = {};
-
-		autobind(this, 'selectionChanged');
 	}
 
 
@@ -60,7 +57,7 @@ export default class Editor extends React.Component {
 	}
 
 
-	selectionChanged (selection) {
+	selectionChanged = (selection) => {
 		this.setState({
 			selection
 		});

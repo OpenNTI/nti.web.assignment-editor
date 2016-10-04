@@ -38,7 +38,7 @@
     "node-natural-sort": "^0.8.3",
     "jump.js": "^1.0.1",
     "node-uuid": "^1.4.3",
-    "nti-commons": "^1.0.1",
+    "nti-commons": "^2.0.0",
     "nti-lib-dispatcher": "^1.0.0",
     "nti-lib-dom": "^1.4.0",
     "nti-lib-interfaces": "^1.9.2",

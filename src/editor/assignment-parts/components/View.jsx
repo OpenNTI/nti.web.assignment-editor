@@ -1,7 +1,6 @@
 import React from 'react';
 import Logger from 'nti-util-logger';
 import {HOC} from 'nti-web-commons';
-import autobind from 'nti-commons/lib/autobind';
 
 import NoParts from './NoParts';
 import Part from './Part';
@@ -15,14 +14,8 @@ export default class AssignmentPartsView extends React.Component {
 		assignment: React.PropTypes.object
 	}
 
-	constructor (props) {
-		super(props);
 
-		autobind(this, 'onAssignmentUpdate');
-	}
-
-
-	onAssignmentUpdate () {
+	onAssignmentUpdate = () => {
 		this.forceUpdate();
 	}
 

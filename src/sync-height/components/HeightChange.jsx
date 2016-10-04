@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Logger from 'nti-util-logger';
-import wait from 'nti-commons/lib/wait';
+import {wait} from 'nti-commons';
 
 const logger = Logger.get('HeightChange');
 

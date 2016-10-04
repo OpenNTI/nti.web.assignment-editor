@@ -1,5 +1,4 @@
 import React from 'react';
-import autobind from 'nti-commons/lib/autobind';
 
 import ActionStack from '../../../action-list';
 
@@ -28,8 +27,6 @@ export default class Controls extends React.Component {
 		super(props);
 
 		this.state = {};
-
-		autobind(this, 'selectionChanged');
 	}
 
 
@@ -52,7 +49,7 @@ export default class Controls extends React.Component {
 	}
 
 
-	selectionChanged (selection) {
+	selectionChanged = (selection) => {
 		this.setState({
 			selection
 		});

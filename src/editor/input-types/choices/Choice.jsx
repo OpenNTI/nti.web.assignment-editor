@@ -1,13 +1,15 @@
 import React from 'react';
 import cx from 'classnames';
+import {Events} from 'nti-commons';
 
-import getKeyCode from 'nti-commons/lib/get-key-code';
 import BufferedTextEditor from '../../inputs/BufferedTextEditor';
 
 import {DragHandle} from '../../../dnd';
 import SyncHeight from '../../../sync-height';
 import {Component as Selectable} from '../../../selection';
 import ControlsConfig from '../../controls/ControlsConfig';
+
+const {getKeyCode} = Events;
 
 const PLACEHOLDER = '';
 

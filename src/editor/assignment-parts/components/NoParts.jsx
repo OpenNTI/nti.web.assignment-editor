@@ -1,5 +1,4 @@
 import React from 'react';
-import autobind from 'nti-commons/lib/autobind';
 import {scoped} from 'nti-lib-locale';
 
 import {Dropzone} from '../../../dnd';
@@ -23,8 +22,6 @@ export default class NoParts extends React.Component {
 	constructor (props) {
 		super(props);
 
-		autobind(this, 'onQuestionAdded');
-
 		this.accepts = [QUESTION_TYPE];
 		this.dropHandlers = {
 			[QUESTION_TYPE]: this.onQuestionAdded
@@ -32,7 +29,7 @@ export default class NoParts extends React.Component {
 	}
 
 
-	onQuestionAdded (data) {
+	onQuestionAdded = (data) => {
 		const {assignment} = this.props;
 
 		createPartWithQuestion(assignment, data, null, assignment.isAvailable());

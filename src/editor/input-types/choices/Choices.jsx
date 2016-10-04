@@ -1,6 +1,5 @@
 import React from 'react';
 import cx from 'classnames';
-import autobind from 'nti-commons/lib/autobind';
 
 import {SyncHeightGroup} from '../../../sync-height';
 import {Ordering} from '../../../dnd/';
@@ -89,12 +88,6 @@ export default class Choices extends React.Component {
 		};
 
 		this.setUpHandlers(columns, deletes);
-
-		//Because of inheritance these have to be bound
-		autobind(this,
-			'renderColumn',
-			'renderAdd'
-		);
 	}
 
 
@@ -556,7 +549,7 @@ export default class Choices extends React.Component {
 	}
 
 
-	renderChoice (column, choice, row) {
+	renderChoice = (column, choice, row) => {
 		const {plainText} = this.props;
 		const {error, canRemove} = this.state;
 		const onChange = this.choiceChangeHandlers[column];
@@ -586,7 +579,8 @@ export default class Choices extends React.Component {
 		);
 	}
 
-	renderAdd () {
+
+	renderAdd = () => {
 		const {addLabel} = this.props;
 
 		return (
