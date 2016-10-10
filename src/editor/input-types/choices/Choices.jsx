@@ -511,7 +511,7 @@ export default class Choices extends React.Component {
 		return (
 			<div className={cls}>
 				<div className="choices">
-					{columns.map(this.renderColumn)}
+					{columns.map((choices, index) => this.renderColumn(choices, index))}
 				</div>
 				<div className="choices add">
 					{canAdd ? this.renderAdd() : null}
@@ -521,7 +521,7 @@ export default class Choices extends React.Component {
 	}
 
 
-	renderColumn = (choices, index) => {
+	renderColumn (choices, index) {
 		const {containerId, accepts, reorderable} = this.props;
 		const renderChoice = this.choiceRenders[index];
 		const onChange = this.orderChangeHandlers[index];
@@ -549,7 +549,7 @@ export default class Choices extends React.Component {
 	}
 
 
-	renderChoice = (column, choice, row) => {
+	renderChoice (column, choice, row) {
 		const {plainText} = this.props;
 		const {error, canRemove} = this.state;
 		const onChange = this.choiceChangeHandlers[column];
