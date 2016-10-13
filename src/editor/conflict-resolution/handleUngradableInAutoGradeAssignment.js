@@ -1,5 +1,6 @@
 import React from 'react';
-import {ConflictResolution, Prompt, wait} from 'nti-web-commons';
+import {ConflictResolution, Prompt} from 'nti-web-commons';
+import {wait} from 'nti-commons';
 
 import Store from '../Store';
 
