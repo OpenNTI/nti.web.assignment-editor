@@ -319,7 +319,11 @@ class Store extends StorePrototype {
 		const {response} = e.action;
 		const p = PRIVATE.get(this);
 
-		p.errors = this[SetMessageOn](p.errors, response, type);
+		// Note: Do not show 409s,
+		// since the user deals with them directly through a modal dialog
+		if (!response || response.statusCode !== 409) {
+			p.errors = this[SetMessageOn](p.errors, response, type);
+		}
 	}
 
 

@@ -14,7 +14,11 @@ export default function handleUngradableInAutoGradeAssignment (challenge) {
 	const {assignment} = Store;
 
 	return new Promise((confirm, reject) => {
-		const onCancel = () => (challenge.reject(), reject());
+		const onCancel = () => (assignment && assignment.refresh())
+							.then(() => assignment.onChange('refreshed'))
+							.then(() => (challenge.reject(), reject()))
+							.catch(() => (challenge.reject(), reject()));
+
 		Prompt.modal(
 			<DefaultConfirmPrompt challenge={challenge} onConfirm={confirm} onCancel={onCancel}/>,
 			'request-conflict-resolver'
