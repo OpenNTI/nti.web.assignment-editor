@@ -2,11 +2,14 @@ import React from 'react';
 import {Associations} from 'nti-web-commons';
 import {scoped} from 'nti-lib-locale';
 
-
-const {createGroupedInterfaceForItem, openEditorModal} = Associations;
+const {createGroupedInterfaceForItem, openEditorModal, Display} = Associations;
 
 const DEFAULT_TEXT = {
-	noActiveLessons: 'Add to Lesson',
+	empty: 'Add to Lesson',
+	loading: {
+		one: 'Shared with %(count)s Lesson...',
+		other: 'Shared with %(count)s Lessons...'
+	},
 	modalLabel: 'Add to Lesson',
 	availableLabel: 'Available Lessons',
 	noShared: {
@@ -32,10 +35,12 @@ export default class AssignmentSharing extends React.Component {
 
 
 	render () {
+		const {assignment, course} = this.props;
+
 		return (
 			<div className="assignment-sharing" onClick={this.onClick}>
 				<i className="icon-folder" />
-				<span>{t('noActiveLessons')}</span>
+				<Display.Inline item={assignment} scope={course} getString={t} editable />
 			</div>
 		);
 	}

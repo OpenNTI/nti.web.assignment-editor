@@ -7,13 +7,13 @@
 	cursor: pointer;
 
 	i {
-		display: inline;
+		display: inline-block;
 		vertical-align: middle;
 		margin-right: 0.5rem;
 	}
 
-	span {
-		font: normal 400 0.875rem/1.25rem $body-font-family;
+	.inline-association {
+		display: inline-block;
 		vertical-align: middle;
 	}
 }
