@@ -14,7 +14,19 @@ const DEFAULT_TEXT = {
 	availableLabel: 'Available Lessons',
 	noShared: {
 		subHeader: 'Add to a Lesson.'
-	}
+	},
+	remaining: {
+		one: '%(count)s Other',
+		other: '%(count)s Others'
+	},
+	label: {
+		//This makes use of the pluralization of the count of list items to get the appropriate commas or not
+		remaining: {
+			one: 'Shared with {list} and {remaining}',
+			other: 'Shared with {list}, and {remaining}'
+		},
+		single: 'Shared with {list}'
+	},
 };
 
 const t = scoped('AssignmentSharing', DEFAULT_TEXT);
@@ -40,7 +52,7 @@ export default class AssignmentSharing extends React.Component {
 		return (
 			<div className="assignment-sharing" onClick={this.onClick}>
 				<i className="icon-folder" />
-				<Display.Inline item={assignment} scope={course} getString={t} editable />
+				<Display.Inline item={assignment} scope={course} getString={t} />
 			</div>
 		);
 	}

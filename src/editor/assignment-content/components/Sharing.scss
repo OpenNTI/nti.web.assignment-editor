@@ -1,7 +1,7 @@
 @import "~nti-style-common";
 
 .assignment-sharing {
-	color: $primary-blue;
+	color: $primary-purple;
 	padding: rem-calc(0 10px);
 	display: inline-block;
 	cursor: pointer;
@@ -15,5 +15,7 @@
 	.inline-association {
 		display: inline-block;
 		vertical-align: middle;
+		max-width: rem-calc(500px);
+		font-size: 0.875rem;
 	}
 }
