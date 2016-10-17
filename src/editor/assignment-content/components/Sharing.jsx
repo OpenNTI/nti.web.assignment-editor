@@ -16,8 +16,8 @@ const DEFAULT_TEXT = {
 		subHeader: 'Add to a Lesson.'
 	},
 	remaining: {
-		one: '%(count)s Other',
-		other: '%(count)s Others'
+		one: '%(count)s Other Lesson',
+		other: '%(count)s Other Lessons'
 	},
 	label: {
 		//This makes use of the pluralization of the count of list items to get the appropriate commas or not
