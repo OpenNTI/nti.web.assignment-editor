@@ -1,8 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
 import {HOC} from 'nti-web-commons';
+import {MoveRoot} from 'nti-lib-interfaces';
 
-import {MoveRoot} from '../../../ordered-contents';
 import {Ordering} from '../../../dnd';
 
 import Question from '../../question';
@@ -35,12 +35,11 @@ export default class QuestionSetComponent extends React.Component {
 
 		const {questionSet} = props;
 		const {questions} = questionSet;
-		const moveLink = questionSet && questionSet.getLink && questionSet.getLink('AssessmentMove');
 
 		setState({ questions });
 
-		if (moveLink) {
-			this.moveRoot = new MoveRoot(moveLink);
+		if (questionSet && questionSet.hasLink('AssessmentMove')) {
+			this.moveRoot = new MoveRoot(questionSet, 'AssessmentMove');
 		} else {
 			//TODO: disable moving
 			delete this.moveRoot;

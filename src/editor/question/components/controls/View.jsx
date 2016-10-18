@@ -1,7 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-
-import {hasOrderedContents} from '../../../../ordered-contents';
+import {OrderedContents} from 'nti-lib-interfaces';
 
 import Delete from './Delete';
 import Duplicate from './Duplicate';
@@ -21,7 +20,7 @@ QuestionControls.propTypes = {
 export default function QuestionControls (props) {
 	const {question, questionSet, assignment, flushChanges, course} = props;
 
-	const ordered = hasOrderedContents(questionSet);
+	const ordered = OrderedContents.hasOrderedContents(questionSet);
 	const canMove = ordered;
 	const canDelete = ordered;
 	const canDuplicate = ordered;

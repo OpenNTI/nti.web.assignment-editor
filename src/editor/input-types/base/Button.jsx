@@ -1,10 +1,10 @@
 import React from 'react';
 import cx from 'classnames';
 import {HOC} from 'nti-web-commons';
+import {OrderedContents} from 'nti-lib-interfaces';
 
 import {appendQuestionTo} from '../Actions';
 
-import {hasOrderedContents} from '../../../ordered-contents';
 import {Draggable} from '../../../dnd';
 
 const QuestionMimeType = 'application/vnd.nextthought.naquestion';
@@ -21,7 +21,7 @@ function canAddToAssignment (assignment) {
 	const {question_set:questionSet} = part || {};
 
 	return !assignment.isLocked()
-		&& (!questionSet || hasOrderedContents(questionSet));
+		&& (!questionSet || OrderedContents.hasOrderedContents(questionSet));
 }
 
 export class Button extends React.Component {
@@ -104,7 +104,7 @@ export class Button extends React.Component {
 			<Draggable data={data} className={cls} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} onDragEnd={this.onMouseUp}>
 				<div className={cls} onClick={this.onClick} >
 					<div className="icon-wrapper">
-						<div className={icnCls}></div>
+						<div className={icnCls} />
 					</div>
 					<div className="label">{label}</div>
 					<div className={usedCls}>{usedCount}</div>

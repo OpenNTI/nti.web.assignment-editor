@@ -1,7 +1,6 @@
 import {dispatch} from 'nti-lib-dispatcher';
+import {OrderedContents} from 'nti-lib-interfaces';
 import {wait} from 'nti-commons';
-
-import OrderedContents from '../../ordered-contents';
 
 import {maybeResetAssignmentOnError} from '../Actions';
 
