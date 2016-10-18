@@ -42,7 +42,9 @@ export default class AssignmentSharing extends React.Component {
 		const {assignment, course} = this.props;
 		const associations = createGroupedInterfaceForItem(assignment, course);
 
-		openEditorModal(t('modalLabel'), associations, null, t);
+		openEditorModal(t('modalLabel'), associations, null, t, () => {
+			this.forceUpdate();
+		});
 	}
 
 
