@@ -24,6 +24,7 @@ const t = scoped('ASSIGNMENT_EDITOR', DEFAULT_TEXT);
 export default class AssignmentEditor extends React.Component {
 	static propTypes = {
 		assignment: React.PropTypes.object,
+		course: React.PropTypes.object,
 		schema: React.PropTypes.object,
 		gotoRoot: React.PropTypes.func,
 		pageSource: React.PropTypes.object,
@@ -52,7 +53,7 @@ export default class AssignmentEditor extends React.Component {
 
 
 	render () {
-		const {assignment, schema, gotoRoot, pageSource, readOnly, previewAssignment} = this.props;
+		const {assignment, course, schema, gotoRoot, pageSource, readOnly, previewAssignment} = this.props;
 		const {active} =  this.state;
 		const cls = cx('assignment-editor', {loading: !!assignment, 'read-only': readOnly});
 
@@ -70,7 +71,7 @@ export default class AssignmentEditor extends React.Component {
 							<div className="content">
 								<ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
 									{active === CONTENT_VIEW ?
-										this.renderContent(assignment, schema) :
+										this.renderContent(assignment, course, schema) :
 										this.renderOptions(assignment, schema)
 									}
 								</ReactCSSTransitionGroup>
@@ -93,7 +94,7 @@ export default class AssignmentEditor extends React.Component {
 	}
 
 
-	renderContent (assignment, schema) {
+	renderContent (assignment, course, schema) {
 		return (
 			<div key="content" className="content-container">
 				{assignment && (
@@ -102,8 +103,8 @@ export default class AssignmentEditor extends React.Component {
 						<span>Options</span>
 					</div>
 				)}
-				<AssignmentContent assignment={assignment} schema={schema} />
-				<AssignmentParts assignment={assignment} schema={schema} />
+				<AssignmentContent assignment={assignment} course={course} schema={schema} />
+				<AssignmentParts assignment={assignment} course={course} schema={schema} />
 			</div>
 		);
 	}

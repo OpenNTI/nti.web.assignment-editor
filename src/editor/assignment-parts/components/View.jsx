@@ -11,7 +11,8 @@ const logger = Logger.get('lib:asssignment-editor:AssignmentParts');
 
 export default class AssignmentPartsView extends React.Component {
 	static propTypes = {
-		assignment: React.PropTypes.object
+		assignment: React.PropTypes.object,
+		course: React.PropTypes.object
 	}
 
 
@@ -45,12 +46,14 @@ export default class AssignmentPartsView extends React.Component {
 
 
 	renderParts (parts) {
+		const {assignment, course} = this.props;
+
 		if (parts.length > 1) {
 			logger.warn('More than one assignment part, not sure how to handle it. Just taking the first.', parts);
 		}
 
 		return (
-			<Part part={parts[0]} assignment={this.props.assignment} />
+			<Part part={parts[0]} assignment={assignment} course={course} />
 		);
 	}
 

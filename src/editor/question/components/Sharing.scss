@@ -1,0 +1,73 @@
+@import "~nti-style-common";
+
+.question-sharing {
+	display: flex;
+	align-items: center;
+	padding: rem-calc(10px 15px);
+	margin-bottom: -20px;
+	box-shadow: inset 0 0 0 0 white;
+	background-color: white;
+	transition: margin-bottom 500ms, box-shadow 500ms, background-color 500ms;
+	position: relative;
+
+	.selected &, .childSelected & {
+		margin-bottom: 0;
+		background-color: rgba(146, 74, 254, 0.03);
+		box-shadow: inset 0 -1px 0 0 rgba(146, 73, 255, 0.2);
+
+		.message {
+			animation: 0.5s ease-in fadeIn;
+			animation-fill-mode: both;
+			display: block;
+
+			.disclosure {
+				display: inline;
+			}
+		}
+	}
+
+	&:hover {
+		.message {
+			display: block;
+		}
+	}
+
+	.pill {
+		background: $primary-purple;
+		color: white;
+		flex: 0 0 auto;
+		padding: rem-calc(0 8px);
+		border-radius: 2px;
+		margin-right: 10px;
+
+		i {
+			display: inline-block;
+			vertical-align: middle;
+			margin-right: 2px;
+		}
+
+		span {
+			font: normal 400 0.625rem/1.25rem $body-font-family;
+			text-transform: uppercase;
+			display: inline-block;
+			vertical-align: middle;
+		}
+	}
+
+	.message {
+		flex: 1 1 auto;
+		font: normal 400 0.875rem/1.25rem $body-font-family;
+		display: none;
+
+		.disclosure {
+			margin-right: 10px;
+			display: none;
+			color: $primary-grey;
+		}
+
+		.detach {
+			color: $primary-purple;
+			cursor: pointer;
+		}
+	}
+}

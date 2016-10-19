@@ -1,8 +1,8 @@
 import React from 'react';
 import {HOC} from 'nti-web-commons';
 import cx from 'classnames';
+import {MoveRoot} from 'nti-lib-interfaces';
 
-import {MoveRoot} from '../../../../ordered-contents';
 import {MoveInfo} from '../../../../dnd';
 
 import {moveQuestion} from '../../../assignment-parts/Actions';
@@ -70,10 +70,9 @@ export default class Move extends React.Component {
 	setup (props) {
 		const setState = x => this.state ? this.setState(x) : (this.state = x);
 		const {questionSet, question, type, disabled} = props;
-		const moveLink = questionSet && questionSet.getLink('AssessmentMove');
 
-		if (moveLink) {
-			this.moveRoot = new MoveRoot(moveLink);
+		if (questionSet && questionSet.hasLink('AssessmentMove')) {
+			this.moveRoot = new MoveRoot(questionSet, 'AssessmentMove');
 		} else if (this.moveRoot) {
 			delete this.moveRoot;
 		}

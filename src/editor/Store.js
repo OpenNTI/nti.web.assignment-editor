@@ -6,6 +6,7 @@ import Logger from 'nti-util-logger';
 import {
 	FREE,
 	LOADED,
+	LOADED_COURSE,
 	LOADED_SCHEMA,
 	LOADING,
 	SAVING,
@@ -36,6 +37,7 @@ const ClearQuestionError = Symbol('Clear Question Error');
 const SetAssignment = Symbol('Set Assignment');
 const SetAssignmentDeleting = Symbol('Set Assignment Deleting');
 const SetAssignmentDeleted = Symbol('Set Assignment Deleted');
+const SetCourse = Symbol('Set Course');
 const SetSchema = Symbol('Set Assignment Schema');
 const SetSaving = Symbol('Set Saving');
 const SetSaveEnded = Symbol('Set Save Ended');
@@ -129,6 +131,7 @@ class Store extends StorePrototype {
 
 		this.registerHandlers({
 			[LOADED]: SetAssignment,
+			[LOADED_COURSE]: SetCourse,
 			[LOADED_SCHEMA]: SetSchema,
 			[LOADING]: ClearAssignment,
 			[FREE]: ClearAssignment,
@@ -163,6 +166,14 @@ class Store extends StorePrototype {
 		if (p.schema !== null || p.error) {
 			this.emitChange({type: LOADED});
 		}
+	}
+
+
+	[SetCourse] (e) {
+		const {response} = e.action;
+		let p = PRIVATE.get(this);
+
+		p.course = response;
 	}
 
 
@@ -381,6 +392,11 @@ class Store extends StorePrototype {
 
 	get assignment () {
 		return PRIVATE.get(this).assignment;
+	}
+
+
+	get course () {
+		return PRIVATE.get(this).course;
 	}
 
 

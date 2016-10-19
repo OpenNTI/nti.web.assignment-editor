@@ -5,12 +5,13 @@
 		// display: none;
 	}
 
-	i[class^="icon-"] {
+
+	i[class^="icon-"], span.more-controls {
 		font-size: 1rem;
 		color: $secondary-grey;
 		cursor: pointer;
 		display: block;
-		padding: rem-calc(14px 16px);
+		padding: rem-calc(10px 16px);
 
 		&:hover {
 			color: $primary-grey;
@@ -35,6 +36,12 @@
 			pointer-events: none;
 			opacity: 0.3;
 		}
+	}
+
+	span.more-controls {
+		text-align: center;
+		font-weight: 700;
+		font-size: 1.2rem;
 	}
 }
 

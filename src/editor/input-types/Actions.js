@@ -1,7 +1,6 @@
 import {dispatch} from 'nti-lib-dispatcher';
 import Logger from 'nti-util-logger';
-
-import OrderedContents from '../../ordered-contents';
+import {OrderedContents} from 'nti-lib-interfaces';
 
 import {SAVING, SAVE_ENDED, QUESTION_SET_UPDATED, QUESTION_SET_ERROR} from '../Constants';
 

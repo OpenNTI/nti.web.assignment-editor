@@ -1,7 +1,6 @@
 import {dispatch} from 'nti-lib-dispatcher';
+import {OrderedContents} from 'nti-lib-interfaces';
 import {wait} from 'nti-commons';
-
-import OrderedContents from '../../ordered-contents';
 
 import {maybeResetAssignmentOnError} from '../Actions';
 
@@ -152,6 +151,28 @@ export function duplicateQuestionFrom (question, questionSet, delaySave) {
 					dispatch(QUESTION_SET_ERROR, reason);
 					dispatch(SAVE_ENDED);
 				});
+		});
+}
+
+
+export function detachSharedQuestion (question, questionSet, delaySave) {
+	const orderedContents = new OrderedContents(questionSet);
+
+	if (!orderedContents.canEdit) { return; }
+
+	const clone = cloneQuestion(question);
+
+	dispatch(SAVING, questionSet);
+
+	orderedContents.replaceItem(question, clone, delaySave)
+		.catch(maybeResetAssignmentOnError(questionSet))
+		.then(() => {
+			dispatch(QUESTION_SET_UPDATED, questionSet);
+			dispatch(SAVE_ENDED);
+		})
+		.catch((reason) => {
+			dispatch(QUESTION_ERROR, {NTIID: question.NTIID, field: 'parts', reason});
+			dispatch(SAVE_ENDED);
 		});
 }
 

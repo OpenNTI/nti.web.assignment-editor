@@ -6,7 +6,8 @@ export default class AssignmentPart extends React.Component {
 
 	static propTypes = {
 		part: React.PropTypes.object.isRequired,
-		assignment: React.PropTypes.object.isRequired
+		assignment: React.PropTypes.object.isRequired,
+		course: React.PropTypes.object
 	}
 
 	constructor (props) {
@@ -17,7 +18,7 @@ export default class AssignmentPart extends React.Component {
 
 
 	render () {
-		const {part, assignment} = this.props;
+		const {part, assignment, course} = this.props;
 		const questionSet = part.question_set;
 
 		if (!assignment.hasLink('edit')) {
@@ -27,7 +28,7 @@ export default class AssignmentPart extends React.Component {
 		}
 
 		return (
-			<QuestionSet questionSet={questionSet} assignment={assignment} />
+			<QuestionSet questionSet={questionSet} assignment={assignment} course={course} />
 		);
 	}
 }

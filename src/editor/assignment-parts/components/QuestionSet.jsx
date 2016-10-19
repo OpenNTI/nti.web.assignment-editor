@@ -1,8 +1,8 @@
 import React from 'react';
 import cx from 'classnames';
 import {HOC} from 'nti-web-commons';
+import {MoveRoot} from 'nti-lib-interfaces';
 
-import {MoveRoot} from '../../../ordered-contents';
 import {Ordering} from '../../../dnd';
 
 import Question from '../../question';
@@ -19,7 +19,8 @@ export default class QuestionSetComponent extends React.Component {
 
 	static propTypes = {
 		questionSet: React.PropTypes.object.isRequired,
-		assignment: React.PropTypes.object.isRequired
+		assignment: React.PropTypes.object.isRequired,
+		course: React.PropTypes.object
 	}
 
 
@@ -34,12 +35,11 @@ export default class QuestionSetComponent extends React.Component {
 
 		const {questionSet} = props;
 		const {questions} = questionSet;
-		const moveLink = questionSet && questionSet.getLink && questionSet.getLink('AssessmentMove');
 
 		setState({ questions });
 
-		if (moveLink) {
-			this.moveRoot = new MoveRoot(moveLink);
+		if (questionSet && questionSet.hasLink('AssessmentMove')) {
+			this.moveRoot = new MoveRoot(questionSet, 'AssessmentMove');
 		} else {
 			//TODO: disable moving
 			delete this.moveRoot;
@@ -90,10 +90,10 @@ export default class QuestionSetComponent extends React.Component {
 
 
 	renderQuestion = (question, index) => {
-		const {questionSet, assignment} = this.props;
+		const {questionSet, assignment, course} = this.props;
 
 		return (
-			<Question index={index} question={question} questionSet={questionSet} assignment={assignment} />
+			<Question index={index} question={question} questionSet={questionSet} assignment={assignment} course={course} />
 		);
 	}
 }

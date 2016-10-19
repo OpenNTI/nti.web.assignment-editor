@@ -4,6 +4,8 @@ export const LOADED = 'assignment:editor:AssignmentLoaded';
 export const LOADED_SCHEMA = 'assignment:editor:AssignmentSchemaLoaded';
 export const LOADING = 'assignment:editor:AssignmentLoading';
 
+export const LOADED_COURSE = 'assignment:editor:CourseLoaded';
+
 export const SAVING = 'assignment:editor:Saving';
 export const SAVE_ENDED = 'assignment:editor:SaveEnded';
 
