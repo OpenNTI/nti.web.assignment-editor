@@ -72,7 +72,7 @@ export default class Editor extends React.Component {
 
 		if (!assignment) {
 			return (
-				<div className="assignment-editing-sidebar loading"></div>
+				<div className="assignment-editing-sidebar loading" />
 			);
 		}
 

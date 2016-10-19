@@ -26,7 +26,7 @@ export default class AssignmentPartsView extends React.Component {
 
 		if (!assignment) {
 			return (
-				<div className="assignment-parts loading"></div>
+				<div className="assignment-parts loading" />
 			);
 		}
 

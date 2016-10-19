@@ -33,14 +33,14 @@ AssignmentEditorPlaceholder.propTypes = {
 
 
 function renderAnswer (answer, index) {
-	return (<div key={index} className="answer"></div>);
+	return (<div key={index} className="answer" />);
 }
 
 
 function renderLine (line, index) {
 	const cls = cx('line', {long: line === LONG});
 
-	return (<div key={index} className={cls}></div>);
+	return (<div key={index} className={cls} />);
 }
 
 

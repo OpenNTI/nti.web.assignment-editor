@@ -70,7 +70,7 @@ export default class TextArea extends React.Component {
 				onBlur={this.props.onBlur}
 				onChange={this.onChange}
 				style={{width: '100%', resize: 'none', border: 'none'}}
-			></textarea>
+			/>
 		);
 	}
 }

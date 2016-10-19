@@ -97,7 +97,7 @@ export default class AssignmentContentView extends React.Component {
 
 		if (!assignment) {
 			return (
-				<div className="assignment-content loading"></div>
+				<div className="assignment-content loading" />
 			);
 		}
 
