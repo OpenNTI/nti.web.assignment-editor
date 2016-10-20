@@ -3,6 +3,7 @@ import cx from 'classnames';
 
 import SelectionItem from '../SelectionItem';
 
+
 export default class Selectable extends React.Component {
 	static propTypes = {
 		value: React.PropTypes.any,
@@ -10,7 +11,9 @@ export default class Selectable extends React.Component {
 		className: React.PropTypes.string,
 		children: React.PropTypes.any,
 		onSelect: React.PropTypes.func,
-		onUnselect: React.PropTypes.func
+		onUnselect: React.PropTypes.func,
+		onChildSelect: React.PropTypes.func,
+		onChildUnselect: React.PropTypes.func
 	}
 
 	static childContextTypes = {
@@ -172,15 +175,27 @@ export default class Selectable extends React.Component {
 
 
 	childSelected () {
+		const {onChildSelect} = this.props;
+
 		this.setState({
 			childSelected: true
+		}, () => {
+			if (onChildSelect) {
+				onChildSelect();
+			}
 		});
 	}
 
 
 	childUnselected () {
+		const {onChildUnselect} = this.props;
+
 		this.setState({
 			childSelected: false
+		}, () => {
+			if (onChildUnselect) {
+				onChildUnselect();
+			}
 		});
 	}
 

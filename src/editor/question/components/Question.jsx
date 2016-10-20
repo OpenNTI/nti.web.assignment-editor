@@ -220,7 +220,7 @@ export default class Question extends React.Component {
 	}
 
 
-	onMouseDown = () => {
+	onSelect = () => {
 		const {question, assignment} = this.props;
 
 		if (isVisible(question, assignment)) {
@@ -298,14 +298,22 @@ export default class Question extends React.Component {
 		const cls = cx('question-editor', {
 			'is-saving': question.isSaving && !modal,
 			error: contentError || questionError || question.error,
-			'saving-mask': savingMask
+			'saving-mask': savingMask,
+			'in-modal': modal
 		});
 
 		return (
 			<div className="assignment-editing-question-container">
 				<Between question={question} before />
 				<InlineDialog active={modal} dialogButtons={this.buttons} topPadding={80} bottomPadding={70}>
-					<Selectable className={cls} id={selectableId} value={selectableValue} tabIndex="-1" onMouseDown={this.onMouseDown}>
+					<Selectable
+						className={cls}
+						id={selectableId}
+						value={selectableValue}
+						tabIndex="-1"
+						onChildSelect={this.onSelect}
+						onSelect={this.onSelect}
+					>
 						{modal && (<div className="visible-disclaimer">{t('visibleDisclaimer')}</div>)}
 						<Sharing question={question} course={course} questionSet={questionSet} assignment={assignment} />
 						<div className="wrap" onClick={this.focusEditor}>

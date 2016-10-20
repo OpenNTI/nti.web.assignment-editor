@@ -35,6 +35,13 @@ export default class QuestionShareing extends React.Component {
 	}
 
 
+	//To keep the question selectable from preventing the click event from firing
+	//stop our focus event from propagating
+	onFocus = (e) => {
+		e.stopPropagation();
+	}
+
+
 	render () {
 		const {question} = this.props;
 
@@ -52,7 +59,7 @@ export default class QuestionShareing extends React.Component {
 				</div>
 				<div className="message">
 					<span className="disclosure">{t('disclosure')}</span>
-					{this.canDetach() && (<span className="detach" onClick={this.onDetach}>{t('detach')}</span>)}
+					{this.canDetach() && (<span className="detach" onClick={this.onDetach} onFocus={this.onFocus} tabIndex="-1">{t('detach')}</span>)}
 				</div>
 			</div>
 		);

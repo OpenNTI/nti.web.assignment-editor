@@ -4,6 +4,7 @@
 	position: relative;
 	margin-bottom: rem-calc(30px);
 	padding: rem-calc(0 30px);
+	min-height: rem-calc(200px);
 
 	.inline-dialog {
 		.inner-wrapper {
@@ -58,6 +59,7 @@
 
 
 	.question-editor {
+		background: white;
 		margin-right: rem-calc(58px);
 		border-radius: 2px;
 		border: 1px solid #e7e7e7;
