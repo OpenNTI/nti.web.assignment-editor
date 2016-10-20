@@ -211,6 +211,8 @@ export default class Selectable extends React.Component {
 		delete otherProps.value;
 		delete otherProps.onSelect;
 		delete otherProps.onUnselect;
+		delete otherProps.onChildSelect;
+		delete otherProps.onChildUnselect;
 
 		return (
 			<div {...otherProps} className={cls} onFocus={this.select} onBlur={this.unselect}>
