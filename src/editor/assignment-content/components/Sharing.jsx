@@ -1,4 +1,5 @@
 import React from 'react';
+import cx from 'classnames';
 import {Associations} from 'nti-web-commons';
 import {scoped} from 'nti-lib-locale';
 
@@ -50,9 +51,11 @@ export default class AssignmentSharing extends React.Component {
 
 	render () {
 		const {assignment, course} = this.props;
+		const count = assignment.LessonContainerCount;
+		const cls = cx('assignment-sharing', {single: count === 1, none: count === 0});
 
 		return (
-			<div className="assignment-sharing" onClick={this.onClick}>
+			<div className={cls} onClick={this.onClick}>
 				<i className="icon-folder" />
 				<Display.Inline item={assignment} scope={course} getString={t} onShow={this.onClick} />
 			</div>
