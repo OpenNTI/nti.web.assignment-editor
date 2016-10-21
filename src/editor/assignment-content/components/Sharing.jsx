@@ -54,7 +54,7 @@ export default class AssignmentSharing extends React.Component {
 		return (
 			<div className="assignment-sharing" onClick={this.onClick}>
 				<i className="icon-folder" />
-				<Display.Inline item={assignment} scope={course} getString={t} />
+				<Display.Inline item={assignment} scope={course} getString={t} onShow={this.onClick} />
 			</div>
 		);
 	}
