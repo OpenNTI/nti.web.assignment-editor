@@ -4,7 +4,7 @@ import SuggestionItem from './SuggestionItem';
 const TYPE_GROUPS = {
 	'Documents': ['.pdf', '.doc', '.docx', '.txt'],
 	'Spreadsheets': ['.xls', '.xlsx', '.csv'],
-	'Images': ['.png', '.jpg', '.jepg', '.gif']
+	'Images': ['.png', '.jpg', '.jpeg', '.gif']
 };
 
 export default class Suggestions extends React.Component {
