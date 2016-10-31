@@ -29,9 +29,9 @@ export default class QuestionShareing extends React.Component {
 
 
 	onDetach = () => {
-		const {question, questionSet, assignment} = this.props;
+		const {question, questionSet} = this.props;
 
-		detachSharedQuestion(question, questionSet, assignment.isAvailable());
+		detachSharedQuestion(question, questionSet);
 	}
 
 
