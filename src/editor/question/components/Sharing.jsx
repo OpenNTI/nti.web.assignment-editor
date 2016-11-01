@@ -11,7 +11,7 @@ const AssignmentType = 'application/vnd.nextthought.assessment.assignment';
 
 const DEFAULT_TEXT = {
 	shared: 'Shared',
-	disclosure: 'Edits will be shared with other assignments',
+	disclosure: 'Edits will be shared with other assignments.',
 	detach: 'Detach from Other Assignments',
 	modalLabel: 'Add to Assignment',
 	noActiveLessons: 'Add to Assignment',
