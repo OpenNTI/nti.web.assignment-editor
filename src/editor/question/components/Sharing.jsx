@@ -1,13 +1,24 @@
 import React from 'react';
 import {OrderedContents} from 'nti-lib-interfaces';
 import {scoped} from 'nti-lib-locale';
+import {Associations} from 'nti-web-commons';
 
 import {detachSharedQuestion} from '../Actions';
+
+const {createInterfaceForItem, openEditorModal} = Associations;
+
+const AssignmentType = 'application/vnd.nextthought.assessment.assignment';
 
 const DEFAULT_TEXT = {
 	shared: 'Shared',
 	disclosure: 'Edits will be shared with other assignments',
-	detach: 'Detach from Other Assignments'
+	detach: 'Detach from Other Assignments',
+	modalLabel: 'Add to Assignment',
+	noActiveLessons: 'Add to Assignment',
+	availableLabel: 'Available Assignments',
+	noShared: {
+		subHeader: 'Add to a Assignment.'
+	}
 };
 
 const t = scoped('QUESTION_SHARING', DEFAULT_TEXT);
@@ -35,6 +46,14 @@ export default class QuestionShareing extends React.Component {
 	}
 
 
+	onPillClick = () => {
+		const {question, course} = this.props;
+		const associations = createInterfaceForItem(question, course, [AssignmentType]);
+
+		openEditorModal(t('modalLabel'), associations, null, t);
+	}
+
+
 	//To keep the question selectable from preventing the click event from firing
 	//stop our focus event from propagating
 	onFocus = (e) => {
@@ -53,7 +72,7 @@ export default class QuestionShareing extends React.Component {
 
 		return (
 			<div className="question-sharing">
-				<div className="pill">
+				<div className="pill" onClick={this.onPillClick}>
 					<i className="icon-link" />
 					<span>{t('shared')}</span>
 				</div>

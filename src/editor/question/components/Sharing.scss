@@ -39,6 +39,7 @@
 		padding: rem-calc(0 8px);
 		border-radius: 2px;
 		margin-right: 10px;
+		cursor: pointer;
 
 		i {
 			display: inline-block;
@@ -47,7 +48,7 @@
 		}
 
 		span {
-			font: normal 400 0.625rem/1.25rem $body-font-family;
+			font: normal 600 0.625rem/1.25rem $body-font-family;
 			text-transform: uppercase;
 			display: inline-block;
 			vertical-align: middle;
