@@ -73,7 +73,7 @@ export default class QuestionShareing extends React.Component {
 		return (
 			<div className="question-sharing">
 				<div className="pill" onClick={this.onPillClick}>
-					<i className="icon-link" />
+					<i className="icon-link small" />
 					<span>{t('shared')}</span>
 				</div>
 				<div className="message">
