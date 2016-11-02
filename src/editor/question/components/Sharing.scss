@@ -32,26 +32,8 @@
 		}
 	}
 
-	.pill {
-		background: $primary-purple;
-		color: white;
+	.question-sharing-pill {
 		flex: 0 0 auto;
-		padding: rem-calc(0 8px);
-		border-radius: 2px;
-		margin-right: 10px;
-		cursor: pointer;
-		line-height: 1;
-
-		i {
-			margin-right: 2px;
-		}
-
-		span {
-			font: normal 600 0.625rem/1.25rem $body-font-family;
-			text-transform: uppercase;
-			display: inline;
-			vertical-align: middle;
-		}
 	}
 
 	.message {

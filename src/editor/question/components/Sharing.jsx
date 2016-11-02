@@ -5,7 +5,7 @@ import {Associations} from 'nti-web-commons';
 
 import {detachSharedQuestion} from '../Actions';
 
-const {createInterfaceForItem, openEditorModal} = Associations;
+const {createInterfaceForItem, openEditorModal, Display} = Associations;
 
 const AssignmentType = 'application/vnd.nextthought.assessment.assignment';
 
@@ -62,7 +62,7 @@ export default class QuestionShareing extends React.Component {
 
 
 	render () {
-		const {question} = this.props;
+		const {question, course} = this.props;
 
 		//If the question isn't in at least 2 assessments there's no need
 		//to show the sharing widget.
@@ -72,10 +72,7 @@ export default class QuestionShareing extends React.Component {
 
 		return (
 			<div className="question-sharing">
-				<div className="pill" onClick={this.onPillClick}>
-					<i className="icon-link small" />
-					<span>{t('shared')}</span>
-				</div>
+				<Display.Pill className="question-sharing-pill" item={question} scope={course} onShow={this.onPillClick} />
 				<div className="message">
 					<span className="disclosure">{t('disclosure')}</span>
 					{this.canDetach() && (<span className="detach" onClick={this.onDetach} onFocus={this.onFocus} tabIndex="-1">{t('detach')}</span>)}
