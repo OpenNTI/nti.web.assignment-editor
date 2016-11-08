@@ -50,6 +50,10 @@
 		.detach {
 			color: $primary-purple;
 			cursor: pointer;
+
+			&:hover {
+				color: #7d3fd8;//Didn't make this a variable because it seems like a one off.
+			}
 		}
 	}
 }
