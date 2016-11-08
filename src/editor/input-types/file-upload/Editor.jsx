@@ -1,10 +1,18 @@
 import React from 'react';
 import filesize from 'filesize';
 import {Prompt} from 'nti-web-commons';
+import {scoped} from 'nti-lib-locale';
 
 import {generatePartFor} from './utils';
 import Settings from './Settings';
-import {SettingsButton} from 'nti-web-commons';
+
+const DEFAULT_TEXT = {
+	upload: 'Upload a file',
+	settings: 'Limit File Types'
+};
+
+const t = scoped('FILE_UPLOAD', DEFAULT_TEXT);
+
 
 export default class FileUploadEditor extends React.Component {
 	static propTypes = {
@@ -69,8 +77,8 @@ export default class FileUploadEditor extends React.Component {
 			<div className="file-upload assignment-editing">
 				<div className="title hide-when-saving">{title}</div>
 				{part.max_file_size && <div className="max-size hide-when-saving">Maximum file size is <span className="filesize">{filesize(part.max_file_size)}</span>.</div>}
-				<div className="upload-button">Upload a file</div>
-				<SettingsButton onClick={this.showSettings} />
+				<div className="settings" onClick={this.showSettings}>{t('settings')}</div>
+				<div className="upload-button">{t('upload')}</div>
 			</div>
 		);
 	}
