@@ -5,6 +5,7 @@
 	padding: rem-calc(0 10px);
 	display: inline-block;
 	cursor: pointer;
+	margin-bottom: rem-calc(5px);
 
 	&.single, &.none {
 		color: $primary-blue;
