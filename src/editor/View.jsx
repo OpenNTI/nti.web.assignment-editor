@@ -11,6 +11,7 @@ import {Manager as SelectionManager} from '../selection';
 import {LOADED, ASSIGNMENT_DELETING, ASSIGNMENT_DELETED} from './Constants';
 import Store from './Store';
 import {loadAssignmentWithCourse, freeAssignment} from './Actions';
+import NotFound from './NotFound';
 
 import * as ConflictResolution from './conflict-resolution';
 
@@ -93,7 +94,11 @@ export default class Editor extends React.Component {
 		const {assignment, course, loadError: error, schema} = Store;
 		const readOnly = assignment && !assignment.getLink('edit');
 
-		if (error || (Store.isLoaded && !assignment)) {
+		if ((Store.isLoaded && !assignment) || (error && error.statusCode === 404)) {
+			return this.renderFailedToLoad();
+		}
+
+		if (error) {
 			return this.renderError(error || 'No Assignment');
 		}
 
@@ -133,6 +138,15 @@ export default class Editor extends React.Component {
 			<div className="assignment-editor-container error">
 				<Error error={error} />
 			</div>
+		);
+	}
+
+
+	renderFailedToLoad () {
+		const {gotoRoot} = this.props;
+
+		return (
+			<NotFound gotoRoot={gotoRoot} />
 		);
 	}
 }

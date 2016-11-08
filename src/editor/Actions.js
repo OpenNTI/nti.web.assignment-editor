@@ -30,7 +30,10 @@ const defaultSchema = {};
 
 export function freeAssignment (assignment) {
 	dispatch(FREE);
-	assignment.removeListener(EVENT_FINISH, onAssignmentSaved);
+
+	if (assignment) {
+		assignment.removeListener(EVENT_FINISH, onAssignmentSaved);
+	}
 }
 
 
