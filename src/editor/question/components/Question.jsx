@@ -67,6 +67,8 @@ export default class Question extends React.Component {
 		{label: t('save'), onClick: () => this.onDialogSave()}
 	]
 
+	setSelectableRef = x => this.selectableRef = x
+
 	constructor (props) {
 		super(props);
 
@@ -274,6 +276,10 @@ export default class Question extends React.Component {
 		if (question.delaySaving && question.remove) {
 			question.remove();
 		}
+
+		if (this.selectableRef) {
+			this.selectableRef.doUnselect();
+		}
 	}
 
 
@@ -308,6 +314,7 @@ export default class Question extends React.Component {
 				<InlineDialog active={modal} dialogButtons={this.buttons} topPadding={80} bottomPadding={70}>
 					<Selectable
 						className={cls}
+						ref={this.setSelectableRef}
 						id={selectableId}
 						value={selectableValue}
 						tabIndex="-1"

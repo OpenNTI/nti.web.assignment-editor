@@ -147,6 +147,17 @@ export default class Selectable extends React.Component {
 
 
 	unselect = (e) => {
+		e.stopPropagation();
+
+		//Wait to do the unselect actions to see if something is adding focus
+		//in the same event cycle. For example: a format button for an editor
+		this.doUnselectTimeout = setTimeout(() => {
+			this.doUnselect();
+		}, 250);
+	}
+
+
+	doUnselect () {
 		const {
 			SelectionManager:selectionManager,
 			SelectionParent:selectionParent
@@ -154,23 +165,18 @@ export default class Selectable extends React.Component {
 		const item = this.getSelectionItem();
 		const {onUnselect} = this.props;
 
-		e.stopPropagation();
+		if (selectionManager) {
+			selectionManager.unselect(item);
 
-		//Wait to do the unselect actions to see if something is adding focus
-		//in the same event cycle. For example: a format button for an editor
-		this.doUnselectTimeout = setTimeout(() => {
-			if (selectionManager) {
-				selectionManager.unselect(item);
-
-				if (selectionParent) {
-					selectionParent.childUnselected();
-				}
+			if (selectionParent) {
+				selectionParent.childUnselected();
 			}
+		}
 
-			if (onUnselect) {
-				onUnselect(item);
-			}
-		}, 250);
+		if (onUnselect) {
+			onUnselect(item);
+		}
+
 	}
 
 
