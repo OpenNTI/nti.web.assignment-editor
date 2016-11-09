@@ -8,6 +8,15 @@ export default class ActionQueueItem extends React.Component {
 	};
 
 
+	componentWillUnmount () {
+		const {item} = this.props;
+
+		if (item && item.timeout) {
+			item.timeout();
+		}
+	}
+
+
 	onComplete = () => {
 		const {item} = this.props;
 

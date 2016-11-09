@@ -106,6 +106,7 @@ export default class ActionStack extends EventEmitter {
 			label: action.label,
 			name: action.name,
 			complete: action.complete,
+			timeout: action.onTimeout,
 			ID: action.ID
 		};
 	}
