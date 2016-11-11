@@ -3,8 +3,6 @@ import {Errors} from 'nti-web-commons';
 import {scoped} from 'nti-lib-locale';
 
 import {
-	SAVING,
-	SAVE_ENDED,
 	ASSIGNMENT_ERROR,
 	QUESTION_SET_ERROR,
 	QUESTION_ERROR,
@@ -22,14 +20,17 @@ const defaultText = {
 const t = scoped('ASSIGNMENT_EDITOR_STATUS', defaultText);
 
 export default class AssignmentStatus extends React.Component {
+	static propTypes = {
+		hasUpdated: React.PropTypes.bool,
+		isSaving: React.PropTypes.bool
+	}
+
 	constructor (props) {
 		super(props);
 
-		const {isSaving, errors} = Store;
+		const {errors} = Store;
 
 		this.state = {
-			hasUpdated: false,
-			isSaving,
 			errors
 		};
 	}
@@ -59,22 +60,8 @@ export default class AssignmentStatus extends React.Component {
 	onStoreChange = (data) => {
 		const {type} = data;
 
-		if (type === SAVING || type === SAVE_ENDED) {
-			this.onSaveChanged();
-		} else if (type === REVERT_ERRORS || type === ASSIGNMENT_ERROR || type === QUESTION_SET_ERROR || type === QUESTION_ERROR) {
+		if (type === REVERT_ERRORS || type === ASSIGNMENT_ERROR || type === QUESTION_SET_ERROR || type === QUESTION_ERROR) {
 			this.onErrorsChanged();
-		}
-	}
-
-
-	onSaveChanged () {
-		const {isSaving} = this.state;
-
-		if (isSaving !== Store.isSaving) {
-			this.setState({
-				hasUpdated: true,
-				isSaving: Store.isSaving
-			});
 		}
 	}
 
@@ -92,7 +79,8 @@ export default class AssignmentStatus extends React.Component {
 
 
 	render () {
-		const {isSaving, hasUpdated, errors} = this.state;
+		const {isSaving, hasUpdated} = this.props;
+		const {errors} = this.state;
 		const hasErrors = errors.length > 0;
 
 		return (

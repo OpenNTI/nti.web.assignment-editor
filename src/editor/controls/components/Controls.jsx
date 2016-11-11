@@ -1,6 +1,11 @@
 import React from 'react';
 
 import ActionStack from '../../../action-list';
+import {
+	SAVING,
+	SAVE_ENDED
+} from '../../Constants';
+import Store from '../../Store';
 
 import PublishControls from './PublishControls';
 import FormatControls from './FormatControls';
@@ -26,7 +31,10 @@ export default class Controls extends React.Component {
 	constructor (props) {
 		super(props);
 
-		this.state = {};
+		this.state = {
+			hasUpdated: false,
+			isSaving: Store.isSaving
+		};
 	}
 
 
@@ -37,6 +45,8 @@ export default class Controls extends React.Component {
 			selectionManager.addListener('selection-changed', this.selectionChanged);
 			this.selectionChanged(selectionManager.getSelection());
 		}
+
+		Store.addChangeListener(this.onStoreChange);
 	}
 
 
@@ -45,6 +55,29 @@ export default class Controls extends React.Component {
 
 		if (selectionManager) {
 			selectionManager.removeListener('selection-changed', this.selectionChanged);
+		}
+
+		Store.removeChangeListener(this.onStoreChange);
+	}
+
+
+	onStoreChange = (data) => {
+		const {type} = data;
+
+		if (type === SAVING || type === SAVE_ENDED) {
+			this.onSaveChanged();
+		}
+	}
+
+
+	onSaveChanged () {
+		const {isSaving} = this.state;
+
+		if (isSaving !== Store.isSaving) {
+			this.setState({
+				hasUpdated: true,
+				isSaving: Store.isSaving
+			});
 		}
 	}
 
@@ -56,7 +89,7 @@ export default class Controls extends React.Component {
 	}
 
 	render () {
-		const {selection} = this.state;
+		const {selection, hasUpdated, isSaving} = this.state;
 		const {assignment, undoStack, previewAssignment} = this.props;
 
 		return (
@@ -64,8 +97,8 @@ export default class Controls extends React.Component {
 				<ActionStack stack={undoStack} />
 				<FormatControls selection={selection} />
 				{previewAssignment && (<PreviewControls previewAssignment={previewAssignment} />)}
-				<EditorStatus />
-				<PublishControls assignment={assignment} />
+				<EditorStatus hasUpdated={hasUpdated} isSaving={isSaving} />
+				<PublishControls assignment={assignment} isSaving={isSaving} />
 			</div>
 		);
 	}

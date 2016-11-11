@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react';
+import cx from 'classnames';
 import {Publish, Constants} from 'nti-web-commons';
 import {HOC} from 'nti-web-commons';
 
@@ -13,7 +14,8 @@ const {PUBLISH_STATES} = Constants;
 
 class PublishControls extends React.Component {
 	static propTypes = {
-		assignment: PropTypes.object
+		assignment: PropTypes.object,
+		isSaving: PropTypes.bool
 	}
 
 
@@ -65,11 +67,13 @@ class PublishControls extends React.Component {
 
 	render () {
 		const {error} = this.state;
+		const {isSaving} = this.props;
 		const assignment = PublishControls.getItem(this.props);
 		const value = Publish.evaluatePublishStateFor({
 			isPublished: () => assignment && (assignment.isPublished() && assignment.getPublishDate() < Date.now()),
 			getPublishDate: () => assignment && assignment.getPublishDate()
 		});
+		const cls = cx('assignment-publish-controls', {'is-saving': isSaving});
 
 		// Determine weather or not to show the publish controls:
 		// Reset (present when submissions, hidden for content backed & no submissions & non-instructors),
@@ -79,7 +83,7 @@ class PublishControls extends React.Component {
 		const Control = isPublishable ? Publish : PublishLocked;
 
 		return (
-			<div className="assignment-publish-controls">
+			<div className={cls}>
 				<Control alignment="top-right"
 					error={error ? error : void error}
 					value={value}

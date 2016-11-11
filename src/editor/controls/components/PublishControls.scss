@@ -1,0 +1,7 @@
+
+.assignment-publish-controls {
+	&.is-saving {
+		pointer-events: none;
+		opacity: 0.5;
+	}
+}
