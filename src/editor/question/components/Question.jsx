@@ -309,7 +309,8 @@ export default class Question extends React.Component {
 			'is-saving': question.isSaving && !modal,
 			error: contentError || questionError || question.error,
 			'saving-mask': savingMask,
-			'in-modal': modal
+			'in-modal': modal,
+			'is-visible': isVisible(question, assignment)
 		});
 
 		return (

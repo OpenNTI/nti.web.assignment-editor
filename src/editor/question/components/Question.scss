@@ -84,6 +84,14 @@
 			}
 		}
 
+		&.is-visible:not(.in-modal) {
+			cursor: pointer;
+
+			.question-editor-parts {
+				pointer-events: none;
+			}
+		}
+
 		.hide-when-saving {
 			opacity: 1;
 			transition: opacity 50ms;
