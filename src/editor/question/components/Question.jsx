@@ -328,7 +328,7 @@ export default class Question extends React.Component {
 						{modal && (<div className="visible-disclaimer">{t('visibleDisclaimer')}</div>)}
 						<Sharing question={question} course={course} questionSet={questionSet} assignment={assignment} />
 						<div className="wrap" onClick={this.focusEditor}>
-							<DragHandle className="question-drag-handle hide-when-saving" />
+							<DragHandle className="question-drag-handle hide-when-saving" disabled={modal} />
 							<div className="index">{index + 1}</div>
 							<Content
 								ref={this.attachRef}

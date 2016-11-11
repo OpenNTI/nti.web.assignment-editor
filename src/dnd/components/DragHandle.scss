@@ -8,5 +8,11 @@
 		&:hover {
 			opacity: 0.4;
 		}
+
+	}
+
+	&.disabled i {
+		opacity: 0.1;
+		pointer-events: none;
 	}
 }

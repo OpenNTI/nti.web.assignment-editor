@@ -44,6 +44,11 @@ export default class DragHandle extends React.Component {
 	}
 
 
+	onFocus = (e) => {
+		e.stopPropagation();
+	}
+
+
 	render () {
 		const {className, disabled, force} = this.props;
 		const {enableDrag, disableDrag} = this.context;
@@ -56,7 +61,7 @@ export default class DragHandle extends React.Component {
 
 		return (
 			<div className={cls}>
-				<i className="icon-gripper" onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} />
+				<i className="icon-gripper" onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} onFocus={this.onFocus} tabIndex="-1"/>
 			</div>
 		);
 	}
