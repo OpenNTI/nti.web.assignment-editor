@@ -42,6 +42,8 @@ export default class Selectable extends React.Component {
 		onUnselect: () => {}
 	}
 
+	selectedChildren = []
+
 	constructor (props) {
 		super(props);
 
@@ -125,7 +127,7 @@ export default class Selectable extends React.Component {
 		} = this.context;
 		const item = this.getSelectionItem();
 		const {selected} = this.state;
-		const {onSelect} = this.props;
+		const {onSelect, id} = this.props;
 
 		clearTimeout(this.doUnselectTimeout);
 
@@ -134,7 +136,7 @@ export default class Selectable extends React.Component {
 			e.stopPropagation();
 
 			if (selectionParent) {
-				selectionParent.childSelected();
+				selectionParent.childSelected(id);
 			}
 		}
 
@@ -163,13 +165,13 @@ export default class Selectable extends React.Component {
 			SelectionParent:selectionParent
 		} = this.context;
 		const item = this.getSelectionItem();
-		const {onUnselect} = this.props;
+		const {onUnselect, id} = this.props;
 
 		if (selectionManager) {
 			selectionManager.unselect(item);
 
 			if (selectionParent) {
-				selectionParent.childUnselected();
+				selectionParent.childUnselected(id);
 			}
 		}
 
@@ -180,9 +182,17 @@ export default class Selectable extends React.Component {
 	}
 
 
-	childSelected () {
+	childSelected (id) {
 		const {onChildSelect} = this.props;
+		const isSelected = this.selectedChildren.find(x => x === id);
 
+		if (!isSelected) {
+			this.selectedChildren.push(id);
+		}
+
+		clearTimeout(this.doUnselectChildTimeout);
+
+		//On select should always set the state to having a child selected
 		this.setState({
 			childSelected: true
 		}, () => {
@@ -193,16 +203,25 @@ export default class Selectable extends React.Component {
 	}
 
 
-	childUnselected () {
+	childUnselected (id) {
 		const {onChildUnselect} = this.props;
 
-		this.setState({
-			childSelected: false
-		}, () => {
-			if (onChildUnselect) {
-				onChildUnselect();
-			}
-		});
+		this.selectedChildren = this.selectedChildren.filter(x => x !== id);
+
+		//Wait to do the unselect actions to see if something is adding focus
+		//in the same event cycle.
+		this.doUnselectChildTimeout = setTimeout(() => {
+			//Unselected should only set the state to unselected if there
+			//are no other selected children
+			this.setState({
+				childSelected: this.selectedChildren.length
+			}, () => {
+				if (onChildUnselect) {
+					onChildUnselect();
+				}
+			});
+		}, 250);
+
 	}
 
 
