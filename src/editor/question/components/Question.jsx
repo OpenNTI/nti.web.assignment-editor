@@ -259,6 +259,10 @@ export default class Question extends React.Component {
 		Promise.resolve(this.onChange()) //protect against non-promise return value
 			.then(() => {
 				this.setModal(false);
+
+				if (this.selectableRef) {
+					this.selectableRef.doUnselect();
+				}
 			})
 			.catch(() => {
 				this.setState({
