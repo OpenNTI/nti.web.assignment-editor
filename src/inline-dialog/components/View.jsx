@@ -8,6 +8,28 @@ import {HeightChange} from '../../sync-height';
 
 import {getDialogPositionForRect, getScrollOffsetForRect} from '../utils';
 
+const BODY_OPEN_CLS = 'inline-dialog-open';
+
+function getBody () {
+	return typeof document === 'undefined' ? null : document.body;
+}
+
+function addOpenClsToBody () {
+	const body = getBody();
+
+	if (body) {
+		body.classList.add(BODY_OPEN_CLS);
+	}
+}
+
+function removeOpenClsFromBody () {
+	const body = getBody();
+
+	if (body) {
+		body.classList.remove(BODY_OPEN_CLS);
+	}
+}
+
 export default class InlineDialog extends React.Component {
 	static propTypes = {
 		className: React.PropTypes.string,
@@ -105,6 +127,8 @@ export default class InlineDialog extends React.Component {
 
 	activateModal () {
 		this.updateModal(true);
+
+		addOpenClsToBody();
 	}
 
 
@@ -113,6 +137,8 @@ export default class InlineDialog extends React.Component {
 			active: false,
 			dialogPosition: null
 		});
+
+		removeOpenClsFromBody();
 	}
 
 
