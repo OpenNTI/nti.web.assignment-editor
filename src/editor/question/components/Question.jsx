@@ -48,8 +48,8 @@ function isLastQuestion (question, questionSet) {
 }
 
 
-function isVisible (question) {
-	return question.IsAvailable;
+function isVisible (question, assignment) {
+	return question.IsAvailable || assignment.isAvailable();
 }
 
 export default class Question extends React.Component {
