@@ -38,6 +38,26 @@ function createDeleteListForColumns (columns, minAllowed) {
 	return deletes;
 }
 
+
+function choiceEqual (choiceA, choiceB) {
+	return choiceA.ID === choiceB.ID && choiceA.label === choiceB.label;
+}
+
+
+function choicesEqual (choicesA, choicesB) {
+	if (choicesA.length !== choicesB.length) {
+		return false;
+	}
+
+	for (let i = 0; i < choicesA.length; i++) {
+		if (!choiceEqual(choicesA[i], choicesB[i])) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
 /*
  * Since a few different question types make use of a similar structure
  * that shares quite a bit of the same logic, this class is alright to extend
@@ -97,7 +117,7 @@ export default class Choices extends React.Component {
 		const {columns, deletes} = this.mapColumns(newChoices, minAllowed);
 		let state = null;
 
-		if (newChoices !== oldChoices) {
+		if (!choicesEqual(newChoices, oldChoices)) {
 			state = state || {};
 
 			state.columns = columns;
