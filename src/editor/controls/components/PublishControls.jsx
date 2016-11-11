@@ -92,6 +92,7 @@ class PublishControls extends React.Component {
 					assignment={assignment}
 					localeContext="assignment"
 					disableDraft={!assignment || !assignment.canUnpublish()}
+					disableSave={isSaving}
 				>
 					<Delete assignment={assignment}/>
 				</Control>
