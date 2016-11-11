@@ -220,7 +220,7 @@ export function removePartWithQuestionSet (assignment, questionSet) {
 }
 
 
-export function moveQuestion (question, questionSet, index, moveInfo, moveRoot) {
+export function moveQuestion (question, questionSet, index, moveInfo, moveRoot, delaySave) {
 	let orderedContents = questionSet && new OrderedContents(questionSet);
 	let {index:oldIndex, container:oldContainer} = moveInfo;
 
@@ -231,7 +231,7 @@ export function moveQuestion (question, questionSet, index, moveInfo, moveRoot) 
 	} else {
 		dispatch(SAVING, questionSet);
 
-		orderedContents.move(question, index, oldIndex, oldContainer, moveRoot)
+		orderedContents.move(question, index, oldIndex, oldContainer, moveRoot, delaySave)
 			.catch(maybeResetAssignmentOnError(questionSet))
 			.then(() => {
 				dispatch(QUESTION_SET_UPDATED, questionSet);

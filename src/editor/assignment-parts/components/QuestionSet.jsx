@@ -63,9 +63,9 @@ export default class QuestionSetComponent extends React.Component {
 
 
 	onQuestionOrderChange = (newOrder, item, newIndex, moveInfo) => {
-		const {questionSet} = this.props;
+		const {questionSet, assignment} = this.props;
 
-		moveQuestion(item, questionSet, newIndex, moveInfo, this.moveRoot);
+		moveQuestion(item, questionSet, newIndex, moveInfo, this.moveRoot, assignment.isAvailable());
 	}
 
 
