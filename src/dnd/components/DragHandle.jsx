@@ -15,6 +15,16 @@ export default class DragHandle extends React.Component {
 	}
 
 
+	componentWillReceiveProps (nextProps) {
+		const {disabled} = nextProps;
+		const {disableDrag} = this.context;
+
+		if (disabled && disableDrag) {
+			disableDrag();
+		}
+	}
+
+
 	componentDidMount () {
 		const {addDragHandle} = this.context;
 
@@ -25,9 +35,10 @@ export default class DragHandle extends React.Component {
 
 
 	onMouseDown = (e) => {
+		const {disabled} = this.props;
 		const {enableDrag} = this.context;
 
-		if (enableDrag) {
+		if (enableDrag && !disabled) {
 			e.stopPropagation();
 			enableDrag();
 		}
