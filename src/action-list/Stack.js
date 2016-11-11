@@ -83,6 +83,7 @@ export default class ActionStack extends EventEmitter {
 	wrapAction (action) {
 		const id = this.seenCount;
 		const {label, name, onComplete, onTimeout} = action;
+		let completed;
 
 		return this[START_TIMER]({
 			label, name,
@@ -90,10 +91,11 @@ export default class ActionStack extends EventEmitter {
 			complete: (...args) => {
 				this.clear(id);
 
+				completed = true;
 				onComplete(...args);
 			},
 			onTimeout: () => {
-				if (onTimeout) {
+				if (onTimeout && !completed) {
 					onTimeout();
 				}
 			}
