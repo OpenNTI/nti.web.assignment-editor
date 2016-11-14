@@ -49,7 +49,7 @@
     "nti-web-client": "^1.0.0",
     "nti-web-commons": ">=0.0.75",
     "react-addons-css-transition-group": "^15.1.0",
-    "react-flip-move": "2.6.5-nti2",
+    "react-flip-move": "^2.6.8",
     "react-sticky": "^5.0.3"
   },
   "devDependencies": {
