@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import cx from 'classnames';
 
+import {dragStart, dragEnd} from '../Actions';
 import DataTransfer from '../utils/DataTransfer';
 import DnDInfo from '../utils/Info';
 
@@ -101,6 +102,8 @@ export default class Draggable extends React.Component {
 		if (onDragStart) {
 			onDragStart();
 		}
+
+		dragStart();
 	}
 
 
@@ -116,6 +119,8 @@ export default class Draggable extends React.Component {
 		if (onDragEnd) {
 			onDragEnd(e);
 		}
+
+		dragEnd();
 	}
 
 

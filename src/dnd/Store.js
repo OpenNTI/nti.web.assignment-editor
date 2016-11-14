@@ -1,4 +1,4 @@
-import {ORDERING_DRAG_OVER, ORDERING_DRAG_LEAVE, DROP_HANDLED} from './Constants';
+import {ORDERING_DRAG_OVER, ORDERING_DRAG_LEAVE, DROP_HANDLED, DRAG_START, DRAG_END} from './Constants';
 import StorePrototype from 'nti-lib-store';
 import {MimeType as MoveInfoMimeType} from './utils/MoveInfo';
 import {MimeType as InfoMimeType} from './utils/Info';
@@ -10,6 +10,8 @@ const ClearHandlesTimeout = Symbol('Clear Handles Timeout');
 const SetActiveOrdering = Symbol('Set Active Ordering');
 const RemoveActiveOrdering = Symbol('Remove Active Ordering');
 const DropHandled = Symbol('Drop Handled');
+const DragStart = Symbol('Drag Start');
+const DragEnd = Symbol('Drag End');
 
 const clearHandles = 100;
 
@@ -22,7 +24,9 @@ class Store extends StorePrototype {
 		this.registerHandlers({
 			[ORDERING_DRAG_OVER]: SetActiveOrdering,
 			[ORDERING_DRAG_LEAVE]: RemoveActiveOrdering,
-			[DROP_HANDLED]: DropHandled
+			[DROP_HANDLED]: DropHandled,
+			[DRAG_START]: DragStart,
+			[DRAG_END]: DragEnd
 		});
 	}
 
@@ -63,6 +67,20 @@ class Store extends StorePrototype {
 		this[ClearHandlesTimeout] = setTimeout(() => {
 			this[HandledDrops] = null;
 		}, clearHandles);
+	}
+
+
+	[DragStart] () {
+		this.hasActiveDrag = true;
+
+		this.emitChange({type: DRAG_START});
+	}
+
+
+	[DragEnd] () {
+		this.hasActiveDrag = false;
+
+		this.emitChange({type: DRAG_END});
 	}
 
 

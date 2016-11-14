@@ -5,6 +5,8 @@ import cx from 'classnames';
 import DnDInfo from '../utils/Info';
 import DataTransfer from '../utils/DataTransfer';
 import {setDropHandled} from '../Actions';
+import Store from '../Store';
+import {DRAG_END} from '../Constants';
 
 export function isValidTransfer (dataTransfer) {
 	return dataTransfer.containsType(DnDInfo.MimeType);
@@ -63,8 +65,27 @@ export default class Dropzone extends React.Component {
 	}
 
 
+	componentDidMount () {
+		Store.addChangeListener(this.onStoreChange);
+	}
+
+
+	componentWillUnmount () {
+		Store.removeChangeListener(this.onStoreChange);
+	}
+
+
 	getDOMNode () {
 		return ReactDOM.findDOMNode(this);
+	}
+
+
+	onStoreChange = (e) => {
+		const {type} = e;
+
+		if (type === DRAG_END) {
+			this.maybeForceDragLeave();
+		}
 	}
 
 
@@ -149,6 +170,17 @@ export default class Dropzone extends React.Component {
 
 		if (onDragLeave) {
 			onDragLeave(e);
+		}
+	}
+
+
+	maybeForceDragLeave () {
+		const {onDragLeave} = this.props;
+
+		console.log('Maybe Force Drag Leave', this.dragEnterLock)
+
+		if (onDragLeave) {
+			onDragLeave();
 		}
 	}
 

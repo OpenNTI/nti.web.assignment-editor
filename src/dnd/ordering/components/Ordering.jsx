@@ -192,8 +192,7 @@ export default class Ordering extends React.Component {
 
 		if (hadPlaceholder) {
 			this.setState({
-				items: items,
-				disableAnimation: true
+				items: items
 			});
 		}
 	}
