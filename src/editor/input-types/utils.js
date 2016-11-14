@@ -7,9 +7,9 @@ export function canAddPart (question) {
 }
 
 export function canMovePart (question) {
-	return !!getLink(question, 'MovePart');
+	return !!getLink(question, 'MovePart') || question.delaySaving;
 }
 
 export function canRemovePart (question) {
-	return !!getLink(question, 'RemovePart');
+	return !!getLink(question, 'RemovePart') || question.delaySaving;
 }
