@@ -52,9 +52,9 @@ export function updateQuestion (question, fields, assignment, force) {
 
 	return question.save(values)
 		.catch(maybeResetAssignmentOnError(assignment || question))
-		.then(() => {
+		.then((newQuestion) => {
 			dispatch(QUESTION_UPDATED, question);
-			warnIfQuestionEmpty(question);
+			warnIfQuestionEmpty(newQuestion || question);
 			dispatch(SAVE_ENDED, question);
 		}).catch((reason) => {
 			dispatch(QUESTION_ERROR, {
