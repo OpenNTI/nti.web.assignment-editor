@@ -22,9 +22,9 @@ export default function questionParts (props) {
 
 	return (
 		<div className="question-editor-parts">
-			{parts.map((part, index) => {
-				return getEditorWidget(part, index, question, error, onChange, keepStateHash);
-			})}
+			{parts.map((part, index) =>
+				getEditorWidget(part, index, question, error, onChange, keepStateHash)
+			)}
 		</div>
 	);
 }
