@@ -180,8 +180,6 @@ export default class Dropzone extends React.Component {
 	maybeForceDragLeave () {
 		const {onDragLeave} = this.props;
 
-		// console.log('Maybe Force Drag Leave', this.dragEnterLock);
-
 		if (onDragLeave) {
 			onDragLeave();
 		}
