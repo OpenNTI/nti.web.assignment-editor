@@ -24,6 +24,12 @@ export default class FileUploadEditor extends React.Component {
 
 	state = {}
 
+	componentWillReceiveProps (nextProps) {
+		if (this.props.part !== nextProps.part) {
+			this.setState({part: null});
+		}
+	}
+
 
 	showSettings = () => {
 		const {part} = this.props;
@@ -44,6 +50,8 @@ export default class FileUploadEditor extends React.Component {
 		if (onChange) {
 			onChange(index, newPart);
 		}
+
+		this.setState({part: newPart});
 
 		return true;
 	}
@@ -70,10 +78,10 @@ export default class FileUploadEditor extends React.Component {
 	}
 
 	render () {
-		const {part} = this.props;
+		const part = this.state.part || this.props.part;
 		const title = this.getExtensionText(part && part.allowed_extensions);
 
-		return (
+		return part && (
 			<div className="file-upload assignment-editing">
 				<div className="title hide-when-saving">{title}</div>
 				{part.max_file_size && <div className="max-size hide-when-saving">Maximum file size is <span className="filesize">{filesize(part.max_file_size)}</span>.</div>}
