@@ -22,6 +22,8 @@ export default class TimeLimit extends React.Component {
 
 	state = {}
 
+	attachFlyoutRef = x => this.flyout = x
+
 	componentWillMount () {
 		this.setup();
 	}
@@ -104,7 +106,7 @@ export default class TimeLimit extends React.Component {
 					onDismiss={this.onEditorDismiss}
 					horizontalAlign={Flyout.ALIGNMENTS.LEFT}
 					sizing={Flyout.SIZES.MATCH_SIDE}
-					ref={x => this.flyout = x}
+					ref={this.attachFlyoutRef}
 				>
 					<div className="time-limit-editor">
 						<Checkbox label="Time Limit" checked={hasTimeLimit} onChange={this.toggleTimeLimit}/>

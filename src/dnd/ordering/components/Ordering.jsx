@@ -199,7 +199,8 @@ export default class Ordering extends React.Component {
 
 
 	getContainerRect () {
-		const container = ReactDom.findDOMNode(this);
+		//We cannot use refs for this, so we must use this method until its taken away.
+		const container = ReactDom.findDOMNode(this); //eslint-disable-line react/no-find-dom-node
 		let rect;
 
 		if (container) {

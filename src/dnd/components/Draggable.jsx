@@ -73,7 +73,10 @@ export default class Draggable extends React.Component {
 
 
 	getDOMNode () {
-		return ReactDOM.findDOMNode(this);
+		//We need the underlying dom node. Using refs will likely give us a Component instance...
+		//we don't want to assume the component exposes a ref my any particular name, so,
+		//until this API is removed, we will use it.
+		return ReactDOM.findDOMNode(this);//eslint-disable-line react/no-find-dom-node
 	}
 
 
