@@ -8,6 +8,7 @@ import {StickyContainer, Sticky} from './utils/StickyElement';
 import AssignmentContent from './assignment-content';
 import AssignmentInfo from './info';
 import AssignmentParts from './assignment-parts';
+import AssignmentDiscussions from'./assignment-discussions';
 import Options from './options';
 import NavBar from './nav-bar';
 import Placeholder from './Placeholder';
@@ -20,6 +21,12 @@ const DEFAULT_TEXT = {
 };
 
 const t = scoped('ASSIGNMENT_EDITOR', DEFAULT_TEXT);
+
+
+function getPartComponentForAssignment (assignment) {
+	return assignment && assignment.isDiscussion ? AssignmentDiscussions : AssignmentParts;
+}
+
 
 export default class AssignmentEditor extends React.Component {
 	static propTypes = {
@@ -95,6 +102,8 @@ export default class AssignmentEditor extends React.Component {
 
 
 	renderContent (assignment, course, schema) {
+		debugger;
+		const Part = getPartComponentForAssignment(assignment);
 		return (
 			<div key="content" className="content-container">
 				{assignment && (
@@ -104,7 +113,7 @@ export default class AssignmentEditor extends React.Component {
 					</div>
 				)}
 				<AssignmentContent assignment={assignment} course={course} schema={schema} />
-				<AssignmentParts assignment={assignment} course={course} schema={schema} />
+				<Part assignment={assignment} course={course} schema={schema} />
 			</div>
 		);
 	}
