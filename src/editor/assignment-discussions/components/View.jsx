@@ -1,13 +1,22 @@
 import React from 'react';
-import {Loading, Errors} from 'nti-web-commons';
+import {Loading, Errors, HOC, Button} from 'nti-web-commons';
+import {scoped} from 'nti-lib-locale';
 
 import Store from '../../Store';
 import {ASSIGNMENT_ERROR, ASSIGNMENT_WARNING, REVERT_ERRORS} from '../../Constants';
-import {warnIfDiscussionEmpty} from '../Actions';
+import {warnIfDiscussionEmpty, setDiscussionOnAssignment} from '../Actions';
 
 import Discussion from './Discussion';
 
 const {Field:{Component:ErrorCmp}} = Errors;
+const {ItemChanges} = HOC;
+
+const DEFAULT_TEXT = {
+	enter: 'Enter a NTIID',
+	save: 'Save'
+};
+
+const t = scoped('DISCUSSION_ASSIGNMENT_VIEWER', DEFAULT_TEXT);
 
 export default class DiscussionAssignment extends React.Component {
 	static propTypes = {
@@ -19,10 +28,13 @@ export default class DiscussionAssignment extends React.Component {
 	constructor (props) {
 		super(props);
 
+		const {assignment} = props;
+
 		Store.addChangeListener(this.onStoreChange);
 
 		this.state = {
 			loading: true,
+			activeValue: assignment.discussion_ntiid || '',
 			discussions: []
 		};
 	}
@@ -81,30 +93,62 @@ export default class DiscussionAssignment extends React.Component {
 	}
 
 
-	selectDiscussion (discussion) {
+	selectDiscussion = (discussion) => {
+		this.selectDiscussionID(discussion.NTIID);
+	}
+
+
+	selectDiscussionID (id) {
+		const {assignment} = this.props;
+
+		setDiscussionOnAssignment(id, assignment);
+	}
+
+
+	onAssignmentUpdate = () => {
+		const {assignment} = this.props;
+
+		this.setState({
+			activeValue: assignment.discussion_ntiid || ''
+		});
+	}
+
+
+	onManualInputChange = (e) => {
+		this.setState({
+			activeValue: e.target.value
+		});
+	}
+
+
+	saveManualInput = () => {
 		debugger;
 	}
 
 
 	render () {
+		const {assignment} = this.props;
 		const {loading, discussions, error, warning} = this.state;
 
 		return (
-			<div className="discussion-assignment-list">
-				<div className="messages">
-					{error && <ErrorCmp error={error} />}
-					{warning && <ErrorCmp error={warning} isWarning/>}
+			<ItemChanges item={assignment} onItemChanged={this.onAssignmentUpdate}>
+				<div className="discussion-assignment-list">
+					<div className="messages">
+						{error && <ErrorCmp error={error} />}
+						{warning && <ErrorCmp error={warning} isWarning/>}
+					</div>
+					{
+						loading ?
+							(<Loading.Mask />) :
+							(
+								<ul>
+									{discussions.map(x => this.renderDiscussion(x))}
+								</ul>
+							)
+					}
+					{this.renderInput()}
 				</div>
-				{
-					loading ?
-						(<Loading.Mask />) :
-						(
-							<ul>
-								{discussions.map(x => this.renderDiscussion(x))}
-							</ul>
-						)
-				}
-			</div>
+			</ItemChanges>
 		);
 	}
 
@@ -112,10 +156,25 @@ export default class DiscussionAssignment extends React.Component {
 	renderDiscussion = (discussion) => {
 		const {course} = this.props;
 
+		//TODO: fill out the selected prop
+
 		return (
 			<li key={discussion.NTIID}>
 				<Discussion discussion={discussion} selected={false} onSelect={this.selectDiscussion} course={course} />
 			</li>
+		);
+	}
+
+
+	renderInput = () => {
+		const {activeValue} = this.state;
+
+		return (
+			<div className="manual_input">
+				<label htmlFor="discussion_id_input">{t('enter')}</label>
+				<input name="discussion_id_input" type="text" value={activeValue} onChange={this.onManualInputChange} />
+				<Button onClick={this.saveManualInput}><span>{t('save')}</span></Button>
+			</div>
 		);
 	}
 }

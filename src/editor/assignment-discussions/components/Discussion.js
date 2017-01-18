@@ -5,7 +5,8 @@ export default class Discussion extends React.Component {
 	static propTypes = {
 		discussion: React.PropTypes.object,
 		selected: React.PropTypes.bool,
-		course: React.PropTypes.object
+		course: React.PropTypes.object,
+		onSelect: React.PropTypes.func
 	}
 
 	constructor (props) {
@@ -35,7 +36,11 @@ export default class Discussion extends React.Component {
 
 
 	onClick = () => {
-		debugger;
+		const {discussion, onSelect} = this.props;
+
+		if (onSelect) {
+			onSelect(discussion);
+		}
 	}
 
 
