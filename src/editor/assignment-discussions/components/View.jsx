@@ -12,7 +12,8 @@ const {Field:{Component:ErrorCmp}} = Errors;
 const {ItemChanges} = HOC;
 
 const DEFAULT_TEXT = {
-	enter: 'Enter a NTIID',
+	description: 'Grade a student on their participation in a discussion.',
+	enter: 'Enter a NTIID:',
 	save: 'Save'
 };
 
@@ -115,14 +116,26 @@ export default class DiscussionAssignment extends React.Component {
 
 
 	onManualInputChange = (e) => {
+		const {error, warning} = this.state;
+
 		this.setState({
 			activeValue: e.target.value
 		});
+
+		if (error) {
+			error.clear();
+		}
+
+		if (warning) {
+			warning.clear();
+		}
 	}
 
 
 	saveManualInput = () => {
-		debugger;
+		const {activeValue} = this.state;
+
+		this.selectDiscussionID(activeValue);
 	}
 
 
@@ -133,9 +146,13 @@ export default class DiscussionAssignment extends React.Component {
 		return (
 			<ItemChanges item={assignment} onItemChanged={this.onAssignmentUpdate}>
 				<div className="discussion-assignment-list">
+					<p className="description">
+						{t('description')}
+					</p>
+					{!loading && this.renderManualInput()}
 					<div className="messages">
 						{error && <ErrorCmp error={error} />}
-						{warning && <ErrorCmp error={warning} isWarning/>}
+						{!error && warning && <ErrorCmp error={warning} isWarning/>}
 					</div>
 					{
 						loading ?
@@ -146,7 +163,6 @@ export default class DiscussionAssignment extends React.Component {
 								</ul>
 							)
 					}
-					{this.renderInput()}
 				</div>
 			</ItemChanges>
 		);
@@ -166,11 +182,16 @@ export default class DiscussionAssignment extends React.Component {
 	}
 
 
-	renderInput = () => {
+	renderManualInput = () => {
+		const {assignment} = this.props;
 		const {activeValue} = this.state;
 
+		if (!assignment.canManuallyEdit) {
+			return null;
+		}
+
 		return (
-			<div className="manual_input">
+			<div className="manual-input">
 				<label htmlFor="discussion_id_input">{t('enter')}</label>
 				<input name="discussion_id_input" type="text" value={activeValue} onChange={this.onManualInputChange} />
 				<Button onClick={this.saveManualInput}><span>{t('save')}</span></Button>
