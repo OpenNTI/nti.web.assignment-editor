@@ -102,7 +102,6 @@ export default class AssignmentEditor extends React.Component {
 
 
 	renderContent (assignment, course, schema) {
-		debugger;
 		const Part = getPartComponentForAssignment(assignment);
 		return (
 			<div key="content" className="content-container">

@@ -1,0 +1,17 @@
+@import "~nti-style-common";
+
+.discussion-assignment-list {
+	padding: 1.875rem;
+
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		justify-content: space-between;
+
+		li {
+			flex: 0 0 200px;
+		}
+	}
+}

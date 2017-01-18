@@ -4,7 +4,33 @@ import cx from 'classnames';
 export default class Discussion extends React.Component {
 	static propTypes = {
 		discussion: React.PropTypes.object,
-		selected: React.PropTypes.bool
+		selected: React.PropTypes.bool,
+		course: React.PropTypes.object
+	}
+
+	constructor (props) {
+		super(props);
+
+		this.state = {
+			icon: null
+		};
+	}
+
+
+	componentDidMount () {
+		const {course, discussion} = this.props;
+
+		this.resolveIcon(discussion, course);
+	}
+
+
+	resolveIcon (discussion, course) {
+		course.resolveContentURL(discussion.getIcon())
+			.then((url) => {
+				this.setState({
+					icon: url
+				});
+			});
 	}
 
 
@@ -15,12 +41,15 @@ export default class Discussion extends React.Component {
 
 	render () {
 		const {discussion, selected} = this.props;
-		const cls = cx('assignment-discussion', {selected});
+		const {icon} = this.state;
+		const cls = cx('discussion-assignment-item', {selected});
 		const {title} = discussion;
+		const iconStyle = icon ? {backgroundImage: `url(${icon})`} : null;
 
 		return (
 			<div className={cls} onClick={this.onClick}>
-				<span>{title}</span>
+				<div style={iconStyle} className="icon" />
+				<div className="title">{title}</div>
 			</div>
 		);
 	}

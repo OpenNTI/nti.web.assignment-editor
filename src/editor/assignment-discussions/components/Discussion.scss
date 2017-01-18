@@ -1,0 +1,24 @@
+@import "~nti-style-common";
+
+.discussion-assignment-item {
+	background: $quad-grey;
+	height: 220px;
+	box-shadow: 0 0 0 1px $border-grey-light;
+
+	&.selected {
+		box-shadow: 0 0 1px 1px $border-blue;
+	}
+
+	.icon {
+		height: 100px;
+		width: 100%;
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
+
+	.title {
+		padding: rem-calc(8px);
+		font: normal 300 1.5rem/1 $header-font-family;
+		color: $primary-grey;
+	}
+}
