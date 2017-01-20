@@ -1,0 +1,46 @@
+@import "~nti-style-common";
+
+.discussion-assignment-list {
+	padding: 1.875rem;
+
+	.description {
+		color: $primary-grey;
+	}
+
+	.messages {
+		margin-bottom: 1rem;
+	}
+
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		justify-content: space-between;
+
+		li {
+			flex: 0 0 200px;
+		}
+	}
+
+
+	.manual-input {
+		display: flex;
+		align-items: center;
+		margin-bottom: 1rem;
+
+		label {
+			margin-right: 0.5rem;
+			font-size: 0.875rem;
+			color: $primary-grey;
+		}
+
+		input {
+			line-height: 2.5rem;
+			padding: 0 0.5rem;
+			border: none;
+			box-shadow: inset 0 0 0 1px $border-grey;
+			flex: 1 1 auto;
+		}
+	}
+}
