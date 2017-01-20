@@ -170,13 +170,13 @@ export default class DiscussionAssignment extends React.Component {
 
 
 	renderDiscussion = (discussion) => {
-		const {course} = this.props;
-
-		//TODO: fill out the selected prop
+		const {course, assignment} = this.props;
+		const {discussion_ntiid:activeNTIID} = assignment;
+		const selected = discussion.NTIID === activeNTIID;
 
 		return (
 			<li key={discussion.NTIID}>
-				<Discussion discussion={discussion} selected={false} onSelect={this.selectDiscussion} course={course} />
+				<Discussion discussion={discussion} selected={selected} onSelect={this.selectDiscussion} course={course} />
 			</li>
 		);
 	}
