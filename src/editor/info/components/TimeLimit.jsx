@@ -130,7 +130,7 @@ export default class TimeLimit extends React.Component {
 		});
 
 		return (
-			<LabeledValue label="Time Limit" arrow disabled={!assignment.canEdit()}>
+			<LabeledValue label="Time Limit" arrow disabled={!assignment.canEdit() || assignment.isDiscussion}>
 				<span className={labelClasses}>{label}</span>
 			</LabeledValue>
 		);
