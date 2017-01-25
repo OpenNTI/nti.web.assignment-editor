@@ -45,9 +45,9 @@ export default class Discussion extends React.Component {
 
 
 	render () {
-		const {discussion, selected} = this.props;
+		const {discussion, selected, onSelect} = this.props;
 		const {icon} = this.state;
-		const cls = cx('discussion-assignment-item', {selected});
+		const cls = cx('discussion-assignment-item', {selected, selectable: !!onSelect});
 		const {title} = discussion;
 		const iconStyle = icon ? {backgroundImage: `url(${icon})`} : null;
 
