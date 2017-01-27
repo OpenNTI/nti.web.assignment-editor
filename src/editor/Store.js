@@ -12,6 +12,7 @@ import {
 	SAVING,
 	SAVE_ENDED,
 	ASSIGNMENT_ERROR,
+	ASSIGNMENT_UPDATED,
 	ASSIGNMENT_DELETING,
 	ASSIGNMENT_DELETED,
 	ASSIGNMENT_WARNING,
@@ -34,6 +35,7 @@ const logger = Logger.get('lib:asssignment-editor:Store');
 const UNDO_STACK = new Stack({maxVisible: 1, maxDepth: 5, keepFor: 30000});
 
 const ClearQuestionError = Symbol('Clear Question Error');
+const ClearAssignmentError = Symbol('Clear Assignment Error');
 const SetAssignment = Symbol('Set Assignment');
 const SetAssignmentDeleting = Symbol('Set Assignment Deleting');
 const SetAssignmentDeleted = Symbol('Set Assignment Deleted');
@@ -137,6 +139,7 @@ class Store extends StorePrototype {
 			[FREE]: ClearAssignment,
 			[SAVING]: SetSaving,
 			[SAVE_ENDED]: SetSaveEnded,
+			[ASSIGNMENT_UPDATED]: ClearAssignmentError,
 			[ASSIGNMENT_DELETING]: SetAssignmentDeleting,
 			[ASSIGNMENT_DELETED]: SetAssignmentDeleted,
 			[ASSIGNMENT_ERROR]: 'setAssignmentError',
@@ -282,6 +285,16 @@ class Store extends StorePrototype {
 
 		return message;
 	}
+
+
+	[ClearAssignmentError] (o) {
+		const p = PRIVATE.get(this);
+		const {assignment} = this;
+
+		this[RemoveMessageFrom](p.errors, assignment.getID(), null, ASSIGNMENT_ERROR);
+		this[RemoveMessageFrom](p.warnings, assignment.getID(), null, ASSIGNMENT_ERROR);
+	}
+
 
 	[ClearQuestionError] (o) {
 		const p = PRIVATE.get(this);
