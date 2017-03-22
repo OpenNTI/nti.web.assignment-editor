@@ -17,7 +17,7 @@ const CONTENT_VIEW = 'content';
 const OPTIONS_VIEW = 'options';
 
 const DEFAULT_TEXT = {
-	legacy: 'You’re editing a legacy assignment. Some features may be disabled.'
+	legacy: 'The assignment contents are not available for editing. Some features may be disabled.'
 };
 
 const t = scoped('ASSIGNMENT_EDITOR', DEFAULT_TEXT);
