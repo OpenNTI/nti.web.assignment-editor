@@ -54,11 +54,13 @@ export default class AssignmentSharing extends React.Component {
 		const count = assignment.LessonContainerCount;
 		const cls = cx('assignment-sharing', {single: count === 1, none: count === 0});
 
-		return (
-			<div className={cls} onClick={this.onClick}>
-				<i className="icon-folder" />
-				<Display.Inline item={assignment} scope={course} getString={t} onShow={this.onClick} />
-			</div>
-		);
+		return assignment && assignment.hasLink('Lessons') ?
+					(
+						<div className={cls} onClick={this.onClick}>
+							<i className="icon-folder" />
+							<Display.Inline item={assignment} scope={course} getString={t} onShow={this.onClick} />
+						</div>
+					) :
+					null;
 	}
 }
