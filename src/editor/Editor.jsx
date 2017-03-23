@@ -36,7 +36,8 @@ export default class AssignmentEditor extends React.Component {
 		gotoRoot: React.PropTypes.func,
 		pageSource: React.PropTypes.object,
 		readOnly: React.PropTypes.bool,
-		previewAssignment: React.PropTypes.func
+		previewAssignment: React.PropTypes.func,
+		onDueDateUpdate: React.PropTypes.func
 	}
 
 
@@ -60,7 +61,7 @@ export default class AssignmentEditor extends React.Component {
 
 
 	render () {
-		const {assignment, course, schema, gotoRoot, pageSource, readOnly, previewAssignment} = this.props;
+		const {assignment, course, schema, gotoRoot, pageSource, readOnly, previewAssignment, onDueDateUpdate} = this.props;
 		const {active} =  this.state;
 		const cls = cx('assignment-editor', {loading: !!assignment, 'read-only': readOnly});
 
@@ -74,7 +75,7 @@ export default class AssignmentEditor extends React.Component {
 					(
 						<div>
 							{assignment && !assignment.canEdit() && (<Panels.MessageBar message={t('legacy')} />)}
-							<AssignmentInfo assignment={assignment} schema={schema} />
+							<AssignmentInfo assignment={assignment} schema={schema} onDueDateUpdate={onDueDateUpdate} />
 							<div className="content">
 								<ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
 									{active === CONTENT_VIEW ?
