@@ -1,6 +1,4 @@
 const webpack = require('webpack');
-const path = require('path');
-const root = [path.join(__dirname, 'node_modules') ];
 
 exports = module.exports = Object.assign(require('./webpack.config'), {
 	entry: './test/app/index.js',
@@ -15,16 +13,11 @@ exports = module.exports = Object.assign(require('./webpack.config'), {
 
 delete exports.node;
 
-exports.resolve.root = root;
-exports.resolve.fallback = root;
-
-exports.resolveLoader = { root };
-
-exports.module.loaders.push({
+exports.module.rules.push({
 	test: /\.(eot|ttf|woff)$/,
 	loader: 'file-loader',
 	query: {
-		name: 'resources/fonts/[name].[ext]'
+		name: 'assets/fonts/[name]-[hash].[ext]'
 	}
 });
 
