@@ -68,7 +68,6 @@ exports = module.exports = {
 
 			{
 				test: /\.(ico|gif|png|jpg|svg)$/,
-				exclude: [/\-avatar.png$/, /.template.svg$/],
 				loader: 'url-loader',
 				options: {
 					limit: 500,
