@@ -38,7 +38,6 @@
     "invariant": "^2.1.1",
     "jump.js": "^1.0.1",
     "node-natural-sort": "^0.8.3",
-    "node-uuid": "^1.4.3",
     "nti-commons": "^2.0.0",
     "nti-lib-dispatcher": "^1.0.0",
     "nti-lib-dom": "^1.4.0",
@@ -52,7 +51,8 @@
     "nti-web-commons": ">=0.0.75",
     "react-addons-css-transition-group": "^15.1.0",
     "react-flip-move": "2.7.6-nti",
-    "react-sticky": "^5.0.3"
+    "react-sticky": "^5.0.3",
+    "uuid": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.6",

@@ -1,7 +1,7 @@
-import uuid from 'node-uuid';
+import uuid from 'uuid';
 
 export const MimeType = 'application/vnd.nextthought.app.dndinfo';
-const DnDSession = uuid.v4();
+const DnDSession = uuid();
 const SourceApp = 'application/vnd.nextthought.webapp';
 const Version = 1;
 
