@@ -1,7 +1,8 @@
 import StorePrototype from 'nti-lib-store';
 import {Errors} from 'nti-web-commons';
-import {Stack} from '../action-list';
 import Logger from 'nti-util-logger';
+
+import {Stack} from '../action-list';
 
 import {
 	FREE,
@@ -287,7 +288,7 @@ class Store extends StorePrototype {
 	}
 
 
-	[ClearAssignmentError] (o) {
+	[ClearAssignmentError] () {
 		const p = PRIVATE.get(this);
 		const {assignment} = this;
 

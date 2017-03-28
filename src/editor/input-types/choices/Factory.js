@@ -134,7 +134,7 @@ export default class ChoiceFactory {
 
 
 export function cloneChoice (choice) {
-	if (!choice instanceof Choice) {
+	if (!(choice instanceof Choice)) {
 		return choice;
 	}
 
