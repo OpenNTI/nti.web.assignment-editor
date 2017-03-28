@@ -1,10 +1,11 @@
 import React, {PropTypes} from 'react';
 import cx from 'classnames';
+import {scoped} from 'nti-lib-locale';
+
+import {Flyout, PublishTrigger, Constants, TinyLoader as Loading} from 'nti-web-commons';
 
 import {resetAssignmentSubmissions} from '../../Actions';
 
-import {Flyout, PublishTrigger, Constants, TinyLoader as Loading} from 'nti-web-commons';
-import {scoped} from 'nti-lib-locale';
 const {PUBLISH_STATES} = Constants;
 
 const DEFAULT_TEXT = {
@@ -67,7 +68,7 @@ export default class PublishLocked extends React.Component {
 		const text = this.isNonInstructor() ? 'editorText' : 'text';
 
 		return (
-			<Flyout ref={this.setFlyoutRef} className="publish-locked"
+			<Flyout.Triggered ref={this.setFlyoutRef} className="publish-locked"
 				trigger={trigger}
 				verticalAlign={Flyout.ALIGNMENTS.TOP}
 				horizontalAlign={Flyout.ALIGNMENTS.RIGHT}
@@ -85,7 +86,7 @@ export default class PublishLocked extends React.Component {
 						Reset Assignment
 					</div>
 				)}
-			</Flyout>
+			</Flyout.Triggered>
 		);
 	}
 }

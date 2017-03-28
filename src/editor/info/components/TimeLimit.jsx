@@ -100,7 +100,7 @@ export default class TimeLimit extends React.Component {
 
 		return (
 			<div className="field time-limit">
-				<Flyout
+				<Flyout.Triggered
 					className="assignment-option-flyout"
 					trigger={this.renderDisplay()}
 					onDismiss={this.onEditorDismiss}
@@ -114,7 +114,7 @@ export default class TimeLimit extends React.Component {
 						{error && <div className="error">{error.toString()}</div>}
 						{saving ? <Loading /> : <div className={buttonClasses} onClick={this.save}>Save Changes</div>}
 					</div>
-				</Flyout>
+				</Flyout.Triggered>
 			</div>
 		);
 	}

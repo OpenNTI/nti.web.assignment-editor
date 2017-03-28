@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {Flyout} from 'nti-web-commons';
 
 function renderTrigger () {
@@ -12,9 +13,9 @@ MoreControls.propTypes = {
 };
 export default function MoreControls ({children}) {
 	return (
-		<Flyout className="more-controls-flyout" trigger={renderTrigger()} arrow horizontalAlign={Flyout.ALIGNMENTS.RIGHT} >
+		<Flyout.Trigger className="more-controls-flyout" trigger={renderTrigger()} arrow horizontalAlign={Flyout.ALIGNMENTS.RIGHT} >
 			{children}
-		</Flyout>
+		</Flyout.Trigger>
 	);
 }
 

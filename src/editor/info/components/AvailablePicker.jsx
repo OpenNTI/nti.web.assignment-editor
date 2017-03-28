@@ -141,7 +141,7 @@ export default class AvailablePicker extends React.Component {
 		const saveClassNames = cx('available-save flyout-fullwidth-btn', {changed, error});
 
 		return (
-			<Flyout
+			<Flyout.Triggered
 				ref={this.setFlyoutRef}
 				className="available-picker"
 				horizontalAlign={Flyout.ALIGNMENTS.LEFT}
@@ -153,7 +153,7 @@ export default class AvailablePicker extends React.Component {
 				<DayTimePicker value={date} onChange={this.onDateChange} />
 				{errorMsg && (<div className="error-message">{errorMsg}</div>)}
 				{saving ? <Loading /> : <div className={saveClassNames} onClick={this.onSave}>Save</div>}
-			</Flyout>
+			</Flyout.Triggered>
 		);
 	}
 }
