@@ -1,6 +1,6 @@
 import React from 'react';
 import {Panels} from 'nti-web-commons';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import ReactCSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import {scoped} from 'nti-lib-locale';
 import cx from 'classnames';
 
