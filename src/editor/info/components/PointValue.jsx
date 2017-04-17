@@ -1,5 +1,6 @@
 import React from 'react';
-import {NumberInput, LabeledValue} from 'nti-web-commons';
+
+import {Input, LabeledValue} from 'nti-web-commons';
 
 export default class PointValue extends React.Component {
 
@@ -43,8 +44,7 @@ export default class PointValue extends React.Component {
 		this.save();
 	}
 
-	onChange = () => {
-		const {value} = this.input;
+	onChange = (value) => {
 		//we set the min to 0, but just safe-guard it just in case.
 		if (value < 0 || isNaN(value)) {
 			return;
@@ -80,9 +80,9 @@ export default class PointValue extends React.Component {
 		return (
 			<div className="field point-value">
 				<LabeledValue label="Value" disabled={!assignment.canSetTotalPoints()}>
-					<NumberInput
-						value={typeof value === 'number' ? value : ''}
-						min="0"
+					<Input.Number
+						value={typeof value === 'number' ? value : null}
+						min={0}
 						ref={this.attachRef}
 						onBlur={this.onBlur}
 						onChange={this.onChange}

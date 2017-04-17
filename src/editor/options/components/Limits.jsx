@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import {scoped} from 'nti-lib-locale';
-import {HOC, NumberInput} from 'nti-web-commons';
+import {HOC, Input} from 'nti-web-commons';
 
 import {maybeResetAssignmentOnError} from '../../Actions';
 
@@ -97,8 +97,7 @@ class Limits extends React.Component {
 	 * This is not yet gone to the server to be saved.
 	 * @returns {void}
 	 */
-	onLimitChange = () => {
-		const {value} = this.limitInputRef;
+	onLimitChange = (value) => {
 		if (value < 0) { return; }
 		this.setState({ draw: value });
 	}
@@ -173,7 +172,7 @@ class Limits extends React.Component {
 			>
 				<Option label={t('labels.all')} type="radio" name={LIMIT_NONE} value={!value}  onChange={this.onUnlimitedSelected}/>
 				<Option label={t('labels.portion')} type="radio" value={value} onChange={this.onLimitSelect} />
-				<NumberInput
+				<Input.Number
 					className="portion-max-input"
 					placeholder="Max set of questions"
 					min="0"
