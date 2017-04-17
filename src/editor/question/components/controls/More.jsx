@@ -13,9 +13,9 @@ MoreControls.propTypes = {
 };
 export default function MoreControls ({children}) {
 	return (
-		<Flyout.Trigger className="more-controls-flyout" trigger={renderTrigger()} arrow horizontalAlign={Flyout.ALIGNMENTS.RIGHT} >
+		<Flyout.Triggered className="more-controls-flyout" trigger={renderTrigger()} arrow horizontalAlign={Flyout.ALIGNMENTS.RIGHT} >
 			{children}
-		</Flyout.Trigger>
+		</Flyout.Triggered>
 	);
 }
 
