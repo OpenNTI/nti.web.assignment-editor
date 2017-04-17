@@ -1,6 +1,6 @@
 {
   "name": "nti-assignment-editor",
-  "version": "1.1.25",
+  "version": "1.1.26",
   "author": "nextthought",
   "description": "ReactJS Editor for non-content backed assignments",
   "license": "UNLICENSED",
@@ -94,7 +94,11 @@
       "!**/*.spec.js"
     ],
     "coverageDirectory": "reports/coverage",
-    "coverageReporters": ["text", "lcov", "cobertura"],
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "cobertura"
+    ],
     "testResultsProcessor": "./node_modules/jest-junit",
     "roots": [
       "<rootDir>/src/"
