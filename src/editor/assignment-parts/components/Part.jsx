@@ -21,7 +21,7 @@ export default class AssignmentPart extends React.Component {
 		const {part, assignment, course} = this.props;
 		const questionSet = part.question_set;
 
-		if (!assignment.hasLink('edit')) {
+		if (!assignment.isModifiable) {
 			return (
 				<Placeholder />
 			);

@@ -166,7 +166,7 @@ class Limits extends React.Component {
 				name="limiting"
 				header="Max Limit"
 				content={t('content')}
-				disabled={!questionSet || questionSet.LimitedEditingCapabilities || !assignment || !assignment.canEdit()}
+				disabled={!questionSet || questionSet.LimitedEditingCapabilities || !assignment || !assignment.isModifiable}
 				disabledText={this.disabledText(questionSet)}
 				error={errorMessage}
 			>

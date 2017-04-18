@@ -73,7 +73,7 @@ export default class AssignmentEditor extends React.Component {
 					this.renderPlaceholder(assignment, previewAssignment) :
 					(
 						<div>
-							{assignment && !assignment.canEdit() && (<Panels.MessageBar message={t('legacy')} />)}
+							{assignment && !assignment.isModifiable && (<Panels.MessageBar message={t('legacy')} />)}
 							<AssignmentInfo assignment={assignment} schema={schema} />
 							<div className="content">
 								<ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>

@@ -104,8 +104,8 @@ export default class AssignmentContentView extends React.Component {
 		return (
 			<div className="assignment-content">
 				<Sharing assignment={assignment} course={course} />
-				<Title value={title} schema={schema} onChange={this.onTitleChange} error={titleError} disabled={!assignment.canEdit()}  />
-				<Content value={content} schema={schema} onChange={this.onContentChange} error={contentError} disabled={!assignment.canEdit()} />
+				<Title value={title} schema={schema} onChange={this.onTitleChange} error={titleError} disabled={!assignment.isModifiable}  />
+				<Content value={content} schema={schema} onChange={this.onContentChange} error={contentError} disabled={!assignment.isModifiable} />
 			</div>
 		);
 	}
