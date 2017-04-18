@@ -24,7 +24,8 @@ export default class Editor extends React.Component {
 		onDeleted: React.PropTypes.func,
 		gotoRoot: React.PropTypes.func,
 		previewAssignment: React.PropTypes.func,
-		pageSource: React.PropTypes.object
+		pageSource: React.PropTypes.object,
+		onDueDateUpdate: React.PropTypes.func
 	}
 
 
@@ -89,7 +90,7 @@ export default class Editor extends React.Component {
 
 	render () {
 		const {undoStack} = Store;
-		const {gotoRoot, pageSource, previewAssignment} = this.props;
+		const {gotoRoot, pageSource, previewAssignment, onDueDateUpdate} = this.props;
 		const {deleting} = this.state;
 		const {assignment, course, loadError: error, schema} = Store;
 		const readOnly = assignment && !assignment.getLink('edit');
@@ -117,6 +118,7 @@ export default class Editor extends React.Component {
 							gotoRoot={gotoRoot}
 							pageSource={pageSource}
 							previewAssignment={previewAssignment}
+							onDueDateUpdate={onDueDateUpdate}
 						/>
 						<div className="assignment-editing-sidebar-column">
 							<FixedElement className="assignment-editing-sidebar-fixed">

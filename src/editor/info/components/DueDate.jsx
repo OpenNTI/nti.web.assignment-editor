@@ -3,7 +3,8 @@ import AvailablePicker from './AvailablePicker';//TODO: merge this and that comp
 
 export default class DueDate extends React.Component {
 	static propTypes = {
-		assignment: React.PropTypes.object.isRequired
+		assignment: React.PropTypes.object.isRequired,
+		onDueDateUpdate: React.PropTypes.func
 	}
 	constructor (props) {
 		super(props);
@@ -36,7 +37,7 @@ export default class DueDate extends React.Component {
 	}
 
 	save = (value) => {
-		const {assignment} = this.props;
+		const {assignment, onDueDateUpdate} = this.props;
 
 		if (!assignment || !assignment.getAvailableForSubmissionEnding) {
 			return;
@@ -50,6 +51,8 @@ export default class DueDate extends React.Component {
 
 		return assignment.setDueDate(value)
 		.then(() => {
+			onDueDateUpdate && onDueDateUpdate();
+
 			this.setState({
 				value,
 				saving: false,
