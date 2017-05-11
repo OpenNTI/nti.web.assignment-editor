@@ -52,7 +52,6 @@
     "nti-web-commons": ">=0.0.177",
     "react-transition-group": "^1.1.0",
     "react-flip-move": "2.7.6-nti",
-    "react-sticky": "^5.0.3",
     "uuid": "^3.0.1"
   },
   "devDependencies": {

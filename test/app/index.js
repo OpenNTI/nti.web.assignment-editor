@@ -55,7 +55,7 @@ ReactDOM.render(
 	<Bridge>
 		<div>
 			<ConflictResolutionHandler />
-			<Editor assignmentId={assignmentId} courseId={courseId} />
+			<Editor assignmentId={assignmentId} courseId={courseId} gotoRoot={() => {}}/>
 		</div>
 	</Bridge>,
 	document.getElementById('content')

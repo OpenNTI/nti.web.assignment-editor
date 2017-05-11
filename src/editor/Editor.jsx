@@ -1,10 +1,9 @@
 import React from 'react';
-import {Panels} from 'nti-web-commons';
 import ReactCSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import {scoped} from 'nti-lib-locale';
 import cx from 'classnames';
+import {StickyElement, StickyContainer, Panels} from 'nti-web-commons';
 
-import {StickyContainer, Sticky} from './utils/StickyElement';
 import AssignmentContent from './assignment-content';
 import AssignmentInfo from './info';
 import AssignmentParts from './assignment-parts';
@@ -66,9 +65,9 @@ export default class AssignmentEditor extends React.Component {
 
 		return (
 			<StickyContainer className={cls}>
-				<Sticky>
+				<StickyElement>
 					<NavBar gotoRoot={gotoRoot} pageSource={pageSource}/>
-				</Sticky>
+				</StickyElement>
 				{readOnly ?
 					this.renderPlaceholder(assignment, previewAssignment) :
 					(

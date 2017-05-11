@@ -8,6 +8,9 @@ exports = module.exports = Object.assign(require('./webpack.config'), {
 		filename: 'index.js'
 		// publicPath: '/'	//This controls the prefix of the urls that get written into asset references.
 							// By not setting it, we let the urls be relative.
+	},
+	devServer: {
+		public: 'janux.dev'
 	}
 });
 
