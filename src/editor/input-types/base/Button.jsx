@@ -107,7 +107,9 @@ export class Button extends React.Component {
 						<div className={icnCls} />
 					</div>
 					<div className="label">{label}</div>
-					<div className={usedCls}>{usedCount}</div>
+					{usedCount > 0 &&
+						<div className={usedCls}>{usedCount}</div>
+					}
 				</div>
 			</Draggable>
 		);
