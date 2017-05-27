@@ -1,13 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default class SimpleText extends React.Component {
 
 	static propTypes = {
-		onChange: React.PropTypes.func,
-		onFocus: React.PropTypes.func,
-		onBlur: React.PropTypes.func,
-		value: React.PropTypes.string,
-		error: React.PropTypes.string
+		onChange: PropTypes.func,
+		onFocus: PropTypes.func,
+		onBlur: PropTypes.func,
+		value: PropTypes.string,
+		error: PropTypes.string
 	}
 
 	static draultProps = {

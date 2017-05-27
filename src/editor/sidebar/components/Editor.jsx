@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import QuestionTypes from './QuestionTypes';
 import TabBar from './Header';
@@ -17,16 +18,16 @@ function getActiveQuestionInsertFromSelection (selection) {
 
 export default class Editor extends React.Component {
 	static propTypes = {
-		assignment: React.PropTypes.object,
-		schema: React.PropTypes.object,
-		selection: React.PropTypes.any,
-		readOnly: React.PropTypes.bool
+		assignment: PropTypes.object,
+		schema: PropTypes.object,
+		selection: PropTypes.any,
+		readOnly: PropTypes.bool
 	}
 
 	static contextTypes = {
-		SelectionManager: React.PropTypes.shape({
-			select: React.PropTypes.func,
-			unselect: React.PropTypes.func
+		SelectionManager: PropTypes.shape({
+			select: PropTypes.func,
+			unselect: PropTypes.func
 		})
 	}
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {buffer, Events} from 'nti-commons';
 
@@ -23,15 +24,15 @@ const PLACEHOLDER = '';
  */
 export default class PlainChoice extends React.Component {
 	static propTypes = {
-		choice: React.PropTypes.object,
-		error: React.PropTypes.object,
-		className: React.PropTypes.string,
-		onChange: React.PropTypes.func,
-		onDelete: React.PropTypes.func,
-		insertNewChoiceAfter: React.PropTypes.func,
-		focusNext: React.PropTypes.func,
-		focusPrev: React.PropTypes.func,
-		maybeDeleteRow: React.PropTypes.func
+		choice: PropTypes.object,
+		error: PropTypes.object,
+		className: PropTypes.string,
+		onChange: PropTypes.func,
+		onDelete: PropTypes.func,
+		insertNewChoiceAfter: PropTypes.func,
+		focusNext: PropTypes.func,
+		focusPrev: PropTypes.func,
+		maybeDeleteRow: PropTypes.func
 	}
 
 	constructor (props) {

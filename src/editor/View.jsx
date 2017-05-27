@@ -1,37 +1,38 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {Error, Loading, ControlBar} from 'nti-web-commons';
 import {PropType as NTIID} from 'nti-lib-ntiids';
+
+import {Manager as SelectionManager} from '../selection';
 
 import FixedElement from './utils/FixedElement';
 import AssignmentEditor from './Editor';
 import Controls from './controls';
 import Sidebar from './sidebar';
-import {Manager as SelectionManager} from '../selection';
 import {LOADED, ASSIGNMENT_DELETING, ASSIGNMENT_DELETED} from './Constants';
 import Store from './Store';
 import {loadAssignmentWithCourse, freeAssignment} from './Actions';
 import NotFound from './NotFound';
-
 import * as ConflictResolution from './conflict-resolution';
 
 const selectionManager = new SelectionManager();
 
 export default class Editor extends React.Component {
 	static propTypes = {
-		assignmentId: React.PropTypes.string.isRequired,
+		assignmentId: PropTypes.string.isRequired,
 		courseId: NTIID.isRequired,
-		onDeleted: React.PropTypes.func,
-		gotoRoot: React.PropTypes.func,
-		previewAssignment: React.PropTypes.func,
-		pageSource: React.PropTypes.object
+		onDeleted: PropTypes.func,
+		gotoRoot: PropTypes.func,
+		previewAssignment: PropTypes.func,
+		pageSource: PropTypes.object
 	}
 
 
 	static childContextTypes = {
-		SelectionManager: React.PropTypes.shape({
-			select: React.PropTypes.func,
-			unselect: React.PropTypes.func
+		SelectionManager: PropTypes.shape({
+			select: PropTypes.func,
+			unselect: PropTypes.func
 		})
 	}
 

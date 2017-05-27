@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {scoped} from 'nti-lib-locale';
 import {Errors, DialogButtons} from 'nti-web-commons';
@@ -22,11 +23,11 @@ const t = scoped('ASSIGNMENT_ASSIGNMENT_PUBLISH_CONFIRMATION', DEFAULT_TEXT);
 
 export default class PrepublishModal extends React.Component {
 	static propTypes = {
-		errors: React.PropTypes.array,
-		warnings: React.PropTypes.array,
-		onDismiss: React.PropTypes.func,
-		confirm: React.PropTypes.func,
-		reject: React.PropTypes.func
+		errors: PropTypes.array,
+		warnings: PropTypes.array,
+		onDismiss: PropTypes.func,
+		confirm: PropTypes.func,
+		reject: PropTypes.func
 	}
 
 	errorButtons = [

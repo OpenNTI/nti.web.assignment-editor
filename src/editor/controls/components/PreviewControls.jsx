@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import Logger from 'nti-util-logger';
 
 const logger = Logger.get('lib:assignment-editor:controls:components:PreviewControls');

@@ -3,7 +3,6 @@ import {OrderedContents} from 'nti-lib-interfaces';
 import {wait} from 'nti-commons';
 
 import {maybeResetAssignmentOnError} from '../Actions';
-
 import {partsEqual} from '../input-types';
 import {removePartWithQuestionSet} from '../assignment-parts/Actions';
 import {

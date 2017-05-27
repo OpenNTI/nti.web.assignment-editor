@@ -1,10 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {HOC} from 'nti-web-commons';
 import {MoveRoot} from 'nti-lib-interfaces';
 
 import {Ordering} from '../../../dnd';
-
 import Question from '../../question';
 import {moveQuestion} from '../Actions';
 
@@ -18,9 +18,9 @@ export {
 export default class QuestionSetComponent extends React.Component {
 
 	static propTypes = {
-		questionSet: React.PropTypes.object.isRequired,
-		assignment: React.PropTypes.object.isRequired,
-		course: React.PropTypes.object
+		questionSet: PropTypes.object.isRequired,
+		assignment: PropTypes.object.isRequired,
+		course: PropTypes.object
 	}
 
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {OrderedContents} from 'nti-lib-interfaces';
 
@@ -9,11 +10,11 @@ import More from './More';
 import Share from './Share';
 
 QuestionControls.propTypes = {
-	question: React.PropTypes.object.isRequired,
-	questionSet: React.PropTypes.object.isRequired,
-	assignment: React.PropTypes.object.isRequired,
-	course: React.PropTypes.object,
-	flushChanges: React.PropTypes.func
+	question: PropTypes.object.isRequired,
+	questionSet: PropTypes.object.isRequired,
+	assignment: PropTypes.object.isRequired,
+	course: PropTypes.object,
+	flushChanges: PropTypes.func
 };
 
 

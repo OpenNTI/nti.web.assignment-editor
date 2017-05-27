@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const SYNC_HEIGHT = Symbol('Sync Height');
 
 export default class SyncHeightView extends React.Component {
 	static propTypes = {
-		group: React.PropTypes.object.isRequired,
-		children: React.PropTypes.any
+		group: PropTypes.object.isRequired,
+		children: PropTypes.any
 	}
 
 	setInnerRef = x => this.innerRef = x

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import filesize from 'filesize';
 import {Prompt} from 'nti-web-commons';
 import {scoped} from 'nti-lib-locale';
@@ -16,10 +17,10 @@ const t = scoped('FILE_UPLOAD', DEFAULT_TEXT);
 
 export default class FileUploadEditor extends React.Component {
 	static propTypes = {
-		part: React.PropTypes.object.isRequired,
-		question: React.PropTypes.object.isRequired,
-		onChange: React.PropTypes.func,
-		index: React.PropTypes.number
+		part: PropTypes.object.isRequired,
+		question: PropTypes.object.isRequired,
+		onChange: PropTypes.func,
+		index: PropTypes.number
 	}
 
 	state = {}

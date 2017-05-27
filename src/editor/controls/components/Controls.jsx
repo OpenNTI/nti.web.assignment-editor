@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import ActionStack from '../../../action-list';
 import {
@@ -14,16 +15,16 @@ import PreviewControls from './PreviewControls';
 
 export default class Controls extends React.Component {
 	static propTypes = {
-		assignment: React.PropTypes.object,
-		undoStack: React.PropTypes.object,
-		selectionManager: React.PropTypes.object,
-		previewAssignment: React.PropTypes.func
+		assignment: PropTypes.object,
+		undoStack: PropTypes.object,
+		selectionManager: PropTypes.object,
+		previewAssignment: PropTypes.func
 	}
 
 	static contextTypes = {
-		SelectionManager: React.PropTypes.shape({
-			select: React.PropTypes.func,
-			unselect: React.PropTypes.func
+		SelectionManager: PropTypes.shape({
+			select: PropTypes.func,
+			unselect: PropTypes.func
 		})
 	}
 

@@ -5,7 +5,6 @@ import {isNTIID} from 'nti-lib-ntiids';
 import {OrderedContents} from 'nti-lib-interfaces';
 
 import {cloneQuestion} from '../question/utils';
-
 import {saveFieldOn, maybeResetAssignmentOnError} from '../Actions';
 import {SAVING, SAVE_ENDED, QUESTION_SET_UPDATED, QUESTION_SET_ERROR} from '../Constants';
 

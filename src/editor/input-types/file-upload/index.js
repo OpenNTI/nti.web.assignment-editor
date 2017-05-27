@@ -1,7 +1,8 @@
+import {PROMPT} from '../';
+
 import Editor from './Editor';
 import Button from './Button';
 import {isPartEqual} from './utils';
-import {PROMPT} from '../';
 
 export default class FileUploadPart {
 	//TODO: get this mime type from the model

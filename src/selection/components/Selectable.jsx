@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import SelectionItem from '../SelectionItem';
@@ -6,34 +7,34 @@ import SelectionItem from '../SelectionItem';
 
 export default class Selectable extends React.Component {
 	static propTypes = {
-		value: React.PropTypes.any,
-		id: React.PropTypes.string,
-		className: React.PropTypes.string,
-		children: React.PropTypes.any,
-		onSelect: React.PropTypes.func,
-		onUnselect: React.PropTypes.func,
-		onChildSelect: React.PropTypes.func,
-		onChildUnselect: React.PropTypes.func
+		value: PropTypes.any,
+		id: PropTypes.string,
+		className: PropTypes.string,
+		children: PropTypes.any,
+		onSelect: PropTypes.func,
+		onUnselect: PropTypes.func,
+		onChildSelect: PropTypes.func,
+		onChildUnselect: PropTypes.func
 	}
 
 	static childContextTypes = {
-		SelectionParent: React.PropTypes.shape({
-			childSelected: React.PropTypes.func,
-			childUnselected: React.PropTypes.func
+		SelectionParent: PropTypes.shape({
+			childSelected: PropTypes.func,
+			childUnselected: PropTypes.func
 		})
 	}
 
 	static contextTypes = {
-		SelectionManager: React.PropTypes.shape({
-			select: React.PropTypes.func,
-			unselect: React.PropTypes.func,
-			addListener: React.PropTypes.func,
-			removeListener: React.PropTypes.func,
-			isSelected: React.PropTypes.func
+		SelectionManager: PropTypes.shape({
+			select: PropTypes.func,
+			unselect: PropTypes.func,
+			addListener: PropTypes.func,
+			removeListener: PropTypes.func,
+			isSelected: PropTypes.func
 		}),
-		SelectionParent: React.PropTypes.shape({
-			childSelected: React.PropTypes.func,
-			childUnselected: React.PropTypes.func
+		SelectionParent: PropTypes.shape({
+			childSelected: PropTypes.func,
+			childUnselected: PropTypes.func
 		})
 	}
 

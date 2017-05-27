@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import BufferedTextEditor from '../../inputs/BufferedTextEditor';
@@ -16,11 +17,11 @@ function getMaxLength (schema = {}) {
 
 export default class TitleEditor extends React.Component {
 	static propTypes = {
-		value: React.PropTypes.string.isRequired,
-		schema: React.PropTypes.object,
-		error: React.PropTypes.any,
-		onChange: React.PropTypes.func,
-		disabled: React.PropTypes.bool
+		value: PropTypes.string.isRequired,
+		schema: PropTypes.object,
+		error: PropTypes.any,
+		onChange: PropTypes.func,
+		disabled: PropTypes.bool
 	}
 
 	constructor (props) {

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {buffer} from 'nti-commons';
 import {Errors} from 'nti-web-commons';
@@ -6,12 +7,10 @@ import {scoped} from 'nti-lib-locale';
 
 import {DragHandle} from '../../../dnd';
 import InlineDialog from '../../../inline-dialog';
-
 import Store from '../../Store';
 import {QUESTION_ERROR, QUESTION_WARNING, REVERT_ERRORS} from '../../Constants';
 import {Component as Selectable} from '../../../selection';
 import ControlsConfig from '../../controls/ControlsConfig';
-
 import {updateQuestion} from '../Actions';
 
 import Between from './Between';
@@ -54,11 +53,11 @@ function isVisible (question, assignment) {
 
 export default class Question extends React.Component {
 	static propTypes = {
-		question: React.PropTypes.object.isRequired,
-		questionSet: React.PropTypes.object.isRequired,
-		assignment: React.PropTypes.object.isRequired,
-		course: React.PropTypes.object,
-		index: React.PropTypes.number
+		question: PropTypes.object.isRequired,
+		questionSet: PropTypes.object.isRequired,
+		assignment: PropTypes.object.isRequired,
+		course: PropTypes.object,
+		index: PropTypes.number
 	}
 
 

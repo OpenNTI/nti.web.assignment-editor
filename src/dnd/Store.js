@@ -1,5 +1,6 @@
-import {ORDERING_DRAG_OVER, ORDERING_DRAG_LEAVE, DROP_HANDLED, DRAG_START, DRAG_END} from './Constants';
 import StorePrototype from 'nti-lib-store';
+
+import {ORDERING_DRAG_OVER, ORDERING_DRAG_LEAVE, DROP_HANDLED, DRAG_START, DRAG_END} from './Constants';
 import {MimeType as MoveInfoMimeType} from './utils/MoveInfo';
 import {MimeType as InfoMimeType} from './utils/Info';
 import {getTransferKey, isSameData} from './utils/DataTransfer';

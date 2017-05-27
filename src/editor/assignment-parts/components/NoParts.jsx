@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {scoped} from 'nti-lib-locale';
 
 import {Dropzone} from '../../../dnd';
-
 import {createPartWithQuestion} from '../Actions';
+
 import {QUESTION_TYPE} from './QuestionSet';
 
 
@@ -15,7 +16,7 @@ const t = scoped('NO_PARTS', DEFAULT_TEXT);
 
 export default class NoParts extends React.Component {
 	static propTypes = {
-		assignment: React.PropTypes.object
+		assignment: PropTypes.object
 	}
 
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReactCSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import cx from 'classnames';
 
@@ -6,7 +7,7 @@ import Item from './Item';
 
 export default class ActionStack extends React.Component {
 	static propTypes = {
-		stack: React.PropTypes.object.isRequired
+		stack: PropTypes.object.isRequired
 	}
 
 	constructor (props) {

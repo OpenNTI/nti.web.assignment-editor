@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import SuggestionItem from './SuggestionItem';
 
 const TYPE_GROUPS = {
@@ -10,8 +12,8 @@ const TYPE_GROUPS = {
 export default class Suggestions extends React.Component {
 
 	static propTypes = {
-		tokens: React.PropTypes.array,
-		onSelect: React.PropTypes.func
+		tokens: PropTypes.array,
+		onSelect: PropTypes.func
 	}
 
 	static defaultProps = {
@@ -53,14 +55,14 @@ export default class Suggestions extends React.Component {
 				<div className="input-type-fileupload-suggestions-wrapper">
 					<div className="title">People who entered these extensions also added:</div>
 					<div className="suggestions">
-					{list.map((value) =>
+					{list.map((value) => (
 						<SuggestionItem
 							key={'suggestion' + value.replace(/\./g, '-')}
 							value={value}
 							onAdd={this.onAddSuggestion}
 							onDismiss={this.onDismiss} controls
 						/>
-					)}
+					))}
 					</div>
 				</div>
 			)}

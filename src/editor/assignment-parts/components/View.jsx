@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Logger from 'nti-util-logger';
 import {HOC} from 'nti-web-commons';
 
@@ -11,8 +12,8 @@ const logger = Logger.get('lib:asssignment-editor:AssignmentParts');
 
 export default class AssignmentPartsView extends React.Component {
 	static propTypes = {
-		assignment: React.PropTypes.object,
-		course: React.PropTypes.object
+		assignment: PropTypes.object,
+		course: PropTypes.object
 	}
 
 

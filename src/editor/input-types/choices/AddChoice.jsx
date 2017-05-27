@@ -1,12 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Events} from 'nti-commons';
 
 const {getKeyCode} = Events;
 
 export default class AddChoice extends React.Component {
 	static propTypes = {
-		addLabel: React.PropTypes.string,
-		add: React.PropTypes.func
+		addLabel: PropTypes.string,
+		add: PropTypes.func
 	}
 
 	constructor (props) {

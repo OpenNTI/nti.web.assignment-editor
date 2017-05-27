@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import {Flyout} from 'nti-web-commons';
 
 function renderTrigger () {
@@ -9,7 +9,7 @@ function renderTrigger () {
 }
 
 MoreControls.propTypes = {
-	children: React.PropTypes.node
+	children: PropTypes.node
 };
 export default function MoreControls ({children}) {
 	return (
@@ -18,4 +18,3 @@ export default function MoreControls ({children}) {
 		</Flyout.Triggered>
 	);
 }
-

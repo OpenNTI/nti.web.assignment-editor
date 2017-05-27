@@ -1,10 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {HOC} from 'nti-web-commons';
 import cx from 'classnames';
 import {MoveRoot} from 'nti-lib-interfaces';
 
 import {MoveInfo} from '../../../../dnd';
-
 import {moveQuestion} from '../../../assignment-parts/Actions';
 
 const {ItemChanges} = HOC;
@@ -48,10 +48,10 @@ function shouldDisable (type, question, questionSet) {
 
 export default class Move extends React.Component {
 	static propTypes = {
-		type: React.PropTypes.oneOf([UP, DOWN]),
-		question: React.PropTypes.object.isRequired,
-		questionSet: React.PropTypes.object.isRequired,
-		disabled: React.PropTypes.bool
+		type: PropTypes.oneOf([UP, DOWN]),
+		question: PropTypes.object.isRequired,
+		questionSet: PropTypes.object.isRequired,
+		disabled: PropTypes.bool
 	}
 
 

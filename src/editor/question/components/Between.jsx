@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import {Component as Selectable} from '../../../selection';
@@ -7,9 +8,9 @@ import ControlsConfig from '../../controls/ControlsConfig';
 
 export default class Between extends React.Component {
 	static propTypes = {
-		question: React.PropTypes.object.isRequired,
-		before: React.PropTypes.bool,
-		after: React.PropTypes.bool
+		question: PropTypes.object.isRequired,
+		before: PropTypes.bool,
+		after: PropTypes.bool
 	}
 
 	constructor (props) {

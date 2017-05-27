@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {Radio, Checkbox} from 'nti-web-commons';
 
@@ -6,19 +7,19 @@ import Choice, {Placeholder as ChoicePlaceholder} from '../choices/Choice';
 
 export default class MultipleChoiceChoice extends React.Component {
 	static propTypes = {
-		choice: React.PropTypes.object,
-		heightSyncGroup: React.PropTypes.object,
-		error: React.PropTypes.object,
-		group: React.PropTypes.string,
-		onChange: React.PropTypes.func,
-		onSolutionChange: React.PropTypes.func,
-		onDelete: React.PropTypes.func,
-		multipleAnswers: React.PropTypes.bool,
-		plainText: React.PropTypes.bool,
-		insertNewChoiceAfter: React.PropTypes.func,
-		focusNext: React.PropTypes.func,
-		focusPrev: React.PropTypes.func,
-		maybeDeleteRow: React.PropTypes.func,
+		choice: PropTypes.object,
+		heightSyncGroup: PropTypes.object,
+		error: PropTypes.object,
+		group: PropTypes.string,
+		onChange: PropTypes.func,
+		onSolutionChange: PropTypes.func,
+		onDelete: PropTypes.func,
+		multipleAnswers: PropTypes.bool,
+		plainText: PropTypes.bool,
+		insertNewChoiceAfter: PropTypes.func,
+		focusNext: PropTypes.func,
+		focusPrev: PropTypes.func,
+		maybeDeleteRow: PropTypes.func,
 	}
 
 	setChoiceCmpRef = x => this.choiceCmp = x;
@@ -125,7 +126,7 @@ export default class MultipleChoiceChoice extends React.Component {
 }
 
 Placeholder.propTypes = {
-	correct: React.PropTypes.bool
+	correct: PropTypes.bool
 };
 export function Placeholder ({correct}) {
 	return (

@@ -1,12 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {getEditorWidget, Placeholder as InputPlaceholder} from '../../input-types';
 
 questionParts.propTypes = {
-	question: React.PropTypes.object.isRequired,
-	error: React.PropTypes.any,
-	onChange: React.PropTypes.func,
-	keepStateHash: React.PropTypes.number
+	question: PropTypes.object.isRequired,
+	error: PropTypes.any,
+	onChange: PropTypes.func,
+	keepStateHash: PropTypes.number
 };
 
 

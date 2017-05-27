@@ -2,8 +2,10 @@
 import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import {ConflictResolutionHandler} from 'nti-web-commons';
 import {decodeFromURI} from 'nti-lib-ntiids';
+
 import {Editor} from '../../src';
 
 import 'normalize.css';
@@ -13,15 +15,15 @@ import 'nti-modeled-content/lib/index.css';
 
 window.$AppConfig = window.$AppConfig || {server: '/dataserver2/'};
 
-const Bridge = React.createClass({
+class Bridge extends React.Component {
 
-	propTypes: {
-		children: React.PropTypes.any
-	},
+	static propTypes = {
+		children: PropTypes.any
+	}
 
-	childContextTypes: {
-		router: React.PropTypes.object
-	},
+	static childContextTypes = {
+		router: PropTypes.object
+	}
 
 	getChildContext () {
 		return {
@@ -29,13 +31,12 @@ const Bridge = React.createClass({
 				makeHref: (x) => x
 			}
 		};
-	},
+	}
 
 	render () {
 		return React.Children.only(this.props.children);
 	}
-
-});
+}
 
 let assignmentId = localStorage.getItem('assignment-ntiid');
 
@@ -51,11 +52,13 @@ if (!courseId) {
 	localStorage.setItem('course-ntiid', courseId);
 }
 
+const noop = () => {};
+
 ReactDOM.render(
 	<Bridge>
 		<div>
 			<ConflictResolutionHandler />
-			<Editor assignmentId={assignmentId} courseId={courseId} gotoRoot={() => {}}/>
+			<Editor assignmentId={assignmentId} courseId={courseId} gotoRoot={noop}/>
 		</div>
 	</Bridge>,
 	document.getElementById('content')

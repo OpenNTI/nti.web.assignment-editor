@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {EditorContextProvider, FormatButton} from 'nti-modeled-content';
 
 function getEditorForSelection (selection) {
@@ -16,7 +17,7 @@ function getEditorForSelection (selection) {
 
 export default class FormatControls extends React.Component {
 	static propTypes = {
-		selection: React.PropTypes.any
+		selection: PropTypes.any
 	}
 
 

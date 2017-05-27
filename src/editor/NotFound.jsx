@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {scoped} from 'nti-lib-locale';
 import {ResourceNotFound} from 'nti-web-commons';
 
@@ -9,7 +10,7 @@ const DEFAULT_TEXT = {
 const t = scoped('ASSIGNMENT_NOT_FOUND', DEFAULT_TEXT);
 
 AssignmentNotFound.propTypes = {
-	gotoRoot: React.PropTypes.func
+	gotoRoot: PropTypes.func
 };
 export default function AssignmentNotFound ({gotoRoot}) {
 	const actions = [];

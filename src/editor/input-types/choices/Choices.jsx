@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import {SyncHeightGroup} from '../../../sync-height';
@@ -67,18 +68,18 @@ function choicesEqual (choicesA, choicesB) {
  */
 export default class Choices extends React.Component {
 	static propTypes = {
-		choices: React.PropTypes.array.isRequired,
-		accepts: React.PropTypes.any,
-		error: React.PropTypes.object,
-		className: React.PropTypes.string,
-		containerId: React.PropTypes.string,
-		onChange: React.PropTypes.func,
-		buildBlankChoice: React.PropTypes.func,
-		canRemove: React.PropTypes.bool,
-		reorderable: React.PropTypes.bool,
-		addLabel: React.PropTypes.string,
-		minAllowed: React.PropTypes.number,
-		plainText: React.PropTypes.bool
+		choices: PropTypes.array.isRequired,
+		accepts: PropTypes.any,
+		error: PropTypes.object,
+		className: PropTypes.string,
+		containerId: PropTypes.string,
+		onChange: PropTypes.func,
+		buildBlankChoice: PropTypes.func,
+		canRemove: PropTypes.bool,
+		reorderable: PropTypes.bool,
+		addLabel: PropTypes.string,
+		minAllowed: PropTypes.number,
+		plainText: PropTypes.bool
 	}
 
 
@@ -613,7 +614,7 @@ export default class Choices extends React.Component {
 }
 
 Placeholder.propTypes = {
-	children: React.PropTypes.any
+	children: PropTypes.any
 };
 export function Placeholder ({children}) {
 	return (

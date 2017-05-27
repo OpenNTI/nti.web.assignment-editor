@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {TextEditor, valuesEqual} from 'nti-modeled-content';
 import {buffer} from 'nti-commons';
 
@@ -6,14 +7,14 @@ const DEFAULT_BUFFER = 5000;
 
 export default class BufferedTextEditor extends React.Component {
 	static propTypes = {
-		initialValue: React.PropTypes.string,
-		onChange: React.PropTypes.func,
-		onEditorChange: React.PropTypes.func,
-		onBlur: React.PropTypes.func,
-		onFocus: React.PropTypes.func,
-		buffer: React.PropTypes.number,
-		error: React.PropTypes.object,
-		warning: React.PropTypes.object
+		initialValue: PropTypes.string,
+		onChange: PropTypes.func,
+		onEditorChange: PropTypes.func,
+		onBlur: PropTypes.func,
+		onFocus: PropTypes.func,
+		buffer: PropTypes.number,
+		error: PropTypes.object,
+		warning: PropTypes.object
 	}
 
 

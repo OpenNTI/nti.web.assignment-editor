@@ -1,5 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {scoped} from 'nti-lib-locale';
+
 import {deleteAssignment} from '../../Actions';
 
 const DEFAULT_TEXT = {
@@ -11,7 +13,7 @@ const t = scoped('assignment.editing.controls', DEFAULT_TEXT);
 
 export default class DeleteAssignment extends React.Component {
 	static propTypes = {
-		assignment: React.PropTypes.object
+		assignment: PropTypes.object
 	}
 
 	onDeleteClick = () => {

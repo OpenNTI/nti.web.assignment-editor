@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Errors} from 'nti-web-commons';
 import {scoped} from 'nti-lib-locale';
 
@@ -21,8 +22,8 @@ const t = scoped('ASSIGNMENT_EDITOR_STATUS', defaultText);
 
 export default class AssignmentStatus extends React.Component {
 	static propTypes = {
-		hasUpdated: React.PropTypes.bool,
-		isSaving: React.PropTypes.bool
+		hasUpdated: PropTypes.bool,
+		isSaving: PropTypes.bool
 	}
 
 	constructor (props) {

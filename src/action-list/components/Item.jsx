@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const DEFAULT_NAME = 'DO';
 
 export default class ActionQueueItem extends React.Component {
 	static propTypes = {
-		item: React.PropTypes.object.isRequired
+		item: PropTypes.object.isRequired
 	};
 
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 const PLACEHOLDER_TEXT = 'Students will write here...';
@@ -16,8 +17,8 @@ function placeholder (props) {
 }
 
 placeholder.propTypes = {
-	text: React.PropTypes.string,
-	singleLine: React.PropTypes.bool
+	text: PropTypes.string,
+	singleLine: PropTypes.bool
 };
 
 export default placeholder;

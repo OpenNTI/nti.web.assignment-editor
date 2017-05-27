@@ -1,16 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import MultipleChoiceEditor from '../multiple-choice/Editor';
+
 import {generatePartFor} from './utils';
 
 export default class MultipleChoiceMultipleAnswerEditor extends React.Component {
 	static propTypes = {
-		part: React.PropTypes.object.isRequired,
-		question: React.PropTypes.object.isRequired,
-		error: React.PropTypes.any,
-		index: React.PropTypes.number,
-		onChange: React.PropTypes.func,
-		keepStateHash: React.PropTypes.number
+		part: PropTypes.object.isRequired,
+		question: PropTypes.object.isRequired,
+		error: PropTypes.any,
+		index: PropTypes.number,
+		onChange: PropTypes.func,
+		keepStateHash: PropTypes.number
 	}
 
 

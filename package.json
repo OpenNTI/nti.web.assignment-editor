@@ -50,8 +50,9 @@
     "nti-util-logger": "^1.0.0",
     "nti-web-client": "^1.0.0",
     "nti-web-commons": ">=0.0.177",
-    "react-transition-group": "^1.1.0",
+    "prop-types": "^15.5.10",
     "react-flip-move": "2.7.6-nti",
+    "react-transition-group": "^1.1.0",
     "uuid": "^3.0.1"
   },
   "devDependencies": {

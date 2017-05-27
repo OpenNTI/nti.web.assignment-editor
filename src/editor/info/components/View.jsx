@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import PointValue from './PointValue';
@@ -7,8 +8,8 @@ import TimeLimit from './TimeLimit';
 
 export default class AssignmentInfoView extends React.Component {
 	static propTypes = {
-		assignment: React.PropTypes.object,
-		schema: React.PropTypes.object
+		assignment: PropTypes.object,
+		schema: PropTypes.object
 	}
 
 	constructor (props) {

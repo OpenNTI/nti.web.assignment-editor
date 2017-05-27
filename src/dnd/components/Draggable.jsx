@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import cx from 'classnames';
 
@@ -8,21 +9,21 @@ import DnDInfo from '../utils/Info';
 
 export default class Draggable extends React.Component {
 	static propTypes = {
-		data: React.PropTypes.any,
-		onDragStart: React.PropTypes.func,
-		onDragEnd: React.PropTypes.func,
-		onMouseDown: React.PropTypes.func,
-		onMouseUp: React.PropTypes.func,
-		children: React.PropTypes.any,
-		className: React.PropTypes.string
+		data: PropTypes.any,
+		onDragStart: PropTypes.func,
+		onDragEnd: PropTypes.func,
+		onMouseDown: PropTypes.func,
+		onMouseUp: PropTypes.func,
+		children: PropTypes.any,
+		className: PropTypes.string
 	}
 
 
 	static childContextTypes = {
-		addDragHandle: React.PropTypes.func,
+		addDragHandle: PropTypes.func,
 		// removeDragHandle: React.PropTypes.func,
-		enableDrag: React.PropTypes.func,
-		disableDrag: React.PropTypes.func
+		enableDrag: PropTypes.func,
+		disableDrag: PropTypes.func
 	}
 
 	constructor (props) {

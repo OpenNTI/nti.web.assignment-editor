@@ -1,8 +1,9 @@
+import {SAVE, EVENT_FINISH} from 'nti-lib-interfaces';
 import {dispatch} from 'nti-lib-dispatcher';
 import {getService} from  'nti-web-client';
+import {Prompt} from 'nti-web-commons';
+import {wait} from 'nti-commons';
 import Logger from 'nti-util-logger';
-
-import {SAVE, EVENT_FINISH} from 'nti-lib-interfaces';
 
 import {
 	ASSIGNMENT_ERROR,
@@ -18,8 +19,6 @@ import {
 	SAVE_ENDED
 } from './Constants';
 
-import {Prompt} from 'nti-web-commons';
-import {wait} from 'nti-commons';
 
 const SHORT = 3000;
 

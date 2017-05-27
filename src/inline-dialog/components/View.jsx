@@ -1,11 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import jump from 'jump.js';
 import {getViewportHeight} from 'nti-lib-dom';
 import {DialogButtons, LockScroll} from 'nti-web-commons';
 
 import {HeightChange} from '../../sync-height';
-
 import {getDialogPositionForRect, getScrollOffsetForRect} from '../utils';
 
 const BODY_OPEN_CLS = 'inline-dialog-open';
@@ -32,12 +32,12 @@ function removeOpenClsFromBody () {
 
 export default class InlineDialog extends React.Component {
 	static propTypes = {
-		className: React.PropTypes.string,
-		children: React.PropTypes.node,
-		dialogButtons: React.PropTypes.array,
-		active: React.PropTypes.bool,
-		topPadding: React.PropTypes.number,
-		bottomPadding: React.PropTypes.number
+		className: PropTypes.string,
+		children: PropTypes.node,
+		dialogButtons: PropTypes.array,
+		active: PropTypes.bool,
+		topPadding: PropTypes.number,
+		bottomPadding: PropTypes.number
 	}
 
 	setDialogRef = x => this.dialog = x

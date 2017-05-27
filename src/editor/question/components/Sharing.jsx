@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {OrderedContents} from 'nti-lib-interfaces';
 import {scoped} from 'nti-lib-locale';
 import {Associations} from 'nti-web-commons';
@@ -25,10 +26,10 @@ const t = scoped('QUESTION_SHARING', DEFAULT_TEXT);
 
 export default class QuestionShareing extends React.Component {
 	static propTypes = {
-		question: React.PropTypes.object,
-		questionSet: React.PropTypes.object,
-		assignment: React.PropTypes.object,
-		course: React.PropTypes.object
+		question: PropTypes.object,
+		questionSet: PropTypes.object,
+		assignment: PropTypes.object,
+		course: PropTypes.object
 	}
 
 

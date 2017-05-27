@@ -1,6 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {RadioGroup, DialogButtons, TokenEditor} from 'nti-web-commons';
+
 import Suggestions from './Suggestions';
 
 const ALL_TYPES = 'All File Types';
@@ -12,9 +14,9 @@ const WILDCARDS = x => x !== WILDCARD;
 export default class Settings extends React.Component {
 
 	static propTypes = {
-		onDismiss: React.PropTypes.func,
-		onSave: React.PropTypes.func,
-		part: React.PropTypes.object.isRequired
+		onDismiss: PropTypes.func,
+		onSave: PropTypes.func,
+		part: PropTypes.object.isRequired
 	}
 
 	state = {}

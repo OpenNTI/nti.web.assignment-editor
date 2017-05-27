@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import Logger from 'nti-util-logger';
 import {wait} from 'nti-commons';
@@ -17,8 +18,8 @@ function getMutationObserver () {
 
 export default class HeightChange extends React.Component {
 	static propTypes = {
-		children: React.PropTypes.node,
-		onChange: React.PropTypes.func
+		children: PropTypes.node,
+		onChange: PropTypes.func
 	}
 
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {scoped} from 'nti-lib-locale';
 
 const defaultText = {
@@ -9,7 +10,7 @@ const t = scoped('ASSIGNMENT_EDITOR_BREADCRUMB', defaultText);
 
 export default class AssignmentEditorBreadCrumb extends React.Component {
 	static propTypes = {
-		gotoRoot: React.PropTypes.func
+		gotoRoot: PropTypes.func
 	}
 
 

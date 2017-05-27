@@ -1,7 +1,9 @@
+import {PROMPT} from '../';
+
 import Editor from './Editor';
 import Button from './Button';
 import {partsEqual} from './utils';
-import {PROMPT} from '../';
+
 
 export default class OrderingPart {
 	//TODO: get this mime type from the model

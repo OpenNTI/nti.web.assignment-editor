@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Choices, {Placeholder as ChoicesPlaceholder} from '../choices';
 import {isErrorForChoice} from '../choices/Factory';
@@ -8,7 +9,7 @@ import Choice, {Placeholder as ChoicePlaceholder} from './Choice';
 export default class MultipleChoiceChoices extends Choices {
 	static propTypes = {
 		...Choices.propTypes,
-		multipleAnswers: React.PropTypes.bool
+		multipleAnswers: PropTypes.bool
 	}
 
 

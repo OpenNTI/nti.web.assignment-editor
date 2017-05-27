@@ -1,12 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 export default class Discussion extends React.Component {
 	static propTypes = {
-		discussion: React.PropTypes.object,
-		selected: React.PropTypes.bool,
-		course: React.PropTypes.object,
-		onSelect: React.PropTypes.func
+		discussion: PropTypes.object,
+		selected: PropTypes.bool,
+		course: PropTypes.object,
+		onSelect: PropTypes.func
 	}
 
 	constructor (props) {

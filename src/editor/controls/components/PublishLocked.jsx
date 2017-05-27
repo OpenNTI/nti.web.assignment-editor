@@ -1,7 +1,7 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {scoped} from 'nti-lib-locale';
-
 import {Flyout, PublishTrigger, Constants, TinyLoader as Loading} from 'nti-web-commons';
 
 import {resetAssignmentSubmissions} from '../../Actions';

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import Logger from 'nti-util-logger';
 import {
@@ -17,7 +18,7 @@ const TIME_LIMIT_KEY = 'maximum_time_allowed';
 export default class TimeLimit extends React.Component {
 
 	static propTypes = {
-		assignment: React.PropTypes.object.isRequired
+		assignment: PropTypes.object.isRequired
 	}
 
 	state = {}

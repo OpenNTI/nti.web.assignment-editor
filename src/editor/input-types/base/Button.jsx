@@ -1,11 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {HOC} from 'nti-web-commons';
 import {OrderedContents} from 'nti-lib-interfaces';
 
-import {appendQuestionTo} from '../Actions';
-
 import {Draggable} from '../../../dnd';
+import {appendQuestionTo} from '../Actions';
 
 const QuestionMimeType = 'application/vnd.nextthought.naquestion';
 
@@ -27,12 +27,12 @@ function canAddToAssignment (assignment) {
 export class Button extends React.Component {
 
 	static propTypes = {
-		assignment: React.PropTypes.object,
-		part: React.PropTypes.object,
-		handles: React.PropTypes.array,
-		activeInsert: React.PropTypes.object,
-		label: React.PropTypes.string,
-		iconCls: React.PropTypes.string
+		assignment: PropTypes.object,
+		part: PropTypes.object,
+		handles: PropTypes.array,
+		activeInsert: PropTypes.object,
+		label: PropTypes.string,
+		iconCls: PropTypes.string
 	}
 
 

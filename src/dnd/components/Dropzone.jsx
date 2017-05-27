@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import DnDInfo from '../utils/Info';
@@ -41,14 +42,14 @@ export function doHandleDataTransfer (handlers, dataTransfer, e) {
 
 export default class Dropzone extends React.Component {
 	static propTypes = {
-		dropHandlers: React.PropTypes.object,
-		onDrop: React.PropTypes.func,
-		onInvalidDrop: React.PropTypes.func,
-		onDragEnter: React.PropTypes.func,
-		onDragLeave: React.PropTypes.func,
-		onDragOver: React.PropTypes.func,
-		children: React.PropTypes.any,
-		className: React.PropTypes.string
+		dropHandlers: PropTypes.object,
+		onDrop: PropTypes.func,
+		onInvalidDrop: PropTypes.func,
+		onDragEnter: PropTypes.func,
+		onDragLeave: PropTypes.func,
+		onDragOver: PropTypes.func,
+		children: PropTypes.any,
+		className: PropTypes.string
 	}
 
 	state = {}

@@ -1,9 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import AvailablePicker from './AvailablePicker';//TODO: merge this and that component together.
 
 export default class DueDate extends React.Component {
 	static propTypes = {
-		assignment: React.PropTypes.object.isRequired
+		assignment: PropTypes.object.isRequired
 	}
 	constructor (props) {
 		super(props);

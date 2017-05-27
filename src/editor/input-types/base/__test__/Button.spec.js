@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import {Button} from '../Button';
 
 const render = (node, cmp, props, ...children) => new Promise(next =>

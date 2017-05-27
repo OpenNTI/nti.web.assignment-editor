@@ -1,17 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 export default class DragHandle extends React.Component {
 	static propTypes = {
-		className: React.PropTypes.string,
-		disabled: React.PropTypes.bool,
-		force: React.PropTypes.bool
+		className: PropTypes.string,
+		disabled: PropTypes.bool,
+		force: PropTypes.bool
 	}
 
 	static contextTypes = {
-		addDragHandle: React.PropTypes.func,
-		enableDrag: React.PropTypes.func,
-		disableDrag: React.PropTypes.func
+		addDragHandle: PropTypes.func,
+		enableDrag: PropTypes.func,
+		disableDrag: PropTypes.func
 	}
 
 

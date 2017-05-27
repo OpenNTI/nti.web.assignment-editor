@@ -1,25 +1,24 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
+import {isNTIID} from 'nti-lib-ntiids';
 
 import BufferedTextEditor from '../../inputs/BufferedTextEditor';
 import Store from '../../Store';
-
 import {getContentPlaceholderFor} from '../../input-types/';
-
 import {warnIfQuestionEmpty} from '../Actions';
 
-import {isNTIID} from 'nti-lib-ntiids';
 
 export default class QuestionContent extends React.Component {
 	static propTypes = {
-		question: React.PropTypes.object.isRequired,
-		isSaving: React.PropTypes.bool,
-		published: React.PropTypes.bool,
-		onFocus: React.PropTypes.func,
-		onBlur: React.PropTypes.func,
-		error: React.PropTypes.any,
-		warning: React.PropTypes.any,
-		onChange: React.PropTypes.func
+		question: PropTypes.object.isRequired,
+		isSaving: PropTypes.bool,
+		published: PropTypes.bool,
+		onFocus: PropTypes.func,
+		onBlur: PropTypes.func,
+		error: PropTypes.any,
+		warning: PropTypes.any,
+		onChange: PropTypes.func
 	}
 
 

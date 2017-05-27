@@ -1,18 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Store from '../../Store';
 import {ASSIGNMENT_ERROR} from '../../Constants';
-
 import {saveTitle, saveContent} from '../Actions';
+
 import Title from './Title';
 import Content from './Content';
 import Sharing from './Sharing';
 
 export default class AssignmentContentView extends React.Component {
 	static propTypes = {
-		assignment: React.PropTypes.object,
-		course: React.PropTypes.object,
-		schema: React.PropTypes.object
+		assignment: PropTypes.object,
+		course: PropTypes.object,
+		schema: PropTypes.object
 	}
 
 	constructor (props) {

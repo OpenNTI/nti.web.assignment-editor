@@ -1,4 +1,5 @@
 import {ConflictResolution} from 'nti-web-commons';
+
 import handleUngradableInAutoGradeAssignment from './handleUngradableInAutoGradeAssignment';
 
 

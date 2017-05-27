@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Pager} from 'nti-web-commons';
 
 import BreadCrumb from './BreadCrumb';
 
 NavigationBar.propTypes = {
-	gotoRoot: React.PropTypes.func,
-	pageSource: React.PropTypes.object
+	gotoRoot: PropTypes.func,
+	pageSource: PropTypes.object
 };
 
 export default function NavigationBar (props) {

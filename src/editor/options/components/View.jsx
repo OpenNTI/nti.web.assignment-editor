@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {HOC} from 'nti-web-commons';
 
 import Grading from './Grading';

@@ -1,9 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import Placeholder from './Placeholder';
 
 export default class EssayEditor extends React.Component {
 	static propTypes = {
-		part: React.PropTypes.object.isRequired
+		part: PropTypes.object.isRequired
 	}
 
 

@@ -1,14 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 
 export default class SuggestionItem extends React.Component {
 
 	static propTypes = {
-		value: React.PropTypes.string,
-		name: React.PropTypes.string,
-		onAdd: React.PropTypes.func,
-		onDismiss: React.PropTypes.func,
-		controls: React.PropTypes.bool
+		value: PropTypes.string,
+		name: PropTypes.string,
+		onAdd: PropTypes.func,
+		onDismiss: PropTypes.func,
+		controls: PropTypes.bool
 	}
 
 	render () {

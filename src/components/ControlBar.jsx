@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {ControlBar, Button, DisplayName} from 'nti-web-commons';
 import {scoped} from 'nti-lib-locale';
 
@@ -15,8 +16,8 @@ const getSubmissionText = (data) => t('submission', data);
 
 export default class AssignmentControlBar extends React.Component {
 	static propTypes = {
-		doEdit: React.PropTypes.func,
-		student: React.PropTypes.object
+		doEdit: PropTypes.func,
+		student: PropTypes.object
 	}
 
 

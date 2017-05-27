@@ -1,9 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {Events} from 'nti-commons';
 
 import BufferedTextEditor from '../../inputs/BufferedTextEditor';
-
 import {DragHandle} from '../../../dnd';
 import SyncHeight from '../../../sync-height';
 import {Component as Selectable} from '../../../selection';
@@ -26,17 +26,17 @@ const PLACEHOLDER = '';
  */
 export default class Choice extends React.Component {
 	static propTypes = {
-		choice: React.PropTypes.object,
-		heightSyncGroup: React.PropTypes.object,
-		error: React.PropTypes.object,
-		className: React.PropTypes.string,
-		onChange: React.PropTypes.func,
-		onDelete: React.PropTypes.func,
-		plainText: React.PropTypes.bool,
-		insertNewChoiceAfter: React.PropTypes.func,
-		focusNext: React.PropTypes.func,
-		focusPrev: React.PropTypes.func,
-		maybeDeleteRow: React.PropTypes.func
+		choice: PropTypes.object,
+		heightSyncGroup: PropTypes.object,
+		error: PropTypes.object,
+		className: PropTypes.string,
+		onChange: PropTypes.func,
+		onDelete: PropTypes.func,
+		plainText: PropTypes.bool,
+		insertNewChoiceAfter: PropTypes.func,
+		focusNext: PropTypes.func,
+		focusPrev: PropTypes.func,
+		maybeDeleteRow: PropTypes.func
 	}
 
 
@@ -242,7 +242,7 @@ export default class Choice extends React.Component {
 }
 
 Placeholder.propTypes = {
-	correct: React.PropTypes.bool
+	correct: PropTypes.bool
 };
 export function Placeholder ({correct}) {
 	return (

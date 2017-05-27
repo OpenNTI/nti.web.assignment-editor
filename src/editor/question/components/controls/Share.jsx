@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {scoped} from 'nti-lib-locale';
 import {Associations} from 'nti-web-commons';
 
@@ -20,8 +21,8 @@ const t = scoped('QUESTION_SHARING_CONTROL', DEFAULT_TEXT);
 
 export default class ShareControl extends React.Component {
 	static propTypes = {
-		question: React.PropTypes.object.isRequired,
-		course: React.PropTypes.object.isRequired
+		question: PropTypes.object.isRequired,
+		course: PropTypes.object.isRequired
 	}
 
 

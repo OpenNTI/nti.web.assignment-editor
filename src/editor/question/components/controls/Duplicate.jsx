@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import {duplicateQuestionFrom} from '../../Actions';
@@ -7,11 +8,11 @@ const TITLE = 'Duplicate';
 
 export default class DeleteControl extends React.Component {
 	static propTypes = {
-		question: React.PropTypes.object.isRequired,
-		questionSet: React.PropTypes.object.isRequired,
-		assignment: React.PropTypes.object.isRequired,
-		flushChanges: React.PropTypes.func,
-		disabled: React.PropTypes.bool
+		question: PropTypes.object.isRequired,
+		questionSet: PropTypes.object.isRequired,
+		assignment: PropTypes.object.isRequired,
+		flushChanges: PropTypes.func,
+		disabled: PropTypes.bool
 	}
 
 

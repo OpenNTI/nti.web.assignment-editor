@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {scoped} from 'nti-lib-locale';
 
@@ -24,11 +25,11 @@ const DEFAULT_FAKE_QUESTIONS = [
 ];
 
 AssignmentEditorPlaceholder.propTypes = {
-	assignment: React.PropTypes.object,
-	title: React.PropTypes.string,
-	message: React.PropTypes.string,
-	previewAssignment: React.PropTypes.func,
-	fakeQuestions: React.PropTypes.array
+	assignment: PropTypes.object,
+	title: PropTypes.string,
+	message: PropTypes.string,
+	previewAssignment: PropTypes.func,
+	fakeQuestions: PropTypes.array
 };
 
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 import {deleteQuestionFrom} from '../../Actions';
@@ -7,10 +8,10 @@ const TITLE = 'Delete';
 
 export default class DeleteControl extends React.Component {
 	static propTypes = {
-		question: React.PropTypes.object.isRequired,
-		questionSet: React.PropTypes.object.isRequired,
-		assignment: React.PropTypes.object.isRequired,
-		disabled: React.PropTypes.bool
+		question: PropTypes.object.isRequired,
+		questionSet: PropTypes.object.isRequired,
+		assignment: PropTypes.object.isRequired,
+		disabled: PropTypes.bool
 	}
 
 

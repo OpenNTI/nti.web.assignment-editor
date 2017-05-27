@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {scoped} from 'nti-lib-locale';
 import {HOC, Input} from 'nti-web-commons';
 
@@ -95,6 +96,7 @@ class Limits extends React.Component {
 	/**
 	 * Upon typing in the limit input field, update the draw number to reflect the new value.
 	 * This is not yet gone to the server to be saved.
+	 * @param {Number} value draw?
 	 * @returns {void}
 	 */
 	onLimitChange = (value) => {

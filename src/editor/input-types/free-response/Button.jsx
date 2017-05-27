@@ -1,7 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {scoped} from 'nti-lib-locale';
 
 import Button from '../base/Button';
+
 import {generatePartFor} from './utils';
 
 const DEFAULT_SOLUTION = ['Answer 1'];
@@ -15,8 +17,8 @@ const t = scoped('ASSIGNMENT_AUTHORING', DEFAULT_TEXT);
 
 export default class FreeResponseButton extends React.Component {
 	static propTypes = {
-		assignment: React.PropTypes.object.isRequired,
-		activeInsert: React.PropTypes.object
+		assignment: PropTypes.object.isRequired,
+		activeInsert: PropTypes.object
 	}
 
 	static set handles (handles) {

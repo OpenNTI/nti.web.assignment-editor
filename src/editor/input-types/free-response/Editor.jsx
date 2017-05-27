@@ -1,8 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import {generatePartFor} from './utils';
 import ChoiceFactory from '../choices/Factory';
 import Choices from '../choices';
+
+import {generatePartFor} from './utils';
 
 const choiceType = 'FreeResponseSolution';
 const errorField = 'solutions';
@@ -13,10 +15,10 @@ const addLabel = 'Add a Possible Answer';
 
 export default class FreeResponseEditor extends React.Component {
 	static propTypes = {
-		part: React.PropTypes.object.isRequired,
-		question: React.PropTypes.object,
-		index: React.PropTypes.number,
-		onChange: React.PropTypes.func
+		part: PropTypes.object.isRequired,
+		question: PropTypes.object,
+		index: PropTypes.number,
+		onChange: PropTypes.func
 	}
 
 

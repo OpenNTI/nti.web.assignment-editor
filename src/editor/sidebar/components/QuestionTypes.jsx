@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {HOC} from 'nti-web-commons';
 
@@ -16,10 +17,10 @@ function getQuestionSetFrom (assignment) {
 
 export default class QuestionTypes extends React.Component {
 	static propTypes = {
-		assignment: React.PropTypes.object.isRequired,
-		schema: React.PropTypes.object,
-		activeInsert: React.PropTypes.object,
-		readOnly: React.PropTypes.bool
+		assignment: PropTypes.object.isRequired,
+		schema: PropTypes.object,
+		activeInsert: PropTypes.object,
+		readOnly: PropTypes.bool
 	}
 
 

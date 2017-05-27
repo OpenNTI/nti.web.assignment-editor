@@ -1,9 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Logger from 'nti-util-logger';
-import {generatePartFor} from './utils';
+
 import {canAddPart, canMovePart, canRemovePart} from '../utils';
 import ChoiceFactory from '../choices/Factory';
 import Choices from '../choices';
+
+import {generatePartFor} from './utils';
 
 const labelsError = 'labels';
 const valuesError = 'values';
@@ -17,12 +20,12 @@ const logger = Logger.get('lib:assignment-editor:input-types:ordering:Editor');
 
 export default class OrderingEditor extends React.Component {
 	static propTypes = {
-		part: React.PropTypes.object.isRequired,
-		question: React.PropTypes.object.isRequired,
-		error: React.PropTypes.any,
-		index: React.PropTypes.number,
-		onChange: React.PropTypes.func,
-		keepStateHash: React.PropTypes.number
+		part: PropTypes.object.isRequired,
+		question: PropTypes.object.isRequired,
+		error: PropTypes.any,
+		index: PropTypes.number,
+		onChange: PropTypes.func,
+		keepStateHash: PropTypes.number
 	}
 
 	constructor (props) {

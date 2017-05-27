@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import ChoiceFactory from '../choices/Factory';
 import {canAddPart, canMovePart, canRemovePart} from '../utils';
@@ -12,14 +13,14 @@ export {Placeholder};
 
 export default class MultipleChoiceEditor extends React.Component {
 	static propTypes = {
-		part: React.PropTypes.object.isRequired,
-		question: React.PropTypes.object.isRequired,
-		multipleAnswers: React.PropTypes.bool,
-		error: React.PropTypes.object,
-		generatePart: React.PropTypes.func,
-		index: React.PropTypes.number,
-		onChange: React.PropTypes.func,
-		keepStateHash: React.PropTypes.number
+		part: PropTypes.object.isRequired,
+		question: PropTypes.object.isRequired,
+		multipleAnswers: PropTypes.bool,
+		error: PropTypes.object,
+		generatePart: PropTypes.func,
+		index: PropTypes.number,
+		onChange: PropTypes.func,
+		keepStateHash: PropTypes.number
 	}
 
 

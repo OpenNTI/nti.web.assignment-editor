@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ReactCSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
 import {scoped} from 'nti-lib-locale';
 import cx from 'classnames';
@@ -29,13 +30,13 @@ function getPartComponentForAssignment (assignment) {
 
 export default class AssignmentEditor extends React.Component {
 	static propTypes = {
-		assignment: React.PropTypes.object,
-		course: React.PropTypes.object,
-		schema: React.PropTypes.object,
-		gotoRoot: React.PropTypes.func,
-		pageSource: React.PropTypes.object,
-		readOnly: React.PropTypes.bool,
-		previewAssignment: React.PropTypes.func
+		assignment: PropTypes.object,
+		course: PropTypes.object,
+		schema: PropTypes.object,
+		gotoRoot: PropTypes.func,
+		pageSource: PropTypes.object,
+		readOnly: PropTypes.bool,
+		previewAssignment: PropTypes.func
 	}
 
 

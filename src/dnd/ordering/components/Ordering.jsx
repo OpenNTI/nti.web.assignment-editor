@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDom from 'react-dom';
+import PropTypes from 'prop-types';
 import FlipMove from 'react-flip-move';
 import cx from 'classnames';
 import Logger from 'nti-util-logger';
@@ -53,13 +54,13 @@ function isPointAfterRect (x, y, rect) {
 
 export default class Ordering extends React.Component {
 	static propTypes = {
-		containerId: React.PropTypes.string,
-		items: React.PropTypes.array.isRequired,
-		renderItem: React.PropTypes.func.isRequired,
-		renderPlaceholder: React.PropTypes.func,
-		accepts: React.PropTypes.array,
-		className: React.PropTypes.string,
-		onChange: React.PropTypes.func
+		containerId: PropTypes.string,
+		items: PropTypes.array.isRequired,
+		renderItem: PropTypes.func.isRequired,
+		renderPlaceholder: PropTypes.func,
+		accepts: PropTypes.array,
+		className: PropTypes.string,
+		onChange: PropTypes.func
 	}
 
 

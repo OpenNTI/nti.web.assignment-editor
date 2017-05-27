@@ -1,12 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 
 const SCROLL_STOP_TIMEOUT = 500;
 
 export default class FixedEelement extends React.Component {
 	static propTypes = {
-		children: React.PropTypes.any,
-		className: React.PropTypes.string
+		children: PropTypes.any,
+		className: PropTypes.string
 	}
 
 

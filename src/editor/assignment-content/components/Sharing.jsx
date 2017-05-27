@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {Associations} from 'nti-web-commons';
 import {scoped} from 'nti-lib-locale';
@@ -34,8 +35,8 @@ const t = scoped('AssignmentSharing', DEFAULT_TEXT);
 
 export default class AssignmentSharing extends React.Component {
 	static propTypes = {
-		assignment: React.PropTypes.object,
-		course: React.PropTypes.object
+		assignment: PropTypes.object,
+		course: PropTypes.object
 	}
 
 
