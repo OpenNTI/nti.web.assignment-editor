@@ -130,6 +130,9 @@ export default class TimeLimit extends React.Component {
 			'placeholder': !hasTimeLimit || value === 0
 		});
 
+		// no need to check isModifiable anymore.  it's safe to assume that
+		// if there is a 'maximum-time-allowed' rel, there is also an 'edit'
+		// rel, which is basically what drives isModifiable
 		const enabled = !assignment.isDiscussion
 			&& assignment.hasLink('maximum-time-allowed');
 
