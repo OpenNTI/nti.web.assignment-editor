@@ -130,8 +130,11 @@ export default class TimeLimit extends React.Component {
 			'placeholder': !hasTimeLimit || value === 0
 		});
 
+		const enabled = !assignment.isDiscussion
+			&& assignment.hasLink('maximum-time-allowed');
+
 		return (
-			<LabeledValue label="Time Limit" arrow disabled={!assignment.isModifiable || assignment.isDiscussion}>
+			<LabeledValue label="Time Limit" arrow disabled={!enabled}>
 				<span className={labelClasses}>{label}</span>
 			</LabeledValue>
 		);
