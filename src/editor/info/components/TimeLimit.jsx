@@ -76,7 +76,10 @@ export default class TimeLimit extends React.Component {
 		});
 		assignment.save({
 			[TIME_LIMIT_KEY]: hasTimeLimit ? value : null
-		})
+		},
+		void 0,
+		'maximum-time-allowed'
+		)
 		.catch((error) => {
 			logger.error(error);
 			this.setState({
