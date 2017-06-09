@@ -17,6 +17,26 @@
 		color: $primary-grey;
 		padding: rem-calc(10px 15px 15px);
 		font-size: .875rem;
+		position: relative;
+
+
+		&.saving {
+			.saving-mask {
+				display: block;
+				position: absolute;
+				top: 0; bottom: 0;
+				left: 0; right: 0;
+				background: rgba(255, 255, 255, 0.7);
+
+				.loading-spinner {
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					margin-top: -12px;
+					margin-left: -12px;
+				}
+			}
+		}
 
 		.flyout-fullwidth-btn {
 			margin: 0;

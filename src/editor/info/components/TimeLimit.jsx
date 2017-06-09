@@ -6,8 +6,7 @@ import {
 	Checkbox,
 	DurationPicker,
 	Flyout,
-	LabeledValue,
-	TinyLoader as Loading
+	LabeledValue
 } from 'nti-web-commons';
 
 const logger = Logger.get('lib:asssignment-editor:TimeLimit');
@@ -47,7 +46,7 @@ export default class TimeLimit extends React.Component {
 	}
 
 	timeChanged = (value) => {
-		this.setState({value, changed: true, hasTimeLimit: value > 0});
+		this.setState({value, changed: true, error: null, hasTimeLimit: value > 0});
 	}
 
 	toggleTimeLimit = () => {
@@ -70,28 +69,29 @@ export default class TimeLimit extends React.Component {
 	save = () => {
 		const {assignment} = this.props;
 		const {value, hasTimeLimit} = this.state;
+
 		this.setState({
 			saving: true,
 			error: null
 		});
+
 		assignment.save({
 			[TIME_LIMIT_KEY]: hasTimeLimit ? value : null
 		},
 		void 0,
 		'maximum-time-allowed'
-		)
-		.catch((error) => {
-			logger.error(error);
-			this.setState({
-				error
-			});
-		})
-		.then(() => {
+		).then(() => {
 			this.setState({
 				changed: false,
 				saving: false
 			});
 			this.flyout.dismiss();
+		}).catch((error) => {
+			logger.error(error);
+			this.setState({
+				error,
+				saving: false
+			});
 		});
 	}
 
@@ -101,6 +101,7 @@ export default class TimeLimit extends React.Component {
 		const buttonClasses = cx('flyout-fullwidth-btn', {
 			'changed': changed || error
 		});
+
 
 		return (
 			<div className="field time-limit">
@@ -112,14 +113,15 @@ export default class TimeLimit extends React.Component {
 					sizing={Flyout.SIZES.MATCH_SIDE}
 					ref={this.attachFlyoutRef}
 				>
-					<div className="time-limit-editor">
+					<div className={cx('time-limit-editor', {saving})}>
 						<Checkbox label="Time Limit"
 							disabled={!assignment.hasLink('edit')}
 							checked={hasTimeLimit}
 							onChange={this.toggleTimeLimit}/>
 						<DurationPicker onChange={this.timeChanged} value={value} />
 						{error && <div className="error">{error.toString()}</div>}
-						{saving ? <Loading /> : <div className={buttonClasses} onClick={this.save}>Save Changes</div>}
+						{<div className={buttonClasses} onClick={this.save}>Save Changes</div>}
+						{saving && (<div className="saving-mask" />)}
 					</div>
 				</Flyout.Triggered>
 			</div>
