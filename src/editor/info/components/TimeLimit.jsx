@@ -96,7 +96,7 @@ export default class TimeLimit extends React.Component {
 	}
 
 	render () {
-
+		const {assignment} = this.props;
 		const {value, hasTimeLimit, saving, changed, error} = this.state;
 		const buttonClasses = cx('flyout-fullwidth-btn', {
 			'changed': changed || error
@@ -113,7 +113,10 @@ export default class TimeLimit extends React.Component {
 					ref={this.attachFlyoutRef}
 				>
 					<div className="time-limit-editor">
-						<Checkbox label="Time Limit" checked={hasTimeLimit} onChange={this.toggleTimeLimit}/>
+						<Checkbox label="Time Limit"
+							disabled={!assignment.hasLink('edit')}
+							checked={hasTimeLimit}
+							onChange={this.toggleTimeLimit}/>
 						<DurationPicker onChange={this.timeChanged} value={value} />
 						{error && <div className="error">{error.toString()}</div>}
 						{saving ? <Loading /> : <div className={buttonClasses} onClick={this.save}>Save Changes</div>}
