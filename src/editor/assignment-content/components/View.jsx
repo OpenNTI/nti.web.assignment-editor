@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Associations} from 'nti-web-commons';
 
 import Store from '../../Store';
 import {ASSIGNMENT_ERROR} from '../../Constants';
@@ -7,7 +8,8 @@ import {saveTitle, saveContent} from '../Actions';
 
 import Title from './Title';
 import Content from './Content';
-import Sharing from './Sharing';
+
+const {Sharing} = Associations;
 
 export default class AssignmentContentView extends React.Component {
 	static propTypes = {
@@ -104,7 +106,7 @@ export default class AssignmentContentView extends React.Component {
 
 		return (
 			<div className="assignment-content">
-				<Sharing assignment={assignment} course={course} />
+				<Sharing.Lessons item={assignment} scope={course} />
 				<Title value={title} schema={schema} onChange={this.onTitleChange} error={titleError} disabled={!assignment.isModifiable}  />
 				<Content value={content} schema={schema} onChange={this.onContentChange} error={contentError} disabled={!assignment.isModifiable} />
 			</div>
