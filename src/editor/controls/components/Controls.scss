@@ -3,7 +3,7 @@
 .assignment-editor-controls {
 	display: flex;
 	align-items: center;
-	height: 60px;
+	height: rem-calc(52px);
 	padding: 0 rem-calc(10px);
 
 	.editor-format-controls {
