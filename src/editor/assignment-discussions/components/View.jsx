@@ -174,15 +174,10 @@ export default class DiscussionAssignment extends React.Component {
 		const {course, assignment} = this.props;
 		const {discussion_ntiid:activeNTIID} = assignment;
 		const selected = discussion.NTIID === activeNTIID;
-		const onSelect = assignment.canManuallyEdit ? this.selectDiscussion : null;
-
-		if (!assignment.canManuallyEdit && !selected) {
-			return null;
-		}
 
 		return (
 			<li key={discussion.NTIID}>
-				<Discussion discussion={discussion} selected={selected} onSelect={onSelect} course={course} />
+				<Discussion discussion={discussion} selected={selected} onSelect={this.selectDiscussion} course={course} />
 			</li>
 		);
 	}
