@@ -19,14 +19,14 @@ function saveField (assignment, field, value, label) {
 		save.then(() => {
 			dispatch(ASSIGNMENT_UPDATED, assignment);
 		})
-		.catch((reason) => {
-			dispatch(ASSIGNMENT_ERROR, {
-				NTIID: assignment.NTIID,
-				field: field,
-				label: label,
-				reason: reason
+			.catch((reason) => {
+				dispatch(ASSIGNMENT_ERROR, {
+					NTIID: assignment.NTIID,
+					field: field,
+					label: label,
+					reason: reason
+				});
 			});
-		});
 	}
 }
 

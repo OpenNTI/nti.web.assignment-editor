@@ -86,7 +86,7 @@ export default class PointValue extends React.Component {
 						ref={this.attachRef}
 						onBlur={this.onBlur}
 						onChange={this.onChange}
-						/>
+					/>
 				</LabeledValue>
 			</div>
 		);

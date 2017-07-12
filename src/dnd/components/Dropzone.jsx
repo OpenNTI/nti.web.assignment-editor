@@ -132,7 +132,7 @@ export default class Dropzone extends React.Component {
 		const {dataTransfer} = e;
 		const data = new DataTransfer(dataTransfer);
 
-		this.dragEnterLock ++;
+		this.dragEnterLock++;
 
 
 		if (isValidTransfer(data) && hasAcceptedType(this.acceptedTypes, data)) {

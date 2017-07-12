@@ -19,7 +19,7 @@ export default function handleUngradableInAutoGradeAssignment (challenge) {
 	return new Promise((confirm, reject) => {
 
 		const onCancel = () => assignment && wait.on(refresh())
-								.then(() => (challenge.reject(), reject()));
+			.then(() => (challenge.reject(), reject()));
 
 		Prompt.modal(
 			<DefaultConfirmPrompt challenge={challenge} onConfirm={confirm} onCancel={onCancel}/>,

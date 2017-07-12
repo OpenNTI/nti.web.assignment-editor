@@ -51,21 +51,21 @@ export default class Suggestions extends React.Component {
 		const list = this.getSuggestions();
 		return (
 			<div>
-			{list.length > 0 && (
-				<div className="input-type-fileupload-suggestions-wrapper">
-					<div className="title">People who entered these extensions also added:</div>
-					<div className="suggestions">
-					{list.map((value) => (
-						<SuggestionItem
-							key={'suggestion' + value.replace(/\./g, '-')}
-							value={value}
-							onAdd={this.onAddSuggestion}
-							onDismiss={this.onDismiss} controls
-						/>
-					))}
+				{list.length > 0 && (
+					<div className="input-type-fileupload-suggestions-wrapper">
+						<div className="title">People who entered these extensions also added:</div>
+						<div className="suggestions">
+							{list.map((value) => (
+								<SuggestionItem
+									key={'suggestion' + value.replace(/\./g, '-')}
+									value={value}
+									onAdd={this.onAddSuggestion}
+									onDismiss={this.onDismiss} controls
+								/>
+							))}
+						</div>
 					</div>
-				</div>
-			)}
+				)}
 			</div>
 		);
 	}

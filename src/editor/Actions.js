@@ -46,7 +46,7 @@ export function loadAssignmentWithCourse (assignmentId, courseId) {
 					.then(course => (
 						dispatch(LOADED_COURSE, course),
 						course.getAssignment(assignmentId)
-						)
+					)
 					)
 				: service.getObject(assignmentId)
 		)
@@ -175,18 +175,18 @@ export function saveFieldOn (obj, field, newValue) {
 
 export function deleteAssignment (assignment, promptText) {
 	Prompt.areYouSure(promptText)
-			.then(() => {
-				dispatch(ASSIGNMENT_DELETING, true);
-				assignment.delete()
-					.then(wait.min(SHORT))
-					.then(() => {
-						dispatch(ASSIGNMENT_DELETED);
-					})
-					.catch((reason) => {
-						dispatch(ASSIGNMENT_ERROR, reason);
-						dispatch(ASSIGNMENT_DELETING, false);
-					});
-			});
+		.then(() => {
+			dispatch(ASSIGNMENT_DELETING, true);
+			assignment.delete()
+				.then(wait.min(SHORT))
+				.then(() => {
+					dispatch(ASSIGNMENT_DELETED);
+				})
+				.catch((reason) => {
+					dispatch(ASSIGNMENT_ERROR, reason);
+					dispatch(ASSIGNMENT_DELETING, false);
+				});
+		});
 }
 
 

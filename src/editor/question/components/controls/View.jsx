@@ -35,14 +35,14 @@ export default function QuestionControls (props) {
 				questionSet={questionSet}
 				assignment={assignment}
 				disabled={!canMove}
-				/>
+			/>
 
 			<Move type={DOWN}
 				question={question}
 				questionSet={questionSet}
 				assignment={assignment}
 				disabled={!canMove}
-				/>
+			/>
 
 			<Duplicate
 				question={question}
@@ -50,14 +50,14 @@ export default function QuestionControls (props) {
 				assignment={assignment}
 				flushChanges={flushChanges}
 				disabled={!canDuplicate}
-				/>
+			/>
 
 			<Delete
 				question={question}
 				questionSet={questionSet}
 				assignment={assignment}
 				disabled={!canDelete}
-				/>
+			/>
 
 			<More>
 				<Share question={question} course={course} />

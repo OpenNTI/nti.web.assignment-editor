@@ -114,7 +114,7 @@ class Grading extends React.Component {
 				error={conflicts || errorMessage}
 				disabled={!questionSet || Boolean(conflicts) || !assignment.totalPoints || !assignment.canSetAutoGrade()}
 				disabledText={questionSet ? (assignment.totalPoints ? '' : t('disabled-total-points')) : t('disabled-no-questions')}
-				>
+			>
 				<Option label={t('label')} name="auto-grading" value={isAutoGraded} onChange={this.onChange} disabled={disabled}/>
 			</OptionGroup>
 		);

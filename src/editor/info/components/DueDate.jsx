@@ -51,23 +51,23 @@ export default class DueDate extends React.Component {
 		});
 
 		return assignment.setDueDate(value)
-		.then(() => {
-			this.setState({
-				value,
-				saving: false,
-				error: null
-			});
+			.then(() => {
+				this.setState({
+					value,
+					saving: false,
+					error: null
+				});
 
-			return value;
-		})
-		.catch((error) => {
-			this.setState({
-				value: assignment.getAvailableForSubmissionEnding(),
-				saving: false,
-				error: error
+				return value;
+			})
+			.catch((error) => {
+				this.setState({
+					value: assignment.getAvailableForSubmissionEnding(),
+					saving: false,
+					error: error
+				});
+				return Promise.reject(error);
 			});
-			return Promise.reject(error);
-		});
 	}
 
 	render () {

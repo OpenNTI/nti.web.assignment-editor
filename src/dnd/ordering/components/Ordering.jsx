@@ -500,7 +500,7 @@ export default class Ordering extends React.Component {
 						duration={150}
 						easing="ease-in"
 						disableAllAnimations={disableAnimation}
-						>
+					>
 						{items.map(this.renderItem)}
 					</FlipMove>
 				</div>
@@ -522,7 +522,7 @@ export default class Ordering extends React.Component {
 				data={item.MoveData}
 				onDragStart={item.onDragStart}
 				onDragEnd={item.onDragEnd}
-				>
+			>
 				<div ref={this.getAttachRef(key)} data-ordering-key={key} style={style}>
 					{ !item.isPlaceholder && !item.isDragging ?
 						renderItem(item.item, index, item.isPlaceholder) :
