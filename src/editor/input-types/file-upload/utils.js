@@ -10,6 +10,6 @@ export function generatePartFor (MimeType, content, maxSize, mimeTypes = ['*/*']
 }
 
 
-export function isPartEqual (/*partA, partB*/) {
+export function partsEqual (/*partA, partB*/) {
 	return false;
 }

@@ -2,7 +2,7 @@ import {PROMPT} from '../';
 
 import Editor from './Editor';
 import Button from './Button';
-import {isPartEqual} from './utils';
+import {partsEqual} from './utils';
 
 export default class FileUploadPart {
 	//TODO: get this mime type from the model
@@ -27,7 +27,7 @@ export default class FileUploadPart {
 
 
 	static partsEqual (partA, partB) {
-		return isPartEqual(partA, partB);
+		return partsEqual(partA, partB);
 	}
 }
 

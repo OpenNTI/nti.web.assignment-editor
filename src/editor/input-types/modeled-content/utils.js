@@ -7,6 +7,6 @@ export function generatePartFor (mimeType, content, solution, hints) {
 }
 
 
-export function isPartEqual (/*partA, partB*/) {
+export function partsEqual (/*partA, partB*/) {
 	return false;
 }
