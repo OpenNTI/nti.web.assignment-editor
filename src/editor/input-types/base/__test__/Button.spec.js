@@ -155,14 +155,14 @@ describe('Assignment Sidebar Button Tests', ()=> {
 	});
 
 
-	const test = (props, ...children) => Promise.all([
+	const testRender = (props, ...children) => Promise.all([
 		render(newNode, Button, props, ...children),
 		render(container, Button, props, ...children)
 	]);
 
 	test('tests creation of Button', (done) => {
 
-		test({assignment: assignment})
+		testRender({assignment: assignment})
 			.then(cmps => cmps.forEach(button =>
 				expect(button).toBeTruthy()
 			))
@@ -172,7 +172,7 @@ describe('Assignment Sidebar Button Tests', ()=> {
 	test('tests count of mutlichoice questions', (done) => {
 		const handles = ['application/vnd.nextthought.assessment.randomizedmultiplechoicepart'];
 
-		test({assignment: assignment, handles: handles})
+		testRender({assignment: assignment, handles: handles})
 			.then(cmps => cmps.forEach(button => {
 				expect(button.getUsedCount()).toBe(3);
 			}))
@@ -182,7 +182,7 @@ describe('Assignment Sidebar Button Tests', ()=> {
 	test('tests count of essay questions', (done) => {
 		const handles = ['application/vnd.nextthought.assessment.modeledcontentpart'];
 
-		test({assignment: assignment, handles: handles})
+		testRender({assignment: assignment, handles: handles})
 			.then(cmps => cmps.forEach(button =>
 				expect(button.getUsedCount()).toBe(1)
 			))
@@ -191,7 +191,7 @@ describe('Assignment Sidebar Button Tests', ()=> {
 
 	test('tests empty blank question', (done) => {
 		const handles = ['application/vnd.nextthought.assessment.modeledcontentpart'];
-		test({assignment: assignment, handles: handles})
+		testRender({assignment: assignment, handles: handles})
 			.then(cmps => cmps.forEach(button =>
 				expect(button.getBlankQuestion()).toBeFalsy()
 			))
@@ -208,7 +208,7 @@ describe('Assignment Sidebar Button Tests', ()=> {
 			hints: []
 		};
 
-		test({assignment: assignment, handles: handles, part: part})
+		testRender({assignment: assignment, handles: handles, part: part})
 			.then(cmps => cmps.forEach(button => {
 				let question = button.getBlankQuestion();
 				expect(question.MimeType).toBe(questionMimeType);
