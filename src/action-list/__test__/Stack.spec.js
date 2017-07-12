@@ -1,3 +1,5 @@
+/* globals spyOn */
+/* eslint-env jest */
 import Stack from '../Stack';
 
 function createAction (label, onComplete) {
@@ -11,7 +13,7 @@ function createAction (label, onComplete) {
 }
 
 describe('Action Stack Tests', () => {
-	it('Stack is never longer than the max size', () => {
+	test('Stack is never longer than the max size', () => {
 		const queue = new Stack({maxVisible: 2});
 
 		queue.push(createAction('First'));
@@ -28,7 +30,7 @@ describe('Action Stack Tests', () => {
 	});
 
 
-	it('Stack is never deeper than the max depth', () => {
+	test('Stack is never deeper than the max depth', () => {
 		const queue = new Stack({maxDepth: 2, maxVisible: 1});
 
 		queue.push(createAction('First'));
@@ -62,13 +64,13 @@ describe('Action Stack Tests', () => {
 		});
 
 
-		it('Pushing Item fires changed', () => {
+		test('Pushing Item fires changed', () => {
 			queue.push(createAction('First'));
 
 			expect(listeners.changed).toHaveBeenCalled();
 		});
 
-		it('Pushing one item and completing it, fires changed and empties the queue', () => {
+		test('Pushing one item and completing it, fires changed and empties the queue', () => {
 			queue.push(createAction('First'));
 
 			let action = queue.next;
@@ -79,7 +81,7 @@ describe('Action Stack Tests', () => {
 			expect(queue.length).toEqual(0);
 		});
 
-		it('Pushing more than one items, and completing all of them', () => {
+		test('Pushing more than one items, and completing all of them', () => {
 			const first = 'First';
 			const second = 'Second';
 			const third = 'Third';
@@ -135,7 +137,7 @@ describe('Action Stack Tests', () => {
 		});
 
 
-		it('Pushing an item and waiting for the timeout to pass', (done) => {
+		test('Pushing an item and waiting for the timeout to pass', (done) => {
 			queue.push(createAction('TEST'));
 
 			setTimeout(() => {

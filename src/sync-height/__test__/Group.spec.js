@@ -1,3 +1,4 @@
+/* eslint-env jest */
 describe('SyncHeight Group Tests', () => {
-	it ('TODO: FILL THIS OUT');
+	test('TODO: FILL THIS OUT');
 });

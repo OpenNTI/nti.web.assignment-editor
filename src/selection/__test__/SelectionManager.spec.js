@@ -1,3 +1,5 @@
+/* globals spyOn */
+/* eslint-env jest */
 import SelectionManager from '../SelectionManager';
 import SelectionItem from '../SelectionItem';
 
@@ -18,7 +20,7 @@ describe('Selection Manager tests', () => {
 		selectionManager.addListener('selection-changed', listeners.changed);
 	});
 
-	it('Select fires selection-changed', () => {
+	test('Select fires selection-changed', () => {
 		let item = new SelectionItem({id: 0});
 
 		selectionManager.select(item);
@@ -26,7 +28,7 @@ describe('Selection Manager tests', () => {
 		expect(listeners.changed).toHaveBeenCalled();
 	});
 
-	it('Selecting the same item more than once only has one selection', () => {
+	test('Selecting the same item more than once only has one selection', () => {
 		let item = new SelectionItem({id: 0});
 
 		selectionManager.select(item);
@@ -38,7 +40,7 @@ describe('Selection Manager tests', () => {
 		expect(selection[0].id).toEqual(0);
 	});
 
-	it('Selecting with keepSelection keeps the current selection', () => {
+	test('Selecting with keepSelection keeps the current selection', () => {
 		let itemA = new SelectionItem({id: 0});
 		let itemB = new SelectionItem({id: 1});
 
@@ -50,7 +52,7 @@ describe('Selection Manager tests', () => {
 		expect(selection.length).toEqual(2);
 	});
 
-	it('Select doesn\'t fire selection-changed when selecting an item with the same id as a selected one', () => {
+	test('Select doesn\'t fire selection-changed when selecting an item with the same id as a selected one', () => {
 		let itemA = new SelectionItem({id: 0});
 		let itemB = new SelectionItem({id: 0});
 
@@ -60,7 +62,7 @@ describe('Selection Manager tests', () => {
 		expect(listeners.changed.calls.count()).toEqual(1);
 	});
 
-	it('Unselect removes item from selection', () => {
+	test('Unselect removes item from selection', () => {
 		let itemA = new SelectionItem({id: 0});
 		let itemB = new SelectionItem({id: 1});
 
@@ -79,13 +81,13 @@ describe('Selection Manager tests', () => {
 		expect(selection[0].id).toEqual(1);
 	});
 
-	it('Unselect doesn\'t fire selection changed if nothing selected', () => {
+	test('Unselect doesn\'t fire selection changed if nothing selected', () => {
 		selectionManager.unselect(new SelectionItem({id: 0}));
 
 		expect(listeners.changed.calls.count()).toEqual(0);
 	});
 
-	it('Unselect does fire selection changed if unselecting selected item', () => {
+	test('Unselect does fire selection changed if unselecting selected item', () => {
 		let item = new SelectionItem({id: 0});
 
 		selectionManager.select(item);

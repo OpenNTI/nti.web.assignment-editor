@@ -1,3 +1,4 @@
+/* eslint-env jest */
 import {cloneQuestion, clonePart, cloneSolution} from '../utils';
 
 const CONTENT = 'Question Content';
@@ -47,7 +48,7 @@ const QUESTION = {
 };
 
 describe('Question Editing utils', () => {
-	it('Question clone has same values', () => {
+	test('Question clone has same values', () => {
 		const clone = cloneQuestion(QUESTION);
 
 		expect(clone).not.toEqual(QUESTION);
@@ -55,14 +56,14 @@ describe('Question Editing utils', () => {
 		expect(clone.content).toEqual(QUESTION.content);
 	});
 
-	it('Part clone has same values', () => {
+	test('Part clone has same values', () => {
 		const clone = clonePart(PART);
 
 		expect(clone).not.toEqual(PART);
 		expect(clone.choices[0]).toEqual(PART.choices[0]);
 	});
 
-	it('Solution clone has same values', () => {
+	test('Solution clone has same values', () => {
 		const clone = cloneSolution(SOLUTION);
 
 		expect(clone).not.toEqual(SOLUTION);

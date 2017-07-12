@@ -1,3 +1,4 @@
+/* eslint-env jest */
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -159,7 +160,7 @@ describe('Assignment Sidebar Button Tests', ()=> {
 		render(container, Button, props, ...children)
 	]);
 
-	it('tests creation of Button', (done) => {
+	test('tests creation of Button', (done) => {
 
 		test({assignment: assignment})
 			.then(cmps => cmps.forEach(button =>
@@ -168,7 +169,7 @@ describe('Assignment Sidebar Button Tests', ()=> {
 			.then(done, done.fail);
 	});
 
-	it('tests count of mutlichoice questions', (done) => {
+	test('tests count of mutlichoice questions', (done) => {
 		const handles = ['application/vnd.nextthought.assessment.randomizedmultiplechoicepart'];
 
 		test({assignment: assignment, handles: handles})
@@ -178,7 +179,7 @@ describe('Assignment Sidebar Button Tests', ()=> {
 			.then(done, done.fail);
 	});
 
-	it('tests count of essay questions', (done) => {
+	test('tests count of essay questions', (done) => {
 		const handles = ['application/vnd.nextthought.assessment.modeledcontentpart'];
 
 		test({assignment: assignment, handles: handles})
@@ -188,7 +189,7 @@ describe('Assignment Sidebar Button Tests', ()=> {
 			.then(done, done.fail);
 	});
 
-	it('tests empty blank question', (done) => {
+	test('tests empty blank question', (done) => {
 		const handles = ['application/vnd.nextthought.assessment.modeledcontentpart'];
 		test({assignment: assignment, handles: handles})
 			.then(cmps => cmps.forEach(button =>
@@ -197,7 +198,7 @@ describe('Assignment Sidebar Button Tests', ()=> {
 			.then(done, done.fail);
 	});
 
-	it('tests blank question', (done) => {
+	test('tests blank question', (done) => {
 		const handles = ['application/vnd.nextthought.assessment.modeledcontentpart'];
 		const partMimeType = 'application/vnd.nextthought.assessment.modeledcontentpart';
 		const questionMimeType = 'application/vnd.nextthought.naquestion';

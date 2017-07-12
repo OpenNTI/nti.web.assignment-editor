@@ -1,5 +1,6 @@
+/* eslint-env jest */
 describe('Test test', () => {
-	it('true === true', () => {
+	test('true === true', () => {
 		expect(true).toBeTruthy();
 	});
 });
