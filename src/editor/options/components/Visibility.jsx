@@ -39,7 +39,7 @@ class Visibility extends React.Component {
 		const isDisabled = assignment && !assignment.hasLink('IsNonPublic');
 
 		const options =
-			assignment.is_non_public
+			assignment.is_non_public && isDisabled
 				? [ getOption('ForCredit') ]
 				: [
 					getOption('Everyone'),
