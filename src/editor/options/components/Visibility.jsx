@@ -38,10 +38,13 @@ class Visibility extends React.Component {
 		const visibility = assignment && assignment.getVisibility();
 		const isDisabled = assignment && !assignment.hasLink('IsNonPublic');
 
-		const options = [
-			getOption('Everyone'),
-			getOption('ForCredit')
-		];
+		const options =
+			assignment.is_non_public
+				? [ getOption('ForCredit') ]
+				: [
+					getOption('Everyone'),
+					getOption('ForCredit')
+				];
 
 		return (
 			<OptionGroup disabled={isDisabled} name="visibility" header={t('header')} content={t('content')}>
