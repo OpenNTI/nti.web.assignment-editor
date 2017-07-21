@@ -7,7 +7,7 @@ import {
 	DayTimePicker,
 	Flyout,
 	LabeledValue,
-	TinyLoader as Loading
+	Loading
 } from 'nti-web-commons';
 
 
@@ -152,7 +152,7 @@ export default class AvailablePicker extends React.Component {
 				<Checkbox label={label} checked={checked} onChange={this.onCheckChange} />
 				<DayTimePicker value={date} onChange={this.onDateChange} />
 				{errorMsg && (<div className="error-message">{errorMsg}</div>)}
-				{saving ? <Loading /> : <div className={saveClassNames} onClick={this.onSave}>Save</div>}
+				{saving ? <Loading.Ellipsis/> : <div className={saveClassNames} onClick={this.onSave}>Save</div>}
 			</Flyout.Triggered>
 		);
 	}
