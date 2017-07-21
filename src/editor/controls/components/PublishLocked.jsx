@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {scoped} from 'nti-lib-locale';
-import {Flyout, PublishTrigger, Constants, TinyLoader as Loading} from 'nti-web-commons';
+import {Flyout, PublishTrigger, Constants, Loading} from 'nti-web-commons';
 
 import {resetAssignmentSubmissions} from '../../Actions';
 
@@ -80,7 +80,7 @@ export default class PublishLocked extends React.Component {
 				{!busy && children}
 				{error && ( <div className="reset-error">{t('error')}</div> )}
 				{busy ? (
-					<Loading/>
+					<Loading.Ellipsis/>
 				) : can && (
 					<div className={cx('flyout-fullwidth-btn publish-reset', {error})} onClick={this.onResetClick}>
 						Reset Assignment
