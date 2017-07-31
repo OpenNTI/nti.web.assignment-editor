@@ -18,7 +18,7 @@ const defaultText = {
 	saved: 'All Changes Saved'
 };
 
-const t = scoped('ASSIGNMENT_EDITOR_STATUS', defaultText);
+const t = scoped('assignment.editing.status', defaultText);
 
 export default class AssignmentStatus extends React.Component {
 	static propTypes = {

@@ -7,7 +7,7 @@ const DEFAULT_TEXT = {
 	message: 'Switch to Preview Mode to View Content'
 };
 
-const t = scoped('ASSIGNMENT_AUTHORING_PLACEHOLDER_QUESTIONSET', DEFAULT_TEXT);
+const t = scoped('assignment.parts.questionset.placeholder', DEFAULT_TEXT);
 
 export default function PlaceholderQuestionSet () {
 	return (

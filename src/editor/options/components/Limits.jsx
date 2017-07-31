@@ -22,7 +22,7 @@ const DEFAULT_TEXT = {
 	}
 };
 
-const t = scoped('OPTIONS_LIMITS', DEFAULT_TEXT);
+const t = scoped('assignment.editing.options.limits', DEFAULT_TEXT);
 
 class Limits extends React.Component {
 	static propTypes = {

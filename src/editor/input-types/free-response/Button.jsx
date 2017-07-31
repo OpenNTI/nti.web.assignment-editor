@@ -13,7 +13,7 @@ const DEFAULT_TEXT = {
 	freeResponseButtonLabel: 'Short Answer'
 };
 
-const t = scoped('ASSIGNMENT_AUTHORING', DEFAULT_TEXT);
+const t = scoped('assignment.editing.inputs', DEFAULT_TEXT);
 
 export default class FreeResponseButton extends React.Component {
 	static propTypes = {

@@ -6,7 +6,7 @@ const defaultText = {
 	root: 'Assignments'
 };
 
-const t = scoped('ASSIGNMENT_EDITOR_BREADCRUMB', defaultText);
+const t = scoped('assignment.editing.breadcrumb', defaultText);
 
 export default class AssignmentEditorBreadCrumb extends React.Component {
 	static propTypes = {

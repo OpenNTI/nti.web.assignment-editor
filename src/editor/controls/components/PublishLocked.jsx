@@ -16,7 +16,7 @@ const DEFAULT_TEXT = {
 	error: 'Could not reset the assignment at this time. Please try again later.'
 };
 
-const t = scoped('PUBLISH_LOCKED', DEFAULT_TEXT);
+const t = scoped('assignment.editing.controls.publish.locked', DEFAULT_TEXT);
 
 export default class PublishLocked extends React.Component {
 	static propTypes = {

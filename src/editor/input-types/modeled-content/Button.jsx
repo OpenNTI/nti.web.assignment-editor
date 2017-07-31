@@ -12,7 +12,7 @@ const DEFAULT_TEXT = {
 	essayButtonLabel: 'Essay'
 };
 
-const t = scoped('ASSIGNMENT_AUTHORING', DEFAULT_TEXT);
+const t = scoped('assignment.editing.inputs', DEFAULT_TEXT);
 
 export default class EssayButton extends React.Component {
 	static propTypes = {

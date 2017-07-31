@@ -12,7 +12,7 @@ const DEFAULT_TEXT = {
 	placeholder: 'No questions yet. Select question from the right to add one.'
 };
 
-const t = scoped('NO_PARTS', DEFAULT_TEXT);
+const t = scoped('assignment.parts.none', DEFAULT_TEXT);
 
 export default class NoParts extends React.Component {
 	static propTypes = {

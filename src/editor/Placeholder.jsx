@@ -10,7 +10,7 @@ const DEFAULT_TEXT = {
 	buttonText: 'Preview Assignment'
 };
 
-const t = scoped('ASSIGNMENT_PLACEHOLDER', DEFAULT_TEXT);
+const t = scoped('assignment.editing.placeholder', DEFAULT_TEXT);
 
 const SHORT = 'short';
 const LONG = 'long';

@@ -17,7 +17,7 @@ const DEFAULT_TEXT = {
 	}
 };
 
-const t = scoped('QUESTION_SHARING_CONTROL', DEFAULT_TEXT);
+const t = scoped('assignment.editing.controls.question-sharing', DEFAULT_TEXT);
 
 export default class ShareControl extends React.Component {
 	static propTypes = {

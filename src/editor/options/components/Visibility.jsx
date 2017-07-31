@@ -13,7 +13,7 @@ const DEFAULT_TEXT = {
 	Everyone: 'Everyone'
 };
 
-const t = scoped('OPTIONS_VISIBILITY', DEFAULT_TEXT);
+const t = scoped('assignment.editing.options.visibility', DEFAULT_TEXT);
 
 const getOption = k => ({label: t(k), value: k});
 

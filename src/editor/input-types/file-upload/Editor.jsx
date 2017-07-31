@@ -12,7 +12,7 @@ const DEFAULT_TEXT = {
 	settings: 'Limit File Types'
 };
 
-const t = scoped('FILE_UPLOAD', DEFAULT_TEXT);
+const t = scoped('assignment.editing.inputs.upload', DEFAULT_TEXT);
 
 
 export default class FileUploadEditor extends React.Component {

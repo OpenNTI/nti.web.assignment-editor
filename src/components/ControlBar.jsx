@@ -9,7 +9,7 @@ const DEFAULT_TEXT = {
 	button: 'Start Editing'
 };
 
-const t = scoped('ASSIGNMENT_CONTROL_BAR', DEFAULT_TEXT);
+const t = scoped('assignment.editing.controls.bar', DEFAULT_TEXT);
 
 const getSubmissionText = (data) => t('submission', data);
 

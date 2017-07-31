@@ -20,7 +20,7 @@ const DEFAULT_TEXT = {
 	legacy: 'The assignment contents are not available for editing. Some features may be disabled.'
 };
 
-const t = scoped('ASSIGNMENT_EDITOR', DEFAULT_TEXT);
+const t = scoped('assignment.editing', DEFAULT_TEXT);
 
 
 function getPartComponentForAssignment (assignment) {

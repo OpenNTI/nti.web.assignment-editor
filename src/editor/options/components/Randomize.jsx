@@ -23,7 +23,7 @@ const DEFAULT_TEXT = {
 	}
 };
 
-const t = scoped('OPTIONS_RANDOMIZE', DEFAULT_TEXT);
+const t = scoped('assignment.editing.options.randomize', DEFAULT_TEXT);
 
 
 class Randomize extends React.Component {

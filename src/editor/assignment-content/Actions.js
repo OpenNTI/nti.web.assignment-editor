@@ -10,7 +10,7 @@ const defaultText = {
 	tooLong: 'The assignment title is limited to %(max)s characters.',
 	tooShort: 'The assignment title is empty.'
 };
-const t = scoped('ASSIGNMENT_CONTENT', defaultText);
+const t = scoped('assignment.editing.content', defaultText);
 
 function saveField (assignment, field, value, label) {
 	const save = saveFieldOn(assignment, field, value);

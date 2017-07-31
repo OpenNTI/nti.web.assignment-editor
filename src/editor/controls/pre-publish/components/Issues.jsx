@@ -19,7 +19,7 @@ const DEFAULT_TEXT = {
 	cancel: 'Keep Editing'
 };
 
-const t = scoped('ASSIGNMENT_ASSIGNMENT_PUBLISH_CONFIRMATION', DEFAULT_TEXT);
+const t = scoped('assignment.editing.controls.publish.confirmation', DEFAULT_TEXT);
 
 export default class PrepublishModal extends React.Component {
 	static propTypes = {

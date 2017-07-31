@@ -27,7 +27,7 @@ const DEFAULT_TEXT = {
 	visibleDisclaimer: 'Your assignment is currently being viewed. Auto saving is disabled to prevent unfinished work from being seen.'
 };
 
-const t = scoped('ASSIGNMENT_AUTHORING_QUESTION', DEFAULT_TEXT);
+const t = scoped('assignment.editing.question', DEFAULT_TEXT);
 
 function isKnownPartError (error) {
 	if (!error) { return false; }

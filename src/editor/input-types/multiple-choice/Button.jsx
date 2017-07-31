@@ -16,7 +16,7 @@ const DEFAULT_TEXT = {
 	multipleChoiceButtonLabel: 'Multiple Choice'
 };
 
-const t = scoped('ASSIGNMENT_AUTHORING', DEFAULT_TEXT);
+const t = scoped('assignment.editing.inputs', DEFAULT_TEXT);
 
 export default class MultipleChoiceButton extends React.Component {
 	static propTypes = {

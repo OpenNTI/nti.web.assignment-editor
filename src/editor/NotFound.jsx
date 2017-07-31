@@ -7,7 +7,7 @@ const DEFAULT_TEXT = {
 	gotoAssignments: 'Back to Assignments'
 };
 
-const t = scoped('ASSIGNMENT_NOT_FOUND', DEFAULT_TEXT);
+const t = scoped('assignment.not-found', DEFAULT_TEXT);
 
 AssignmentNotFound.propTypes = {
 	gotoRoot: PropTypes.func

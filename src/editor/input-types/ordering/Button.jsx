@@ -16,7 +16,7 @@ const DEFAULT_TEXT = {
 	orderingButtonLabel: 'Ordering'
 };
 
-const t = scoped('ASSIGNMENT_AUTHORING', DEFAULT_TEXT);
+const t = scoped('assignment.editing.inputs', DEFAULT_TEXT);
 
 export default class OrderingButton extends React.Component {
 	static propTypes = {

@@ -17,7 +17,7 @@ const DEFAULT_TEXT = {
 	}
 };
 
-const t = scoped('OPTIONS_GRADING', DEFAULT_TEXT);
+const t = scoped('assignment.editing.options.grading', DEFAULT_TEXT);
 
 class Grading extends React.Component {
 	static propTypes = {

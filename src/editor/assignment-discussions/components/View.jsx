@@ -18,7 +18,7 @@ const DEFAULT_TEXT = {
 	save: 'Save'
 };
 
-const t = scoped('DISCUSSION_ASSIGNMENT_VIEWER', DEFAULT_TEXT);
+const t = scoped('assignment.viewer.discussion', DEFAULT_TEXT);
 
 export default class DiscussionAssignment extends React.Component {
 	static propTypes = {

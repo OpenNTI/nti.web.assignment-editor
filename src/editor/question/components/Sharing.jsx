@@ -22,7 +22,7 @@ const DEFAULT_TEXT = {
 	}
 };
 
-const t = scoped('QUESTION_SHARING', DEFAULT_TEXT);
+const t = scoped('assignment.editing.question.sharing', DEFAULT_TEXT);
 
 export default class QuestionShareing extends React.Component {
 	static propTypes = {
