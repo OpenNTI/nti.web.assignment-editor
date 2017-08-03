@@ -6,18 +6,23 @@ import {
 	Checkbox,
 	DurationPicker,
 	Flyout,
-	LabeledValue
+	LabeledValue,
+	HOC
 } from 'nti-web-commons';
 
 const logger = Logger.get('lib:asssignment-editor:TimeLimit');
 
 const TIME_LIMIT_KEY = 'maximum_time_allowed';
+const {ItemChanges} = HOC;
 
-
-export default class TimeLimit extends React.Component {
+class TimeLimit extends React.Component {
 
 	static propTypes = {
 		assignment: PropTypes.object.isRequired
+	}
+
+	static getItem (props) {
+		return props.assignment;
 	}
 
 	state = {}
@@ -60,6 +65,10 @@ export default class TimeLimit extends React.Component {
 		if(this.state.changed) {
 			this.reset();
 		}
+	}
+
+	onItemChanged () {
+		this.forceUpdate();
 	}
 
 	reset = () => {
@@ -151,3 +160,5 @@ export default class TimeLimit extends React.Component {
 		);
 	}
 }
+
+export default ItemChanges.compose(TimeLimit);
