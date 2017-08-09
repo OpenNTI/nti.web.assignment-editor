@@ -32,7 +32,7 @@ export function setDiscussionOnAssignment (discussionID, assignment) {
 
 	dispatch(SAVING, assignment);
 
-	return assignment.save({'discussion_ntiid': discussionID})
+	return assignment.setDiscussionID(discussionID)
 		.then(() => {
 			dispatch(ASSIGNMENT_UPDATED, assignment);
 			warnIfDiscussionEmpty(assignment);
