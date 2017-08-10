@@ -38,6 +38,7 @@ export default class AvailablePicker extends React.Component {
 
 
 	setupValue (props = this.props) {
+		//eslint-disable-next-line react/no-direct-mutation-state
 		const setState = s => this.state ? this.setState(s) : (this.state = s);
 		const {value} = props;
 
