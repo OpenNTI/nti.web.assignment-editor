@@ -2,7 +2,7 @@ import {PROMPT} from '../';
 
 import Editor from './Editor';
 import Button from './Button';
-import {partsEqual} from './utils';
+import {partsEqual, generatePartFor} from './utils';
 
 
 export default class OrderingPart {
@@ -30,6 +30,21 @@ export default class OrderingPart {
 
 	static partsEqual (partA, partB) {
 		return partsEqual(partA, partB);
+	}
+
+	static generatePartFor (...args) {
+		return generatePartFor(...args);
+	}
+
+
+	static getBlankPart () {
+		const {handles} = OrderingPart;
+		let mimeType = handles && handles[0];
+
+		if (mimeType) {
+			return generatePartFor(mimeType, null, defaultLabels, defaultValues, defaultSolution);
+		}
+		return {};
 	}
 }
 
