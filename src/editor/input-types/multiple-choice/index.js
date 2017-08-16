@@ -1,6 +1,10 @@
 import Editor, {Placeholder} from './Editor';
 import Button from './Button';
-import {partsEqual} from './utils';
+import {partsEqual, generatePartFor} from './utils';
+
+const defaultChoices = ['Choice 1'];
+const defaultSolution = 0;
+const defaultHint = [];
 
 export default class MultipleChoicePart {
 	//TODO: get this mime type from the model
@@ -23,6 +27,19 @@ export default class MultipleChoicePart {
 
 	static partsEqual (partA, partB) {
 		return partsEqual(partA, partB);
+	}
+
+	static generatePartFor (...args) {
+		return generatePartFor(...args);
+	}
+
+	static getBlankPart () {
+		const {handles} = MultipleChoicePart;
+		let mimeType = handles && handles[0];
+
+		if (mimeType) {
+			return generatePartFor(mimeType, null, defaultChoices, defaultSolution, defaultHint);
+		}
 	}
 }
 
