@@ -10,6 +10,9 @@ import {
 	HOC
 } from 'nti-web-commons';
 
+import store from '../../Store';
+import {REVERT_ERRORS} from '../../Constants';
+
 const logger = Logger.get('lib:asssignment-editor:TimeLimit');
 
 const TIME_LIMIT_KEY = 'maximum_time_allowed';
@@ -31,11 +34,27 @@ class TimeLimit extends React.Component {
 
 	componentWillMount () {
 		this.setup();
+
+		store.addChangeListener(this.onStoreChange);
+	}
+
+
+	componentWillUnmount () {
+		store.removeChangeListener(this.onStoreChange);
 	}
 
 	componentWillReceiveProps (nextProps) {
 		if (this.props.assignment !== nextProps.assignment) {
 			this.setup(nextProps);
+		}
+	}
+
+
+	onStoreChange = (data) => {
+		if (data.type === REVERT_ERRORS) {
+			this.setState({
+				error: null
+			});
 		}
 	}
 

@@ -1,5 +1,5 @@
 /*eslint no-console: 0*/
-import 'babel-polyfill';
+// import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
@@ -8,7 +8,7 @@ import {decodeFromURI} from 'nti-lib-ntiids';
 
 import {Editor} from '../../src';
 
-import 'normalize.css';
+// import 'normalize.css';
 import 'nti-style-common/all.scss';
 import 'nti-web-commons/lib/index.css';
 import 'nti-modeled-content/lib/index.css';
