@@ -49,6 +49,7 @@
     "nti-util-logger": "^1.0.0",
     "nti-web-client": "^1.0.0",
     "nti-web-commons": "0.x.x",
+    "nti-web-editor": "0.1.0-alpha.201708231218",
     "prop-types": "^15.5.10",
     "react-flip-move": "2.7.6-nti",
     "react-transition-group": "^1.1.0",
