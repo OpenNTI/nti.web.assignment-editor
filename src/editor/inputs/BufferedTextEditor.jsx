@@ -1,12 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Editor, Plugins, Parsers} from 'nti-web-editor';
+import cx from 'classnames';
+import {Editor, ContextProvider, Plugins, Parsers, generateID} from 'nti-web-editor';
 import {buffer} from 'nti-commons';
 
 const DEFAULT_BUFFER = 5000;
 
+const {ErrorMessage, WarningMessage} = Plugins.Messages.components;
+const {CharacterCounter} = Plugins.Counter.components;
+
+function getValue (editorState) {
+	const value = editorState && Parsers.HTML.fromDraftState(editorState);
+
+	return value ? value.join('\n') : '';
+}
+
 export default class BufferedTextEditor extends React.Component {
 	static propTypes = {
+		className: PropTypes.string,
 		initialValue: PropTypes.string,
 		buffer: PropTypes.number,
 
@@ -31,231 +42,211 @@ export default class BufferedTextEditor extends React.Component {
 	}
 
 
-	setEditorRef = x => this.editorRef = x;
+	attachEditorRef = x => this.editor = x;
 
 
 	constructor (props) {
-		debugger;
 		super(props);
 
 		const {initialValue, buffer:bufferTime} = props;
+
+		this.editorID = generateID();
 
 		this.bufferedChange = buffer(bufferTime, () => this.onChange());
 
 		this.state = {
 			editorState: Parsers.HTML.toDraftState(initialValue),
-			plugins: [
-				Plugins.Plaintext.create()
-			]
+			plugins: this.getPluginsFor(props)
 		};
 	}
 
 
+	componentWillReceiveProps (nextProps) {
+		const diff = (...x) => x.some(key => nextProps[key] !== this.props[key]);
+		const {initialValue:newValue, buffer:newBuffer} = nextProps;
+		const {initialValue:oldValue, buffer:oldBuffer, onEditorChange} = this.props;
+
+		let state;
+
+		if (newBuffer !== oldBuffer) {
+			this.bufferedChange = buffer(newBuffer, () => this.onChange());
+		}
+
+		this.updateValue = this.updateValue || (!this.isFocused && newValue);
+
+		if (newValue !== oldValue && !this.isFocused) {
+			state = state || {};
+			state.editorState = Parsers.HTML.toDraftState(newValue);
+		}
+
+		if (diff('charLimit', 'countDown', 'plainText', 'singleLine', 'linkify')) {
+			state = state || {};
+			state.plugins = this.getPluginsFor(nextProps);
+		}
+
+		if (state) {
+			this.setState(state, () => {
+				if (onEditorChange) {
+					onEditorChange();
+				}
+			});
+		}
+	}
+
+
+	getPluginsFor (props = this.props) {
+		const {charLimit, countDown, plainText, singleLine, linkify} = props;
+		let plugins = [];
+
+		if (charLimit != null) {
+			plugins.push(Plugins.Counter.create({character: {limit: charLimit, countDown}}));
+		}
+
+		if (plainText) {
+			plugins.push(Plugins.Plaintext.create());
+		}
+
+		if (singleLine) {
+			plugins.push(Plugins.SingleLine.create());
+		}
+
+		if (linkify) {
+			plugins.push(Plugins.InlineLinks.create());
+		}
+
+		return plugins;
+	}
+
+
 	focus () {
-		this.editor.focus();
+		if (this.editor && this.editor.focus) {
+			this.editor.focus();
+		}
 	}
 
 
 	focusToEnd () {
-		this.editor.focusToEnd();
+		if (this.editor && this.editor.focusToEnd) {
+			this.editor.focusToEnd();
+		}
+	}
+
+
+	getValue () {
+		const state = this.editor && this.editor.getEditorState();
+
+		return getValue(state);
+	}
+
+
+	getValueFromState () {
+		const {editorState} = this.state;
+
+		return getValue(editorState);
+	}
+
+
+	hasValueChanged () {
+		return this.getValue() !== this.getValueFromState();
+	}
+
+
+	onChange = () => {
+		const {onChange} = this.props;
+		const newValue = this.getValue();
+
+		if (onChange && this.hasValueChanged()) {
+			this.updatedValue = newValue;
+			onChange(newValue);
+		}
+	}
+
+
+	onContentChange = () => {
+		const {onEditorChange, error, warning} = this.props;
+
+		if (this.hasValueChanged()) {
+			if (onEditorChange) {
+				onEditorChange();
+			}
+
+			this.bufferedChange();
+
+			if (error && error.clear) {
+				error.clear();
+
+				this.bufferedChange.flush();
+			} else if (warning && warning.clear) {
+				warning.clear();
+
+				this.bufferedChange.flush();
+			}
+		}
+	}
+
+
+	onEditorFocus = (editor) => {
+		const {onFocus} = this.props;
+
+		this.isFocused = true;
+
+		if (onFocus) {
+			onFocus(editor);
+		}
+	}
+
+
+	onEditorBlur = (editor) => {
+		const {onBlur} = this.props;
+
+		this.isFocused = null;
+
+		this.bufferedChange();
+		this.bufferedChange.flush();
+
+		if (onBlur) {
+			onBlur(editor);
+		}
 	}
 
 
 	render () {
-		const {editorState} = this.state;
+		const {className, charLimit, error, warning, ...otherProps} = this.props;
+		const {editorState, plugins} = this.state;
+		const counter = charLimit != null;
+
+		delete otherProps.initialValue;
+		delete otherProps.buffer;
+		delete otherProps.onChange;
+		delete otherProps.onEditorChange;
+		delete otherProps.onBlur;
+		delete otherProps.onFocus;
+		delete otherProps.countDown;
+		delete otherProps.plainText;
+		delete otherProps.singleLine;
+		delete otherProps.linkify;
 
 		return (
-			<Editor
-				editorState={editorState}
-				onContentChange={this.onContentChange}
-				onChange={this.onEditorChange}
-			/>
+			<div className={cx('text-editor', 'nti-rich-text', className)}>
+				<Editor
+					{...otherProps}
+					ref={this.attachEditorRef}
+					id={this.editorID}
+					editorState={editorState}
+					plugins={plugins}
+					onContentChange={this.onContentChange}
+					onBlur={this.onEditorBlur}
+					onFocus={this.onEditorFocus}
+				/>
+				<ContextProvider editorID={this.editorID}>
+					<div>
+						{counter && (<CharacterCounter className="character-count" />)}
+						{error && (<ErrorMessage error={error} />)}
+						{warning && (<WarningMessage warning={warning} />)}
+					</div>
+				</ContextProvider>
+			</div>
 		);
 	}
 }
 
-// class xBufferedTextEditor extends React.Component {
-// 	static propTypes = {
-// 		initialValue: PropTypes.string,
-// 		onChange: PropTypes.func,
-// 		onEditorChange: PropTypes.func,
-// 		onBlur: PropTypes.func,
-// 		onFocus: PropTypes.func,
-// 		buffer: PropTypes.number,
-// 		error: PropTypes.object,
-// 		warning: PropTypes.object
-// 	}
-
-
-// 	static defaultProps = {
-// 		buffer: DEFAULT_BUFFER
-// 	}
-
-
-// 	setEditorRef = x => this.editorRef = x
-
-
-// 	constructor (props) {
-// 		debugger;
-// 		super(props);
-
-// 		const {initialValue, buffer:bufferTime} = props;
-
-// 		this.bufferedChange = buffer(bufferTime, () => this.onChange());
-
-// 		this.state = {
-// 			initialValue
-// 		};
-// 	}
-
-
-// 	componentWillReceiveProps (nextProps) {
-// 		const {initialValue:newValue, buffer:newBuffer} = nextProps;
-// 		const {initialValue:oldValue, buffer:oldBuffer, onEditorChange} = this.props;
-// 		let state;
-
-
-// 		if (newBuffer !== oldBuffer) {
-// 			this.bufferedChange = buffer(newBuffer, () => this.onChange());
-// 		}
-
-// 		this.updatedValue = this.updatedValue || (!this.isFocused && newValue);
-
-// 		if (newValue !== oldValue && !this.isFocused) {
-// 			state = state || {};
-
-// 			state.initialValue = newValue;
-// 		}
-
-
-// 		if (state) {
-// 			this.setState(state, () => {
-// 				if (onEditorChange) {
-// 					onEditorChange();
-// 				}
-// 			});
-// 		}
-// 	}
-
-
-// 	get editor () {
-// 		return this.editorRef;
-// 	}
-
-
-// 	focus () {
-// 		if (this.editorRef && this.editorRef.focus) {
-// 			this.editorRef.focus();
-// 		}
-// 	}
-
-
-// 	focusToEnd () {
-// 		if (this.editorRef && this.editorRef.focusToEnd) {
-// 			this.editorRef.focusToEnd();
-// 		}
-// 	}
-
-
-// 	getValue () {
-// 		return this.editorRef && this.editorRef.getValue();
-// 	}
-
-
-// 	getValueFromState () {
-// 		const {initialValue} = this.state;
-
-// 		return this.updatedValue || initialValue;
-// 	}
-
-
-// 	hasValueChanged () {
-// 		const oldValue = this.getValueFromState();
-// 		const newValue = this.getValue();
-
-// 		return !valuesEqual(oldValue, newValue);
-// 	}
-
-
-// 	onChange () {
-// 		const {onChange} = this.props;
-// 		const newValue = this.getValue();
-
-// 		if (onChange && this.hasValueChanged()) {
-// 			this.updatedValue = newValue;
-// 			onChange(newValue);
-// 		}
-// 	}
-
-
-// 	onEditorChange = () => {
-// 		const {onEditorChange, error, warning} = this.props;
-
-// 		if (this.hasValueChanged()) {
-// 			if (onEditorChange) {
-// 				onEditorChange();
-// 			}
-
-// 			this.bufferedChange();
-
-// 			if (error && error.clear) {
-// 				error.clear();
-
-// 				this.bufferedChange.flush();
-// 			} else if (warning && warning.clear) {
-// 				warning.clear();
-
-// 				this.bufferedChange.flush();
-// 			}
-// 		}
-// 	}
-
-
-// 	onEditorFocus = () => {
-// 		const {onFocus} = this.props;
-
-// 		this.isFocused = true;
-
-// 		if (onFocus) {
-// 			onFocus(this.editorRef);
-// 		}
-// 	}
-
-
-// 	onEditorBlur = () => {
-// 		const {onBlur} = this.props;
-
-// 		this.isFocused = null;
-
-// 		this.bufferedChange();
-// 		this.bufferedChange.flush();
-
-// 		if (onBlur) {
-// 			onBlur(this.editorRef);
-// 		}
-// 	}
-
-
-// 	render () {
-// 		const {error, warning, ...otherProps} = this.props;
-// 		const {initialValue} = this.state;
-
-// 		delete otherProps.onEditorChange;
-// 		delete otherProps.onChange;
-// 		delete otherProps.onBlur;
-// 		delete otherProps.onFocus;
-
-// 		return (
-// 			<TextEditor
-// 				{...otherProps}
-// 				ref={this.setEditorRef}
-// 				initialValue={initialValue}
-// 				error={error}
-// 				warning={warning}
-// 				onChange={this.onEditorChange}
-// 				onBlur={this.onEditorBlur}
-// 				onFocus={this.onEditorFocus}
-// 			/>
-// 		);
-// 	}
-// }
