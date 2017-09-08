@@ -42,7 +42,7 @@ export default class BufferedTextEditor extends React.Component {
 	}
 
 
-	attachEditorRef = x => this.editor = x;
+	attachEditorRef = x => this.editor = x
 
 
 	constructor (props) {
@@ -162,6 +162,15 @@ export default class BufferedTextEditor extends React.Component {
 	}
 
 
+	onEditorChange = () => {
+		const {onEditorChange} = this.props;
+
+		if (onEditorChange && this.hasValueChanged()) {
+			onEditorChange();
+		}
+	}
+
+
 	onContentChange = () => {
 		const {onEditorChange, error, warning} = this.props;
 
@@ -235,6 +244,7 @@ export default class BufferedTextEditor extends React.Component {
 					editorState={editorState}
 					plugins={plugins}
 					onContentChange={this.onContentChange}
+					onChange={this.onEditorChange}
 					onBlur={this.onEditorBlur}
 					onFocus={this.onEditorFocus}
 				/>
