@@ -230,7 +230,7 @@ export default class Choice extends React.Component {
 				onChange={this.onChange}
 				onEditorChange={this.syncHeight}
 				error={error}
-				customBindings={{
+				customKeyBindings={{
 					[getKeyCode.TAB]: this.onTabKey,
 					[getKeyCode.SHIFT_TAB]: this.onShiftTabKey,
 					[getKeyCode.ENTER]: this.onEnterKey,
