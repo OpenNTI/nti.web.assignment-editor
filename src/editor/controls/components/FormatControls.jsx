@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {EditorContextProvider, FormatButton} from 'nti-modeled-content';
+import {ContextProvider, BoldButton, ItalicButton, UnderlineButton} from 'nti-web-editor';
 
 function getEditorForSelection (selection) {
 	const first = selection && selection[0];
@@ -49,13 +49,13 @@ export default class FormatControls extends React.Component {
 		const {editor} = this.state;
 
 		return (
-			<EditorContextProvider editor={editor}>
+			<ContextProvider editor={editor}>
 				<div className="editor-format-controls">
-					<FormatButton format={FormatButton.Formats.BOLD}/>
-					<FormatButton format={FormatButton.Formats.ITALIC}/>
-					<FormatButton format={FormatButton.Formats.UNDERLINE}/>
+					<BoldButton />
+					<ItalicButton />
+					<UnderlineButton />
 				</div>
-			</EditorContextProvider>
+			</ContextProvider>
 		);
 	}
 }
