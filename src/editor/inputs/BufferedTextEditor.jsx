@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {Editor, ContextProvider, Plugins, Parsers, generateID} from 'nti-web-editor';
+import {Editor, ContextProvider, Plugins, Parsers, generateID, STYLES, BLOCKS} from 'nti-web-editor';
 import {buffer} from 'nti-commons';
 
 const DEFAULT_BUFFER = 5000;
@@ -104,6 +104,9 @@ export default class BufferedTextEditor extends React.Component {
 
 		if (plainText) {
 			plugins.push(Plugins.Plaintext.create());
+		} else {
+			plugins.push(Plugins.LimitBlockTypes.create({allow: new Set(BLOCKS.UNSTYLED)}));
+			plugins.push(Plugins.LimitStyles.create({allow: new Set(STYLES.BOLD, STYLES.ITALIC, STYLES.UNDERLINE)}));
 		}
 
 		if (singleLine) {
