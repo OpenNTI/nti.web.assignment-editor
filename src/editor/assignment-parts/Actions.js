@@ -18,6 +18,7 @@ const PARTS_KEY = 'parts';
 const blankAssignmentPart = {
 	'Class': 'AssignmentPart',
 	'MimeType': 'application/vnd.nextthought.assessment.assignmentpart',
+	[QUESTION_SET_KEY]: [],
 	getQuestions () {
 		return this[QUESTION_SET_KEY];
 	}
@@ -26,6 +27,7 @@ const blankAssignmentPart = {
 const blankQuestionSet = {
 	'Class': 'QuestionSet',
 	'MimeType': 'application/vnd.nextthought.naquestionset',
+	[QUESTIONS_KEY]: [],
 	getQuestions () {
 		return this[QUESTIONS_KEY] || [];
 	}
