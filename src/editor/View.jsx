@@ -72,7 +72,7 @@ export default class Editor extends React.Component {
 		if (data.type === LOADED) {
 			this.forceUpdate();
 		} else if (data.type === ASSIGNMENT_DELETING) {
-			this.setState({deleting: true});
+			this.setState({ deleting: Store.isDeleting });
 		} else if (data.type === ASSIGNMENT_DELETED) {
 			if (onDeleted) {
 				onDeleted();

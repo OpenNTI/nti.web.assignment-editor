@@ -454,6 +454,10 @@ class Store extends StorePrototype {
 		}, []);
 	}
 
+	get isDeleting () {
+		const p = PRIVATE.get(this);
+		return p.deleting;
+	}
 
 	getErrorFor (id, field) {
 		const p = PRIVATE.get(this);
