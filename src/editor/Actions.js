@@ -183,7 +183,11 @@ export function deleteAssignment (assignment, promptText) {
 					dispatch(ASSIGNMENT_DELETED);
 				})
 				.catch((reason) => {
-					dispatch(ASSIGNMENT_ERROR, reason);
+					dispatch(ASSIGNMENT_ERROR, {
+						NTIID: assignment.NTIID,
+						field: null,
+						reason
+					});
 					dispatch(ASSIGNMENT_DELETING, false);
 				});
 		});
