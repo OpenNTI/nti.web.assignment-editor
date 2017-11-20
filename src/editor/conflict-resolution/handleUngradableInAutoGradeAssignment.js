@@ -17,15 +17,17 @@ export default function handleUngradableInAutoGradeAssignment (challenge) {
 	const refresh = () => assignment && assignment.refresh().then(() => assignment.onChange('refreshed'));
 
 	return new Promise((confirm, reject) => {
-
-		const onCancel = () => assignment && wait.on(refresh())
-			.then(() => (challenge.reject(), reject()));
-
 		Prompt.modal(
-			<DefaultConfirmPrompt challenge={challenge} onConfirm={confirm} onCancel={onCancel}/>,
+			<DefaultConfirmPrompt challenge={challenge} onConfirm={confirm} onCancel={reject}/>,
 			'request-conflict-resolver'
 		);
 	})
 		.then(() => challenge.confirm())
-		.then(refresh);
+		.then(refresh)
+		.catch(() => {
+			if(assignment) {
+				return wait.on(refresh())
+					.then(() => (challenge.reject(), Promise.reject()));
+			}
+		});
 }
