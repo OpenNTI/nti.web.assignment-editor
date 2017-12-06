@@ -2,4 +2,14 @@
 
 .editor-format-controls {
 	padding-left: rem-calc(20px);
+
+	.icon-code {
+		font-size: 14px;
+		font-weight: 700;
+		font-family: 'Open Sans' !important;
+
+		&::before {
+			content: '{}'
+		}
+	}
 }

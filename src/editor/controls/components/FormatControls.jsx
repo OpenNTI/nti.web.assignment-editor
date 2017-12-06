@@ -54,6 +54,7 @@ export default class FormatControls extends React.Component {
 					<FormatButton format={FormatButton.Formats.BOLD}/>
 					<FormatButton format={FormatButton.Formats.ITALIC}/>
 					<FormatButton format={FormatButton.Formats.UNDERLINE}/>
+					<FormatButton format={FormatButton.Formats.CODE}/>
 				</div>
 			</EditorContextProvider>
 		);
