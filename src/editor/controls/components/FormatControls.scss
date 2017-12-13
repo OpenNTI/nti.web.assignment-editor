@@ -3,6 +3,12 @@
 .editor-format-controls {
 	padding-left: rem-calc(20px);
 
+	.format-divider {
+		border-left: solid 1px #d1d1d1;
+		margin: 1.5em;
+		padding-top: 8px;
+	}
+
 	.icon-blockquote {
 		font-size: 14px;
 		font-weight: 700;
