@@ -1,6 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {ContextProvider, BoldButton, ItalicButton, UnderlineButton} from 'nti-web-editor';
+import {ContextProvider, BoldButton, ItalicButton, UnderlineButton, TypeButton, BLOCKS} from 'nti-web-editor';
+
+const DISABLE_FOR_BLOCKS = {
+	[BLOCKS.CODE]: true
+};
 
 function getEditorForSelection (selection) {
 	const first = selection && selection[0];
@@ -44,6 +48,25 @@ export default class FormatControls extends React.Component {
 		}
 	}
 
+	shouldDisableForState (editorState) {
+		if (!editorState) {
+			return false;
+		}
+
+		const selection = editorState.getSelection();
+		const start = selection.getStartKey();
+		const end = selection.getEndKey();
+
+		if (start !== end) {
+			return false;
+		}
+
+		const content = editorState.getCurrentContent();
+		const block = content.getBlockForKey(start);
+
+		return block && DISABLE_FOR_BLOCKS[block.getType()];
+	}
+
 
 	render () {
 		const {editor} = this.state;
@@ -51,9 +74,10 @@ export default class FormatControls extends React.Component {
 		return (
 			<ContextProvider editor={editor}>
 				<div className="editor-format-controls">
-					<BoldButton />
-					<ItalicButton />
-					<UnderlineButton />
+					<BoldButton shouldDisableForState={this.shouldDisableForState}/>
+					<ItalicButton shouldDisableForState={this.shouldDisableForState}/>
+					<UnderlineButton shouldDisableForState={this.shouldDisableForState}/>
+					<TypeButton type="code-block"><div className="icon-code-block"/></TypeButton>
 				</div>
 			</ContextProvider>
 		);
