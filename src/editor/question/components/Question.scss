@@ -6,6 +6,16 @@
 	padding: rem-calc(0 30px);
 	min-height: rem-calc(200px);
 
+	.public-DraftStyleDefault-pre {
+		max-width: 550px;
+		overflow: auto;
+		line-height: 0.7em;
+
+		span {
+			white-space: nowrap;
+		}
+	}
+
 	.inline-dialog {
 		.inner-wrapper {
 			padding-left: rem-calc(30px);

@@ -2,4 +2,24 @@
 
 .editor-format-controls {
 	padding-left: rem-calc(20px);
+
+	.icon-blockquote {
+		font-size: 14px;
+		font-weight: 700;
+		font-family: 'Open Sans' !important;
+
+		&::before {
+			content: '""';
+		}
+	}
+
+	.icon-code-block {
+		font-size: 14px;
+		font-weight: 700;
+		font-family: 'Open Sans' !important;
+
+		&::before {
+			content: '{}';
+		}
+	}
 }
