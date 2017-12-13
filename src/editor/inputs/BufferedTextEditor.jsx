@@ -31,6 +31,7 @@ export default class BufferedTextEditor extends React.Component {
 		plainText: PropTypes.bool,
 		singleLine: PropTypes.bool,
 		linkify: PropTypes.bool,
+		inlineOnly: PropTypes.bool,
 
 		error: PropTypes.object,
 		warning: PropTypes.object
@@ -61,6 +62,12 @@ export default class BufferedTextEditor extends React.Component {
 	}
 
 
+	componentWillUnmount () {
+		this.bufferedChange && this.bufferedChange.cancel();
+		this.bufferedChange = () => {};
+	}
+
+
 	componentWillReceiveProps (nextProps) {
 		const diff = (...x) => x.some(key => nextProps[key] !== this.props[key]);
 		const {initialValue:newValue, buffer:newBuffer} = nextProps;
@@ -79,7 +86,7 @@ export default class BufferedTextEditor extends React.Component {
 			state.editorState = Parsers.HTML.toDraftState(newValue);
 		}
 
-		if (diff('charLimit', 'countDown', 'plainText', 'singleLine', 'linkify')) {
+		if (diff('charLimit', 'countDown', 'plainText', 'singleLine', 'linkify', 'inlineOnly')) {
 			state = state || {};
 			state.plugins = this.getPluginsFor(nextProps);
 		}
@@ -95,7 +102,7 @@ export default class BufferedTextEditor extends React.Component {
 
 
 	getPluginsFor (props = this.props) {
-		const {charLimit, countDown, plainText, singleLine, linkify} = props;
+		const {charLimit, countDown, plainText, singleLine, linkify, inlineOnly} = props;
 		let plugins = [];
 
 		if (charLimit != null) {
@@ -105,8 +112,8 @@ export default class BufferedTextEditor extends React.Component {
 		if (plainText) {
 			plugins.push(Plugins.Plaintext.create());
 		} else {
-			plugins.push(Plugins.LimitBlockTypes.create({allow: new Set(BLOCKS.UNSTYLED)}));
-			plugins.push(Plugins.LimitStyles.create({allow: new Set(STYLES.BOLD, STYLES.ITALIC, STYLES.UNDERLINE)}));
+			plugins.push(Plugins.LimitBlockTypes.create({allow: new Set([BLOCKS.UNSTYLED, BLOCKS.CODE])}));
+			plugins.push(Plugins.LimitStyles.create({allow: new Set([STYLES.BOLD, STYLES.ITALIC, STYLES.UNDERLINE])}));
 		}
 
 		if (singleLine) {
@@ -115,6 +122,10 @@ export default class BufferedTextEditor extends React.Component {
 
 		if (linkify) {
 			plugins.push(Plugins.InlineLinks.create());
+		}
+
+		if (inlineOnly) {
+			plugins.push(Plugins.LimitBlockTypes.create({allow: new Set([BLOCKS.UNSTYLED])}));
 		}
 
 		return plugins;
@@ -237,6 +248,7 @@ export default class BufferedTextEditor extends React.Component {
 		delete otherProps.plainText;
 		delete otherProps.singleLine;
 		delete otherProps.linkify;
+		delete otherProps.inlineOnly;
 
 		return (
 			<div className={cx('text-editor', 'nti-rich-text', className)}>
@@ -262,4 +274,3 @@ export default class BufferedTextEditor extends React.Component {
 		);
 	}
 }
-
