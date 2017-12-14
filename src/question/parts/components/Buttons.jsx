@@ -9,9 +9,7 @@ export default class PartsButton extends React.Component {
 	}
 
 
-	onClick = (e) => {
-		debugger;
-	}
+	onClick = (e) => {}
 
 	render () {
 		const {label} = this.props;
