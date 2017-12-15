@@ -6,11 +6,17 @@ import {buffer} from 'nti-commons';
 
 const DEFAULT_BUFFER = 5000;
 
+const Types = {
+	PLAINTEXT: 'plaintext',
+	HTML: 'html'
+};
+
 const {ErrorMessage, WarningMessage} = Plugins.Messages.components;
 const {CharacterCounter} = Plugins.Counter.components;
 
-function getValue (editorState) {
-	const value = editorState && Parsers.HTML.fromDraftState(editorState);
+function getValue (editorState, type) {
+	const parser = type === Types.PLAINTEXT ? Parsers.PlainText : Parsers.HTML;
+	const value = editorState && parser.fromDraftState(editorState);
 
 	return value ? value.join('\n') : '';
 }
@@ -149,7 +155,7 @@ export default class BufferedTextEditor extends React.Component {
 	getValue () {
 		const state = this.editor && this.editor.getEditorState();
 
-		return getValue(state);
+		return getValue(state, this.props.plainText ? Types.PLAINTEXT : Types.HTML);
 	}
 
 
