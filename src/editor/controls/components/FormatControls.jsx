@@ -78,7 +78,7 @@ export default class FormatControls extends React.Component {
 					<ItalicButton shouldDisableForState={this.shouldDisableForState}/>
 					<UnderlineButton shouldDisableForState={this.shouldDisableForState}/>
 					<span className="format-divider"/>
-					<TypeButton type="code-block"><div className="icon-code-block"/></TypeButton>
+					<TypeButton type={BLOCKS.CODE} inlineStyle><div className="icon-code-block"/></TypeButton>
 				</div>
 			</ContextProvider>
 		);
