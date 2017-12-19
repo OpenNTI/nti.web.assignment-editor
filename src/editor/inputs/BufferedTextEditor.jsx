@@ -120,6 +120,7 @@ export default class BufferedTextEditor extends React.Component {
 		} else {
 			plugins.push(Plugins.LimitBlockTypes.create({allow: new Set([BLOCKS.UNSTYLED, BLOCKS.CODE])}));
 			plugins.push(Plugins.LimitStyles.create({allow: new Set([STYLES.BOLD, STYLES.ITALIC, STYLES.UNDERLINE])}));
+			plugins.push(Plugins.EnsureFocusableBlock.create());
 		}
 
 		if (singleLine) {
