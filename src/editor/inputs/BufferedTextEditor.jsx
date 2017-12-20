@@ -163,7 +163,7 @@ export default class BufferedTextEditor extends React.Component {
 	getValueFromState () {
 		const {editorState} = this.state;
 
-		return getValue(editorState);
+		return getValue(editorState, this.props.plainText ? Types.PLAINTEXT : Types.HTML);
 	}
 
 
