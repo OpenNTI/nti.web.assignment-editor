@@ -10,6 +10,8 @@
 		max-width: 550px;
 		overflow: auto;
 		line-height: 0.7em;
+		word-wrap: normal;
+		word-break: normal;
 
 		span {
 			font-weight: normal !important;

@@ -6,6 +6,21 @@
 	padding-top: rem-calc(1px);
 	min-height: 60px;
 
+	.public-DraftStyleDefault-pre {
+		overflow: auto;
+		line-height: 0.7em;
+		word-wrap: normal;
+		word-break: normal;
+
+		span {
+			font-weight: normal !important;
+			font-style: normal !important;
+			text-decoration: none !important;
+			white-space: pre;
+			color: #494949;
+		}
+	}
+
 	&.disabled {
 		pointer-events: none;
 	}
