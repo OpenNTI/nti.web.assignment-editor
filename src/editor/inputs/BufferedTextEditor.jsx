@@ -32,6 +32,8 @@ export default class BufferedTextEditor extends React.Component {
 		onBlur: PropTypes.func,
 		onFocus: PropTypes.func,
 
+		customKeyBindings: PropTypes.object,
+
 		charLimit: PropTypes.number,
 		countDown: PropTypes.bool,
 		plainText: PropTypes.bool,
@@ -108,7 +110,7 @@ export default class BufferedTextEditor extends React.Component {
 
 
 	getPluginsFor (props = this.props) {
-		const {charLimit, countDown, plainText, singleLine, linkify, inlineOnly} = props;
+		const {charLimit, countDown, plainText, singleLine, linkify, inlineOnly, customKeyBindings} = props;
 		let plugins = [];
 
 		if (charLimit != null) {
@@ -121,6 +123,10 @@ export default class BufferedTextEditor extends React.Component {
 			plugins.push(Plugins.LimitBlockTypes.create({allow: new Set([BLOCKS.UNSTYLED, BLOCKS.CODE])}));
 			plugins.push(Plugins.LimitStyles.create({allow: new Set([STYLES.BOLD, STYLES.ITALIC, STYLES.UNDERLINE])}));
 			plugins.push(Plugins.EnsureFocusableBlock.create());
+		}
+
+		if (customKeyBindings) {
+			plugins.push(Plugins.CustomKeyBindings.create(customKeyBindings));
 		}
 
 		if (singleLine) {
