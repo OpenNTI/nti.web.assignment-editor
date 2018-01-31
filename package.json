@@ -52,7 +52,7 @@
     "nti-web-editor": "0.x.x",
     "prop-types": "^15.5.10",
     "react-flip-move": "2.7.6-nti",
-    "react-transition-group": "^1.1.0",
+    "react-transition-group": "^2.2.1",
     "uuid": "^3.0.1"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ReactCSSTransitionGroup from 'react-transition-group/CSSTransitionGroup';
+import {TransitionGroup, CSSTransition} from 'react-transition-group'
 import cx from 'classnames';
 
 import Item from './Item';
@@ -67,9 +67,13 @@ export default class ActionStack extends React.Component {
 
 		return (
 			<div className={cls}>
-				<ReactCSSTransitionGroup transitionName="fadeInOut" transitionEnterTimeout={400} transitionLeaveTimeout={400}>
-					{items.map(this.renderItem)}
-				</ReactCSSTransitionGroup>
+				<TransitionGroup>
+					{items.map(i => (
+						<CSSTransition key={item.ID} classNames="fade-in-out" timeout={400}>
+							{this.renderItem(item)}
+						</CSSTransition>
+					))}
+				</TransitionGroup>
 			</div>
 		);
 	}
@@ -77,7 +81,7 @@ export default class ActionStack extends React.Component {
 
 	renderItem (item) {
 		return (
-			<Item key={item.ID} item={item} />
+			<Item item={item} />
 		);
 	}
 }
