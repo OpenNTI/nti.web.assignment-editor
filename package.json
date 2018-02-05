@@ -51,7 +51,7 @@
     "nti-web-commons": "0.x.x",
     "nti-web-editor": "0.x.x",
     "prop-types": "^15.5.10",
-    "react-flip-move": "2.7.6-nti",
+    "react-flip-move": "^3.0.0",
     "react-transition-group": "^2.2.1",
     "uuid": "^3.0.1"
   },
