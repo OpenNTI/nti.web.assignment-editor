@@ -109,7 +109,7 @@ export default class QuestionContent extends React.Component {
 
 		return (
 			<div className={cls}>
-				{!isSaving ?
+				{!isSaving ? (
 					<BufferedTextEditor
 						ref={this.attachRef}
 						className={cls}
@@ -119,7 +119,8 @@ export default class QuestionContent extends React.Component {
 						onChange={this.onChange}
 						error={warning ? void 0 : error || void 0}
 						warning={warning || void 0}
-					/> :
+					/>
+				) :
 					null
 				}
 			</div>

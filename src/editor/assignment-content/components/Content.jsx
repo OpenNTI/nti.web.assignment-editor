@@ -60,8 +60,7 @@ export default class ContentEditor extends React.Component {
 
 		return (
 			<Selectable className={cls} id={selectableId} value={selectableValue}>
-				{disabled ?
-					null :
+				{disabled ? null : (
 					<BufferedTextEditor
 						initialValue={value}
 						placeholder={PLACEHOLDER}
@@ -69,7 +68,7 @@ export default class ContentEditor extends React.Component {
 						onChange={this.onChange}
 						error={error}
 					/>
-				}
+				)}
 			</Selectable>
 		);
 	}
