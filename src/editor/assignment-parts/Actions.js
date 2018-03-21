@@ -2,7 +2,7 @@ import {dispatch} from 'nti-lib-dispatcher';
 import {getService} from  'nti-web-client';
 import Logger from 'nti-util-logger';
 import {isNTIID} from 'nti-lib-ntiids';
-import {OrderedContents} from 'nti-lib-interfaces';
+import {Authoring} from 'nti-lib-interfaces';
 
 import {cloneQuestion} from '../question/utils';
 import {saveFieldOn, maybeResetAssignmentOnError} from '../Actions';
@@ -222,7 +222,7 @@ export function removePartWithQuestionSet (assignment, questionSet) {
 
 
 export function moveQuestion (question, questionSet, index, moveInfo, moveRoot, delaySave) {
-	let orderedContents = questionSet && new OrderedContents(questionSet);
+	let orderedContents = questionSet && new Authoring.OrderedContents(questionSet);
 	let {index:oldIndex, container:oldContainer} = moveInfo;
 
 	if (!orderedContents || !moveRoot) {

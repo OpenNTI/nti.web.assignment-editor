@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {OrderedContents} from 'nti-lib-interfaces';
+import {Authoring} from 'nti-lib-interfaces';
 import {scoped} from 'nti-lib-locale';
 import {Associations} from 'nti-web-commons';
 
@@ -36,7 +36,7 @@ export default class QuestionShareing extends React.Component {
 	canDetach () {
 		const {questionSet} = this.props;
 
-		return OrderedContents.hasOrderedContents(questionSet);
+		return Authoring.OrderedContents.hasOrderedContents(questionSet);
 	}
 
 

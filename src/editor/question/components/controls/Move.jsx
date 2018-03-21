@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {HOC} from 'nti-web-commons';
 import cx from 'classnames';
-import {MoveRoot} from 'nti-lib-interfaces';
+import {Authoring} from 'nti-lib-interfaces';
 
 import {MoveInfo} from '../../../../dnd';
 import {moveQuestion} from '../../../assignment-parts/Actions';
@@ -73,7 +73,7 @@ export default class Move extends React.Component {
 		const {questionSet, question, type, disabled} = props;
 
 		if (questionSet && questionSet.hasLink('AssessmentMove')) {
-			this.moveRoot = new MoveRoot(questionSet, 'AssessmentMove');
+			this.moveRoot = new Authoring.MoveRoot(questionSet, 'AssessmentMove');
 		} else if (this.moveRoot) {
 			delete this.moveRoot;
 		}

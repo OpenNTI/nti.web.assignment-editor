@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {HOC} from 'nti-web-commons';
-import {OrderedContents} from 'nti-lib-interfaces';
+import {Authoring} from 'nti-lib-interfaces';
 
 import {Draggable} from '../../../dnd';
 import {appendQuestionTo} from '../Actions';
@@ -21,7 +21,7 @@ function canAddToAssignment (assignment) {
 	const {question_set:questionSet} = part || {};
 
 	return !assignment.isLocked()
-		&& (!questionSet || OrderedContents.hasOrderedContents(questionSet));
+		&& (!questionSet || Authoring.OrderedContents.hasOrderedContents(questionSet));
 }
 
 export class Button extends React.Component {

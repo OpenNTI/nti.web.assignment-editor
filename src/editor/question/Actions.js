@@ -1,5 +1,5 @@
 import {dispatch} from 'nti-lib-dispatcher';
-import {OrderedContents} from 'nti-lib-interfaces';
+import {Authoring} from 'nti-lib-interfaces';
 import {wait} from 'nti-commons';
 
 import {maybeResetAssignmentOnError} from '../Actions';
@@ -69,7 +69,7 @@ export function updateQuestion (question, fields, assignment, force) {
 
 
 export function deleteQuestionFrom (question, questionSet, assignment) {
-	const orderedContents = new OrderedContents(questionSet);
+	const orderedContents = new Authoring.OrderedContents(questionSet);
 
 	dispatch(QUESTION_UPDATED, question); // clear question errors/warnings
 
@@ -122,7 +122,7 @@ export function duplicateQuestionFrom (question, questionSet, delaySave) {
 	//Make sure the blur event has been triggered
 	wait(10)
 		.then(() => {
-			const orderedContents = new OrderedContents(questionSet);
+			const orderedContents = new Authoring.OrderedContents(questionSet);
 
 			if (!orderedContents.canEdit) { return; }
 
@@ -155,7 +155,7 @@ export function duplicateQuestionFrom (question, questionSet, delaySave) {
 
 
 export function detachSharedQuestion (question, questionSet, delaySave) {
-	const orderedContents = new OrderedContents(questionSet);
+	const orderedContents = new Authoring.OrderedContents(questionSet);
 
 	if (!orderedContents.canEdit) { return; }
 
