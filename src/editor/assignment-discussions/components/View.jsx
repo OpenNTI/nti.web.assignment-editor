@@ -36,7 +36,7 @@ export default class DiscussionAssignment extends React.Component {
 
 		this.state = {
 			loading: true,
-			activeValue: assignment.discussion_ntiid || '',
+			activeValue: assignment.discussionId || '',
 			discussions: []
 		};
 	}
@@ -111,7 +111,7 @@ export default class DiscussionAssignment extends React.Component {
 		const {assignment} = this.props;
 
 		this.setState({
-			activeValue: assignment.discussion_ntiid || ''
+			activeValue: assignment.discussionId || ''
 		});
 	}
 
