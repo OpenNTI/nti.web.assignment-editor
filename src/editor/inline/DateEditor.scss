@@ -1,0 +1,134 @@
+@import '~nti-style-common';
+
+.assignment-inline-editor .date-editor {
+	display: flex;
+	margin-top: 4px;
+
+	&.disabled {
+		.select-wrapper {
+			.label {
+				color: $tertiary-grey;
+			}
+		}
+
+		.TimePicker {
+			.time {
+				opacity: 0.25;
+			}
+		}
+
+		.set-current-date {
+			opacity: 0.25;
+
+			a {
+				pointer-events: none;
+			}
+		}
+	}
+
+	.select-wrapper {
+		.label {
+			margin-right: 10px;
+			text-transform: uppercase;
+			font-size: 0.625rem;
+			font-weight: 600;
+			color: $secondary-grey;
+			margin-bottom: 5px;
+		}
+
+		.select-box {
+			margin-right: 10px;
+
+			.menu-label {
+				position: relative;
+				color: $primary-grey;
+				box-shadow: 0 0 0 1px #dbdbdb;
+				background-color: white;
+				border-radius: 3px;
+				cursor: pointer;
+				font-weight: 400px;
+				font-size: 14px;
+				line-height: 40px;
+				padding: 0 30px 0 20px;
+			}
+
+			ul {
+				padding-left: 30px;
+
+				li {
+					line-height: 1rem;
+					font-size: 11px;
+				}
+			}
+
+			&.open {
+				ul {
+					max-height: 12rem;
+					overflow-y: scroll;
+				}
+
+				.option-label.selected {
+					background-color: white;
+					color: $primary-grey;
+
+					&::before {
+						content: '\221A';
+						font-family: 'icomoon' !important;
+						font-size: 18px;
+						position: absolute;
+						left: 10px;
+						color: $primary-blue;
+					}
+				}
+			}
+		}
+	}
+
+	.time-wrapper {
+		padding-top: 23px;
+		margin-left: 12px;
+
+		.TimePicker {
+			.time {
+				input.number-input-component {
+					border-radius: 3px;
+					border: 1px solid #dbdbdb;
+					height: 42px;
+					color: #494949;
+					width: 2.125rem;
+					padding: 0.3125rem 0;
+					text-align: center;
+					font-size: 0.8125rem;
+					box-shadow: 0 0 0 1px #b8b8b8;
+					background: white;
+				}
+			}
+
+			.select-box {
+				border-radius: 3px;
+				background-color: white;
+				max-height: 41px;
+
+				.menu-label {
+					line-height: 39px;
+					color: $primary-grey;
+				}
+			}
+		}
+	}
+
+	.set-current-date {
+		margin-top: 22px;
+		line-height: 40px;
+		font-size: 0.75rem;
+		font-weight: 600;
+		padding-left: 0.5rem;
+		color: $primary-grey;
+
+		a {
+			color: #3fb3f6;
+			cursor: pointer;
+			margin-left: 0.2rem;
+		}
+	}
+}

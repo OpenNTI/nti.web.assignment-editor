@@ -1,0 +1,40 @@
+@import '~nti-style-common';
+
+.assignment-inline-editor.menu-container {
+	max-height: 500px;
+	position: relative;
+
+	.contents {
+		padding: 25px 0 0 65px;
+
+		.label {
+			font-size: 0.875em;
+			line-height: 14px;
+			color: $primary-grey;
+			margin: 0.5em 0 0;
+
+			.nti-radio-input {
+				display: inline-block;
+				vertical-align: middle;
+				margin-right: 9px;
+				position: relative;
+
+				label {
+					span {
+						font-weight: 600;
+						font-size: 14px;
+					}
+				}
+			}
+		}
+
+		.error {
+			color: $primary-red;
+		}
+
+		.publish-label, .draft-label, .schedule-label {
+			font-size: 0.875rem;
+			font-weight: 300;
+		}
+	}
+}

@@ -56,6 +56,8 @@
     "uuid": "^3.0.1"
   },
   "devDependencies": {
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "nti-cmp-scripts": "^1.0.32",
     "nti-style-common": "^1.1.11",
     "react": "^16.2.0",
