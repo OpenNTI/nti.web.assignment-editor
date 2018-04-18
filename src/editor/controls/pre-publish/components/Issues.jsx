@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {scoped} from 'nti-lib-locale';
-import {Errors, DialogButtons} from 'nti-web-commons';
+import {scoped} from '@nti/lib-locale';
+import {Errors, DialogButtons} from '@nti/web-commons';
 import naturalSort from 'node-natural-sort';
 
 const {Field: {List:ErrorList}} = Errors;

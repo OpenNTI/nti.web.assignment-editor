@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {ContextProvider, BoldButton, ItalicButton, UnderlineButton, TypeButton, BLOCKS} from 'nti-web-editor';
+import {ContextProvider, BoldButton, ItalicButton, UnderlineButton, TypeButton, BLOCKS} from '@nti/web-editor';
 
 const DISABLE_FOR_BLOCKS = {
 	[BLOCKS.CODE]: true

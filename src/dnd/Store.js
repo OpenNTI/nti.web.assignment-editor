@@ -1,4 +1,4 @@
-import StorePrototype from 'nti-lib-store';
+import StorePrototype from '@nti/lib-store';
 
 import {ORDERING_DRAG_OVER, ORDERING_DRAG_LEAVE, DROP_HANDLED, DRAG_START, DRAG_END} from './Constants';
 import {MimeType as MoveInfoMimeType} from './utils/MoveInfo';

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Publish, Prompt, ConflictResolution} from 'nti-web-commons';
+import {Publish, Prompt, ConflictResolution} from '@nti/web-commons';
 
 import Footer from './Footer';
 import PublishState, {PUBLISH, SCHEDULE, DRAFT} from './Publish';

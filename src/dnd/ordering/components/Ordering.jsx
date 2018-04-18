@@ -3,8 +3,8 @@ import ReactDom from 'react-dom';
 import PropTypes from 'prop-types';
 import FlipMove from 'react-flip-move';
 import cx from 'classnames';
-import Logger from 'nti-util-logger';
-import {wait} from 'nti-commons';
+import Logger from '@nti/util-logger';
+import {wait} from '@nti/lib-commons';
 
 import Draggable from '../../components/Draggable';
 import Dropzone from '../../components/Dropzone';

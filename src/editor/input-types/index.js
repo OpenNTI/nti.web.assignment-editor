@@ -1,5 +1,5 @@
 import React from 'react';
-import Logger from 'nti-util-logger';
+import Logger from '@nti/util-logger';
 
 import ModeledContent from './modeled-content';
 import FileUpload from './file-upload';

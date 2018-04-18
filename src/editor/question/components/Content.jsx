@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {isNTIID} from 'nti-lib-ntiids';
+import {isNTIID} from '@nti/lib-ntiids';
 
 import BufferedTextEditor from '../../inputs/BufferedTextEditor';
 import Store from '../../Store';

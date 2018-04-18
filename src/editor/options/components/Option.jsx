@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Checkbox, Radio} from 'nti-web-commons';
+import {Checkbox, Radio} from '@nti/web-commons';
 import cx from 'classnames';
 
 export default class Option extends React.Component {

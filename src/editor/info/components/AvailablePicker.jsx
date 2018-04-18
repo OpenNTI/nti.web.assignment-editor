@@ -8,7 +8,7 @@ import {
 	Flyout,
 	LabeledValue,
 	Loading
-} from 'nti-web-commons';
+} from '@nti/web-commons';
 
 
 export default class AvailablePicker extends React.Component {

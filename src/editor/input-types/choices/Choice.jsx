@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {Events} from 'nti-commons';
+import {Events} from '@nti/lib-commons';
 
 import BufferedTextEditor from '../../inputs/BufferedTextEditor';
 import {DragHandle} from '../../../dnd';

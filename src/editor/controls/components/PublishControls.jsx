@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import cx from 'classnames';
-import {HOC, Publish, Constants} from 'nti-web-commons';
+import {HOC, Publish, Constants} from '@nti/web-commons';
 
 import {allowPublish} from '../pre-publish';
 

@@ -1,6 +1,6 @@
-import {dispatch} from 'nti-lib-dispatcher';
-import {Authoring} from 'nti-lib-interfaces';
-import {wait} from 'nti-commons';
+import {dispatch} from '@nti/lib-dispatcher';
+import {Authoring} from '@nti/lib-interfaces';
+import {wait} from '@nti/lib-commons';
 
 import {maybeResetAssignmentOnError} from '../Actions';
 import {partsEqual} from '../input-types';

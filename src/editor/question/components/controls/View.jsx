@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {Authoring} from 'nti-lib-interfaces';
+import {Authoring} from '@nti/lib-interfaces';
 
 import Delete from './Delete';
 import Duplicate from './Duplicate';

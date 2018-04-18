@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {ControlBar, Button, DisplayName} from 'nti-web-commons';
-import {scoped} from 'nti-lib-locale';
+import {ControlBar, Button, DisplayName} from '@nti/web-commons';
+import {scoped} from '@nti/lib-locale';
 
 const DEFAULT_TEXT = {
 	preview: 'You\'re currently previewing this assignment.',

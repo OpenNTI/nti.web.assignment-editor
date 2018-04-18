@@ -1,9 +1,9 @@
-import {SAVE, EVENT_FINISH} from 'nti-lib-interfaces';
-import {dispatch} from 'nti-lib-dispatcher';
-import {getService} from  'nti-web-client';
-import {Prompt} from 'nti-web-commons';
-import {wait} from 'nti-commons';
-import Logger from 'nti-util-logger';
+import {SAVE, EVENT_FINISH} from '@nti/lib-interfaces';
+import {dispatch} from '@nti/lib-dispatcher';
+import {getService} from  '@nti/web-client';
+import {Prompt} from '@nti/web-commons';
+import {wait} from '@nti/lib-commons';
+import Logger from '@nti/util-logger';
 
 import {
 	ASSIGNMENT_ERROR,

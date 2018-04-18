@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import Logger from 'nti-util-logger';
+import Logger from '@nti/util-logger';
 import {
 	Checkbox,
 	DurationPicker,
 	Flyout,
 	LabeledValue,
 	HOC
-} from 'nti-web-commons';
+} from '@nti/web-commons';
 
 import store from '../../Store';
 import {REVERT_ERRORS} from '../../Constants';

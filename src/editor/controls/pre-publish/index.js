@@ -1,5 +1,5 @@
 import React from 'react';
-import {Prompt} from 'nti-web-commons';
+import {Prompt} from '@nti/web-commons';
 
 import Store from '../../Store';
 

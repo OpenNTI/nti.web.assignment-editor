@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {scoped} from 'nti-lib-locale';
-import {Checkbox} from 'nti-web-commons';
+import {scoped} from '@nti/lib-locale';
+import {Checkbox} from '@nti/web-commons';
 
 import DateEditor from './DateEditor';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {RadioGroup, DialogButtons, TokenEditor} from 'nti-web-commons';
+import {RadioGroup, DialogButtons, TokenEditor} from '@nti/web-commons';
 
 import Suggestions from './Suggestions';
 

@@ -1,7 +1,7 @@
 // import React from 'react';
 // import PropTypes from 'prop-types';
-// import {scoped} from 'nti-lib-locale';
-// import {Prompt, Loading, DialogButtons, Panels} from 'nti-web-commons';
+// import {scoped} from '@nti/lib-locale';
+// import {Prompt, Loading, DialogButtons, Panels} from '@nti/web-commons';
 
 // //TODO: add the ability to pick any existing question.
 // //For now all the "picker" will do is create new ones.

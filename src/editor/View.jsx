@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {Error, Loading, ControlBar} from 'nti-web-commons';
-import {PropType as NTIID} from 'nti-lib-ntiids';
+import {Error, Loading, ControlBar} from '@nti/web-commons';
+import {PropType as NTIID} from '@nti/lib-ntiids';
 
 import {Manager as SelectionManager} from '../selection';
 

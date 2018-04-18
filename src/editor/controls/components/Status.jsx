@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Errors} from 'nti-web-commons';
-import {scoped} from 'nti-lib-locale';
+import {Errors} from '@nti/web-commons';
+import {scoped} from '@nti/lib-locale';
 
 import {
 	ASSIGNMENT_ERROR,

@@ -1,8 +1,8 @@
-import {dispatch} from 'nti-lib-dispatcher';
-import {getService} from  'nti-web-client';
-import Logger from 'nti-util-logger';
-import {isNTIID} from 'nti-lib-ntiids';
-import {Authoring} from 'nti-lib-interfaces';
+import {dispatch} from '@nti/lib-dispatcher';
+import {getService} from  '@nti/web-client';
+import Logger from '@nti/util-logger';
+import {isNTIID} from '@nti/lib-ntiids';
+import {Authoring} from '@nti/lib-interfaces';
 
 import {cloneQuestion} from '../question/utils';
 import {saveFieldOn, maybeResetAssignmentOnError} from '../Actions';

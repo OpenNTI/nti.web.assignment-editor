@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Authoring} from 'nti-lib-interfaces';
-import {scoped} from 'nti-lib-locale';
-import {Associations} from 'nti-web-commons';
+import {Authoring} from '@nti/lib-interfaces';
+import {scoped} from '@nti/lib-locale';
+import {Associations} from '@nti/web-commons';
 
 import {detachSharedQuestion} from '../Actions';
 

@@ -1,5 +1,5 @@
-import {dispatch} from 'nti-lib-dispatcher';
-import {scoped} from 'nti-lib-locale';
+import {dispatch} from '@nti/lib-dispatcher';
+import {scoped} from '@nti/lib-locale';
 
 import {saveFieldOn} from '../Actions';
 import {ASSIGNMENT_UPDATED, ASSIGNMENT_ERROR, ASSIGNMENT_WARNING} from '../Constants';

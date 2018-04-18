@@ -1,4 +1,4 @@
-import {dispatch} from 'nti-lib-dispatcher';
+import {dispatch} from '@nti/lib-dispatcher';
 
 import {REVERT_ERRORS} from '../../Constants';
 

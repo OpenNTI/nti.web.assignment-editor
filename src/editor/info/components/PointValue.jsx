@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Input, LabeledValue} from 'nti-web-commons';
+import {Input, LabeledValue} from '@nti/web-commons';
 
 export default class PointValue extends React.Component {
 

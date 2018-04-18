@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {HOC} from 'nti-web-commons';
-import {Authoring} from 'nti-lib-interfaces';
+import {HOC} from '@nti/web-commons';
+import {Authoring} from '@nti/lib-interfaces';
 
 import {Ordering} from '../../../dnd';
 import Question from '../../question';

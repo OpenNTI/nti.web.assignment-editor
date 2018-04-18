@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {buffer} from 'nti-commons';
-import {Errors} from 'nti-web-commons';
-import {scoped} from 'nti-lib-locale';
+import {buffer} from '@nti/lib-commons';
+import {Errors} from '@nti/web-commons';
+import {scoped} from '@nti/lib-locale';
 
 import {DragHandle} from '../../../dnd';
 import InlineDialog from '../../../inline-dialog';

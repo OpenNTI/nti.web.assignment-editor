@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {HOC} from 'nti-web-commons';
+import {HOC} from '@nti/web-commons';
 
 import Grading from './Grading';
 import Randomize from './Randomize';

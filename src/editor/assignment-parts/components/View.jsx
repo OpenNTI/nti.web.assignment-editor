@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Logger from 'nti-util-logger';
-import {HOC} from 'nti-web-commons';
+import Logger from '@nti/util-logger';
+import {HOC} from '@nti/web-commons';
 
 import NoParts from './NoParts';
 import Part from './Part';

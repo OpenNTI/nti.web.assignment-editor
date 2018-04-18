@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {scoped} from 'nti-lib-locale';
-import {ResourceNotFound} from 'nti-web-commons';
+import {scoped} from '@nti/lib-locale';
+import {ResourceNotFound} from '@nti/web-commons';
 
 const DEFAULT_TEXT = {
 	gotoAssignments: 'Back to Assignments'

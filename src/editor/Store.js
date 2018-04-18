@@ -1,6 +1,6 @@
-import StorePrototype from 'nti-lib-store';
-import {Errors} from 'nti-web-commons';
-import Logger from 'nti-util-logger';
+import StorePrototype from '@nti/lib-store';
+import {Errors} from '@nti/web-commons';
+import Logger from '@nti/util-logger';
 
 import {Stack} from '../action-list';
 

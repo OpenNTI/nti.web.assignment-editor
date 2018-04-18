@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {HOC} from 'nti-web-commons';
+import {HOC} from '@nti/web-commons';
 
 import {getButtons} from '../../input-types';
 

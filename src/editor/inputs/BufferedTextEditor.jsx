@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {Editor, ContextProvider, Plugins, Parsers, generateID, STYLES, BLOCKS} from 'nti-web-editor';
-import {buffer} from 'nti-commons';
+import {Editor, ContextProvider, Plugins, Parsers, generateID, STYLES, BLOCKS} from '@nti/web-editor';
+import {buffer} from '@nti/lib-commons';
 
 const DEFAULT_BUFFER = 5000;
 

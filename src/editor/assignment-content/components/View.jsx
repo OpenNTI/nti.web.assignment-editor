@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Associations} from 'nti-web-commons';
+import {Associations} from '@nti/web-commons';
 
 import Store from '../../Store';
 import {ASSIGNMENT_ERROR} from '../../Constants';

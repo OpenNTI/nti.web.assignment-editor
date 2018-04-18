@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {scoped} from 'nti-lib-locale';
-import {SelectBox, TimePicker} from 'nti-web-commons';
+import {scoped} from '@nti/lib-locale';
+import {SelectBox, TimePicker} from '@nti/web-commons';
 import cx from 'classnames';
 
 const DEFAULT_TEXT = {
