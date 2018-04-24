@@ -45,9 +45,41 @@ describe('Assignment editor view test', () => {
 
 		const cmp = mount(<View assignment={assignment} assignmentRef={assignmentRef}/>);
 
-		// publish is selected, there is no reset and due date editor is disabled
-		expect(cmp.find('.publish-container').exists()).toBe(true);
+		// no publish options since the assignment has been started and is resettable
+		expect(cmp.find('.publish-container').exists()).toBe(false);
 		expect(cmp.find('.inline-reset-menu').exists()).toBe(true);
+
+		expect(cmp.find('.publish-reset-label').text()).toEqual('Students have started your assignment.');
+		expect(cmp.find('.publish-reset-text').text()).toEqual('Resetting or deleting this assignment will result in erasing students work and submissions. You cannot undo this action.');
+		expect(cmp.find('.publish-reset').exists()).toBe(true);
+
+		const dueDateEditor = cmp.find('.inline-due-date-editor').first().find('.date-editor').first();
+
+		expect(dueDateEditor.prop('className')).not.toMatch(/disabled/);
+	});
+
+
+	test('Test published assignment with due date and non-instructor admin reset', async () => {
+		const assignment = {
+			hasLink: (rel) => {
+				return rel === '';
+			},
+			'available_for_submission_beginning': new Date().getTime(),
+			'available_for_submission_ending': new Date().getTime(),
+			PublicationState: 'true'
+		};
+
+		const cmp = mount(<View assignment={assignment} assignmentRef={assignmentRef}/>);
+
+		// no publish options since the assignment has been started and is resettable
+		expect(cmp.find('.publish-container').exists()).toBe(false);
+		expect(cmp.find('.inline-reset-menu').exists()).toBe(true);
+
+		expect(cmp.find('.publish-reset-label').text()).toEqual('Students have started this assignment.');
+		expect(cmp.find('.publish-reset-text').text()).toEqual('The instructor must reset this assignment before a publish change can occur.');
+
+		// non-instructor admins should not have the reset button
+		expect(cmp.find('.publish-reset').exists()).toBe(false);
 
 		const dueDateEditor = cmp.find('.inline-due-date-editor').first().find('.date-editor').first();
 

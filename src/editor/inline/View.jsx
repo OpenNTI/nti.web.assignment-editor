@@ -217,23 +217,33 @@ export default class AssignmentEditor extends React.Component {
 		}
 	}
 
+	hasPublishingLinks () {
+		const {assignment} = this.props;
+
+		return assignment.hasLink('publish') || assignment.hasLink('unpublish');
+	}
+
 
 	render () {
 		const {assignment, assignmentRef} = this.props;
-		const showReset = assignment.hasLink('Reset') || (!assignment.hasLink('date-edit-start'));
+		const hasNoPublishEditLinks = !this.hasPublishingLinks() && !assignment.hasLink('date-edit-start');
+		const showReset = assignment.hasLink('Reset') || hasNoPublishEditLinks;
+		const nonInstructorAdmin = !assignment.hasLink('Reset') && !this.hasPublishingLinks();
 
 		return (
 			<div className="assignment-inline-editor menu-container">
 				<div className="assignment-due-date-editor">
 					<div className="contents">
-						<PublishState
-							onPublishChange={this.onPublishChange}
-							selectedType={this.state.selectedPublishType}
-							scheduledDate={this.state.scheduledDate}
-							assignment={assignment}
-							assignmentRef={assignmentRef}
-						/>
-						{showReset && <Reset onReset={this.onReset}/>}
+						{!showReset && (
+							<PublishState
+								onPublishChange={this.onPublishChange}
+								selectedType={this.state.selectedPublishType}
+								scheduledDate={this.state.scheduledDate}
+								assignment={assignment}
+								assignmentRef={assignmentRef}
+							/>
+						)}
+						{showReset && <Reset onReset={this.onReset} nonInstructorAdmin={nonInstructorAdmin}/>}
 						<DueDate
 							onDateChanged={this.onDueDateChange}
 							date={this.state.dueDate}
