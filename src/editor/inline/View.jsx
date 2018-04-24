@@ -72,6 +72,7 @@ export default class AssignmentEditor extends React.Component {
 	componentDidMount () {
 		ConflictResolution.registerHandler('AvailableToUnavailable', this.publishConflictHandler);
 		ConflictResolution.registerHandler('AssessmentDateConfirm', this.publishConflictHandler);
+		ConflictResolution.registerHandler('UnAvailableToAvailable', this.publishConflictHandler);
 
 		this.setup(this.props.assignment);
 	}
@@ -80,7 +81,7 @@ export default class AssignmentEditor extends React.Component {
 	componentWillUnmount () {
 		ConflictResolution.unregisterHandler('AvailableToUnavailable', this.publishConflictHandler);
 		ConflictResolution.unregisterHandler('AssessmentDateConfirm', this.publishConflictHandler);
-
+		ConflictResolution.unregisterHandler('UnAvailableToAvailable', this.publishConflictHandler);
 	}
 
 
