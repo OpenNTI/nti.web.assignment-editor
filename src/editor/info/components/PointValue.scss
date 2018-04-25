@@ -1,6 +1,10 @@
 .point-value {
 	input {
+		height: 22px;
+		background-color: white;
+		padding-left: 0;
 		border: none;
+
 		&:focus {
 			border: inherit;
 		}
