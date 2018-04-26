@@ -6,6 +6,10 @@
 	}
 }
 
+body > .fly-wrapper > .flyout.assignment-option-flyout {
+	z-index: 0;
+}
+
 .flyout.assignment-option-flyout {
 	.flyout-inner {
 		box-shadow: 1px 0 0 0 $border-grey-light,
