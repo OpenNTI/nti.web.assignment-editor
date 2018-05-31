@@ -1,0 +1,20 @@
+@import "~@nti/style-common";
+
+.assignment-option-group.buffer {
+	.checkbox-component {
+		color: $secondary-grey;
+	}
+
+	.inputs {
+		&.disabled {
+			opacity: 0.5;
+			pointer-events: none;
+		}
+
+		.duration-picker {
+			max-width: 300px;
+			margin-left: 1.625rem;
+			margin-top: 0.5rem;
+		}
+	}
+}
