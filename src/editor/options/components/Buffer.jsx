@@ -11,6 +11,8 @@ const DEFAULT_TEXT = {
 	label: 'Enable submission buffer'
 };
 
+const SAVE_WAIT_TIME = 500;
+
 const t = scoped('assignment.editing.options.buffer', DEFAULT_TEXT);
 
 class Buffer extends React.Component {
@@ -36,7 +38,7 @@ class Buffer extends React.Component {
 		const {submissionBuffer} = this.state;
 
 		if (assignment.submissionBuffer !== submissionBuffer) {
-			this.save();
+			this.saveTimeout = setTimeout(() => { this.save(); }, SAVE_WAIT_TIME);
 		}
 	}
 
@@ -68,12 +70,8 @@ class Buffer extends React.Component {
 	}
 
 
-	onItemChanged = () => {
-		this.setupValue();
-	}
-
-
 	onChange = () => {
+		clearTimeout(this.saveTimeout);
 		const enabled = this.state.submissionBuffer != null && this.state.submissionBuffer !== false;
 
 		this.setState({submissionBuffer: enabled ? null : 0});
@@ -81,6 +79,7 @@ class Buffer extends React.Component {
 
 
 	timeChanged = (value) => {
+		clearTimeout(this.saveTimeout);
 		this.setState({submissionBuffer: value});
 	}
 
