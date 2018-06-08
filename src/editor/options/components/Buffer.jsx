@@ -86,16 +86,19 @@ class Buffer extends React.Component {
 
 
 	render () {
+		const {assignment} = this.props;
 		const {submissionBuffer} = this.state;
 
 		const enabled = submissionBuffer != null && submissionBuffer !== false;
 		const cls = cx('inputs', {disabled: !enabled});
+		const isEditable = assignment.hasLink('edit');
 
 		return (
 			<OptionGroup
 				name="buffer"
 				header="Buffer"
 				content={t('content')}
+				disabled={!isEditable}
 			>
 				<Checkbox label="Enable buffer time" onChange={this.onChange} checked={enabled}/>
 				<div className={cls}>
