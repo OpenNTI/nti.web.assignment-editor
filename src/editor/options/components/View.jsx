@@ -6,7 +6,7 @@ import Grading from './Grading';
 import Randomize from './Randomize';
 import Limits from './Limits';
 import Visibility from './Visibility';
-// import Buffer from './Buffer';
+import Buffer from './Buffer';
 
 function getQuestionSet (assignment) {
 	const {parts} = assignment || {};
@@ -42,7 +42,7 @@ class AssignmentOptions extends React.Component {
 					<Grading assignment={assignment} questionSet={questionSet} />
 					<Randomize assignment={assignment} questionSet={questionSet} />
 					<Limits assignment={assignment} questionSet={questionSet} />
-					{/* <Buffer assignment={assignment} questionSet={questionSet} /> */}
+					<Buffer assignment={assignment} questionSet={questionSet} />
 				</div>
 			</div>
 		);

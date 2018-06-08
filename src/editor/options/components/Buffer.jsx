@@ -85,7 +85,6 @@ class Buffer extends React.Component {
 
 
 	render () {
-		const {questionSet, assignment} = this.props;
 		const {submissionBuffer} = this.state;
 
 		const enabled = submissionBuffer != null && submissionBuffer !== false;
@@ -96,7 +95,6 @@ class Buffer extends React.Component {
 				name="buffer"
 				header="Buffer"
 				content={t('content')}
-				disabled={!questionSet || questionSet.LimitedEditingCapabilities || !assignment || !assignment.isModifiable}
 			>
 				<Checkbox label="Enable buffer time" onChange={this.onChange} checked={enabled}/>
 				<div className={cls}>
