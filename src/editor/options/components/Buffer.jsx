@@ -71,10 +71,11 @@ class Buffer extends React.Component {
 
 
 	onChange = () => {
+		// for checkbox changes, just save right away
 		clearTimeout(this.saveTimeout);
 		const enabled = this.state.submissionBuffer != null && this.state.submissionBuffer !== false;
 
-		this.setState({submissionBuffer: enabled ? null : 0});
+		this.setState({submissionBuffer: enabled ? null : 0}, this.save());
 	}
 
 
