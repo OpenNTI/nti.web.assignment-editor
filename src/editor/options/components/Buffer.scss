@@ -1,6 +1,8 @@
 @import "~@nti/style-common";
 
 .assignment-option-group.buffer {
+	padding-bottom: 8rem;
+
 	.checkbox-component {
 		color: $secondary-grey;
 	}
@@ -13,8 +15,43 @@
 
 		.duration-picker {
 			max-width: 300px;
-			margin-left: 1.625rem;
 			margin-top: 0.5rem;
+
+			.nti-number-input {
+				background-color: white;
+			}
 		}
+	}
+
+	.options {
+		.select-box {
+			font-size: 14px;
+			color: $secondary-grey;
+			max-width: 15rem;
+			border: solid 1px #ddd;
+			border-radius: 2px;
+			cursor: pointer;
+
+			ul {
+				font-weight: 400;
+				padding-left: 0;
+
+				.option-label {
+					&.selected {
+						opacity: 0.5;
+						pointer-events: none;
+						background: none;
+						color: $secondary-grey;
+					}
+				}
+			}
+		}
+	}
+}
+
+.submission-buffer-options {
+	.submission-buffer-option {
+		padding: 1rem;
+		font-weight: 300;
 	}
 }

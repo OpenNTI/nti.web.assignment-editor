@@ -1,17 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {scoped} from '@nti/lib-locale';
-import {HOC, Checkbox, DurationPicker} from '@nti/web-commons';
+import {HOC, DurationPicker, SelectBox} from '@nti/web-commons';
 import cx from 'classnames';
 
 import OptionGroup from './OptionGroup';
 
 const DEFAULT_TEXT = {
-	content: 'Allow submissions after the due date.',
-	label: 'Enable submission buffer'
+	content: 'Allow or prevent learners from submitting work late.',
+	label: 'Late Submissions'
 };
 
-const SAVE_WAIT_TIME = 500;
+const SAVE_WAIT_TIME = 1000;
+
+const ALLOW_BUFFER_TIME = {
+	value: 'allow_buffer_time',
+	label: 'Allow within Grace Period'
+};
+const STRICT_LIMIT = {
+	value: 'strict_limit',
+	label: 'Never Allow'
+};
+const OPEN_SUBMISSIONS = {
+	value: 'open_submissions',
+	label: 'Always Allow (Default)'
+};
 
 const t = scoped('assignment.editing.options.buffer', DEFAULT_TEXT);
 
@@ -66,24 +79,67 @@ class Buffer extends React.Component {
 
 		const submissionBuffer = this.nullOrValue(assignment.submissionBuffer);
 
-		this.setState({submissionBuffer});
+		if(submissionBuffer == null) {
+			this.setState({bufferPolicy: OPEN_SUBMISSIONS});
+		}
+		else if(submissionBuffer === 0) {
+			this.setState({bufferPolicy: STRICT_LIMIT, submissionBuffer});
+		}
+		else {
+			this.setState({bufferPolicy: ALLOW_BUFFER_TIME, submissionBuffer});
+		}
 	}
-
-
-	onChange = () => {
-		// for checkbox changes, just save right away
-		clearTimeout(this.saveTimeout);
-		const enabled = this.state.submissionBuffer != null && this.state.submissionBuffer !== false;
-
-		this.setState({submissionBuffer: enabled ? null : 0}, this.save());
-	}
-
 
 	timeChanged = (value) => {
 		clearTimeout(this.saveTimeout);
-		this.setState({submissionBuffer: value});
+
+		if(value === 0) {
+			this.setState({submissionBuffer: 0, bufferPolicy: STRICT_LIMIT});
+		}
+		else {
+			this.setState({submissionBuffer: value});
+		}
 	}
 
+	setOpenBuffer = () => {
+		this.setState({bufferPolicy: OPEN_SUBMISSIONS, submissionBuffer: null});
+	}
+
+	setStrictBuffer = () => {
+		this.setState({bufferPolicy: STRICT_LIMIT, submissionBuffer: 0});
+	}
+
+	setAllowBufferTime = () => {
+		let state = {
+			bufferPolicy: ALLOW_BUFFER_TIME
+		};
+
+		if(!this.state.submissionBuffer) {
+			state.submissionBuffer = 60 * 60;
+		}
+
+		this.setState(state);
+	}
+
+	onPolicyChange = (val) => {
+		if(val === OPEN_SUBMISSIONS.value) {
+			this.setOpenBuffer();
+		} else if(val === STRICT_LIMIT.value) {
+			this.setStrictBuffer();
+		} else {
+			this.setAllowBufferTime();
+		}
+	}
+
+	renderPolicySelect () {
+		const options = [
+			OPEN_SUBMISSIONS,
+			ALLOW_BUFFER_TIME,
+			STRICT_LIMIT
+		];
+
+		return <SelectBox options={options} onChange={this.onPolicyChange} value={this.state.bufferPolicy && this.state.bufferPolicy.value} showSelectedOption/>;
+	}
 
 	render () {
 		const {assignment} = this.props;
@@ -96,14 +152,16 @@ class Buffer extends React.Component {
 		return (
 			<OptionGroup
 				name="buffer"
-				header="Buffer"
+				header={t('label')}
 				content={t('content')}
 				disabled={!isEditable}
 			>
-				<Checkbox label="Enable buffer time" onChange={this.onChange} checked={enabled}/>
-				<div className={cls}>
-					<DurationPicker onChange={this.timeChanged} value={submissionBuffer || 0} />
-				</div>
+				{this.renderPolicySelect()}
+				{this.state.bufferPolicy === ALLOW_BUFFER_TIME && (
+					<div className={cls}>
+						<DurationPicker onChange={this.timeChanged} value={submissionBuffer || 0} />
+					</div>
+				)}
 			</OptionGroup>
 		);
 	}
