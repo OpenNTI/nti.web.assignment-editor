@@ -11,7 +11,7 @@ const DEFAULT_TEXT = {
 	label: 'Late Submissions'
 };
 
-const SAVE_WAIT_TIME = 1000;
+const SAVE_WAIT_TIME = 500;
 
 const ALLOW_BUFFER_TIME = {
 	value: 'allow_buffer_time',
@@ -46,15 +46,6 @@ class Buffer extends React.Component {
 		this.setupValue(this.props);
 	}
 
-	componentDidUpdate () {
-		const {assignment} = this.props;
-		const {submissionBuffer} = this.state;
-
-		if (assignment.submissionBuffer !== submissionBuffer) {
-			this.saveTimeout = setTimeout(() => { this.save(); }, SAVE_WAIT_TIME);
-		}
-	}
-
 	nullOrValue (submissionBuffer) {
 		return submissionBuffer === false || submissionBuffer === null ? null : submissionBuffer;
 	}
@@ -70,6 +61,15 @@ class Buffer extends React.Component {
 
 					this.setState({submissionBuffer: newSubmissionBuffer, error});
 				});
+		}
+	}
+
+	saveWithTimeout = () => {
+		const {assignment} = this.props;
+		const {submissionBuffer} = this.state;
+
+		if (assignment.submissionBuffer !== submissionBuffer) {
+			this.saveTimeout = setTimeout(() => { this.save(); }, SAVE_WAIT_TIME);
 		}
 	}
 
@@ -94,19 +94,19 @@ class Buffer extends React.Component {
 		clearTimeout(this.saveTimeout);
 
 		if(value === 0) {
-			this.setState({submissionBuffer: 0, bufferPolicy: STRICT_LIMIT});
+			this.setState({submissionBuffer: 0, bufferPolicy: STRICT_LIMIT}, this.saveWithTimeout);
 		}
 		else {
-			this.setState({submissionBuffer: value});
+			this.setState({submissionBuffer: value}, this.saveWithTimeout);
 		}
 	}
 
 	setOpenBuffer = () => {
-		this.setState({bufferPolicy: OPEN_SUBMISSIONS, submissionBuffer: null});
+		this.setState({bufferPolicy: OPEN_SUBMISSIONS, submissionBuffer: null}, this.saveWithTimeout);
 	}
 
 	setStrictBuffer = () => {
-		this.setState({bufferPolicy: STRICT_LIMIT, submissionBuffer: 0});
+		this.setState({bufferPolicy: STRICT_LIMIT, submissionBuffer: 0}, this.saveWithTimeout);
 	}
 
 	setAllowBufferTime = () => {
@@ -118,7 +118,7 @@ class Buffer extends React.Component {
 			state.submissionBuffer = 60 * 60;
 		}
 
-		this.setState(state);
+		this.setState(state, this.saveWithTimeout);
 	}
 
 	onPolicyChange = (val) => {
