@@ -93,20 +93,21 @@ class Buffer extends React.Component {
 	timeChanged = (value) => {
 		clearTimeout(this.saveTimeout);
 
-		if(value === 0) {
-			this.setState({submissionBuffer: 0, bufferPolicy: STRICT_LIMIT}, this.saveWithTimeout);
+		if(value === 0 && this.state.bufferPolicy === ALLOW_BUFFER_TIME) {
+			// alert user, don't save while invalid
+			this.setState({submissionBuffer: value, error: 'Buffer time must be non-zero'});
 		}
 		else {
-			this.setState({submissionBuffer: value}, this.saveWithTimeout);
+			this.setState({submissionBuffer: value, error: null}, this.saveWithTimeout);
 		}
 	}
 
 	setOpenBuffer = () => {
-		this.setState({bufferPolicy: OPEN_SUBMISSIONS, submissionBuffer: null}, this.saveWithTimeout);
+		this.setState({bufferPolicy: OPEN_SUBMISSIONS, submissionBuffer: null, error: null}, this.saveWithTimeout);
 	}
 
 	setStrictBuffer = () => {
-		this.setState({bufferPolicy: STRICT_LIMIT, submissionBuffer: 0}, this.saveWithTimeout);
+		this.setState({bufferPolicy: STRICT_LIMIT, submissionBuffer: 0, error: null}, this.saveWithTimeout);
 	}
 
 	setAllowBufferTime = () => {
@@ -116,6 +117,7 @@ class Buffer extends React.Component {
 
 		if(!this.state.submissionBuffer) {
 			state.submissionBuffer = 60 * 60;
+			state.error = null;
 		}
 
 		this.setState(state, this.saveWithTimeout);
@@ -143,7 +145,7 @@ class Buffer extends React.Component {
 
 	render () {
 		const {assignment} = this.props;
-		const {submissionBuffer} = this.state;
+		const {submissionBuffer, error} = this.state;
 
 		const enabled = submissionBuffer != null && submissionBuffer !== false;
 		const cls = cx('inputs', {disabled: !enabled});
@@ -160,6 +162,7 @@ class Buffer extends React.Component {
 				{this.state.bufferPolicy === ALLOW_BUFFER_TIME && (
 					<div className={cls}>
 						<DurationPicker onChange={this.timeChanged} value={submissionBuffer || 0} />
+						{error && <div className="error">{error}</div>}
 					</div>
 				)}
 			</OptionGroup>
