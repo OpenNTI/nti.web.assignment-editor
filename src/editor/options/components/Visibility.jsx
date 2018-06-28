@@ -49,7 +49,7 @@ class Visibility extends React.Component {
 		return (
 			<OptionGroup disabled={isDisabled} name="visibility" header={t('header')} content={t('content')}>
 				<label>
-					<select defaultValue={visibility} onChange={this.onChange}>
+					<select value={visibility} onChange={this.onChange}>
 						{options.map(({value, label}) =>
 							<option key={value} value={value}>{label}</option>
 						)}
