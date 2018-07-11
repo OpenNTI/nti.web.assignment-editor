@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {scoped} from '@nti/lib-locale';
 import {Errors, DialogButtons} from '@nti/web-commons';
-import naturalSort from 'node-natural-sort';
+import { orderBy } from 'natural-orderby';
 
 const {Field: {List:ErrorList}} = Errors;
 
@@ -139,20 +139,15 @@ export default class PrepublishModal extends React.Component {
 		const {hasErrors, hasWarnings} = this;
 		const {collapsed} = this.state;
 		const cls = cx('issues', {collapsed, 'has-both': hasErrors && hasWarnings});
-		const compare = naturalSort({caseSensitive: false});
+		const sort = x => orderBy(x, v => v && v.attachedTo && (v.attachedTo.label || '').toLowerCase());
 
-		const compareIssues = (a, b) => {
-			a = a && a.attachedTo && a.attachedTo.label;
-			b = b && b.attachedTo && b.attachedTo.label;
-			return compare(a, b);
-		};
 
 		if (Array.isArray(errors)) {
-			errors = errors.sort(compareIssues);
+			errors = sort(errors);
 		}
 
 		if (Array.isArray(warnings)) {
-			warnings = warnings.sort(compareIssues);
+			warnings = sort(warnings);
 		}
 
 		return (
