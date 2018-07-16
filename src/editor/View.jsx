@@ -58,7 +58,7 @@ export default class Editor extends React.Component {
 
 
 	onWindowScroll = () => {
-		const top = window.scrollY;
+		const top = global.scrollY;
 
 		if (this.sidebarDOM) {
 			this.sidebarDOM.style.transform = `translate3d(0, ${top}px, 0)`;

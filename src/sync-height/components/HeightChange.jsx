@@ -13,7 +13,7 @@ const OBSERVER_INIT = {
 };
 
 function getMutationObserver () {
-	return window.MutationObserver || window.WebKitMutationObserver;
+	return global.MutationObserver || global.WebKitMutationObserver;
 }
 
 export default class HeightChange extends React.Component {

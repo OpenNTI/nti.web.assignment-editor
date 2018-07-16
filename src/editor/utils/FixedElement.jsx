@@ -25,12 +25,12 @@ export default class FixedEelement extends React.Component {
 
 
 	componentDidMount () {
-		window.addEventListener('scroll', this.onWindowScroll);
+		global.addEventListener('scroll', this.onWindowScroll);
 	}
 
 
 	componentWillUnmount () {
-		window.removeEventListener('scroll', this.onWindowScroll);
+		global.removeEventListener('scroll', this.onWindowScroll);
 	}
 
 
@@ -65,7 +65,7 @@ export default class FixedEelement extends React.Component {
 
 
 	onScrollStop () {
-		const top = window.scrollY;
+		const top = global.scrollY;
 
 		delete this.isFixed;
 

@@ -115,7 +115,7 @@ function init (instance) {
 		openSince: new Date()
 	});
 
-	window.AssignmentStore = instance;
+	global.AssignmentStore = instance;
 }
 
 
