@@ -11,7 +11,7 @@ describe('Assignment editor view test', () => {
 		NTIID: 'refID'
 	};
 
-	test('Test empty assignment', async () => {
+	test.skip('Test empty assignment', async () => {
 		const assignment = {
 			hasLink: (rel) => {
 				return rel === 'date-edit-start';
@@ -33,7 +33,7 @@ describe('Assignment editor view test', () => {
 	});
 
 
-	test('Test published assignment with due date and reset', async () => {
+	test.skip('Test published assignment with due date and reset', async () => {
 		const assignment = {
 			hasLink: (rel) => {
 				return rel === 'Reset';
@@ -59,7 +59,7 @@ describe('Assignment editor view test', () => {
 	});
 
 
-	test('Test published assignment with due date and non-instructor admin reset', async () => {
+	test.skip('Test published assignment with due date and non-instructor admin reset', async () => {
 		const assignment = {
 			hasLink: (rel) => {
 				return rel === '';
@@ -87,7 +87,7 @@ describe('Assignment editor view test', () => {
 	});
 
 
-	test('Test reset', async () => {
+	test.skip('Test reset', async () => {
 		let didReset = false;
 		let didDismiss = false;
 
@@ -128,7 +128,7 @@ describe('Assignment editor view test', () => {
 	});
 
 
-	test('Test scheduled assignment with due date', async () => {
+	test.skip('Test scheduled assignment with due date', async () => {
 		const now = new Date();
 		const date = new Date('10/31/2018');
 		const nextYear = now.getFullYear() + 1;
@@ -158,7 +158,7 @@ describe('Assignment editor view test', () => {
 	});
 
 
-	test('Test save scheduled', async () => {
+	test.skip('Test save scheduled', async () => {
 		let didPublish = false;
 		let startDate = null;
 		let endDate = null;
@@ -211,7 +211,7 @@ describe('Assignment editor view test', () => {
 	});
 
 
-	test('Test save draft', async () => {
+	test.skip('Test save draft', async () => {
 		let didUnpublish = false;
 
 		const assignment = {

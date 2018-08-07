@@ -12,7 +12,7 @@ describe('DueDate test', () => {
 		return cmp.find('.select-wrapper').at(0).find('.option-label').at(month);
 	};
 
-	test('Test date state changes', async () => {
+	test.skip('Test date state changes', async () => {
 		let newDate = null;
 		let dueDateChecked = false;
 		const date = new Date('10/25/18 04:34');
