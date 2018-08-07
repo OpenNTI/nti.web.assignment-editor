@@ -9,7 +9,7 @@ import {generatePartFor} from './utils';
 const choiceType = 'FreeResponseSolution';
 const errorField = 'solutions';
 
-const disclaimer = 'Short answer questions are auto graded, but the responses must be a 100% match. List as many possible answers as you\'re willing to accept including common misspellings.';
+const disclaimer = 'Short answer questions can be auto graded, but the responses must be a 100% match. List as many possible answers as you\'re willing to accept including common misspellings.';
 const addLabel = 'Add a Possible Answer';
 
 
@@ -74,6 +74,7 @@ export default class FreeResponseEditor extends React.Component {
 					buildBlankChoice={this.buildBlankChoice}
 					canRemove
 					addLabel={addLabel}
+					minAllowed={0}
 					plainText
 				/>
 			</div>

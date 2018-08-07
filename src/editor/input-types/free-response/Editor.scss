@@ -6,10 +6,14 @@
 		transition: color 50ms;
 		color: $secondary-grey;
 		margin-bottom: rem-calc(5px);
-		padding: rem-calc(15px 15px 0);
+		padding: rem-calc(15px 15px 15px 15px);
 	}
 
 	.input-type-choices {
+		.choice-column {
+			padding-top: 0;
+		}
+
 		.delete div, .input-type-choice {
 			margin-bottom: rem-calc(9px);
 		}

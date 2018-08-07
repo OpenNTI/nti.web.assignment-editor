@@ -6,7 +6,7 @@ import Button from '../base/Button';
 
 import {generatePartFor} from './utils';
 
-const DEFAULT_SOLUTION = ['Answer 1'];
+const DEFAULT_SOLUTION = [];
 const ICON_CLS = 'freeresponse';
 
 const DEFAULT_TEXT = {

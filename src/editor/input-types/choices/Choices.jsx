@@ -333,11 +333,13 @@ export default class Choices extends React.Component {
 		const column = columns[0];
 
 		if (index < 0) {
-			index = column.length;
+			index = column ? column.length : 0;
 		}
 
-		for (let i = 0; i < columns.length; i++) {
-			let oldColumn = columns[i];
+		const length = columns.length || 1;
+
+		for (let i = 0; i < length; i++) {
+			let oldColumn = columns[i] || [];
 			let newItem = buildBlankChoice(oldColumn.slice(0));
 
 			let newColumn = [...oldColumn.slice(0, index), newItem, ...oldColumn.slice(index)];
