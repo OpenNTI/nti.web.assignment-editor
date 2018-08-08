@@ -12,8 +12,8 @@ const DEFAULT_TEXT = {
 	'disabled-no-questions': 'Add some questions to enable this option.',
 	'disabled-total-points': 'Assignment must have a point value to enable auto grading.',
 	'disabled-conflicting-questions': {
-		other: 'Questions without provided solutions are not compatible with auto grading. You must remove questions %(conflicts)s before enabling auto grade.',
-		one: 'Questions without provided solutions are not compatible with auto grading. You must remove question %(conflicts)s before enabling auto grade.'
+		other: 'Questions without provided answers are not compatible with auto grading. You must remove questions %(conflicts)s before enabling auto grade.',
+		one: 'Questions without provided answers are not compatible with auto grading. You must remove question %(conflicts)s before enabling auto grade.'
 	}
 };
 
