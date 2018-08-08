@@ -12,7 +12,7 @@ const LIMIT_NONE = 'limit-none';
 const LIMIT_PORTION = 'limit-porition';
 
 const DEFAULT_TEXT = {
-	content: 'Setting a max number of questions will result in unqiue quizzes with randomly chosen questions for every student.',
+	content: 'Setting a max number of questions will result in unique quizzes with randomly chosen questions for every student.',
 	disabledNoQuestions: 'Add some questions to enable this option.',
 	disabledLimitedEdit: 'You cannot change these settings once students have begun work on this assignment.',
 	disabled: 'Currently unavailable for this assignment.',
