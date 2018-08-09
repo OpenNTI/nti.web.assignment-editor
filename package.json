@@ -55,7 +55,6 @@
     "natural-orderby": "^1.0.0",
     "prop-types": "^15.5.10",
     "react-flip-move": "^3.0.0",
-    "react-test-renderer": "^16.4.2",
     "react-transition-group": "^2.2.1",
     "uuid": "^3.0.1"
   },
@@ -65,6 +64,7 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "react-test-renderer": "^16.4.2"
   }
 }
