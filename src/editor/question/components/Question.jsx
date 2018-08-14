@@ -264,6 +264,8 @@ export default class Question extends React.Component {
 				}
 			})
 			.catch(() => {
+				this.onQuestionMessages();
+
 				this.setState({
 					savingMask: false
 				});
@@ -275,6 +277,8 @@ export default class Question extends React.Component {
 		const {question} = this.props;
 
 		this.setModal(false);
+
+		this.setState({questionError: void 0});
 
 		if (question.delaySaving && question.remove) {
 			question.remove();

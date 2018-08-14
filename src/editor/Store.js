@@ -29,7 +29,15 @@ import {
 const SHORT = 3000;
 
 const {Field: {Factory:ErrorFactory}} = Errors;
-const errorFactory = new ErrorFactory();
+const errorFactory = new ErrorFactory({
+	overrides: {
+		SchemaNotProvided: (reason) => {
+			if(reason.field === 'value' && reason.declared === 'IQFreeResponseSolution') {
+				return 'Short answer solutions cannot be empty';
+			}
+		}
+	}
+});
 
 const PRIVATE = new WeakMap();
 const logger = Logger.get('lib:asssignment-editor:Store');

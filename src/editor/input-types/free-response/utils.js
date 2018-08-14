@@ -25,7 +25,7 @@ export function generateSolutionFor (value) {
 	return {
 		Class: cls,
 		MimeType: type,
-		value: value || ' '		// The value must be at least one char. Default to empty space.
+		value: value || ''		// The value must be at least one char. Default to empty space.
 	};
 }
 
