@@ -90,7 +90,12 @@ export default class DataTransfer {
 		if (value.dataForTransfer) {
 			value = value.dataForTransfer;
 		} else {
-			value = JSON.stringify(value);
+			try {
+				value = JSON.stringify(value);
+			}
+			catch (e) {
+				console.warn('Circular reference error.  Dragging may not work');
+			}
 		}
 
 		this.transferData[key] = value;
