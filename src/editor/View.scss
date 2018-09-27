@@ -43,4 +43,10 @@
 			text-align: center;
 		}
 	}
+
+	.assignment-content-editor.selectable, .assignment-title-editor.selectable {
+		&:not(.selected) {
+			background: none;
+		}
+	}
 }
