@@ -46,7 +46,9 @@
 
 	.assignment-content-editor.selectable, .assignment-title-editor.selectable {
 		&:not(.selected) {
-			background: none;
+			.nti-draft-core {
+				background: none;
+			}
 		}
 	}
 }
