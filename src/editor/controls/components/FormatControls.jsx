@@ -1,6 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {ContextProvider, BoldButton, ItalicButton, UnderlineButton, TypeButton, BLOCKS} from '@nti/web-editor';
+import {
+	ContextProvider,
+	BoldButton,
+	ItalicButton,
+	UnderlineButton,
+	TypeButton,
+	LinkButton,
+	BLOCKS
+} from '@nti/web-editor';
 
 const DISABLE_FOR_BLOCKS = {
 	[BLOCKS.CODE]: true
@@ -78,6 +86,7 @@ export default class FormatControls extends React.Component {
 					<ItalicButton shouldDisableForState={this.shouldDisableForState}/>
 					<UnderlineButton shouldDisableForState={this.shouldDisableForState}/>
 					<span className="format-divider"/>
+					<LinkButton shouldDisableForState={this.shouldDisableForState} />
 					<TypeButton type={BLOCKS.CODE} inlineStyle><div className="icon-code-block"/></TypeButton>
 				</div>
 			</ContextProvider>

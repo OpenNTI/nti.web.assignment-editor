@@ -40,6 +40,7 @@ export default class BufferedTextEditor extends React.Component {
 		singleLine: PropTypes.bool,
 		linkify: PropTypes.bool,
 		inlineOnly: PropTypes.bool,
+		externalLinks: PropTypes.bool,
 
 		error: PropTypes.object,
 		warning: PropTypes.object
@@ -61,6 +62,8 @@ export default class BufferedTextEditor extends React.Component {
 
 		this.editorID = generateID();
 
+		this.pendingSaves = [];
+
 		this.bufferedChange = buffer(bufferTime, () => this.onChange());
 
 		this.state = {
@@ -70,34 +73,55 @@ export default class BufferedTextEditor extends React.Component {
 	}
 
 
+	isPendingSave (value) {
+		for (let save of this.pendingSaves) {
+			if (save === value) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+
+	pushPendingSave (value) {
+		this.pendingSaves.push(value);
+	}
+
+	cleanupPendingSave (value) {
+		this.pendingSaves = this.pendingSaves.filter(save => save !== value);
+	}
+
+
 	componentWillUnmount () {
 		this.bufferedChange && this.bufferedChange.cancel();
 		this.bufferedChange = () => {};
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		const diff = (...x) => x.some(key => nextProps[key] !== this.props[key]);
-		const {initialValue:newValue, buffer:newBuffer} = nextProps;
-		const {initialValue:oldValue, buffer:oldBuffer, onEditorChange} = this.props;
+	componentDidUpdate (prevProps) {
+		const diff = (...x) => x.some(key => prevProps[key] !== this.props[key]);
+
+		const {initialValue:newValue, buffer:newBuffer, onEditorChange} = this.props;
+		const {initialValue:oldValue, buffer:oldBuffer} = prevProps;
 
 		let state;
 
 		if (newBuffer !== oldBuffer) {
-			this.bufferedChange = buffer(newBuffer, () => this.onChange());
+			this.bufferChange = buffer(newBuffer, () => this.onChange());
 		}
 
-		this.updateValue = this.updateValue || (!this.isFocused && newValue);
+		if (diff('charLimit', 'countDown', 'plainText', 'singleLine', 'linkify', 'inlineOnly', 'externalLinks')) {
+			state = state || {};
+			state.plugins = this.getPluginsFor(this.props);
+		}
 
-		if (newValue !== oldValue && !this.isFocused) {
+		if (newValue !== oldValue && !this.isFocused && !this.isPendingSave(newValue)) {
 			state = state || {};
 			state.editorState = Parsers.HTML.toDraftState(newValue);
 		}
 
-		if (diff('charLimit', 'countDown', 'plainText', 'singleLine', 'linkify', 'inlineOnly')) {
-			state = state || {};
-			state.plugins = this.getPluginsFor(nextProps);
-		}
+		this.cleanupPendingSave(newValue);
 
 		if (state) {
 			this.setState(state, () => {
@@ -134,19 +158,28 @@ export default class BufferedTextEditor extends React.Component {
 		}
 
 		if (linkify) {
-			plugins.push(Plugins.InlineLinks.create());
+			plugins.push(Plugins.ExternalLinks.create({
+				allow: new Set([BLOCKS.UNSTYLED]),
+				onStartEdit: () => this.onStartLinkEdit(),
+				onStopEdit: () => this.onStopLinkEdit()
+			}));
 		}
+
+		// if (linkify) {
+		// 	plugins.push(Plugins.InlineLinks.create());
+		// }
 
 		if (inlineOnly) {
 			plugins.push(Plugins.LimitBlockTypes.create({allow: new Set([BLOCKS.UNSTYLED])}));
 		}
+
 
 		return plugins;
 	}
 
 
 	focus () {
-		if (this.editor && this.editor.focus) {
+		if (this.editor && this.editor.focus && !this.editingLink) {
 			this.editor.focus();
 		}
 	}
@@ -183,9 +216,21 @@ export default class BufferedTextEditor extends React.Component {
 		const newValue = this.getValue();
 
 		if (onChange && this.hasValueChanged()) {
-			this.updatedValue = newValue;
+			this.pushPendingSave(newValue);
 			onChange(newValue);
 		}
+	}
+
+
+	onStartLinkEdit () {
+		this.editingLink = true;
+		clearTimeout(this.onBlurTimeout);
+	}
+
+
+	onStopLinkEdit () {
+		this.editingLink = false;
+		this.bufferedChange();
 	}
 
 
@@ -233,16 +278,20 @@ export default class BufferedTextEditor extends React.Component {
 
 
 	onEditorBlur = (editor) => {
-		const {onBlur} = this.props;
+		if (this.editingLink) { return; }
 
-		this.isFocused = null;
+		this.onBlurTimeout = setTimeout(() => {
+			const {onBlur} = this.props;
 
-		this.bufferedChange();
-		this.bufferedChange.flush();
+			this.isFocused = null;
 
-		if (onBlur) {
-			onBlur(editor);
-		}
+			this.bufferedChange();
+			this.bufferedChange.flush();
+
+			if (onBlur) {
+				onBlur(editor);
+			}
+		}, 100);
 	}
 
 
