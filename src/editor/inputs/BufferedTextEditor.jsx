@@ -313,7 +313,7 @@ export default class BufferedTextEditor extends React.Component {
 		delete otherProps.inlineOnly;
 
 		return (
-			<div className={cx('text-editor', 'nti-rich-text', className)}>
+			<div className={cx('text-editor', 'nti-buffered-text-editor', className)}>
 				<Editor
 					{...otherProps}
 					ref={this.attachEditorRef}

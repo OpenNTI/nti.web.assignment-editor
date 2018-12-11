@@ -56,7 +56,7 @@
 	}
 
 
-	.nti-rich-text {
+	.nti-rich-text, .nti-buffered-text-editor {
 		position: static;
 		font: normal 400 0.875rem/2.5 $body-font-family;
 		color: $primary-grey;
@@ -88,7 +88,7 @@
 	}
 
 
-	input {
+	input:not(.nti-text-input) {
 		background: none;
 		font: normal 400 0.875rem/2.5 $body-font-family;
 		color: $primary-grey;
@@ -105,7 +105,7 @@
 }
 
 .is-saving .input-type-choice {
-	.nti-rich-text .nti-draft-core .DraftEditor-root {
+	.nti-rich-text .nti-draft-core .DraftEditor-root, .nti-buffered-text-editor .nti-draft-core .DraftEditor-root {
 		color: transparent;
 	}
 }

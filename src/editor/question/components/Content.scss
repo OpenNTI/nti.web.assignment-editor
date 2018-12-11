@@ -6,7 +6,7 @@
 	}
 
 
-	.nti-rich-text {
+	.nti-rich-text, .nti-buffered-text-editor {
 		padding: 0 0.2rem 0.2rem;
 		border: none;
 		background: white;
@@ -48,8 +48,10 @@
 // 	}
 // }
 
-.is-saving .question-content-editor .nti-rich-text {
-	.DraftEditor-root, .public-DraftEditorPlaceholder-root {
-		color: transparent;
+.is-saving .question-content-editor {
+	.nti-rich-text, .nti-buffered-text-editor {
+		.DraftEditor-root, .public-DraftEditorPlaceholder-root {
+			color: transparent;
+		}
 	}
 }

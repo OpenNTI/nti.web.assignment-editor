@@ -4,7 +4,7 @@
 	position: relative;
 	margin-bottom: 9px;
 
-	.nti-rich-text {
+	.nti-rich-text, .nti-buffered-text-editor {
 		padding-left: rem-calc(32px);
 	}
 
@@ -23,14 +23,6 @@
 		.no-reorder & {
 			left: rem-calc(16px);
 		}
-	}
-
-
-	.remove {
-		position: absolute;
-		top: 15px;
-		right: 15px;
-		cursor: pointer;
 	}
 }
 
