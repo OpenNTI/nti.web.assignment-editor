@@ -94,8 +94,8 @@ export default class BufferedTextEditor extends React.Component {
 
 
 	componentWillUnmount () {
-		this.bufferedChange && this.bufferedChange.cancel();
-		this.bufferedChange = () => {};
+		this.bufferedChange && this.bufferedChange.flush();
+		this.bufferedChange = buffer(100, () => {});
 	}
 
 
