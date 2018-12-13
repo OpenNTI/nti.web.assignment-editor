@@ -83,7 +83,9 @@ export default class Choice extends React.Component {
 		this.syncHeight();
 
 		if (this.isNew && this.editorRef) {
-			this.doFocus();
+			setTimeout(() => {
+				this.doFocus();
+			}, 1);
 			delete this.isNew;
 		}
 	}
