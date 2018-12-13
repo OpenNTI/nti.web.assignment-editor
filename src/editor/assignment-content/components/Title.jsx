@@ -75,6 +75,7 @@ export default class TitleEditor extends React.Component {
 					error={error}
 					singleLine
 					plainText
+					linkify={false}
 				/>
 			</Selectable>
 		);
