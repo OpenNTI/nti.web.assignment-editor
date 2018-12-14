@@ -233,6 +233,7 @@ export default class Choice extends React.Component {
 				onEditorChange={this.syncHeight}
 				error={error}
 				inlineOnly
+				linkify={false}
 				customKeyBindings={{
 					[getKeyCode.TAB]: this.onTabKey,
 					[getKeyCode.SHIFT_TAB]: this.onShiftTabKey,
