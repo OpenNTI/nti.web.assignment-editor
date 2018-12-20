@@ -159,7 +159,7 @@ export default class BufferedTextEditor extends React.Component {
 
 		if (linkify) {
 			plugins.push(Plugins.ExternalLinks.create({
-				allow: new Set([BLOCKS.UNSTYLED]),
+				allowedInBlockTypes: new Set([BLOCKS.UNSTYLED]),
 				onStartEdit: () => this.onStartLinkEdit(),
 				onStopEdit: () => this.onStopLinkEdit()
 			}));
