@@ -1,5 +1,7 @@
 function getMinTop () {
-	return 10;
+	const base = global['nti-sticky-top-offset'] ? global['nti-sticky-top-offset']() : 0;
+
+	return base + 10;
 }
 
 //Account for the dialog buttons that will be there.

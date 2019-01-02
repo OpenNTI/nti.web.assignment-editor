@@ -56,8 +56,8 @@ export default class InlineDialog extends React.Component {
 	}
 
 
-	componentWillUpdate (nextProps) {
-		const {active} = nextProps;
+	componentDidUpdate () {
+		const {active} = this.props;
 		const {active:isActive} = this.state;
 
 		if (active && !isActive) {
