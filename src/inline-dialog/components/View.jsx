@@ -56,8 +56,8 @@ export default class InlineDialog extends React.Component {
 	}
 
 
-	componentWillUpdate (nextProps) {
-		const {active} = nextProps;
+	componentDidUpdate () {
+		const {active} = this.props;
 		const {active:isActive} = this.state;
 
 		if (active && !isActive) {
@@ -152,7 +152,10 @@ export default class InlineDialog extends React.Component {
 		let placeholderStyles = {};
 
 		if (dialogPosition) {
-			innerStyles.paddingTop = `${dialogPosition.top}px`;
+			const hasDisclaimer = child.props.children && child.props.children[0].props && child.props.children[0].props.className === 'visible-disclaimer';
+			const minPaddingTop = hasDisclaimer ? 250 : 165;
+
+			innerStyles.paddingTop = dialogPosition.top > minPaddingTop ? `${dialogPosition.top}px` :  `${minPaddingTop}px`;
 			placeholderStyles.height = `${dialogPosition.height}px`;
 		}
 
