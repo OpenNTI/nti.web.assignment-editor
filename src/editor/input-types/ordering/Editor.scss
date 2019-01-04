@@ -1,28 +1,14 @@
 @import "~@nti/style-common";
 
 .ordering-editor-choices {
-
-	.ordering-item:first-of-type {
-		.input-type-choice {
-			border-top-width: 1px;
-			&.error,
-			&.selected {
-				top: 0;
-				margin-bottom: 0;
-			}
-		}
-	}
-
-	.no-reorder {
-		.input-type-choice:first-of-type {
-			border-top-width: 1px;
-		}
-	}
-
 	.input-type-choice {
 		border-color: $border-grey-light;
 		border-style: solid;
 		border-width: 0 0 1px 1px;
+
+		.delete {
+			display: none;
+		}
 
 		&.correct {
 			border-color: $border-green-light;
@@ -34,18 +20,13 @@
 			}
 		}
 
-		.delete {
-			display: none;
-		}
-
 		.nti-rich-text, .nti-buffered-text-editor {
 			border: none;
 		}
 
-
 		&.error {
 			position: relative;
-			border: 1px solid rgba($primary-red, .6);
+			border: 1px solid rgba($primary-red, 0.6);
 			z-index: 1;
 			top: -1px;
 			margin-bottom: -1px;
@@ -55,7 +36,6 @@
 				// box-shadow: inset 0 0 0 1px $border-red;
 			}
 		}
-
 
 		&.selected {
 			position: relative;
@@ -70,13 +50,21 @@
 		}
 	}
 
+	.add-choice {
+		clear: both;
+		border: 0 solid $border-grey-light;
+		border-left-width: 1px;
+		border-right-width: 1px;
+		border-bottom-width: 1px;
+	}
+
 	.choices {
 		display: flex;
 		flex-direction: row;
 		flex-wrap: no-wrap;
 
 		.choice-column {
-			flex: 1 0 50%;
+			flex: 1 0 auto;
 			padding: rem-calc(15px 15px 0 0);
 
 			&:first-of-type {
@@ -89,11 +77,21 @@
 		}
 	}
 
-	.add-choice {
-		clear: both;
-		border: 0 solid $border-grey-light;
-		border-left-width: 1px;
-		border-right-width: 1px;
-		border-bottom-width: 1px;
+	.ordering-item:first-of-type {
+		.input-type-choice {
+			border-top-width: 1px;
+
+			&.error,
+			&.selected {
+				top: 0;
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	.no-reorder {
+		.input-type-choice:first-of-type {
+			border-top-width: 1px;
+		}
 	}
 }
