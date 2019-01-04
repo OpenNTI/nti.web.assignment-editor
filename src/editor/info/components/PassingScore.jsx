@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {scoped} from '@nti/lib-locale';
 import {
+	HOC,
 	Checkbox,
 	Input,
 	Flyout,
 	LabeledValue,
-	// Loading
+	Loading
 } from '@nti/web-commons';
 
 const t = scoped('assignment-editor.editor.info.components.PassingScore', {
@@ -43,34 +44,42 @@ export default class PassingScore extends React.Component {
 	setupValue (props = this.props) {
 		//eslint-disable-next-line react/no-direct-mutation-state
 		const setState = s => this.state ? this.setState(s) : (this.state = s);
-		let value;// = 63; // hardcode for now, need to get from assignment
+
+		const {assignment} = props;
+		let value = assignment && Math.floor(assignment.passingScore * 100.0);
 
 		setState({
 			value,
-			checked: Boolean(value)
+			storedValue: value,
+			checked: Boolean(value),
+			disabled: !assignment || !assignment.totalPoints
 		});
 	}
 
-	renderTrigger () {
-		const {
-			state: {value},
-		} = this;
+	onSave = async () => {
+		const {assignment} = this.props;
+		const {checked} = this.state;
 
-		const placeholder = value ? value + '%' : t('none');
-		const labelClasses = cx({
-			'placeholder': !value
-		});
+		this.setState({saving: true});
 
-		return (
-			<LabeledValue label={t('checkboxLabel')} className="passing-score-trigger" arrow>
-				<span className={labelClasses}>{placeholder}</span>
-			</LabeledValue>
-		);
-	}
+		try {
+			if(assignment) {
+				const value = this.getValue();
 
-	onSave = () => {
-		// TODO: Save value to assignment
-		this.closeMenu();
+				await assignment.save({
+					'completion_passing_percent': checked && value ? value / 100.0 : null
+				});
+
+				this.setState({storedValue: value});
+				this.closeMenu();
+			}
+		}
+		catch (e) {
+			this.setState({error: e.message || e});
+		}
+		finally {
+			this.setState({saving: false});
+		}
 	}
 
 	onCheckChange = (e) => {
@@ -79,7 +88,8 @@ export default class PassingScore extends React.Component {
 
 		if (checked !== oldChecked) {
 			this.setState({
-				checked
+				checked,
+				value: checked ? this.getValue() : null
 			});
 		}
 	}
@@ -98,33 +108,53 @@ export default class PassingScore extends React.Component {
 		this.setState({value});
 	}
 
-	renderContent () {
-		const {value, checked} = this.state;
+	onAssignmentChanged = () => {
+		this.setupValue();
+	}
 
-		// const errorMsg = error && error.message;
+	renderTrigger () {
+		const {
+			state: {storedValue: value, disabled}
+		} = this;
 
-		// const saveClassNames = cx('available-save flyout-fullwidth-btn');
+		const placeholder = value ? value + '%' : t('none');
+		const labelClasses = cx({
+			'placeholder': !value
+		});
 
 		return (
-			<Flyout.Triggered
-				ref={this.setFlyoutRef}
-				className="passing-score-flyout"
-				horizontalAlign={Flyout.ALIGNMENTS.LEFT}
-				sizing={Flyout.SIZES.MATCH_SIDE}
-				trigger={this.renderTrigger()}
-				onDismiss={this.reset}
-			>
-				<Checkbox label={t('checkboxLabel')} checked={checked} onChange={this.onCheckChange} />
-				<div className="description">{t('description')}</div>
-				<Input.Percentage value={value} onChange={this.onPercentageChange} constrain disabled={!checked}/>
-				{/*saving ? <Loading.Ellipsis/> : <div className={saveClassNames} onClick={this.onSave}>Save</div>*/}
-			</Flyout.Triggered>
+			<LabeledValue label={t('checkboxLabel')} className="passing-score-trigger" arrow disabled={disabled}>
+				<span className={labelClasses}>{placeholder}</span>
+			</LabeledValue>
+		);
+	}
+
+	renderContent () {
+		const {assignment} = this.props;
+		const {value, checked, saving, error} = this.state;
+		const saveClassNames = cx('save-button flyout-fullwidth-btn');
+
+		return (
+			<HOC.ItemChanges item={assignment} onItemChanged={this.onAssignmentChanged}>
+				<Flyout.Triggered
+					ref={this.setFlyoutRef}
+					className="passing-score-flyout"
+					horizontalAlign={Flyout.ALIGNMENTS.LEFT}
+					sizing={Flyout.SIZES.MATCH_SIDE}
+					trigger={this.renderTrigger()}
+					onDismiss={this.reset}
+				>
+					{error && <div className="error">{error}</div>}
+					<Checkbox label={t('checkboxLabel')} checked={checked} onChange={this.onCheckChange} />
+					<div className="description">{t('description')}</div>
+					<Input.Percentage value={value} onChange={this.onPercentageChange} constrain disabled={!checked}/>
+					{saving ? <Loading.Ellipsis/> : <div className={saveClassNames} onClick={this.onSave}>Save</div>}
+				</Flyout.Triggered>
+			</HOC.ItemChanges>
 		);
 	}
 
 	render () {
-		// const {assignment} = this.props;
-		// const {value, saving, error} = this.state;
 		return (
 			<div className="field passing-score">
 				{this.renderContent()}
