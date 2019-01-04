@@ -12,6 +12,18 @@
 		font-style: normal;
 	}
 
+	.save-button {
+		background-color: $primary-blue;
+	}
+
+	.error {
+		max-width: 100%;
+		font-size: 14px;
+		color: $primary-red;
+		word-break: break-word;
+		margin-bottom: 10px;
+	}
+
 	.nti-percentage-input {
 		margin: 10px 0;
 

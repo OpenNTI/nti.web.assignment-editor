@@ -7,7 +7,7 @@ import {
 	Input,
 	Flyout,
 	LabeledValue,
-	// Loading
+	Loading
 } from '@nti/web-commons';
 
 const t = scoped('assignment-editor.editor.info.components.PassingScore', {
@@ -43,17 +43,20 @@ export default class PassingScore extends React.Component {
 	setupValue (props = this.props) {
 		//eslint-disable-next-line react/no-direct-mutation-state
 		const setState = s => this.state ? this.setState(s) : (this.state = s);
-		let value;// = 63; // hardcode for now, need to get from assignment
+
+		const {assignment} = props;
+		let value = assignment && Math.floor(assignment.passingScore * 100.0);
 
 		setState({
 			value,
+			storedValue: value,
 			checked: Boolean(value)
 		});
 	}
 
 	renderTrigger () {
 		const {
-			state: {value},
+			state: {storedValue: value},
 		} = this;
 
 		const placeholder = value ? value + '%' : t('none');
@@ -68,9 +71,30 @@ export default class PassingScore extends React.Component {
 		);
 	}
 
-	onSave = () => {
-		// TODO: Save value to assignment
-		this.closeMenu();
+	onSave = async () => {
+		const {assignment} = this.props;
+		const {checked} = this.state;
+
+		this.setState({saving: true});
+
+		try {
+			if(assignment) {
+				const value = this.getValue();
+
+				await assignment.save({
+					'completion_passing_percent': checked && value ? value / 100.0 : null
+				});
+
+				this.setState({storedValue: value});
+				this.closeMenu();
+			}
+		}
+		catch (e) {
+			this.setState({error: e.message || e});
+		}
+		finally {
+			this.setState({saving: false});
+		}
 	}
 
 	onCheckChange = (e) => {
@@ -79,7 +103,8 @@ export default class PassingScore extends React.Component {
 
 		if (checked !== oldChecked) {
 			this.setState({
-				checked
+				checked,
+				value: checked ? this.getValue() : null
 			});
 		}
 	}
@@ -99,11 +124,8 @@ export default class PassingScore extends React.Component {
 	}
 
 	renderContent () {
-		const {value, checked} = this.state;
-
-		// const errorMsg = error && error.message;
-
-		// const saveClassNames = cx('available-save flyout-fullwidth-btn');
+		const {value, checked, saving, error} = this.state;
+		const saveClassNames = cx('save-button flyout-fullwidth-btn');
 
 		return (
 			<Flyout.Triggered
@@ -114,17 +136,16 @@ export default class PassingScore extends React.Component {
 				trigger={this.renderTrigger()}
 				onDismiss={this.reset}
 			>
+				{error && <div className="error">{error}</div>}
 				<Checkbox label={t('checkboxLabel')} checked={checked} onChange={this.onCheckChange} />
 				<div className="description">{t('description')}</div>
 				<Input.Percentage value={value} onChange={this.onPercentageChange} constrain disabled={!checked}/>
-				{/*saving ? <Loading.Ellipsis/> : <div className={saveClassNames} onClick={this.onSave}>Save</div>*/}
+				{saving ? <Loading.Ellipsis/> : <div className={saveClassNames} onClick={this.onSave}>Save</div>}
 			</Flyout.Triggered>
 		);
 	}
 
 	render () {
-		// const {assignment} = this.props;
-		// const {value, saving, error} = this.state;
 		return (
 			<div className="field passing-score">
 				{this.renderContent()}
