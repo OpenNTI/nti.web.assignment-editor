@@ -157,7 +157,7 @@ export default class InlineDialog extends React.Component {
 		}
 
 		if (bottomPadding) {
-			wrapperStyles.paddingBottom = `${bottomPadding}px`;
+			innerStyles.paddingBottom = `${bottomPadding}px`;
 		}
 
 
