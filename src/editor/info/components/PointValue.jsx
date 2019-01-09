@@ -10,14 +10,14 @@ export default class PointValue extends React.Component {
 
 	state = {}
 
-	componentWillMount () {
+	componentDidMount () {
 		this.setUp();
 	}
 
-	componentWillReceiveProps (nextProps) {
+	componentDidReceiveProps (prevProps) {
 		const {assignment} = this.props;
-		if (nextProps.assignment !== assignment) {
-			this.setUp(nextProps);
+		if (prevProps.assignment !== assignment) {
+			this.setUp();
 		}
 	}
 
@@ -48,6 +48,8 @@ export default class PointValue extends React.Component {
 		//we set the min to 0, but just safe-guard it just in case.
 		if (value < 0 || isNaN(value)) {
 			return;
+		} else if (value === 0) {
+			value = null;
 		}
 
 		this.setState({
