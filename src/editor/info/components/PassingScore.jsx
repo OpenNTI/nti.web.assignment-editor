@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import cx from 'classnames';
 import {scoped} from '@nti/lib-locale';
 import {
+	HOC,
 	Checkbox,
 	Input,
 	Flyout,
@@ -50,25 +51,9 @@ export default class PassingScore extends React.Component {
 		setState({
 			value,
 			storedValue: value,
-			checked: Boolean(value)
+			checked: Boolean(value),
+			disabled: !assignment || !assignment.totalPoints
 		});
-	}
-
-	renderTrigger () {
-		const {
-			state: {storedValue: value},
-		} = this;
-
-		const placeholder = value ? value + '%' : t('none');
-		const labelClasses = cx({
-			'placeholder': !value
-		});
-
-		return (
-			<LabeledValue label={t('checkboxLabel')} className="passing-score-trigger" arrow>
-				<span className={labelClasses}>{placeholder}</span>
-			</LabeledValue>
-		);
 	}
 
 	onSave = async () => {
@@ -123,25 +108,49 @@ export default class PassingScore extends React.Component {
 		this.setState({value});
 	}
 
+	onAssignmentChanged = () => {
+		this.setupValue();
+	}
+
+	renderTrigger () {
+		const {
+			state: {storedValue: value, disabled}
+		} = this;
+
+		const placeholder = value ? value + '%' : t('none');
+		const labelClasses = cx({
+			'placeholder': !value
+		});
+
+		return (
+			<LabeledValue label={t('checkboxLabel')} className="passing-score-trigger" arrow disabled={disabled}>
+				<span className={labelClasses}>{placeholder}</span>
+			</LabeledValue>
+		);
+	}
+
 	renderContent () {
+		const {assignment} = this.props;
 		const {value, checked, saving, error} = this.state;
 		const saveClassNames = cx('save-button flyout-fullwidth-btn');
 
 		return (
-			<Flyout.Triggered
-				ref={this.setFlyoutRef}
-				className="passing-score-flyout"
-				horizontalAlign={Flyout.ALIGNMENTS.LEFT}
-				sizing={Flyout.SIZES.MATCH_SIDE}
-				trigger={this.renderTrigger()}
-				onDismiss={this.reset}
-			>
-				{error && <div className="error">{error}</div>}
-				<Checkbox label={t('checkboxLabel')} checked={checked} onChange={this.onCheckChange} />
-				<div className="description">{t('description')}</div>
-				<Input.Percentage value={value} onChange={this.onPercentageChange} constrain disabled={!checked}/>
-				{saving ? <Loading.Ellipsis/> : <div className={saveClassNames} onClick={this.onSave}>Save</div>}
-			</Flyout.Triggered>
+			<HOC.ItemChanges item={assignment} onItemChanged={this.onAssignmentChanged}>
+				<Flyout.Triggered
+					ref={this.setFlyoutRef}
+					className="passing-score-flyout"
+					horizontalAlign={Flyout.ALIGNMENTS.LEFT}
+					sizing={Flyout.SIZES.MATCH_SIDE}
+					trigger={this.renderTrigger()}
+					onDismiss={this.reset}
+				>
+					{error && <div className="error">{error}</div>}
+					<Checkbox label={t('checkboxLabel')} checked={checked} onChange={this.onCheckChange} />
+					<div className="description">{t('description')}</div>
+					<Input.Percentage value={value} onChange={this.onPercentageChange} constrain disabled={!checked}/>
+					{saving ? <Loading.Ellipsis/> : <div className={saveClassNames} onClick={this.onSave}>Save</div>}
+				</Flyout.Triggered>
+			</HOC.ItemChanges>
 		);
 	}
 
