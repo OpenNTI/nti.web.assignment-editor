@@ -1,0 +1,47 @@
+@import "~@nti/style-common";
+
+.passing-score-flyout {
+	.flyout-inner {
+		box-shadow: 1px 0 0 0 $border-grey-light,
+					0 1px 0 0 $border-grey-light;
+
+		padding: rem-calc(10px 15px 15px);
+	}
+
+	&.labeled-value .value .placeholder {
+		font-style: normal;
+	}
+
+	.save-button {
+		background-color: $primary-blue;
+	}
+
+	.error {
+		max-width: 100%;
+		font-size: 14px;
+		color: $primary-red;
+		word-break: break-word;
+		margin-bottom: 10px;
+	}
+
+	.nti-percentage-input {
+		margin: 10px 0;
+
+		input::placeholder {
+			font-size: 12px;
+		}
+	}
+
+	.checkbox-component {
+		font-size: rem-calc(14px);
+	}
+
+	.description {
+		width: 215px;
+		color: #757474;
+		font-size: 14px;
+		line-height: 18px;
+		padding-bottom: 10px;
+		max-width: 100%;
+	}
+}

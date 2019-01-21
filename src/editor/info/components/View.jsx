@@ -5,6 +5,7 @@ import cx from 'classnames';
 import PointValue from './PointValue';
 import DueDate from './DueDate';
 import TimeLimit from './TimeLimit';
+import PassingScore from './PassingScore';
 
 export default class AssignmentInfoView extends React.Component {
 	static propTypes = {
@@ -26,6 +27,7 @@ export default class AssignmentInfoView extends React.Component {
 			<div className={cx('assignment-info', {loading: !assignment})}>
 				{assignment && ( <DueDate assignment={assignment} schema={schema} /> )}
 				{assignment && ( <TimeLimit assignment={assignment} schema={schema} /> )}
+				{assignment && ( <PassingScore assignment={assignment} schema={schema} /> )}
 				{assignment && ( <PointValue assignment={assignment} schema={schema} /> )}
 			</div>
 		);
