@@ -5,12 +5,63 @@ import getStateRenderer from './get-state-renderer';
 
 const STATES = [
 	{
+
+		render: function FailedIcon () {
+			return (
+				<div className="failed">
+					<span>!</span>
+				</div>
+			);
+		},
+		cases: [
+			//If the assignment has been submitted, without a successful completed item, and
+			//it has a grade.
+			(assignment, historyItem) => {
+				const {CompletedItem} = assignment;
+				const isSubmitted = historyItem && historyItem.Submission.isSubmitted();
+				const hasGrade = historyItem && historyItem.grade && !!historyItem.grade.value;
+
+				return isSubmitted && CompletedItem && !CompletedItem.Success && hasGrade;
+			}
+		]
+	},
+	{
+		render: function PassingIcon () {
+			return (
+				<div className="passing">
+					<i className="icon-check" />
+				</div>
+			);
+		},
+		cases: [
+			//Has a successful completed item
+			(assignment, historyItem) => {
+				const {CompletedItem} = assignment;
+
+				return CompletedItem && CompletedItem.Success;
+			},
+			//Was submitted and no due date
+			(assignment, historyItem) => {
+				const due = assignment.getDueDate();
+				const submitted = historyItem && historyItem.Submission.isSubmitted();
+
+				return !due && submitted;
+			},
+			//Was submitted before the due date
+			(assignment, historyItem) => {
+				const due = assignment.getDueDate();
+				const submittedDate = historyItem && historyItem.Submission.getCreatedTime();
+
+				return due && submittedDate && submittedDate <= due;
+			}
+		]
+	},
+	{
 		render: function LateItcon () {
 			return (
 				<div className="late" />
 			);
 		},
-
 		cases: [
 			//Not submitted and the assignment is over due
 			(assignment, historyItem) => {
@@ -22,11 +73,10 @@ const STATES = [
 			},
 			//No passing percentage and the assignment was submitted late
 			(assignment, historyItem) => {
-				const {passingScore} = assignment;
 				const due = assignment.getDueDate();
 				const submittedDate = historyItem && historyItem.Submission.getCreatedTime();
 
-				return due && submittedDate && !passingScore && submittedDate > due;
+				return due && submittedDate && submittedDate > due;
 			}
 		]
 	}

@@ -36,12 +36,14 @@ function AssignmentTotalPoints (assignment) {
 }
 
 function AssignmentPassingScore (assignment) {
-	//TODO: hard coding passing score for now.
+	if (!assignment.passingScore) { return null; }
+
+	const passingScore = Math.ceil(assignment.passingScore * 100);
 
 	return (
 		<div className={cx('passing-score', {failed: false})}>
-			<i className="icon-chevron-up" />
-			<span {...rawContent(t('passingScore', {passingScore: 62}))} />
+			<i className="icon-arrow-up-outline" />
+			<span {...rawContent(t('passingScore', {passingScore}))} />
 		</div>
 	);
 }

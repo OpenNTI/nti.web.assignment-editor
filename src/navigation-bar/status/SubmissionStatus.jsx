@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {Icon} from './submission-states';
+import {Icon, Title} from './submission-states';
 
 export default class SubmissionStatus extends React.Component {
 	static propTypes = {
@@ -26,6 +26,7 @@ export default class SubmissionStatus extends React.Component {
 		return (
 			<div className="submission-state">
 				<Icon assignment={assignment} historyItem={historyItem} />
+				<Title assignment={assignment} historyItem={historyItem} />
 			</div>
 		);
 	}
