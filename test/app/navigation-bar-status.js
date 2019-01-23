@@ -34,6 +34,7 @@ const DATES = {
 const SUBMITTED = 'Submitted';
 const LATE = 'Late';
 const PASSING = 'Passing';
+const AUTO_GRADED = 'Auto Graded';
 
 function buildFakeAssignment (state) {
 	return {
@@ -51,7 +52,7 @@ function buildFakeAssignment (state) {
 
 		submissionBuffer: state.gracePeriod ? parseFloat(state.gracePeriod, 10) : null,
 
-		CompletedItem: state.submitted !== SUBMITTED ? {} : {
+		CompletedItem: state.submitted !== SUBMITTED || !state.passingScore ? null : {
 			Success: state.passing === PASSING
 		}
 	};
@@ -61,15 +62,22 @@ function buildFakeAssignment (state) {
 function buildFakeHistoryItem (state) {
 	if (state.submitted !== SUBMITTED) { return null; }
 
+	const completed = state.late === LATE ?
+		new Date((new Date(TODAY)).setDate(TODAY.getDate() + 2)) :
+		new Date((new Date(TODAY)).setDate(TODAY.getDate() - 2));
+
 	return {
 		Submission: {
 			isSubmitted: () => true,
-			getCreatedTime: () => {
-				return state.late === LATE ?
-					new Date((new Date(TODAY)).setDate(TODAY.getDate() + 2)) :
-					new Date((new Date(TODAY)).setDate(TODAY.getDate() - 2));
-			}
-		}
+			getCreatedTime: () => completed
+		},
+		grade: !state.grade ? null : {
+			value: state.grade,
+			hasAutoGrade: () => state.autoGrade === AUTO_GRADED
+		},
+		getGradeValue: () => state.grade,
+		isSubmitted: () => true,
+		completed
 	};
 }
 
@@ -137,6 +145,18 @@ export default class Test extends React.Component {
 		});
 	}
 
+	onGradeChange = (e) => {
+		this.setState({
+			grade: e.target.value
+		});
+	}
+
+	onAutoGradeChange = (e) => {
+		this.setState({
+			autoGrade: e.target.checked ? e.target.value : false
+		});
+	}
+
 
 	render () {
 		return (
@@ -145,7 +165,7 @@ export default class Test extends React.Component {
 					assignment={buildFakeAssignment(this.state)}
 					historyItem={buildFakeHistoryItem(this.state)}
 				/>
-				<div>
+				<div style={{marginTop: '50px'}}>
 					<fieldset>
 						<legend>Assignment Info</legend>
 
@@ -202,6 +222,16 @@ export default class Test extends React.Component {
 						<label>
 							<span>Passing</span>
 							<input type="checkbox" value={PASSING} checked={this.state.passing === PASSING} onChange={this.onPassingChange} />
+						</label>
+						<br />
+						<label>
+							<span>Grade</span>
+							<input type="text" value={this.state.grade} onChange={this.onGradeChange} />
+						</label>
+						<br />
+						<label>
+							<span>Auto Graded</span>
+							<input type="checkbox" value={AUTO_GRADED} checked={this.state.autoGrade === AUTO_GRADED} onChange={this.onAutoGradeChange} />
 						</label>
 					</fieldset>
 				</div>

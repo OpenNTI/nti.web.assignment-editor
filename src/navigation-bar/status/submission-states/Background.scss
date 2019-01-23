@@ -1,0 +1,9 @@
+.assignment-navigation-bar-submission-gradient {
+	&.green {
+		background-image: linear-gradient(rgba(63,179,70,0.20) 0%, rgba(63,179,70,0.05) 10%, rgba(63,179,79,0.00) 100%);
+	}
+
+	&.red {
+		background-image: linear-gradient(rgba(243,82,82,0.20) 0%, rgba(243,82,82,0.05) 10%, rgba(243,82,82,0.00) 100%);
+	}
+}

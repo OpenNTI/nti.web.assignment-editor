@@ -1,0 +1,33 @@
+@import '~@nti/style-common';
+
+
+.assignment-navigation-bar-status-submission {
+	&:empty { display: none; }
+
+	padding: 1.625rem 17px;//to match the breadcrumb from the webapp
+	border-bottom: 1px solid $border-grey-light;
+	display: grid;
+	grid-template-columns: 40px 1fr 100px;
+	grid-template-rows: auto auto;
+	grid-column-gap: 0.625rem;
+
+	.assignment-navigation-bar-status-submission-icon {
+		grid-column: 1;
+		grid-row: 1 / span 2;
+	}
+
+	.assignment-navigation-bar-status-submission-title {
+		grid-column: 2 / span 1;
+		grid-row: 1;
+	}
+
+	.assignment-navigation-bar-status-submission-meta {
+		grid-column: 2 / span 1;
+		grid-row: 2;
+	}
+
+	.assignment-navigation-bar-status-submission-grade {
+		grid-column: 3;
+		grid-row: 1 / span 2;
+	}
+}

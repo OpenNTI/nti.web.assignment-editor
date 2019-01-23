@@ -1,0 +1,26 @@
+@import '~@nti/style-common';
+
+
+.assignment-navigation-bar-status-submission-title {
+	font: normal 400 0.875rem/1.3 $body-font-family;
+	color: $primary-grey;
+
+	.title {
+		font-weight: 600;
+
+		&::after {
+			content: ' ';
+			display: inline;
+		}
+	}
+
+	.sub-title {
+		display: inline-block;
+	}
+
+	.passing {
+		.title {
+			color: $primary-green;
+		}
+	}
+}

@@ -18,7 +18,7 @@ const STATES = [
 			//it has a grade.
 			(assignment, historyItem) => {
 				const {CompletedItem} = assignment;
-				const isSubmitted = historyItem && historyItem.Submission.isSubmitted();
+				const isSubmitted = historyItem && historyItem.isSubmitted();
 				const hasGrade = historyItem && historyItem.grade && !!historyItem.grade.value;
 
 				return isSubmitted && CompletedItem && !CompletedItem.Success && hasGrade;
@@ -43,14 +43,14 @@ const STATES = [
 			//Was submitted and no due date
 			(assignment, historyItem) => {
 				const due = assignment.getDueDate();
-				const submitted = historyItem && historyItem.Submission.isSubmitted();
+				const submitted = historyItem && historyItem.isSubmitted();
 
 				return !due && submitted;
 			},
 			//Was submitted before the due date
 			(assignment, historyItem) => {
 				const due = assignment.getDueDate();
-				const submittedDate = historyItem && historyItem.Submission.getCreatedTime();
+				const submittedDate = historyItem && historyItem.completed;
 
 				return due && submittedDate && submittedDate <= due;
 			}
@@ -67,14 +67,14 @@ const STATES = [
 			(assignment, historyItem) => {
 				const now = new Date();
 				const due = assignment.getDueDate();
-				const noSubmission = !historyItem || !historyItem.Submission.isSubmitted();
+				const noSubmission = !historyItem || !historyItem.isSubmitted();
 
 				return due && due < now && noSubmission;
 			},
 			//No passing percentage and the assignment was submitted late
 			(assignment, historyItem) => {
 				const due = assignment.getDueDate();
-				const submittedDate = historyItem && historyItem.Submission.getCreatedTime();
+				const submittedDate = historyItem && historyItem.completed;
 
 				return due && submittedDate && submittedDate > due;
 			}
@@ -93,9 +93,11 @@ export default class AssignmentSubmissionIcon extends React.PureComponent {
 		const {assignment, historyItem} = this.props;
 		const render = getStateRenderer(STATES, assignment, historyItem);
 
+		if (!render) { return null; }
+
 		return (
 			<div className="assignment-navigation-bar-status-submission-icon">
-				{render && render(assignment, historyItem)}
+				{render(assignment, historyItem)}
 			</div>
 		);
 	}

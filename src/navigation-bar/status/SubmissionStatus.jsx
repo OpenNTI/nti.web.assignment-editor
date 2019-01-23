@@ -1,38 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import {Icon, Title} from './submission-states';
+import {Icon, Title, Background, Meta, Grade} from './submission-states';
 
 export default class SubmissionStatus extends React.Component {
-	static propTypes = {
-		assignment: PropTypes.object,
-		historyItem: PropTypes.object
-	}
-
-
 	render () {
-		const {assignment, historyItem} = this.props;
-
 		return (
-			<div className="assignment-navigation-bar-status-submission">
-				{this.renderSubmissionStatus(assignment, historyItem)}
-				{this.renderGrade(assignment, historyItem)}
-			</div>
+			<Background {...this.props} className="assignment-navigation-bar-status-submission">
+				<Icon {...this.props} />
+				<Title {...this.props} />
+				<Meta {...this.props} />
+				<Grade {...this.props} />
+			</Background>
 		);
-	}
-
-
-	renderSubmissionStatus (assignment, historyItem) {
-		return (
-			<div className="submission-state">
-				<Icon assignment={assignment} historyItem={historyItem} />
-				<Title assignment={assignment} historyItem={historyItem} />
-			</div>
-		);
-	}
-
-
-	renderGrade () {
-		return null;
 	}
 }
