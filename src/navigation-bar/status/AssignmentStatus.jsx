@@ -39,9 +39,10 @@ function AssignmentPassingScore (assignment) {
 	if (!assignment.passingScore) { return null; }
 
 	const passingScore = Math.ceil(assignment.passingScore * 100);
+	const failed = assignment.CompletedItem && !assignment.CompletedItem.Success;
 
 	return (
-		<div className={cx('passing-score', {failed: false})}>
+		<div className={cx('passing-score', {failed})}>
 			<i className="icon-arrow-up-outline" />
 			<span {...rawContent(t('passingScore', {passingScore}))} />
 		</div>
