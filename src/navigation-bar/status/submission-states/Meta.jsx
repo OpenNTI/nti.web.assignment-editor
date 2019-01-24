@@ -109,7 +109,23 @@ const COMPLETED_STATES = [
 ];
 
 const DURATION_STATES = [
+	{
+		render: function TimedDuration (assignment, historyItem) {
+			const duration = historyItem.getDuration();
+			const formatted = DateTime.getNaturalDuration(duration || 0, 2);
 
+			return (
+				<div className="duration">
+					{formatted}
+				</div>
+			);
+		},
+		case: (assignment, historyItem) => {
+			const isSubmitted = historyItem && historyItem.isSubmitted();
+
+			return assignment.isTimed && isSubmitted;
+		}
+	}
 ];
 
 

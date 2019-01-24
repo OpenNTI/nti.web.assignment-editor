@@ -81,7 +81,11 @@ function buildFakeHistoryItem (state) {
 		},
 		getGradeValue: () => state.grade,
 		isSubmitted: () => true,
-		completed
+		completed,
+
+		getDuration () {
+			return state.duration ? (parseFloat(state.duration, 10) * 1000) : null;
+		}
 	};
 }
 
@@ -169,6 +173,13 @@ export default class Test extends React.Component {
 	}
 
 
+	onDurationChange = (e) => {
+		this.setState({
+			duration: e.target.value
+		});
+	}
+
+
 	render () {
 		return (
 			<div>
@@ -247,6 +258,11 @@ export default class Test extends React.Component {
 						<label>
 							<span>Auto Graded</span>
 							<input type="checkbox" value={AUTO_GRADED} checked={this.state.autoGrade === AUTO_GRADED} onChange={this.onAutoGradeChange} />
+						</label>
+						<br />
+						<label>
+							<span>Duration</span>
+							<input type="number" value={this.state.duration} onChange={this.onDurationChange} />
 						</label>
 					</fieldset>
 				</div>
