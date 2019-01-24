@@ -35,6 +35,7 @@ const SUBMITTED = 'Submitted';
 const LATE = 'Late';
 const PASSING = 'Passing';
 const AUTO_GRADED = 'Auto Graded';
+const NO_SUBMIT = 'No Submit';
 
 function buildFakeAssignment (state) {
 	return {
@@ -54,7 +55,10 @@ function buildFakeAssignment (state) {
 
 		CompletedItem: state.submitted !== SUBMITTED || !state.passingScore ? null : {
 			Success: state.passing === PASSING
-		}
+		},
+
+		isNonSubmit: () => state.noSubmit === NO_SUBMIT ? true : false,
+		canBeSubmitted: () => state.noSubmit === NO_SUBMIT ? false : true
 	};
 }
 
@@ -158,6 +162,13 @@ export default class Test extends React.Component {
 	}
 
 
+	onNoSubmitChange = (e) => {
+		this.setState({
+			noSubmit: e.target.checked ? e.target.value : false
+		});
+	}
+
+
 	render () {
 		return (
 			<div>
@@ -203,7 +214,11 @@ export default class Test extends React.Component {
 							<span>Grace Period (seconds) </span>
 							<input type="number" value={this.state.gracePeriod} onChange={this.onGracePeriodChange} step={60}/>
 						</label>
-
+						<br />
+						<label>
+							<span>No Submit</span>
+							<input type="checkbox" value={NO_SUBMIT} onChange={this.onNoSubmitChange} checked={this.state.noSubmit === NO_SUBMIT} />
+						</label>
 					</fieldset>
 
 					<fieldset>

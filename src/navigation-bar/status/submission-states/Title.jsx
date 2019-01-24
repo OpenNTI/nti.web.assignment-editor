@@ -85,7 +85,7 @@ const STATES = [
 			const due = assignment.getDueDate();
 			const hasBeenSubmitted = historyItem && historyItem.isSubmitted();
 
-			return due && due < now && !hasBeenSubmitted;
+			return !assignment.isNonSubmit() && due && due < now && !hasBeenSubmitted;
 		}
 	},
 	{

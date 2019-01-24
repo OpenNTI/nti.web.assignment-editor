@@ -53,6 +53,12 @@ const STATES = [
 				const submittedDate = historyItem && historyItem.completed;
 
 				return due && submittedDate && submittedDate <= due;
+			},
+			//Is no submit and was submitted
+			(assignment, historyItem) => {
+				const isSubmitted = historyItem && historyItem.isSubmitted();
+
+				return assignment.isNonSubmit() && isSubmitted;
 			}
 		]
 	},
@@ -69,14 +75,14 @@ const STATES = [
 				const due = assignment.getDueDate();
 				const noSubmission = !historyItem || !historyItem.isSubmitted();
 
-				return due && due < now && noSubmission;
+				return !assignment.isNonSubmit() && due && due < now && noSubmission;
 			},
 			//No passing percentage and the assignment was submitted late
 			(assignment, historyItem) => {
 				const due = assignment.getDueDate();
 				const submittedDate = historyItem && historyItem.completed;
 
-				return due && submittedDate && submittedDate > due;
+				return !assignment.isNonSubmit() && due && submittedDate && submittedDate > due;
 			}
 		]
 	}
