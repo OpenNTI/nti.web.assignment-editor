@@ -8,6 +8,10 @@ import getStateRenderer from './get-state-renderer';
 const t = scoped('nti-assignment.navigation-bar.submission-states.Title', {
 	notSubmitted: {
 		late: {
+			noGracePeriod: {
+				title: 'Late submissions will be accepted.',
+				subTitle: 'A late penalty may be applied to your score.'
+			},
 			insideGracePeriod: {
 				title: 'Late submissions will be accepted until %(date)s.',
 				subTitle: 'A late penalty may be applied to your score.'
@@ -68,6 +72,17 @@ const STATES = [
 			const now = new Date();
 			const due = assignment.getDueDate();
 			const {submissionBuffer} = assignment;
+
+			//If there is no submissionBuffer we will always accept late submissions
+			if (!submissionBuffer && submissionBuffer !== 0) {
+				return (
+					<div className="not-submitted-late">
+						{renderTitle('notSubmitted.late.noGracePeriod')}
+						{renderSubTitle('notSubmitted.late.noGracePeriod')}
+					</div>
+				);
+			}
+
 			const latest = new Date(due.getTime() + ((submissionBuffer || 0) * 1000));
 			const baseKey = latest > now ? 'notSubmitted.late.insideGracePeriod' : 'notSubmitted.late.outsideGracePeriod';
 			const formatted = DateTime.format(latest, 'dddd, MMMM D [at] h:mm A z');
