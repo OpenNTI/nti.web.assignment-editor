@@ -8,9 +8,7 @@ const STATES = [
 
 		render: function FailedIcon () {
 			return (
-				<div className="failed">
-					<span>!</span>
-				</div>
+				<div className="failed" />
 			);
 		},
 		cases: [
@@ -28,9 +26,7 @@ const STATES = [
 	{
 		render: function PassingIcon () {
 			return (
-				<div className="passing">
-					<i className="icon-check" />
-				</div>
+				<div className="passing" />
 			);
 		},
 		cases: [
