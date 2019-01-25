@@ -8,15 +8,24 @@ import {
 	Input,
 	Flyout,
 	LabeledValue,
-	Loading
+	Loading,
+	Prompt
 } from '@nti/web-commons';
+
+const {SaveCancel} = Prompt;
 
 const t = scoped('assignment-editor.editor.info.components.PassingScore', {
 	description: 'What score is necessary for a learner to pass this assignment?',
 	checkboxLabel: 'Passing Score',
-	none: 'None'
+	none: 'None',
+	promptDescription: 'In order to have a passing score, the assignment must also have a total points value'
 });
 
+const promptScope = scoped('assignment-editor.editor.info.components.PassingScore.PromptScope', {
+	title: 'Input Total Points',
+	save: 'Save',
+	cancel: 'Cancel'
+});
 
 export default class PassingScore extends React.Component {
 	static propTypes = {
@@ -52,13 +61,13 @@ export default class PassingScore extends React.Component {
 			value,
 			storedValue: value,
 			checked: Boolean(value),
-			disabled: !assignment || !assignment.totalPoints
+			disabled: false//assignment || !assignment.totalPoints
 		});
 	}
 
-	onSave = async () => {
+	onSave = async (e, forceTotalPointSave) => {
 		const {assignment} = this.props;
-		const {checked} = this.state;
+		const {checked, totalPoints} = this.state;
 
 		this.setState({saving: true});
 
@@ -66,16 +75,36 @@ export default class PassingScore extends React.Component {
 			if(assignment) {
 				const value = this.getValue();
 
-				await assignment.save({
-					'completion_passing_percent': checked && value ? value / 100.0 : null
-				});
+				if(forceTotalPointSave) {
+					// the user entered a totalPoints value in the prompt, so now we will save both that and passingScore
+					await assignment.save({
+						'completion_passing_percent': checked && value ? value / 100.0 : null,
+						'total_points': totalPoints
+					});
 
-				this.setState({storedValue: value});
-				this.closeMenu();
+					this.setState({showPrompt: false});
+					this.closeMenu();
+				}
+				else if(!assignment.passingScore && value && !assignment.totalPoints) {
+					// in this case, we are setting a passingScore value on the assignment, but
+					// the assignment doesn't have a totalPoints value, in which case we need to prompt
+					// the user to ask them to input a total points value (passingScore with no totalPoints doesn't
+					// make much sense)
+					this.setState({showPrompt: true, totalPoints: 100});
+				}
+				else {
+					// otherwise, we are free to just save the changes to the passingScore
+					await assignment.save({
+						'completion_passing_percent': checked && value ? value / 100.0 : null
+					});
+
+					this.setState({storedValue: value});
+					this.closeMenu();
+				}
 			}
 		}
-		catch (e) {
-			this.setState({error: e.message || e});
+		catch (ex) {
+			this.setState({error: ex.message || ex});
 		}
 		finally {
 			this.setState({saving: false});
@@ -110,6 +139,27 @@ export default class PassingScore extends React.Component {
 
 	onAssignmentChanged = () => {
 		this.setupValue();
+	}
+
+	renderSavePrompt () {
+		const {saving, totalPoints} = this.state;
+
+		return (
+			<SaveCancel
+				className="input-total-points-dialog"
+				getString={promptScope}
+				onCancel={() => { this.setState({showPrompt: false});}}
+				onSave={(e) => {
+					this.onSave(e, true);
+				}}
+				disableSave={saving || !totalPoints}
+			>
+				<div className="input-total-points">
+					<div className="description">{t('promptDescription')}</div>
+					<Input.Number min={1} constrain value={totalPoints} onChange={(val) => { this.setState({totalPoints: val});}}/>
+				</div>
+			</SaveCancel>
+		);
 	}
 
 	renderTrigger () {
@@ -158,6 +208,7 @@ export default class PassingScore extends React.Component {
 		return (
 			<div className="field passing-score">
 				{this.renderContent()}
+				{this.state.showPrompt && this.renderSavePrompt()}
 			</div>
 		);
 	}
