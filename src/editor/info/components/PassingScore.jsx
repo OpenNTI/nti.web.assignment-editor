@@ -27,6 +27,8 @@ const promptScope = scoped('assignment-editor.editor.info.components.PassingScor
 	cancel: 'Cancel'
 });
 
+const rel = 'completion-passing-percent';
+
 export default class PassingScore extends React.Component {
 	static propTypes = {
 		assignment: PropTypes.object.isRequired
@@ -61,7 +63,7 @@ export default class PassingScore extends React.Component {
 			value,
 			storedValue: value,
 			checked: Boolean(value),
-			disabled: false//assignment || !assignment.totalPoints
+			disabled: !assignment.hasLink(rel)
 		});
 	}
 
@@ -80,7 +82,7 @@ export default class PassingScore extends React.Component {
 					await assignment.save({
 						'completion_passing_percent': checked && value ? value / 100.0 : null,
 						'total_points': totalPoints
-					});
+					}, void 0, rel);
 
 					this.setState({showPrompt: false});
 					this.closeMenu();
@@ -96,7 +98,7 @@ export default class PassingScore extends React.Component {
 					// otherwise, we are free to just save the changes to the passingScore
 					await assignment.save({
 						'completion_passing_percent': checked && value ? value / 100.0 : null
-					});
+					}, void 0, rel);
 
 					this.setState({storedValue: value});
 					this.closeMenu();
