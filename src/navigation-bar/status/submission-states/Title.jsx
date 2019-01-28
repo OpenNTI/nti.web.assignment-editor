@@ -136,7 +136,7 @@ const STATES = [
 		case: (assignment, historyItem) => {
 			const {CompletedItem} = assignment;
 
-			return CompletedItem && CompletedItem.Success;
+			return assignment.passingScore && CompletedItem && !CompletedItem.Success;
 		}
 	},
 	{
@@ -153,7 +153,7 @@ const STATES = [
 		case: (assignment, historyItem) => {
 			const {CompletedItem} = assignment;
 
-			return CompletedItem && !CompletedItem.Success;
+			return assignment.passingScore && CompletedItem && !CompletedItem.Success;
 		}
 	},
 	{
