@@ -26,7 +26,7 @@ const STATES = [
 	{
 		render: function Graded (assignment, historyItem) {
 			return (
-				<span className="graded">{historyItem.getGradeValue()}</span>
+				<span className="graded">{historyItem.grade.getValue()}</span>
 			);
 		},
 		case: (assignment, historyItem) => {
