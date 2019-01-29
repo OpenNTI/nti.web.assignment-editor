@@ -1,7 +1,11 @@
 @import '~@nti/style-common';
 
 .assignment-navigation-bar-status-submission {
-	&:empty { display: none; }
+	&:empty {
+		&, &.wide, &.narrow {
+			display: none;
+		}
+	}
 
 	&.wide {
 		padding: 1.625rem 17px;//to match the breadcrumb from the webapp
