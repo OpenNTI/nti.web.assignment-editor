@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import {scoped} from '@nti/lib-locale';
 import {Input, LabeledValue, HOC, Prompt} from '@nti/web-commons';
 
+import {rel} from './PassingScore';
+
 const t = scoped('assignment-editor.editor.info.components.PointValue', {
 	removePrompt: 'Removing total points will also remove the current passing score.'
 });
@@ -82,7 +84,9 @@ export default class PointValue extends React.Component {
 				assignment.save({
 					'completion_passing_percent': null,
 					'total_points': null
-				});
+				},
+				void 0,
+				rel);
 			}).catch((e) => {
 				this.prompting = false;
 

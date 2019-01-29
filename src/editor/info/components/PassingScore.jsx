@@ -27,7 +27,7 @@ const promptScope = scoped('assignment-editor.editor.info.components.PassingScor
 	cancel: 'Cancel'
 });
 
-const rel = 'completion-passing-percent';
+export const rel = 'completion-passing-percent';
 
 export default class PassingScore extends React.Component {
 	static propTypes = {
