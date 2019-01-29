@@ -2,7 +2,10 @@
 
 
 .assignment-navigation-bar-status-submission-meta {
-	font: normal 600 0.625rem/1.3 $body-font-family;
+	//override mobile global styles
+	&, & ul {
+		font: normal 600 0.625rem/1.3 $body-font-family;
+	}
 	text-transform: uppercase;
 	color: $tertiary-grey;
 

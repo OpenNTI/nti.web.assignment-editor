@@ -77,7 +77,8 @@ function buildFakeHistoryItem (state) {
 		},
 		grade: !state.grade ? null : {
 			value: state.grade,
-			hasAutoGrade: () => state.autoGrade === AUTO_GRADED
+			hasAutoGrade: () => state.autoGrade === AUTO_GRADED,
+			getValue: () => state.grade
 		},
 		getGradeValue: () => state.grade,
 		isSubmitted: () => true,

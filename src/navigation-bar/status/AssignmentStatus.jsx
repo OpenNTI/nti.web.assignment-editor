@@ -10,7 +10,7 @@ const t = scoped('nti-assignment.navigation-bar.status.AssignmentStatus', {
 		one: '%(count)s Point',
 		other: '%(count)s Points'
 	},
-	passingScore: '<span class="percentage">%(passingScore)s%%</span> or Higher to Pass'
+	passingScore: '<span class="percentage">%(passingScore)s%%</span> to Pass'
 });
 
 function AssignmentTimeLimit (assignment) {

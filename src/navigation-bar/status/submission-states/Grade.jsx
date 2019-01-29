@@ -56,7 +56,7 @@ export default class AssignmentSubmissionStatusGrade extends React.PureComponent
 
 		return (
 			<div className="assignment-navigation-bar-status-submission-grade">
-				<div className="label">{t('label')}</div>
+				<div className="grade-label">{t('label')}</div>
 				<div className="value">{renderer(assignment, historyItem)}</div>
 			</div>
 		);
