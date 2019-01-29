@@ -6,7 +6,8 @@ import getStateRenderer from './get-state-renderer';
 
 const t = scoped('nti-assignment.navigation-bar.submission-states.Grade', {
 	label: 'Assignment Grade',
-	pending: 'Pending...'
+	pending: 'Pending...',
+	excused: 'Excused'
 });
 
 const STATES = [
@@ -26,7 +27,10 @@ const STATES = [
 	{
 		render: function Graded (assignment, historyItem) {
 			return (
-				<span className="graded">{historyItem.grade.getValue()}</span>
+				<div className="grade-value-container">
+					<span className="graded">{historyItem.grade.getValue()}</span>
+					{historyItem.grade.IsExcused && <span className="excused">{t('excused')}</span>}
+				</div>
 			);
 		},
 		case: (assignment, historyItem) => {
