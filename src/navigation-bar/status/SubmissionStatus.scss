@@ -1,6 +1,5 @@
 @import '~@nti/style-common';
 
-
 .assignment-navigation-bar-status-submission {
 	&:empty { display: none; }
 
@@ -11,6 +10,10 @@
 	grid-template-rows: auto auto;
 	grid-column-gap: 0.625rem;
 	grid-row-gap: 0.375rem;
+
+	.is-ie & {
+		padding-left: $gap;	// IE ignores grid-gap
+	}
 
 	.assignment-navigation-bar-status-submission-icon {
 		grid-column: 1;
