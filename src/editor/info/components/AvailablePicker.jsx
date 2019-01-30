@@ -146,7 +146,6 @@ export default class AvailablePicker extends React.Component {
 				ref={this.setFlyoutRef}
 				className="available-picker"
 				horizontalAlign={Flyout.ALIGNMENTS.LEFT}
-				sizing={Flyout.SIZES.MATCH_SIDE}
 				trigger={this.renderTrigger()}
 				onDismiss={this.reset}
 			>
