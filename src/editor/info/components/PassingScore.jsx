@@ -68,6 +68,10 @@ export default class PassingScore extends React.Component {
 	}
 
 	onSave = async (e, forceTotalPointSave) => {
+		if(!this.hasChanges()) {
+			return;
+		}
+
 		const {assignment} = this.props;
 		const {checked, totalPoints} = this.state;
 
@@ -109,7 +113,7 @@ export default class PassingScore extends React.Component {
 			this.setState({error: ex.message || ex});
 		}
 		finally {
-			this.setState({saving: false});
+			this.setState({saving: false, stateChanged: false});
 		}
 	}
 
@@ -120,7 +124,8 @@ export default class PassingScore extends React.Component {
 		if (checked !== oldChecked) {
 			this.setState({
 				checked,
-				value: checked ? this.getValue() : null
+				value: checked ? this.getValue() : null,
+				stateChanged: true
 			});
 		}
 	}
@@ -164,6 +169,13 @@ export default class PassingScore extends React.Component {
 		);
 	}
 
+	hasChanges () {
+		const {value, storedValue, stateChanged} = this.state;
+		const actualValue = value === 0 ? null : value;
+		const actualStored = storedValue === 0 ? null : storedValue;
+		return actualValue !== actualStored || stateChanged;
+	}
+
 	renderTrigger () {
 		const {
 			state: {storedValue: value, disabled}
@@ -184,7 +196,7 @@ export default class PassingScore extends React.Component {
 	renderContent () {
 		const {assignment} = this.props;
 		const {value, checked, saving, error} = this.state;
-		const saveClassNames = cx('save-button flyout-fullwidth-btn');
+		const saveClassNames = cx('save-button flyout-fullwidth-btn', {changed: this.hasChanges()});
 
 		return (
 			<HOC.ItemChanges item={assignment} onItemChanged={this.onAssignmentChanged}>
