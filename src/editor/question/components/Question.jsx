@@ -63,7 +63,11 @@ export default class Question extends React.Component {
 
 	buttons = [
 		{label: t('cancel'), onClick: () => this.onDialogCancel()},
-		{label: t('save'), onClick: () => this.onDialogSave()}
+		{label: t('save'), onClick: () => {
+			setTimeout(() => {
+				this.onDialogSave();
+			}, 200);
+		}}
 	]
 
 	setSelectableRef = x => this.selectableRef = x
@@ -92,7 +96,7 @@ export default class Question extends React.Component {
 	}
 
 
-	componentWillMount () {
+	componentDidMount () {
 		this.onQuestionMessages();
 	}
 
