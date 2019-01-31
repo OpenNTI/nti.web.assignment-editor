@@ -81,7 +81,7 @@ function buildFakeHistoryItem (state) {
 			hasAutoGrade: () => state.autoGrade === AUTO_GRADED,
 			getValue: () => state.grade
 		},
-		getGradeValue: () => state.grade,
+		getGradeValue: () => parseInt(state.grade, 10) || state.grade,
 		isSubmitted: () => true,
 		completed,
 
@@ -186,7 +186,7 @@ export default class Test extends React.Component {
 
 	onSyntheticChange = (e) => {
 		this.setState({
-			synthetic: e.target.value
+			synthetic: e.target.checked ? e.target.value : false
 		});
 	}
 

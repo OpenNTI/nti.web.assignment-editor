@@ -119,7 +119,7 @@ const STATES = [
 			const hasBeenSubmitted = historyItem && historyItem.isSubmitted();
 			const grade = historyItem && historyItem.getGradeValue();
 
-			return hasBeenSubmitted && !grade;
+			return hasBeenSubmitted && grade == null;
 		}
 	},
 	{
