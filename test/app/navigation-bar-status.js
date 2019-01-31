@@ -36,6 +36,7 @@ const LATE = 'Late';
 const PASSING = 'Passing';
 const AUTO_GRADED = 'Auto Graded';
 const NO_SUBMIT = 'No Submit';
+const SYNTHETIC = 'Synthetic';
 
 function buildFakeAssignment (state) {
 	return {
@@ -86,7 +87,9 @@ function buildFakeHistoryItem (state) {
 
 		getDuration () {
 			return state.duration ? (parseFloat(state.duration, 10) * 1000) : null;
-		}
+		},
+
+		isSyntheticSubmission: () => state.synthetic
 	};
 }
 
@@ -181,6 +184,13 @@ export default class Test extends React.Component {
 	}
 
 
+	onSyntheticChange = (e) => {
+		this.setState({
+			synthetic: e.target.value
+		});
+	}
+
+
 	render () {
 		return (
 			<div>
@@ -264,6 +274,11 @@ export default class Test extends React.Component {
 						<label>
 							<span>Duration</span>
 							<input type="number" value={this.state.duration} onChange={this.onDurationChange} />
+						</label>
+						<br />
+						<label>
+							<span>Synthetic</span>
+							<input type="checkbox" value={SYNTHETIC} checked={this.state.synthetic === SYNTHETIC} onChange={this.onSyntheticChange} />
 						</label>
 					</fieldset>
 				</div>

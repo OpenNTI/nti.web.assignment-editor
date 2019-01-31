@@ -9,15 +9,18 @@
 	text-transform: uppercase;
 	color: $tertiary-grey;
 
-	.not-submitted, .submitted-late {
+	.not-submitted {
 		.bold {
 			color: $primary-red;
 		}
 	}
 
-	.on-time {
-		.bold {
-			color: $primary-green;
+	.badges {
+		color: $primary-red;
+		margin-right: 0.3rem;
+
+		&:emtpy {
+			display: none;
 		}
 	}
 }

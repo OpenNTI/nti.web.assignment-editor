@@ -19,7 +19,7 @@ function AssignmentTimeLimit (assignment) {
 	return (
 		<div className="time-limit">
 			<i className="icon-clock" />
-			<span>{DateTime.getShortNaturalDuration(assignment.getMaximumTimeAllowed(), 2)}</span>
+			<span>{DateTime.getShortNaturalDuration(assignment.getMaximumTimeAllowed())}</span>
 		</div>
 	);
 }

@@ -20,15 +20,68 @@ const t = scoped('nti-assignment.navigation-bar.submission-states.Meta', {
 	},
 	submitted: {
 		onTime: {
-			label: 'Completed ',
-			date: '%(date)s'
+			date: 'Completed %(date)s'
 		},
 		late: {
-			label: 'Overdue ',
 			date: 'Completed %(date)s'
 		}
+	},
+	badges: {
+		overtime: {
+			tip: '%(time)s overtime',
+			badge: 'overtime'
+		},
+		overdue: {
+			tip: '%(time)s overdue',
+			badge: 'overdue'
+		},
+		separator: ', '
 	}
 });
+
+const BADGE_STATES = [
+	{
+		render: function SubmissionMetaBadge (assignment, historyItem) {
+			const isNoSubmit = assignment.isNonSubmit() || (historyItem && historyItem.isSyntheticSubmission());
+			const maxTime = assignment.isTimed && assignment.getMaximumTimeAllowed();
+			const dueDate = assignment.getDueDate();
+
+			const completed = historyItem && historyItem.completed;
+			const duration = assignment.isTimed && historyItem.getDuration && historyItem.getDuration();
+
+			const overtime = (!isNoSubmit && maxTime && duration && duration > maxTime) ?
+				t('badges.overtime.tip', {time: DateTime.getNaturalDuration(duration - maxTime, 1)}) :
+				null;
+
+			const overdue = (!isNoSubmit && dueDate && completed >= dueDate) ?
+				t('badges.overdue.tip', {time: DateTime.getNaturalDuration(completed.getTime() - dueDate.getTime())}) :
+				null;
+
+			return (
+				<div className="badges">
+					{overdue && (
+						<span className="overdue" data-qtip={overdue}>
+							{t('badges.overdue.badge')}
+						</span>
+					)}
+					{overdue && overtime && (
+						<span className="separator">
+							{t('badges.separator')}
+						</span>
+					)}
+					{overtime && (
+						<span className="overtime" data-qtip={overtime}>
+							{t('badges.overtime.badge')}
+						</span>
+					)}
+				</div>
+			);
+		},
+		case: (assignment, historyItem) => {
+			return historyItem && historyItem.isSubmitted();
+		}
+	}
+];
 
 const COMPLETED_STATES = [
 	{
@@ -65,7 +118,6 @@ const COMPLETED_STATES = [
 
 			return (
 				<div className="on-time">
-					<span className="bold">{t(`${baseKey}.label`)}</span>
 					<span className="date">{t(`${baseKey}.date`, {date: formatted})}</span>
 				</div>
 			);
@@ -94,7 +146,6 @@ const COMPLETED_STATES = [
 
 			return (
 				<div className="submitted-late">
-					<span className="bold">{t(`${baseKey}.label`)}</span>
 					<span className="date">{t(`${baseKey}.date`, {date: formatted})}</span>
 				</div>
 			);
@@ -112,7 +163,7 @@ const DURATION_STATES = [
 	{
 		render: function TimedDuration (assignment, historyItem) {
 			const duration = historyItem.getDuration();
-			const formatted = DateTime.getNaturalDuration(duration || 0, 2);
+			const formatted = DateTime.getNaturalDuration(duration || 0);
 
 			return (
 				<div className="duration">
@@ -137,6 +188,7 @@ export default class AssignmentSubmissionStatesMeta extends React.PureComponent 
 
 	render () {
 		const {assignment, historyItem} = this.props;
+		const badgeState = getStateRenderer(BADGE_STATES, assignment, historyItem);
 		const completedState = 	getStateRenderer(COMPLETED_STATES, assignment, historyItem);
 		const durationState = getStateRenderer(DURATION_STATES, assignment, historyItem);
 
@@ -145,7 +197,10 @@ export default class AssignmentSubmissionStatesMeta extends React.PureComponent 
 		return (
 			<div className="assignment-navigation-bar-status-submission-meta">
 				<List.SeparatedInline>
-					{completedState && completedState(assignment, historyItem)}
+					<div>
+						{badgeState && badgeState(assignment, historyItem)}
+						{completedState && completedState(assignment, historyItem)}
+					</div>
 					{durationState && durationState(assignment, historyItem)}
 				</List.SeparatedInline>
 			</div>
