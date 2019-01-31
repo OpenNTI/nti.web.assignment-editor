@@ -9,18 +9,18 @@ const STATES = [
 	{
 		render: () => 'green',
 		case: (assignment) => {
-			const {CompletedItem} = assignment;
+			const {CompletedItem, passingScore} = assignment;
 
-			return CompletedItem && CompletedItem.Success;
+			return CompletedItem && passingScore && CompletedItem.Success;
 		}
 	},
 	{
 		render: () => 'red',
 		cases: [
 			(assignment) => {
-				const {CompletedItem} = assignment;
+				const {CompletedItem, passingScore} = assignment;
 
-				return CompletedItem && !CompletedItem.Success;
+				return CompletedItem && passingScore && !CompletedItem.Success;
 			},
 			(assignment, historyItem) => {
 				const now = new Date();
