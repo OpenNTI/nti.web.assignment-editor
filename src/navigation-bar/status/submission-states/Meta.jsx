@@ -89,8 +89,9 @@ const COMPLETED_STATES = [
 			const now = new Date();
 			const due = assignment.getDueDate();
 			const {submissionBuffer} = assignment;
+			const noBuffer = !submissionBuffer && submissionBuffer !== 0;
 			const latest = new Date(due.getTime() + ((submissionBuffer || 0) * 1000));
-			const baseKey = latest > now ? 'notSubmitted.late.insideGracePeriod' : 'notSubmitted.late.outsideGracePeriod';
+			const baseKey = latest > now || noBuffer ? 'notSubmitted.late.insideGracePeriod' : 'notSubmitted.late.outsideGracePeriod';
 			const formatted = DateTime.format(due, 'dddd, MMMM D [at] h:mm A z');
 
 			return (
