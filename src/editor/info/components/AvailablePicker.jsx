@@ -49,9 +49,9 @@ export default class AvailablePicker extends React.Component {
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		if (nextProps.value !== this.props.value) {
-			this.setupValue(nextProps);
+	componentDidUpdate (prevProps) {
+		if (prevProps.value !== this.props.value) {
+			this.setupValue();
 		}
 	}
 
@@ -150,7 +150,7 @@ export default class AvailablePicker extends React.Component {
 				onDismiss={this.reset}
 			>
 				<Checkbox label={label} checked={checked} onChange={this.onCheckChange} />
-				<DayTimePicker value={date} onChange={this.onDateChange} />
+				<DayTimePicker value={date} onChange={this.onDateChange} disabledDays={null} />
 				{errorMsg && (<div className="error-message">{errorMsg}</div>)}
 				{saving ? <Loading.Ellipsis/> : <div className={saveClassNames} onClick={this.onSave}>Save</div>}
 			</Flyout.Triggered>
