@@ -37,6 +37,7 @@ const PASSING = 'Passing';
 const AUTO_GRADED = 'Auto Graded';
 const NO_SUBMIT = 'No Submit';
 const SYNTHETIC = 'Synthetic';
+const EXCUSED = 'Excused';
 
 function buildFakeAssignment (state) {
 	return {
@@ -76,14 +77,16 @@ function buildFakeHistoryItem (state) {
 			isSubmitted: () => true,
 			getCreatedTime: () => completed
 		},
-		grade: !state.grade ? null : {
+		grade: !state.grade && state.excused !== EXCUSED ? null : {
 			value: state.grade,
+			IsExcused: state.excused === EXCUSED,
 			hasAutoGrade: () => state.autoGrade === AUTO_GRADED,
 			getValue: () => state.grade
 		},
 		getGradeValue: () => parseInt(state.grade, 10) || state.grade,
 		isSubmitted: () => true,
 		completed,
+
 
 		getDuration () {
 			return state.duration ? (parseFloat(state.duration, 10) * 1000) : null;
@@ -191,6 +194,13 @@ export default class Test extends React.Component {
 	}
 
 
+	onExcusedChange = (e) => {
+		this.setState({
+			excused: e.target.checked ? e.target.value : false
+		});
+	}
+
+
 	render () {
 		return (
 			<div>
@@ -259,6 +269,11 @@ export default class Test extends React.Component {
 						<label>
 							<span>Passing</span>
 							<input type="checkbox" value={PASSING} checked={this.state.passing === PASSING} onChange={this.onPassingChange} />
+						</label>
+						<br />
+						<label>
+							<span>Excused</span>
+							<input type="checkbox" value={EXCUSED} checked={this.state.excused === EXCUSED} onChange={this.onExcusedChange} />
 						</label>
 						<br />
 						<label>

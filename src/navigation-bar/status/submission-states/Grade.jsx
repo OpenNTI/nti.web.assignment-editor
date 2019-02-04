@@ -20,8 +20,9 @@ const STATES = [
 		case: (assignment, historyItem) => {
 			const isSubmitted = historyItem && historyItem.isSubmitted();
 			const isGraded = historyItem && !!historyItem.getGradeValue();
+			const isExcused = historyItem && historyItem.grade && historyItem.grade.IsExcused;
 
-			return isSubmitted && !isGraded;
+			return isSubmitted && !isGraded && !isExcused;
 		}
 	},
 	{
@@ -36,8 +37,9 @@ const STATES = [
 		case: (assignment, historyItem) => {
 			const isSubmitted = historyItem && historyItem.isSubmitted();
 			const isGraded = historyItem && !!historyItem.getGradeValue();
+			const isExcused = historyItem && historyItem.grade && historyItem.grade.IsExcused;
 
-			return isSubmitted && isGraded;
+			return isSubmitted && (isGraded || isExcused);
 		}
 	}
 ];
