@@ -135,8 +135,9 @@ const STATES = [
 		},
 		case: (assignment, historyItem) => {
 			const {CompletedItem} = assignment;
+			const hasBeenSubmitted = historyItem && historyItem.isSubmitted();
 
-			return assignment.passingScore && CompletedItem && CompletedItem.Success;
+			return assignment.passingScore && hasBeenSubmitted && CompletedItem && CompletedItem.Success;
 		}
 	},
 	{
@@ -152,8 +153,10 @@ const STATES = [
 		},
 		case: (assignment, historyItem) => {
 			const {CompletedItem} = assignment;
+			const hasBeenSubmitted = historyItem && historyItem.isSubmitted();
 
-			return assignment.passingScore && CompletedItem && !CompletedItem.Success;
+
+			return assignment.passingScore && hasBeenSubmitted && CompletedItem && !CompletedItem.Success;
 		}
 	},
 	{

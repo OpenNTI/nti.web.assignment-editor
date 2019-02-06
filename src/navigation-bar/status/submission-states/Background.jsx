@@ -37,17 +37,20 @@ export default class AssignmentSubmissionGradient extends React.PureComponent {
 	static propTypes = {
 		className: PropTypes.string,
 		assignment: PropTypes.object,
-		historyItem: PropTypes.object
+		historyItem: PropTypes.object,
+		children: PropTypes.any
 	}
 
 
 	render () {
-		const {className, assignment, historyItem, ...otherProps} = this.props;
+		const {className, assignment, historyItem, children} = this.props;
 		const render = getStateRenderer(STATES, assignment, historyItem);
 		const extraClass = render ? render() : '';
 
 		return (
-			<div className={cx(className, 'assignment-navigation-bar-submission-gradient', extraClass)} {...otherProps} />
+			<div className={cx(className, 'assignment-navigation-bar-submission-gradient', extraClass)}>
+				{children}
+			</div>
 		);
 	}
 }

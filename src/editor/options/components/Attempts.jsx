@@ -76,7 +76,7 @@ class Attempts extends React.Component {
 
 		if (this.saveBufferTimeout) { return; }
 
-		this.saveBufferTimeout = setTimeout(() => {
+		this.saveBufferTimeout = setTimeout(async () => {
 			delete this.saveBufferTimeout;
 
 			const {maxSubmissions: oldMax} = assignment;
@@ -84,7 +84,16 @@ class Attempts extends React.Component {
 
 			if (oldMax === newMax) { return; }
 
-			assignment.setMaxSubmissions(newMax);
+			try {
+				await assignment.setMaxSubmissions(newMax);
+
+				this.setupFor(this.props);
+			} catch (e) {
+				this.setupFor(this.props);
+				this.setState({
+					error: e
+				});
+			}
 		}, 100);
 	}
 
@@ -131,7 +140,7 @@ class Attempts extends React.Component {
 
 
 	render () {
-		const {maxSubmissions, disabled} = this.state;
+		const {maxSubmissions, disabled, error} = this.state;
 
 		return (
 			<OptionGroup
@@ -140,6 +149,7 @@ class Attempts extends React.Component {
 				content={t('content')}
 				disabled={disabled}
 				disabledText={t('disabled')}
+				error={error && (error.message || '')}
 			>
 				<Option
 					label={t('labels.oneAttempt')}

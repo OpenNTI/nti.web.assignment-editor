@@ -33,8 +33,9 @@ const STATES = [
 			//Has a successful completed item
 			(assignment, historyItem) => {
 				const {CompletedItem} = assignment;
+				const submitted = historyItem && historyItem.isSubmitted();
 
-				return CompletedItem && CompletedItem.Success;
+				return submitted && CompletedItem && CompletedItem.Success;
 			},
 			//Was submitted and no due date
 			(assignment, historyItem) => {

@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import {Layouts} from '@nti/web-commons';
 
-import {Icon, Title, Background, Meta, Grade} from './submission-states';
+import {Icon, Title, Background, Meta, Grade, Attempts} from './submission-states';
 
 const {Responsive} = Layouts;
 
@@ -39,6 +39,7 @@ export default class SubmissionStatus extends React.Component {
 				<Title {...this.props} />
 				<Meta {...this.props} />
 				<Grade {...this.props} />
+				<Attempts {...this.props} />
 			</Background>
 		);
 	}
