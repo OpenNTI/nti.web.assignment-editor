@@ -5,7 +5,7 @@ import cx from 'classnames';
 
 export default class Option extends React.Component {
 	static propTypes = {
-		label: PropTypes.string,
+		label: PropTypes.node,
 		type: PropTypes.string,
 		value: PropTypes.bool,
 		onChange: PropTypes.func,

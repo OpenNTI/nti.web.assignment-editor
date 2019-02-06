@@ -1,0 +1,35 @@
+@import "~@nti/style-common";
+
+.assignment-option-group.attempts {
+	padding-bottom: 8rem;
+
+	.select-container {
+		display: inline-block;
+
+		.nti-select-native-wrapper {
+			margin-left: -0.625rem;
+			line-height: 22px;
+			color: $secondary-grey;
+			box-shadow: none;
+			display: flex;
+			align-items: center;
+			display: flex;
+			align-items: center;
+			flex-flow: row-reverse;
+			justify-content: flex-end;
+
+			.icon-chevron-down {
+				position: static;
+				transform: none;
+				flex: 0 0 auto;
+				font-size: 0.625rem;
+				font-weight: 600;
+			}
+
+			.nti-select-value {
+				padding-right: 0.5rem;
+			}
+		}
+	}
+
+}

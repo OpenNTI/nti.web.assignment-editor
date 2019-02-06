@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {HOC} from '@nti/web-commons';
 
+import Attempts from './Attempts';
 import Grading from './Grading';
 import Randomize from './Randomize';
 import Limits from './Limits';
@@ -43,6 +44,7 @@ class AssignmentOptions extends React.Component {
 					<Randomize assignment={assignment} questionSet={questionSet} />
 					<Limits assignment={assignment} questionSet={questionSet} />
 					<Buffer assignment={assignment} questionSet={questionSet} />
+					<Attempts assignment={assignment} questionSet={questionSet} />
 				</div>
 			</div>
 		);
