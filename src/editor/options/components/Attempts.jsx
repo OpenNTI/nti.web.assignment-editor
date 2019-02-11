@@ -142,6 +142,8 @@ class Attempts extends React.Component {
 	render () {
 		const {maxSubmissions, disabled, error} = this.state;
 
+		if (disabled) { return null; }
+
 		return (
 			<OptionGroup
 				name="attempts"
