@@ -35,11 +35,11 @@ function AssignmentTotalPoints (assignment) {
 	);
 }
 
-function AssignmentPassingScore (assignment) {
+function AssignmentPassingScore (assignment, historyItem) {
 	if (!assignment.passingScore) { return null; }
 
 	const passingScore = Math.ceil(assignment.passingScore * 100);
-	const failed = assignment.CompletedItem && !assignment.CompletedItem.Success;
+	const failed = historyItem && historyItem.isSubmitted() && assignment.CompletedItem && !assignment.CompletedItem.Success;
 
 	return (
 		<div className={cx('passing-score', {failed})}>
