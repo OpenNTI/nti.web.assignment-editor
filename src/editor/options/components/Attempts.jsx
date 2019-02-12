@@ -117,7 +117,7 @@ class Attempts extends React.Component {
 
 	setUnlimitedAttempts = () => {
 		this.setState({
-			maxSubmissions: null
+			maxSubmissions: -1
 		});
 	}
 
@@ -168,7 +168,7 @@ class Attempts extends React.Component {
 				<Option
 					label={t('labels.unlimitedAttempts')}
 					type="radio"
-					value={!maxSubmissions}
+					value={maxSubmissions < 0}
 					onChange={this.setUnlimitedAttempts}
 				/>
 			</OptionGroup>

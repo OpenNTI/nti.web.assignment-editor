@@ -8,7 +8,8 @@ const t = scoped('nti-assignment.navigation-bar.submission-states.Attempts', {
 	remainingAttempts: {
 		one: '%(count)s More Attempt Remaining',
 		other: '%(count)s More Attempts Remaining'
-	}
+	},
+	unlimitedAttempts: 'Unlimited Attempts Remaining'
 });
 
 export default class AssignmentSubmissionStateAttempts extends React.Component {
@@ -39,7 +40,13 @@ export default class AssignmentSubmissionStateAttempts extends React.Component {
 		return (
 			<div className="assignment-navigation-bar-status-submission-attempt">
 				<Button rounded onClick={this.onTryAgain}>{t('tryAgain')}</Button>
-				<span className="remaining">{t('remainingAttempts', {count: maxSubmissions - submissionCount})}</span>
+				<span className="remaining">
+					{
+						maxSubmissions < 0 ?
+							t('unlimitedAttempts') :
+							t('remainingAttempts', {count: maxSubmissions - submissionCount})
+					}
+				</span>
 			</div>
 		);
 	}
