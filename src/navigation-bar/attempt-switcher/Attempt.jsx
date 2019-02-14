@@ -11,7 +11,7 @@ const t = scoped('nti-assignment.navigation-bar.attempt-switcher.Attempt', {
 });
 
 function formatDate (date) {
-	return DateTime.format(date, 'MMM D, YYYY [at] H:mm A');
+	return DateTime.format(date, 'MMM D, YYYY [at] h:mm A');
 }
 
 export default class AttemptSwitcherAttemptItem extends React.Component {
