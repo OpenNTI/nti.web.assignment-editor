@@ -49,11 +49,11 @@ class Attempts extends React.Component {
 
 	componentDidUpdate (prevProps, prevState) {
 		const {assignment} = this.props;
-		const {maxSubmissions} = this.state;
+		const {maxSubmissions, passingScore} = this.state;
 		const {assignment:prevAssignment} = prevProps;
 		const {maxSubmisions:prevMax} = prevState;
 
-		if (assignment !== prevAssignment) {
+		if (assignment !== prevAssignment || assignment.passingScore !== passingScore) {
 			this.setupFor(this.props);
 		}
 
@@ -81,6 +81,7 @@ class Attempts extends React.Component {
 		}
 
 		this.setState({
+			passingScore: assignment.passingScore,
 			disabled,
 			disabledText,
 			maxSubmissions: disabled ? 1 : maxSubmissions,
