@@ -12,7 +12,10 @@ const LIMITED_ARRAY = Array.from({length: MAX_LIMIT}).map((_, i) => i + 2);//2 -
 const t = scoped('assignment.editing.options.Attempts', {
 	header: 'Number of Attempts',
 	content: 'Specify how many times learners can take this assignment.',
-	disabled: 'Not able to edit attempts at this time.',
+	disabled: {
+		noQuestions: 'Add some questions to enable this option.',
+		noPassingScore: 'Assignments must have a passing score to enable multiple attempts'
+	},
 	labels: {
 		oneAttempt: 'One Attempt',
 		limitedAttempts: 'Limited Attempts',
@@ -26,7 +29,8 @@ const t = scoped('assignment.editing.options.Attempts', {
 
 class Attempts extends React.Component {
 	static propTypes = {
-		assignment: PropTypes.object
+		assignment: PropTypes.object,
+		questionSet: PropTypes.object
 	}
 
 	static getItem (props) {
@@ -60,12 +64,26 @@ class Attempts extends React.Component {
 
 
 	setupFor (props) {
-		const {assignment} = this.props;
+		const {assignment, questionSet} = this.props;
 		const {maxSubmissions} = assignment;
 
+		let disabled = !assignment.canSetMaxSubmissions();
+		let disabledText = null;
+
+		if (!disabled && !questionSet) {
+			disabled = true;
+			disabledText = t('disabled.noQuestions');
+		}
+
+		if (!disabled && !assignment.passingScore) {
+			disabled = true;
+			disabledText = t('disabled.noPassingScore');
+		}
+
 		this.setState({
-			disabled: !assignment.canSetMaxSubmissions(),
-			maxSubmissions,
+			disabled,
+			disabledText,
+			maxSubmissions: disabled ? 1 : maxSubmissions,
 			limitedSubmissions: maxSubmissions && maxSubmissions > 1 ? maxSubmissions : 2
 		});
 	}
@@ -140,9 +158,9 @@ class Attempts extends React.Component {
 
 
 	render () {
-		const {maxSubmissions, disabled, error} = this.state;
+		const {maxSubmissions, disabled, disabledText, error} = this.state;
 
-		if (disabled) { return null; }
+		if (disabled && !disabledText) { return null; }
 
 		return (
 			<OptionGroup
@@ -150,7 +168,7 @@ class Attempts extends React.Component {
 				header={t('header')}
 				content={t('content')}
 				disabled={disabled}
-				disabledText={t('disabled')}
+				disabledText={disabledText}
 				error={error && (error.message || '')}
 			>
 				<Option
