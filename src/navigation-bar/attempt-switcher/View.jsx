@@ -35,6 +35,8 @@ export default class AssignmentNavigationAttemptSwitcher extends React.Component
 	render () {
 		const {active, attempts} = this.props;
 
+		if (!attempts.length) { return null; }
+
 		return (
 			<Flyout.Triggered
 				trigger={this.renderTrigger(active)}
