@@ -20,8 +20,18 @@ export default class AttemptSwitcherAttemptItem extends React.Component {
 			getStartTime: PropTypes.func.isRequired,
 			getSubmittedTime: PropTypes.func.isRequired
 		}).isRequired,
+		onNavigation: PropTypes.func,
 		active: PropTypes.bool,
 		label: PropTypes.bool
+	}
+
+
+	onNavigation = () => {
+		const {onNavigation} = this.props;
+
+		if (onNavigation) {
+			onNavigation();
+		}
 	}
 
 
@@ -31,7 +41,7 @@ export default class AttemptSwitcherAttemptItem extends React.Component {
 		if (label) { return this.renderAttempt(attempt, active); }
 
 		return (
-			<LinkTo.Object object={attempt} className="assignment-navigation-bar-attempt-switcher-attempt-link">
+			<LinkTo.Object object={attempt} className="assignment-navigation-bar-attempt-switcher-attempt-link" onClick={this.onNavigation}>
 				{this.renderAttempt(attempt, active)}
 			</LinkTo.Object>
 		);

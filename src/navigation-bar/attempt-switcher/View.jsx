@@ -31,6 +31,15 @@ export default class AssignmentNavigationAttemptSwitcher extends React.Component
 		])
 	}
 
+	attachFlyout = x => this.flyout = x;
+
+
+	onNavigation = () => {
+		if (this.flyout) {
+			this.flyout.doClose();
+		}
+	}
+
 
 	render () {
 		const {active, attempts} = this.props;
@@ -39,6 +48,7 @@ export default class AssignmentNavigationAttemptSwitcher extends React.Component
 
 		return (
 			<Flyout.Triggered
+				ref={this.attachFlyout}
 				trigger={this.renderTrigger(active)}
 				verticalAlign={Flyout.ALIGNMENTS.ALIGN_BOTTOM}
 				horizontalAlgin={Flyout.ALIGNMENTS.ALIGN_LEFT}
@@ -48,7 +58,7 @@ export default class AssignmentNavigationAttemptSwitcher extends React.Component
 					{attempts.map((attempt, index) => {
 						return (
 							<li key={index}>
-								<Attempt active={isSameAttempt(active, attempt)} attempt={attempt} />
+								<Attempt active={isSameAttempt(active, attempt)} attempt={attempt} onNavigation={this.onNavigation} />
 							</li>
 						);
 					})}
