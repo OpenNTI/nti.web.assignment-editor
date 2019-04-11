@@ -37,7 +37,7 @@ export default class AssignmentControlBar extends React.Component {
 		const {student} = this.props;
 
 		return (
-			<ControlBar visible>
+			<ControlBar visible className="assignment-control-bar-container">
 				<div className="assignment-control-bar">
 					<div className="message">
 						<i className="icon-view" />
