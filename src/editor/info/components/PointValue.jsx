@@ -21,15 +21,14 @@ export default class PointValue extends React.Component {
 		this.setUp();
 	}
 
-	componentDidReceiveProps (prevProps) {
+	componentDidUpdate (prevProps, prevState) {
 		const {assignment} = this.props;
-		if (prevProps.assignment !== assignment) {
-			this.setUp();
-		}
-	}
+		let {value} = this.state;
 
-	componentDidUpdate (_, prevState) {
-		const {value} = this.state;
+		if (prevProps.assignment !== assignment) {
+			value = this.setUp();
+		}
+
 		if (value !== prevState.value) {
 			clearTimeout(this.saveChangeDelay);
 			this.saveChangeDelay = setTimeout(this.save, 1500);
@@ -37,11 +36,13 @@ export default class PointValue extends React.Component {
 	}
 
 	setUp (props = this.props) {
-		const {assignment} = props;
+		const {assignment: {totalPoints: value}} = props;
 
 		this.setState({
-			value: assignment.totalPoints
+			value
 		});
+
+		return value;
 	}
 
 	attachRef = x => this.input = x
