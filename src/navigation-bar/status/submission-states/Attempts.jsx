@@ -6,8 +6,8 @@ import {Button} from '@nti/web-commons';
 const t = scoped('nti-assignment.navigation-bar.submission-states.Attempts', {
 	tryAgain: 'Try Again',
 	remainingAttempts: {
-		one: '%(count)s More Attempt Remaining',
-		other: '%(count)s More Attempts Remaining'
+		one: '%(count)s Attempt Remaining',
+		other: '%(count)s Attempts Remaining'
 	},
 	unlimitedAttempts: 'Unlimited Attempts Remaining'
 });

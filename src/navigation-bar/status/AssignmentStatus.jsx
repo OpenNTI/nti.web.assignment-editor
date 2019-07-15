@@ -10,7 +10,25 @@ const t = scoped('nti-assignment.navigation-bar.status.AssignmentStatus', {
 		one: '%(count)s Point',
 		other: '%(count)s Points'
 	},
-	passingScore: '<span class="percentage">%(passingScore)s%%</span> <span>to Pass</span>'
+	passingScore: '<span class="percentage">%(passingScore)s%%</span> <span>to Pass</span>',
+	attempts: {
+		started: {
+			limitedAttempts: {
+				zero: '<b>No</b> Attempts Remaining',
+				one: '<b>%(count)s</b> Attempt Remaining',
+				other: '<b>%(count)s</b> Attempts Remaining'
+			},
+			unlimitedAttempts: '<b>Unlimited</b> Attempts Remaining'
+		},
+		notStarted: {
+			limitedAttempts: {
+				zero: '<b>No</b> Attempts',
+				one: '<b>%(count)s</b> Attempt',
+				other: '<b>%(count)s</b> Attempts'
+			},
+			unlimitedAttempts: '<b>Unlimited</b> Attempts'
+		}
+	}
 });
 
 function AssignmentTimeLimit (assignment) {
@@ -49,11 +67,34 @@ function AssignmentPassingScore (assignment, historyItem) {
 	);
 }
 
+function AssignmentAttempts (assignment) {
+	const {maxSubmissions, submissionCount} = assignment;
+	const started = submissionCount > 0;
+	const key = started ? 'attempts.started' : 'attempts.notStarted';
+
+	let label = '';
+
+	if (maxSubmissions == null) {
+		label = t(`${key}.limitedAttempts`, {count: 1});
+	} else if (maxSubmissions < 0) {
+		label = t(`${key}.unlimitedAttempts`);
+	} else {
+		label = t(`${key}.limitedAttempts`, {count: maxSubmissions - submissionCount});
+	}
+
+	return (
+		<div className={cx('attempt-info')}>
+			<span {...rawContent(label)} />
+		</div>
+	);
+}
+
 
 const PARTS = [
 	AssignmentTimeLimit,
 	AssignmentTotalPoints,
-	AssignmentPassingScore
+	AssignmentPassingScore,
+	AssignmentAttempts
 ];
 
 export default class AssignmentStatus extends React.Component {
