@@ -7,6 +7,7 @@ import OptionGroup from './OptionGroup';
 import Option from './Option';
 
 const DEFAULT_TEXT = {
+	header: 'Grading',
 	content: 'Save time with auto grading.',
 	label: 'Enable Auto Grading',
 	'disabled-no-questions': 'Add some questions to enable this option.',
@@ -110,7 +111,7 @@ class Grading extends React.Component {
 		return (
 			<OptionGroup
 				name="grading"
-				header="Grading"
+				header={t('header')}
 				content={t('content')}
 				error={conflicts || errorMessage}
 				disabled={!questionSet || Boolean(conflicts) || !assignment.totalPoints || !assignment.canSetAutoGrade()}
