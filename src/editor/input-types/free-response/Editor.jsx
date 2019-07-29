@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {scoped} from '@nti/lib-locale';
 
 import ChoiceFactory from '../choices/Factory';
 import Choices from '../choices';
@@ -9,8 +10,10 @@ import {generatePartFor} from './utils';
 const choiceType = 'FreeResponseSolution';
 const errorField = 'solutions';
 
-const disclaimer = 'Short answer questions can be auto graded, but the responses must be a 100% match. List as many possible answers as you\'re willing to accept including common misspellings.';
-const addLabel = 'Add a Possible Answer';
+const t = scoped('assignment.editing.input-types.free-response.Editor', {
+	disclaimer: 'Short answer questions can be auto graded, but the responses must be a 100%% match. List as many possible answers as you\'re willing to accept including common misspellings.',
+	addLabel: 'Add a Possible Answer'
+});
 
 
 export default class FreeResponseEditor extends React.Component {
@@ -67,13 +70,13 @@ export default class FreeResponseEditor extends React.Component {
 
 		return (
 			<div className="free-response-editor">
-				<div className="disclaimer">{disclaimer}</div>
+				<div className="disclaimer">{t('disclaimer')}</div>
 				<Choices
 					choices={choices}
 					onChange={this.onChange}
 					buildBlankChoice={this.buildBlankChoice}
 					canRemove
-					addLabel={addLabel}
+					addLabel={t('addLabel')}
 					minAllowed={0}
 					plainText
 				/>
