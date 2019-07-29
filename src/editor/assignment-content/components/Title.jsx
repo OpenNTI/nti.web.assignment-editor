@@ -1,12 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import {scoped} from '@nti/lib-locale';
 
 import BufferedTextEditor from '../../inputs/BufferedTextEditor';
 import {Component as Selectable} from '../../../selection';
 import ControlsConfig from '../../controls/ControlsConfig';
 
-const PLACEHOLDER = 'Title';
+const t = scoped('assignment.editing.content.Title', {
+	placeholder: 'Title'
+});
 
 function getMaxLength (schema = {}) {
 	const {Fields:fields} = schema;
@@ -69,7 +72,7 @@ export default class TitleEditor extends React.Component {
 					charLimit={getMaxLength(schema)}
 					countDown
 					initialValue={value}
-					placeholder={PLACEHOLDER}
+					placeholder={t('placeholder')}
 					onFocus={this.onEditorFocus}
 					onChange={this.onChange}
 					error={error}

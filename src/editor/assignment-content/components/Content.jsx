@@ -1,12 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import {scoped} from '@nti/lib-locale';
 
 import BufferedTextEditor from '../../inputs/BufferedTextEditor';
 import {Component as Selectable} from '../../../selection';
 import ControlsConfig from '../../controls/ControlsConfig';
 
-const PLACEHOLDER = 'Write an assignment description here...';
+
+const t = scoped('assignment.editing.content.Content', {
+	placeholder: 'Write an assignment description here...'
+});
 
 export default class ContentEditor extends React.Component {
 	static propTypes = {
@@ -63,7 +67,7 @@ export default class ContentEditor extends React.Component {
 				{disabled ? null : (
 					<BufferedTextEditor
 						initialValue={value}
-						placeholder={PLACEHOLDER}
+						placeholder={t('placeholder')}
 						onFocus={this.onEditorFocus}
 						onChange={this.onChange}
 						error={error}
