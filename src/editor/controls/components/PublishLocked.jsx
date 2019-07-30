@@ -13,7 +13,8 @@ const DEFAULT_TEXT = {
 	editorLabel: 'Students have started this assignment',
 	text: 'Resetting or deleting this assignment will result in erasing students work and submissions. You cannot undo this action.',
 	editorText: 'The instructor must reset this assignment before a publish change can occur.',
-	error: 'Could not reset the assignment at this time. Please try again later.'
+	error: 'Could not reset the assignment at this time. Please try again later.',
+	resetAssignment: 'Reset Assignment'
 };
 
 const t = scoped('assignment.editing.controls.publish.locked', DEFAULT_TEXT);
@@ -83,7 +84,7 @@ export default class PublishLocked extends React.Component {
 					<Loading.Ellipsis/>
 				) : can && (
 					<div className={cx('flyout-fullwidth-btn publish-reset', {error})} onClick={this.onResetClick}>
-						Reset Assignment
+						{t('resetAssignment')}
 					</div>
 				)}
 			</Flyout.Triggered>
