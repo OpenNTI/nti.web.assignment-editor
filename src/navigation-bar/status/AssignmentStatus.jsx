@@ -67,7 +67,9 @@ function AssignmentPassingScore (assignment, historyItem) {
 	);
 }
 
-function AssignmentAttempts (assignment) {
+function AssignmentAttempts (assignment, historyItem) {
+	if (historyItem && assignment.CompletedItem && assignment.CompletedItem.Success && !assignment.hasLink('Commence')) { return; }
+
 	const {maxSubmissions, submissionCount} = assignment;
 	const started = submissionCount > 0;
 	const key = started ? 'attempts.started' : 'attempts.notStarted';
