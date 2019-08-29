@@ -94,7 +94,7 @@ export default class DataTransfer {
 				value = JSON.stringify(value);
 			}
 			catch (e) {
-				console.warn('Circular reference error.  Dragging may not work');
+				logger.warn('Circular reference error.  Dragging may not work');
 			}
 		}
 
