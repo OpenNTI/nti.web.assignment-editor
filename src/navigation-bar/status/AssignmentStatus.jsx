@@ -68,6 +68,7 @@ function AssignmentPassingScore (assignment, historyItem) {
 }
 
 function AssignmentAttempts (assignment, historyItem) {
+	if (assignment.isNonSubmit()) { return; }
 	if (historyItem && assignment.CompletedItem && assignment.CompletedItem.Success && !assignment.hasLink('Commence')) { return; }
 
 	const {maxSubmissions, submissionCount} = assignment;
