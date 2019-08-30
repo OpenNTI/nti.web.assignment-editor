@@ -49,15 +49,15 @@
     "@nti/web-commons": "0.x.x",
     "@nti/web-editor": "0.x.x",
     "@nti/web-modeled-content": "^1.3.10",
-    "@nti/web-routing": "^0.13.0",
+    "@nti/web-routing": "0.x.x",
     "classnames": "^2.0.0",
-    "filesize": "^3.5.6",
+    "filesize": "^4.1.2",
     "invariant": "^2.1.1",
     "jump.js": "^1.0.1",
     "natural-orderby": "^1.0.0",
     "prop-types": "^15.5.10",
     "react-flip-move": "^3.0.0",
-    "react-transition-group": "^2.2.1",
+    "react-transition-group": "^4.2.2",
     "uuid": "^3.0.1"
   },
   "devDependencies": {
