@@ -28,11 +28,14 @@ describe('DateEditor test', () => {
 	};
 
 	const selectYear = function (cmp, yearsFrom2018) {
-		const yearPicker = cmp.find('.select-wrapper').at(2).find('.menu-label');
-		yearPicker.simulate('click');
+		const getSelect = (x, text) => x.find('.select-wrapper').filterWhere(y => y.find('.select-box > .menu-label > .option-label').text() === text);
+		const getSelectItem = (x, text) => x.find('li > .option-label').filterWhere(y => y.text() === String(text));
+
+		getSelect(cmp, '2018').find('.menu-label').simulate('click');
+
 		cmp.update();
 
-		return cmp.find('.select-wrapper').at(2).find('.option-label').at(yearsFrom2018 + 1);
+		return getSelectItem(getSelect(cmp, '2018'), yearsFrom2018 + 2018);
 	};
 
 	const verifySelectedMonth = function (cmp, month) {
@@ -58,7 +61,7 @@ describe('DateEditor test', () => {
 
 	test('Test available days changes with month/year selections', async () => {
 		let newDate = null;
-		const date = new Date('10/25/18 04:34');
+		const date = new Date('2018-10-25T09:34:00Z');
 
 		const onDateChanged = (d) => {
 			newDate = new Date(d.getTime());
