@@ -140,6 +140,7 @@ class TimeLimit extends React.Component {
 					horizontalAlign={Flyout.ALIGNMENTS.LEFT}
 					sizing={Flyout.SIZES.MATCH_SIDE}
 					ref={this.attachFlyoutRef}
+					focusOnOpen={false}
 				>
 					<div className={cx('time-limit-editor', {saving})}>
 						<Checkbox label="Time Limit"

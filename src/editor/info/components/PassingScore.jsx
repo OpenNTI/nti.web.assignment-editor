@@ -207,6 +207,7 @@ export default class PassingScore extends React.Component {
 					sizing={Flyout.SIZES.MATCH_SIDE}
 					trigger={this.renderTrigger()}
 					onDismiss={this.reset}
+					focusOnOpen={false}
 				>
 					{error && <div className="error">{error}</div>}
 					<Checkbox label={t('checkboxLabel')} checked={checked} onChange={this.onCheckChange} />

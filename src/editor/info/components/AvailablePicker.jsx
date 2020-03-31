@@ -148,6 +148,7 @@ export default class AvailablePicker extends React.Component {
 				horizontalAlign={Flyout.ALIGNMENTS.LEFT}
 				trigger={this.renderTrigger()}
 				onDismiss={this.reset}
+				focusOnOpen={false}
 			>
 				<Checkbox label={label} checked={checked} onChange={this.onCheckChange} />
 				<DayTimePicker value={date} onChange={this.onDateChange} disabledDays={null} />
