@@ -84,7 +84,9 @@ class Limits extends React.Component {
 
 
 	onItemChanged = () => {
-		this.setupValue();
+		if (!this.busy) {
+			this.setupValue();
+		}
 	}
 
 
