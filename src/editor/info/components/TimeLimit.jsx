@@ -7,7 +7,8 @@ import {
 	DurationPicker,
 	Flyout,
 	LabeledValue,
-	HOC
+	HOC,
+	Button
 } from '@nti/web-commons';
 
 import store from '../../Store';
@@ -140,7 +141,6 @@ class TimeLimit extends React.Component {
 					horizontalAlign={Flyout.ALIGNMENTS.LEFT}
 					sizing={Flyout.SIZES.MATCH_SIDE}
 					ref={this.attachFlyoutRef}
-					focusOnOpen={false}
 				>
 					<div className={cx('time-limit-editor', {saving})}>
 						<Checkbox label="Time Limit"
@@ -149,7 +149,7 @@ class TimeLimit extends React.Component {
 							onChange={this.toggleTimeLimit}/>
 						<DurationPicker onChange={this.timeChanged} value={value} />
 						{error && <div className="error">{error.toString()}</div>}
-						{<div className={buttonClasses} onClick={this.save}>Save Changes</div>}
+						{<Button className={buttonClasses} onClick={this.save}>Save Changes</Button>}
 						{saving && (<div className="saving-mask" />)}
 					</div>
 				</Flyout.Triggered>

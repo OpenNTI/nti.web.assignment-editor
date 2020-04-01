@@ -9,7 +9,8 @@ import {
 	Flyout,
 	LabeledValue,
 	Loading,
-	Prompt
+	Prompt,
+	Button
 } from '@nti/web-commons';
 
 const {SaveCancel} = Prompt;
@@ -207,13 +208,12 @@ export default class PassingScore extends React.Component {
 					sizing={Flyout.SIZES.MATCH_SIDE}
 					trigger={this.renderTrigger()}
 					onDismiss={this.reset}
-					focusOnOpen={false}
 				>
 					{error && <div className="error">{error}</div>}
 					<Checkbox label={t('checkboxLabel')} checked={checked} onChange={this.onCheckChange} />
 					<div className="description">{t('description')}</div>
 					<Input.Percentage value={value} onChange={this.onPercentageChange} constrain disabled={!checked}/>
-					{saving ? <Loading.Ellipsis/> : <div className={saveClassNames} onClick={this.onSave}>Save</div>}
+					{saving ? <Loading.Ellipsis/> : <Button className={saveClassNames} onClick={this.onSave}>Save</Button>}
 				</Flyout.Triggered>
 			</HOC.ItemChanges>
 		);

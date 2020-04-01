@@ -7,7 +7,8 @@ import {
 	DayTimePicker,
 	Flyout,
 	LabeledValue,
-	Loading
+	Loading,
+	Button
 } from '@nti/web-commons';
 
 
@@ -148,12 +149,11 @@ export default class AvailablePicker extends React.Component {
 				horizontalAlign={Flyout.ALIGNMENTS.LEFT}
 				trigger={this.renderTrigger()}
 				onDismiss={this.reset}
-				focusOnOpen={false}
 			>
 				<Checkbox label={label} checked={checked} onChange={this.onCheckChange} />
 				<DayTimePicker value={date} onChange={this.onDateChange} disabledDays={null} />
 				{errorMsg && (<div className="error-message">{errorMsg}</div>)}
-				{saving ? <Loading.Ellipsis/> : <div className={saveClassNames} onClick={this.onSave}>Save</div>}
+				{saving ? <Loading.Ellipsis/> : <Button className={saveClassNames} onClick={this.onSave}>Save</Button>}
 			</Flyout.Triggered>
 		);
 	}
