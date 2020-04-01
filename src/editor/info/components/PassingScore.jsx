@@ -213,7 +213,7 @@ export default class PassingScore extends React.Component {
 					<Checkbox label={t('checkboxLabel')} checked={checked} onChange={this.onCheckChange} />
 					<div className="description">{t('description')}</div>
 					<Input.Percentage value={value} onChange={this.onPercentageChange} constrain disabled={!checked}/>
-					{saving ? <Loading.Ellipsis/> : <Button className={saveClassNames} onClick={this.onSave}>Save</Button>}
+					{saving ? <Loading.Ellipsis/> : <Button component="span" className={saveClassNames} onClick={this.onSave}>Save</Button>}
 				</Flyout.Triggered>
 			</HOC.ItemChanges>
 		);

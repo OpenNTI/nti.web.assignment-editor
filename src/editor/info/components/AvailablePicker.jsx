@@ -153,7 +153,7 @@ export default class AvailablePicker extends React.Component {
 				<Checkbox label={label} checked={checked} onChange={this.onCheckChange} />
 				<DayTimePicker value={date} onChange={this.onDateChange} disabledDays={null} />
 				{errorMsg && (<div className="error-message">{errorMsg}</div>)}
-				{saving ? <Loading.Ellipsis/> : <Button className={saveClassNames} onClick={this.onSave}>Save</Button>}
+				{saving ? <Loading.Ellipsis/> : <Button component="span" className={saveClassNames} onClick={this.onSave}>Save</Button>}
 			</Flyout.Triggered>
 		);
 	}
