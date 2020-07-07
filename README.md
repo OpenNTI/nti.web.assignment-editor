@@ -1,5 +1,8 @@
 # Non-content backed assignments editor
 
+![Build Status](https://github.com/NextThought/nti.web.assignment-editor/workflows/Project%20Health/badge.svg)
+
+
 
 
 ##### File naming conventions:
