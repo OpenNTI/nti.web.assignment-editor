@@ -1,3 +1,4 @@
+import './ControlBar.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {ControlBar, Button, DisplayName} from '@nti/web-commons';

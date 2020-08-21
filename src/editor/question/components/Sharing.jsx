@@ -1,3 +1,4 @@
+import './Sharing.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Authoring} from '@nti/lib-interfaces';

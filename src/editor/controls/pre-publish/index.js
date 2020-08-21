@@ -1,3 +1,4 @@
+import './index.scss';
 import React from 'react';
 import {Prompt} from '@nti/web-commons';
 

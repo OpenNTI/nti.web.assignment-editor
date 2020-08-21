@@ -1,3 +1,4 @@
+import './View.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Loading, Errors, HOC, Button} from '@nti/web-commons';
