@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/NextThought/nti.web.component.assignment-editor.git"
+    "url": "https://github.com/NextThought/nti.web.assignment-editor.git"
   },
   "publishConfig": {
     "registry": "https://npm.nextthought.com"
@@ -41,11 +41,11 @@
     "@nti/lib-ntiids": "NextThought/nti.lib.ntiids",
     "@nti/lib-store": "NextThought/nti.lib.store",
     "@nti/util-logger": "NextThought/nti.util.logger",
-    "@nti/web-charts": "NextThought/nti.web.component.charts",
+    "@nti/web-charts": "NextThought/nti.web.charts",
     "@nti/web-client": "NextThought/nti.web.client",
     "@nti/web-commons": "NextThought/nti.web.commons",
-    "@nti/web-editor": "NextThought/nti.web.component.editor",
-    "@nti/web-modeled-content": "NextThought/nti.web.component.modeled-content",
+    "@nti/web-editor": "NextThought/nti.web.editor",
+    "@nti/web-modeled-content": "NextThought/nti.web.modeled-content",
     "@nti/web-routing": "NextThought/nti.web.routing",
     "classnames": "^2.0.0",
     "filesize": "^4.1.2",
