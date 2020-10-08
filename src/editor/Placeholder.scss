@@ -42,7 +42,7 @@
 
 		.button {
 			display: inline-block;
-			background: $primary-blue;
+			background: var(--primary-blue);
 			color: white;
 			font-size: 0.875rem;
 			font-weight: 300;

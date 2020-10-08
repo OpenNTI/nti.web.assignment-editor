@@ -22,7 +22,7 @@
 		i {
 			display: inline-block;
 			vertical-align: middle;
-			color: $primary-blue;
+			color: var(--primary-blue);
 
 			&.icon-star-outline {
 				font-size: 1.125rem;
@@ -57,7 +57,7 @@
 	.attempt-info {
 		b {
 			font-weight: 600;
-			color: $primary-blue;
+			color: var(--primary-blue);
 		}
 	}
 }

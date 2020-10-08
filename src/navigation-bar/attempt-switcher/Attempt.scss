@@ -7,6 +7,6 @@
 	color: var(--secondary-grey);
 
 	&.active {
-		color: $primary-blue;
+		color: var(--primary-blue);
 	}
 }

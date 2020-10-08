@@ -6,6 +6,6 @@
 	.root {
 		text-transform: uppercase;
 		cursor: pointer;
-		color: $primary-blue;
+		color: var(--primary-blue);
 	}
 }
