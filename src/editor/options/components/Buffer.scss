@@ -21,7 +21,7 @@
 		}
 
 		.error {
-			color: $primary-red;
+			color: var(--primary-red);
 			font-size: 14px;
 		}
 	}

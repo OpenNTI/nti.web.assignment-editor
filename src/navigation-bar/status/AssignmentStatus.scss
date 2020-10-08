@@ -49,7 +49,7 @@
 	.passing-score {
 		&.failed {
 			i, .percentage {
-				color: $primary-red;
+				color: var(--primary-red);
 			}
 		}
 	}

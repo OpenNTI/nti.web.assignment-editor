@@ -30,7 +30,7 @@
 	}
 
 	&.error {
-		box-shadow: 0 0 1px 1px $primary-red;
+		box-shadow: 0 0 1px 1px var(--primary-red);
 	}
 
 	&:hover {

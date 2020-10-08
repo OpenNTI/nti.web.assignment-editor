@@ -56,7 +56,7 @@
 		}
 
 		p.error {
-			color: $primary-red;
+			color: var(--primary-red);
 			margin-top: 0.5em;
 
 			i {

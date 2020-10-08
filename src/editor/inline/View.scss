@@ -29,7 +29,7 @@
 		}
 
 		.error {
-			color: $primary-red;
+			color: var(--primary-red);
 		}
 
 		.publish-label, .draft-label, .schedule-label {

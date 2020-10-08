@@ -11,12 +11,12 @@
 
 	.not-submitted {
 		.bold {
-			color: $primary-red;
+			color: var(--primary-red);
 		}
 	}
 
 	.badges {
-		color: $primary-red;
+		color: var(--primary-red);
 		margin-right: 0.3rem;
 
 		&:emtpy {

@@ -36,10 +36,10 @@
 
 
 	&.error {
-		border: 1px solid rgba($primary-red, .6);
+		border: 1px solid rgba(var(--primary-red), .6);
 
 		&.selected {
-			border-color: $primary-red;
+			border-color: var(--primary-red);
 		}
 	}
 
