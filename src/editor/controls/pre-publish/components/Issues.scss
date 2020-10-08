@@ -61,15 +61,15 @@
 			max-height: 200px;
 			overflow: auto;
 			transition: max-height 250ms;
-			box-shadow: 1px 0 0 0 $border-grey-light,
-							-1px 0 0 0 $border-grey-light,
-							inset 0 1px 0 0 $border-grey-light,
-							inset 0 -1px 0 0 $border-grey-light;
+			box-shadow: 1px 0 0 0 var(--border-grey)-light,
+							-1px 0 0 0 var(--border-grey)-light,
+							inset 0 1px 0 0 var(--border-grey)-light,
+							inset 0 -1px 0 0 var(--border-grey)-light;
 
 			&.has-both {
-				box-shadow: 1px 0 0 0 $border-grey-light,
-							-1px 0 0 0 $border-grey-light,
-							inset 0 -1px 0 0 $border-grey-light;
+				box-shadow: 1px 0 0 0 var(--border-grey)-light,
+							-1px 0 0 0 var(--border-grey)-light,
+							inset 0 -1px 0 0 var(--border-grey)-light;
 			}
 
 			&.collapsed {

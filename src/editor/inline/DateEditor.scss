@@ -42,7 +42,7 @@
 			.menu-label {
 				position: relative;
 				color: var(--primary-grey);
-				box-shadow: 0 0 0 1px #dbdbdb;
+				box-shadow: 0 0 0 1px var(--border-grey);
 				background-color: white;
 				border-radius: 3px;
 				cursor: pointer;
@@ -92,7 +92,7 @@
 			.time {
 				input.number-input-component {
 					border-radius: 3px;
-					border: 1px solid #dbdbdb;
+					border: 1px solid var(--border-grey);
 					height: 42px;
 					color: var(--primary-grey);
 					width: 2.125rem;

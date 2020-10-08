@@ -17,12 +17,12 @@
 	}
 
 	&:hover {
-		box-shadow: 0 0 0 1px $border-grey-light;
+		box-shadow: 0 0 0 1px var(--border-grey)-light;
 	}
 
 	&.selected {
 		background: white;
-		box-shadow: 0 0 0 1px $border-grey;
+		box-shadow: 0 0 0 1px var(--border-grey);
 
 		.character-count {
 			display: block;
