@@ -1,7 +1,7 @@
 @import "~@nti/style-common";
 
 .assignment-textinput-placeholder {
-	border: 1px solid var(--border-grey)-light;
+	border: 1px solid var(--border-grey-light);
 	font: italic 400 0.875rem/1rem $body-font-family;
 	transition: color 50ms;
 	color: var(--tertiary-grey);
