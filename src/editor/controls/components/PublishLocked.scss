@@ -11,7 +11,7 @@
 	.reset-label {
 		display: block;
 		font-size: rem-calc(14px);
-		color: $primary-grey;
+		color: var(--primary-grey);
 		font-family: $body-font-family;
 		margin: rem-calc(0 20px 4px 0);
 	}

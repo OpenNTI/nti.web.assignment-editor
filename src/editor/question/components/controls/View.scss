@@ -14,7 +14,7 @@
 		padding: rem-calc(10px 16px);
 
 		&:hover {
-			color: $primary-grey;
+			color: var(--primary-grey);
 			position: relative;
 			z-index: 1;
 

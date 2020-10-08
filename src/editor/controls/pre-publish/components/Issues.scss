@@ -34,7 +34,7 @@
 
 		& > .message {
 			padding-left: 70px;
-			color: $primary-grey;
+			color: var(--primary-grey);
 			margin-bottom: 15px;
 
 			h3 {

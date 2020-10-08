@@ -4,7 +4,7 @@
 	padding: 1.875rem;
 
 	.description {
-		color: $primary-grey;
+		color: var(--primary-grey);
 	}
 
 	.messages {
@@ -34,7 +34,7 @@
 		label {
 			margin-right: 0.5rem;
 			font-size: 0.875rem;
-			color: $primary-grey;
+			color: var(--primary-grey);
 		}
 
 		input {

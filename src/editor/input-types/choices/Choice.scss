@@ -59,7 +59,7 @@
 	.nti-rich-text, .nti-buffered-text-editor {
 		position: static;
 		font: normal 400 0.875rem/2.5 $body-font-family;
-		color: $primary-grey;
+		color: var(--primary-grey);
 		background-color: inherit;
 		border: none;
 		width: 100%;
@@ -91,7 +91,7 @@
 	input:not(.nti-text-input) {
 		background: none;
 		font: normal 400 0.875rem/2.5 $body-font-family;
-		color: $primary-grey;
+		color: var(--primary-grey);
 		border: none;
 		width: 100%;
 		padding: 0 0.2rem;

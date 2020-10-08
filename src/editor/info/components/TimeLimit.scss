@@ -13,7 +13,7 @@ body > .fly-wrapper > .flyout.assignment-option-flyout {
 .flyout.assignment-option-flyout {
 
 	.time-limit-editor {
-		color: $primary-grey;
+		color: var(--primary-grey);
 		padding: rem-calc(10px 15px 15px);
 		font-size: .875rem;
 		position: relative;

@@ -9,7 +9,7 @@
 		position: relative;
 
 		select {
-			color: $primary-grey;
+			color: var(--primary-grey);
 			appearance: none;
 			border-radius: rem-calc(2px);
 			background-color: white;

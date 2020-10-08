@@ -30,7 +30,7 @@
 	}
 
 	input {
-		color: $primary-grey;
+		color: var(--primary-grey);
 		font-size: rem-calc(13px);
 		width: 100%;
 	}

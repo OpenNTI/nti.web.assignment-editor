@@ -13,7 +13,7 @@
 		flex: 0 1 50%;
 		box-shadow: inset 0 0 0 1px #e8e8e8;
 		text-align: center;
-		color: $primary-grey;
+		color: var(--primary-grey);
 
 		&.active {
 			box-shadow: none;
