@@ -7,7 +7,7 @@
 	flex-direction: row;
 
 	.nti-button, .nti-button.primary {
-		background: $primary-green;
+		background: var(--primary-green);
 		font-weight: 400;
 		margin-right: 0.5rem;
 		flex: 0 0 auto;
