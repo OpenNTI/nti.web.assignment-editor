@@ -23,7 +23,7 @@
 	.add-choice {
 		background-color: white;
 		font: normal 400 0.875rem/40px $body-font-family;
-		color: $secondary-grey;
+		color: var(--secondary-grey);
 		padding: rem-calc(0 10px);
 		margin: rem-calc(0 15px);
 		border: 1px solid $border-grey-light;

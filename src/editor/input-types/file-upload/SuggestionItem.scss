@@ -18,7 +18,7 @@
 			color: $border-blue;
 		}
 		&.dismiss {
-			color: $secondary-grey;
+			color: var(--secondary-grey);
 		}
 	}
 }

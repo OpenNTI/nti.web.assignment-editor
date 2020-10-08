@@ -1,7 +1,7 @@
 @import "~@nti/style-common";
 
 .action-stack-item {
-	background: $secondary-grey;
+	background: var(--secondary-grey);
 	color: white;
 	font: normal 400 0.75rem/2.5rem $body-font-family;
 	padding: 0 0.75rem;

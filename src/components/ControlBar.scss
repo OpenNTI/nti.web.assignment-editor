@@ -8,7 +8,7 @@
 
 	.message {
 		flex: 1 1 auto;
-		color: $secondary-grey;
+		color: var(--secondary-grey);
 
 		i, span {
 			display: inline-block;

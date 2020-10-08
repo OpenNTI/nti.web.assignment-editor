@@ -19,7 +19,7 @@
 			cursor: pointer;
 
 			&:hover {
-				color: $secondary-grey;
+				color: var(--secondary-grey);
 			}
 		}
 
@@ -45,7 +45,7 @@
 
 			.content {
 				font-size: 0.875rem;
-				color: $secondary-grey;
+				color: var(--secondary-grey);
 				margin-bottom: 0.625rem;
 			}
 

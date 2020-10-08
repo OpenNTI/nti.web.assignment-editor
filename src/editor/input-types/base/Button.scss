@@ -35,7 +35,7 @@
 	}
 
 	.label,.used {
-		color: $secondary-grey;
+		color: var(--secondary-grey);
 		text-transform: uppercase;
 		font-size: rem-calc(10px);
 		line-height: 1.4;

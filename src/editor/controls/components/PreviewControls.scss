@@ -12,7 +12,7 @@ $trigger-height: 2.4375rem;
 
 	.preview-trigger-text {
 		font-size: 0.875rem;
-		color: $secondary-grey;
+		color: var(--secondary-grey);
 		font-weight: 400;
 		font-family: $body-font-family;
 		margin-left: 2rem;
@@ -23,6 +23,6 @@ $trigger-height: 2.4375rem;
 		top: 10px;
 		left: 10px;
 		position: absolute;
-		color: $secondary-grey;
+		color: var(--secondary-grey);
 	}
 }

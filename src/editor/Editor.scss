@@ -42,7 +42,7 @@
 
 		.show-options.toggle {
 			font: normal 500 0.875rem/1 $body-font-family;
-			color: $secondary-grey;
+			color: var(--secondary-grey);
 			width: rem-calc(103px);
 			box-shadow: 0 0 0 1px $border-grey-light;
 			border-radius: 2px;
