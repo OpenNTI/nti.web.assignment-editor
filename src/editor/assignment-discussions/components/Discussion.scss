@@ -1,7 +1,7 @@
 @import "~@nti/style-common";
 
 .discussion-assignment-item {
-	background: $quad-grey;
+	background: var(--quad-grey);
 	height: 220px;
 	box-shadow: 0 0 0 1px $border-grey-light;
 
