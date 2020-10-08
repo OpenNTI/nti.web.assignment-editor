@@ -15,7 +15,7 @@
 		padding-left: 15px;
 
 		&.add {
-			color: $border-blue;
+			color: var(--border-blue);
 		}
 		&.dismiss {
 			color: var(--secondary-grey);
