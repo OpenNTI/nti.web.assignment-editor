@@ -90,7 +90,7 @@
 
 
 		&.error {
-			box-shadow: 0 0 1px 1px $border-red;
+			box-shadow: 0 0 1px 1px var(--border-red);
 		}
 
 		&.is-saving {
