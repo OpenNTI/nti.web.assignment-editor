@@ -24,7 +24,7 @@
 		flex: 0 0 auto;
 		line-height: rem-calc(38px);
 		font-weight: 600;
-		color: $tertiary-grey;
+		color: var(--tertiary-grey);
 		opacity: 1;
 		transition: opacity 50ms;
 		cursor: pointer;

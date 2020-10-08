@@ -5,7 +5,7 @@
 	max-width: 800px;
 	background: white;
 	padding: 0;
-	border: 1px solid $tertiary-grey;
+	border: 1px solid var(--tertiary-grey);
 	.titlebar {
 		position: relative;
 		padding: .75rem 1.25rem;
@@ -19,7 +19,7 @@
 			top: 0.5rem;
 			right: 1rem;
 			font-size: 1.75rem;
-			color: $tertiary-grey;
+			color: var(--tertiary-grey);
 		}
 	}
 	.token-editor {

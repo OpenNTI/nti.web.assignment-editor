@@ -3,13 +3,13 @@
 .file-upload.assignment-editing {
 	padding: rem-calc(32px) rem-calc(32px) 1rem;
 	text-align: center;
-	color: $tertiary-grey;
+	color: var(--tertiary-grey);
 
 	.upload-button {
 		font-style: italic;
 		transition: color 50ms;
 		color: white;
-		background: $tertiary-grey;
+		background: var(--tertiary-grey);
 		border-radius: .25rem;
 		margin: 1rem;
 		display: inline-block;

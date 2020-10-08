@@ -140,7 +140,7 @@
 		flex: 0 0 auto;
 		padding-right: 6px;
 		font: normal 400 0.875rem/1.25rem $body-font-family;
-		color: $tertiary-grey;
+		color: var(--tertiary-grey);
 		transition: opacity 500ms;
 		opacity: 1;
 

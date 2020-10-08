@@ -3,7 +3,7 @@
 .assignment-navigation-bar-status-submission-grade {
 	.grade-label {
 		font: normal 600 0.625rem/1.4 $body-font-family;
-		color: $tertiary-grey;
+		color: var(--tertiary-grey);
 		text-transform: uppercase;
 	}
 

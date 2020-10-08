@@ -94,12 +94,12 @@
 			.answers {
 				min-height: 2.375rem;
 				background: white;
-				border: 1px solid $tertiary-grey;
+				border: 1px solid var(--tertiary-grey);
 
 				.answer {
 					min-height: 2.375rem;
 					position: relative;
-					border: 0 solid $tertiary-grey;
+					border: 0 solid var(--tertiary-grey);
 					border-bottom-width: 1px;
 
 					&:last-of-type {
