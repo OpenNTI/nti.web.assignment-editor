@@ -6,7 +6,7 @@
 	margin: auto;
 
 	.inner {
-		background: $panel-background;
+		background: var(--panel-background);
 		padding: 20px 20px 30px;
 		position: relative;
 
