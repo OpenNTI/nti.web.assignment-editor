@@ -38,7 +38,7 @@
 
 	.message {
 		flex: 1 1 auto;
-		font: normal 400 0.875rem/1.25rem $body-font-family;
+		font: normal 400 0.875rem/1.25rem var(--body-font-family);
 		display: none;
 
 		.disclosure {

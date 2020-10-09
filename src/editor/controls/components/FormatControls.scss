@@ -12,7 +12,7 @@
 	.icon-blockquote {
 		font-size: 14px;
 		font-weight: 700;
-		font-family: 'Open Sans' !important;
+		font-family: var(--body-font-family) !important;
 
 		&::before {
 			content: '""';
@@ -22,7 +22,7 @@
 	.icon-code-block {
 		font-size: 14px;
 		font-weight: 700;
-		font-family: 'Open Sans' !important;
+		font-family: var(--body-font-family) !important;
 
 		&::before {
 			content: '{}';

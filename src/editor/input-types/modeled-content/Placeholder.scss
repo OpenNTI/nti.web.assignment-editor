@@ -2,7 +2,7 @@
 
 .assignment-textinput-placeholder {
 	border: 1px solid var(--border-grey-light);
-	font: italic 400 0.875rem/1rem $body-font-family;
+	font: italic 400 0.875rem/1rem var(--body-font-family);
 	transition: color 50ms;
 	color: var(--tertiary-grey);
 	padding: 10px 14px;

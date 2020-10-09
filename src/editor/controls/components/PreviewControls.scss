@@ -14,7 +14,7 @@ $trigger-height: 2.4375rem;
 		font-size: 0.875rem;
 		color: var(--secondary-grey);
 		font-weight: 400;
-		font-family: $body-font-family;
+		font-family: var(--body-font-family);
 		margin-left: 2rem;
 		padding-right: .9rem;
 	}

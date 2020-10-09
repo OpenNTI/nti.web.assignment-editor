@@ -3,7 +3,7 @@
 .action-stack-item {
 	background: var(--secondary-grey);
 	color: white;
-	font: normal 400 0.75rem/2.5rem $body-font-family;
+	font: normal 400 0.75rem/2.5rem var(--body-font-family);
 	padding: 0 0.75rem;
 	border-radius: 3px;
 

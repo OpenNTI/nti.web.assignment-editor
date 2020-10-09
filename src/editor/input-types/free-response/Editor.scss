@@ -2,7 +2,7 @@
 
 .free-response-editor {
 	.disclaimer {
-		font: normal 400 0.875rem/1rem $body-font-family;
+		font: normal 400 0.875rem/1rem var(--body-font-family);
 		transition: color 50ms;
 		color: var(--secondary-grey);
 		margin-bottom: rem-calc(5px);
