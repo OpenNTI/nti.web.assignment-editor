@@ -48,7 +48,7 @@
 		}
 
 		.detach {
-			color: $primary-purple;
+			color: var(--primary-purple);
 			cursor: pointer;
 
 			&:hover {

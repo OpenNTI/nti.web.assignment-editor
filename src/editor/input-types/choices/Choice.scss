@@ -48,10 +48,10 @@
 	}
 
 	&.correct {
-		background-color: $light-green;
-		border: 1px solid $border-green-light;
+		background-color: var(--light-green);
+		border: 1px solid var(--border-green-light);
 		&.selected {
-			border-color: $border-green-dark;
+			border-color: var(--border-green-dark);
 		}
 	}
 
