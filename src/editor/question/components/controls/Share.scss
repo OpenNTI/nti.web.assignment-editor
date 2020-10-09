@@ -1,7 +1,7 @@
 @import "~@nti/style-common";
 
 .share-control-list-item {
-	font: normal 400 0.875rem/1.25rem $body-font-family;
-	color: $primary-grey;
+	font: normal 400 0.875rem/1.25rem var(--body-font-family);
+	color: var(--primary-grey);
 	cursor: pointer;
 }

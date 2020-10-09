@@ -4,11 +4,11 @@
 	min-height: 400px;
 
 	.empty-message {
-		font: normal 100 2rem $body-font-family;
+		font: normal 100 2rem var(--body-font-family);
 		font-size: rem-calc(32px);
 		padding: rem-calc(20px);
 		width: 70%;
-		color: $tertiary-grey;
+		color: var(--tertiary-grey);
 		margin: auto;
 		text-align: center;
 		padding-top: rem-calc(40px);

@@ -2,7 +2,7 @@
 
 .input-type-choice {
 	position: relative;
-	border: 1px solid $border-grey-light;
+	border: 1px solid var(--border-grey-light);
 	background-color: white;
 	display: flex;
 	padding: 0 rem-calc(9px);
@@ -24,42 +24,42 @@
 		flex: 0 0 auto;
 		line-height: rem-calc(38px);
 		font-weight: 600;
-		color: $tertiary-grey;
+		color: var(--tertiary-grey);
 		opacity: 1;
 		transition: opacity 50ms;
 		cursor: pointer;
 
 		&:hover {
-			color: $secondary-grey;
+			color: var(--secondary-grey);
 		}
 	}
 
 
 	&.error {
-		border: 1px solid rgba($primary-red, .6);
+		border: 1px solid rgba(var(--primary-red), .6);
 
 		&.selected {
-			border-color: $primary-red;
+			border-color: var(--primary-red);
 		}
 	}
 
 	&.selected {
-		border-color: $border-grey;
+		border-color: var(--border-grey);
 	}
 
 	&.correct {
-		background-color: $light-green;
-		border: 1px solid $border-green-light;
+		background-color: var(--light-green);
+		border: 1px solid var(--border-green-light);
 		&.selected {
-			border-color: $border-green-dark;
+			border-color: var(--border-green-dark);
 		}
 	}
 
 
 	.nti-rich-text, .nti-buffered-text-editor {
 		position: static;
-		font: normal 400 0.875rem/2.5 $body-font-family;
-		color: $primary-grey;
+		font: normal 400 0.875rem/2.5 var(--body-font-family);
+		color: var(--primary-grey);
 		background-color: inherit;
 		border: none;
 		width: 100%;
@@ -90,8 +90,8 @@
 
 	input:not(.nti-text-input) {
 		background: none;
-		font: normal 400 0.875rem/2.5 $body-font-family;
-		color: $primary-grey;
+		font: normal 400 0.875rem/2.5 var(--body-font-family);
+		color: var(--primary-grey);
 		border: none;
 		width: 100%;
 		padding: 0 0.2rem;
@@ -114,7 +114,7 @@
 	pointer-events: none;
 
 	.placeholder-text {
-		background-color: $border-grey-light;
+		background-color: var(--border-grey-light);
 		flex: 1 1 100%;
 		margin: rem-calc(13px 10px 13px 31px);
 		opacity: 0.7
@@ -122,7 +122,7 @@
 
 	&.correct {
 		.placeholder-text {
-			background-color: $primary-green;
+			background-color: var(--primary-green);
 			opacity: 0.3;
 		}
 	}

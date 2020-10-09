@@ -39,7 +39,7 @@
 		margin-bottom: .625rem;
 		font-size: .875rem;
 		font-weight: 600;
-		color: #494949;
+		color: var(--primary-grey);
 	}
 
 	.options {
@@ -52,11 +52,11 @@
 		p, span {
 			margin: 0;
 			font-size: .875rem;
-			color: #757474;
+			color: var(--secondary-grey);
 		}
 
 		p.error {
-			color: $primary-red;
+			color: var(--primary-red);
 			margin-top: 0.5em;
 
 			i {

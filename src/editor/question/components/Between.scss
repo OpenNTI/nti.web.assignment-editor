@@ -22,8 +22,8 @@
 			content: '';
 			display: block;
 			height: 1px;
-			border: 1px solid $primary-blue;
-			background: $primary-blue;
+			border: 1px solid var(--primary-blue);
+			background: var(--primary-blue);
 			margin-top: 14px;
 		}
 	}

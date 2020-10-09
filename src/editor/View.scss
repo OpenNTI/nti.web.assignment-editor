@@ -4,7 +4,7 @@
 	max-width: rem-calc(1024px);
 	min-height: rem-calc(400px);
 	margin: 0 auto;
-	font-family: $body-font-family;
+	font-family: var(--body-font-family);
 
 	&, * {
 		box-sizing: border-box;

@@ -2,7 +2,7 @@
 
 .assignment-info {
 	overflow: hidden;
-	background: $border-grey-light;
+	background: var(--border-grey-light);
 	padding-bottom: 1px;
 	display: flex;
 	min-height: 50px;
@@ -30,7 +30,7 @@
 	}
 
 	input {
-		color: $primary-grey;
+		color: var(--primary-grey);
 		font-size: rem-calc(13px);
 		width: 100%;
 	}

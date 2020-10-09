@@ -4,7 +4,7 @@
 	list-style: none;
 	margin: 0;
 	padding: 0.625rem 17px;//to match the breadcrumb from the webapp
-	border-bottom: 1px solid $border-grey-light;
+	border-bottom: 1px solid var(--border-grey-light);
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: row;
@@ -22,7 +22,7 @@
 		i {
 			display: inline-block;
 			vertical-align: middle;
-			color: $primary-blue;
+			color: var(--primary-blue);
 
 			&.icon-star-outline {
 				font-size: 1.125rem;
@@ -32,8 +32,8 @@
 		span {
 			display: inline-block;
 			vertical-align: middle;
-			font: normal 400 0.875rem/1.3 $body-font-family;
-			color: $secondary-grey;
+			font: normal 400 0.875rem/1.3 var(--body-font-family);
+			color: var(--secondary-grey);
 		}
 	}
 
@@ -41,7 +41,7 @@
 	&.has-submission {
 		li {
 			i, b {
-				color: $secondary-grey;
+				color: var(--secondary-grey);
 			}
 		}
 	}
@@ -49,7 +49,7 @@
 	.passing-score {
 		&.failed {
 			i, .percentage {
-				color: $primary-red;
+				color: var(--primary-red);
 			}
 		}
 	}
@@ -57,7 +57,7 @@
 	.attempt-info {
 		b {
 			font-weight: 600;
-			color: $primary-blue;
+			color: var(--primary-blue);
 		}
 	}
 }

@@ -8,8 +8,8 @@
 			.publish-reset-label {
 				display: block;
 				font-size: 0.875rem;
-				color: #494949;
-				font-family: "Open Sans", sans-serif;
+				color: var(--primary-grey);
+				font-family: var(--body-font-family);
 				margin: 0 1.25rem 0.25rem 0;
 			}
 
@@ -17,7 +17,7 @@
 				display: block;
 				font-size: 0.75rem;
 				line-height: 1.3;
-				color: #757474;
+				color: var(--secondary-grey);
 				margin: 0 1.25rem 1.25rem 0;
 			}
 
@@ -30,7 +30,7 @@
 				line-height: 2rem;
 				font-weight: 100;
 				font-size: 0.875rem;
-				background-color: #f35252;
+				background-color: var(--primary-red);
 				width: 140px;
 				cursor: pointer;
 			}

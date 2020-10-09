@@ -1,6 +1,6 @@
 @import "~@nti/style-common";
 
 .question-editor-parts {
-	background: $panel-background;
-	border-top: 1px solid $border-grey-light;
+	background: var(--panel-background);
+	border-top: 1px solid var(--border-grey-light);
 }

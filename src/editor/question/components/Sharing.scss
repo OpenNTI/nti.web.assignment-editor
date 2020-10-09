@@ -38,17 +38,17 @@
 
 	.message {
 		flex: 1 1 auto;
-		font: normal 400 0.875rem/1.25rem $body-font-family;
+		font: normal 400 0.875rem/1.25rem var(--body-font-family);
 		display: none;
 
 		.disclosure {
 			margin-right: 10px;
 			display: none;
-			color: $primary-grey;
+			color: var(--primary-grey);
 		}
 
 		.detach {
-			color: $primary-purple;
+			color: var(--primary-purple);
 			cursor: pointer;
 
 			&:hover {

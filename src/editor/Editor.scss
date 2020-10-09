@@ -41,10 +41,10 @@
 		}
 
 		.show-options.toggle {
-			font: normal 500 0.875rem/1 $body-font-family;
-			color: $secondary-grey;
+			font: normal 500 0.875rem/1 var(--body-font-family);
+			color: var(--secondary-grey);
 			width: rem-calc(103px);
-			box-shadow: 0 0 0 1px $border-grey-light;
+			box-shadow: 0 0 0 1px var(--border-grey-light);
 			border-radius: 2px;
 			background: white;
 			padding: rem-calc(11px 0);
@@ -69,7 +69,7 @@
 			width: 103px;
 			height: 38px;
 			border-radius: 2px;
-			background-color: $primary-blue;
+			background-color: var(--primary-blue);
 			text-align: center;
 			color: white;
 			line-height: 38px;

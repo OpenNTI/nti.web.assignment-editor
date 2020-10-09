@@ -46,7 +46,7 @@
 				}
 
 				.nti-error {
-					background-color: $panel-background;
+					background-color: var(--panel-background);
 				}
 
 				.visible-disclaimer {
@@ -55,10 +55,10 @@
 					bottom: 100%;
 					left: -1px; right: -1px;
 					margin-bottom: 20px;
-					background-color: $transparent-dark-background;
+					background-color: var(--transparent-dark-background);
 					color: white;
 					padding: 0.625rem 0.9375rem;
-					font: normal 300 0.875rem/1.25rem $body-font-family;
+					font: normal 300 0.875rem/1.25rem var(--body-font-family);
 				}
 			}
 
@@ -84,13 +84,13 @@
 		& > *:last-child { border-radius: 0 0 2px 2px; }
 
 		&.selected {
-			border-color: $border-grey;
+			border-color: var(--border-grey);
 			box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.25);
 		}
 
 
 		&.error {
-			box-shadow: 0 0 1px 1px $border-red;
+			box-shadow: 0 0 1px 1px var(--border-red);
 		}
 
 		&.is-saving {
@@ -139,8 +139,8 @@
 	.index {
 		flex: 0 0 auto;
 		padding-right: 6px;
-		font: normal 400 0.875rem/1.25rem $body-font-family;
-		color: $tertiary-grey;
+		font: normal 400 0.875rem/1.25rem var(--body-font-family);
+		color: var(--tertiary-grey);
 		transition: opacity 500ms;
 		opacity: 1;
 
@@ -185,7 +185,7 @@
 .assignment-editing-question-container.placeholder {
 	.wrap > .placeholder-text {
 		flex: 1 1 auto;
-		background-color: $border-grey-light;
+		background-color: var(--border-grey-light);
 		margin: rem-calc(4px 14px 4px 0);
 	}
 }

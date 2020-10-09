@@ -5,16 +5,16 @@ $trigger-height: 2.4375rem;
 	height: $trigger-height;
 	line-height: 2.125rem;
 	border-radius: 0.25rem;
-	border: 1px solid #d1d1d1;
+	border: 1px solid var(--tertiary-grey-alt);
 	cursor: pointer;
 	position: relative;
 	margin-right: 18em;
 
 	.preview-trigger-text {
 		font-size: 0.875rem;
-		color: $secondary-grey;
+		color: var(--secondary-grey);
 		font-weight: 400;
-		font-family: $body-font-family;
+		font-family: var(--body-font-family);
 		margin-left: 2rem;
 		padding-right: .9rem;
 	}
@@ -23,6 +23,6 @@ $trigger-height: 2.4375rem;
 		top: 10px;
 		left: 10px;
 		position: absolute;
-		color: $secondary-grey;
+		color: var(--secondary-grey);
 	}
 }

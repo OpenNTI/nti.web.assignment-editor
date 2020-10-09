@@ -1,16 +1,16 @@
 @import "~@nti/style-common";
 
 .discussion-assignment-item {
-	background: $quad-grey;
+	background: var(--quad-grey);
 	height: 220px;
-	box-shadow: 0 0 0 1px $border-grey-light;
+	box-shadow: 0 0 0 1px var(--border-grey-light);
 
 	&.selectable {
 		cursor: pointer;
 	}
 
 	&.selected {
-		box-shadow: 0 0 1px 1px $border-blue;
+		box-shadow: 0 0 1px 1px var(--border-blue);
 	}
 
 	.icon {
@@ -22,7 +22,7 @@
 
 	.title {
 		padding: rem-calc(8px);
-		font: normal 300 1.5rem/1 $header-font-family;
-		color: $primary-grey;
+		font: normal 300 1.5rem/1 var(--header-font-family);
+		color: var(--primary-grey);
 	}
 }

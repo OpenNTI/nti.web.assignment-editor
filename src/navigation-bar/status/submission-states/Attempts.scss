@@ -7,15 +7,15 @@
 	flex-direction: row;
 
 	.nti-button, .nti-button.primary {
-		background: $primary-green;
+		background: var(--primary-green);
 		font-weight: 400;
 		margin-right: 0.5rem;
 		flex: 0 0 auto;
 	}
 
 	.remaining {
-		font: normal 400 0.875rem/1.3 $body-font-family;
-		color: $secondary-grey;
+		font: normal 400 0.875rem/1.3 var(--body-font-family);
+		color: var(--secondary-grey);
 		flex: 0 0 auto;
 	}
 }

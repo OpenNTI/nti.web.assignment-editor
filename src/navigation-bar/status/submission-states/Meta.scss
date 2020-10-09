@@ -4,19 +4,19 @@
 .assignment-navigation-bar-status-submission-meta {
 	//override mobile global styles
 	&, & ul {
-		font: normal 600 0.625rem/1.3 $body-font-family;
+		font: normal 600 0.625rem/1.3 var(--body-font-family);
 	}
 	text-transform: uppercase;
-	color: $tertiary-grey;
+	color: var(--tertiary-grey);
 
 	.not-submitted {
 		.bold {
-			color: $primary-red;
+			color: var(--primary-red);
 		}
 	}
 
 	.badges {
-		color: $primary-red;
+		color: var(--primary-red);
 		margin-right: 0.3rem;
 
 		&:emtpy {

@@ -15,15 +15,15 @@
 		padding-left: 15px;
 
 		&.add {
-			color: $border-blue;
+			color: var(--border-blue);
 		}
 		&.dismiss {
-			color: $secondary-grey;
+			color: var(--secondary-grey);
 		}
 	}
 }
 .suggestions .value {
-	color: $primary-grey;
+	color: var(--primary-grey);
 	font-size: 16px;
 	font-weight: bold;
 }

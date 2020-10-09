@@ -5,21 +5,21 @@
 	max-width: 800px;
 	background: white;
 	padding: 0;
-	border: 1px solid $tertiary-grey;
+	border: 1px solid var(--tertiary-grey);
 	.titlebar {
 		position: relative;
 		padding: .75rem 1.25rem;
 		.title {
 			font-size: 1.1rem;
 			font-weight: 200;
-			color: $primary-grey;
+			color: var(--primary-grey);
 		}
 		i {
 			position: absolute;
 			top: 0.5rem;
 			right: 1rem;
 			font-size: 1.75rem;
-			color: $tertiary-grey;
+			color: var(--tertiary-grey);
 		}
 	}
 	.token-editor {
@@ -27,8 +27,8 @@
 	}
 	.content {
 		padding: 1.25rem;
-		background: $panel-background;
-		border-top: 1px solid $border-grey-light;
+		background: var(--panel-background);
+		border-top: 1px solid var(--border-grey-light);
 		font-size: .875rem;
 		line-height: 2;
 	}

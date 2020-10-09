@@ -9,7 +9,7 @@
 
 	&.wide {
 		padding: 1.625rem 17px;//to match the breadcrumb from the webapp
-		border-bottom: 1px solid $border-grey-light;
+		border-bottom: 1px solid var(--border-grey-light);
 		display: grid;
 		grid-template-columns: 40px 1fr 100px;
 		grid-template-rows: auto auto auto;
@@ -50,7 +50,7 @@
 	&.narrow {
 		padding: 1rem;
 		margin-bottom: 4.5rem;
-		border-bottom: 1px solid $border-grey-light;
+		border-bottom: 1px solid var(--border-grey-light);
 		position: relative;
 		display: grid;
 		grid-template-columns: 40px 1fr;
