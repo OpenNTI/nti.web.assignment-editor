@@ -34,9 +34,8 @@
 		}
 	}
 
-
 	&.error {
-		border: 1px solid rgba(var(--primary-red), .6);
+		border: 1px solid rgba(var(--primary-red-rgb), 0.6);
 
 		&.selected {
 			border-color: var(--primary-red);
@@ -50,11 +49,11 @@
 	&.correct {
 		background-color: var(--light-green);
 		border: 1px solid var(--border-green-light);
+
 		&.selected {
 			border-color: var(--border-green-dark);
 		}
 	}
-
 
 	.nti-rich-text, .nti-buffered-text-editor {
 		position: static;
@@ -87,7 +86,6 @@
 		margin-top: -1rem;
 	}
 
-
 	input:not(.nti-text-input) {
 		background: none;
 		font: normal 400 0.875rem/2.5 var(--body-font-family);
@@ -117,7 +115,7 @@
 		background-color: var(--border-grey-light);
 		flex: 1 1 100%;
 		margin: rem-calc(13px 10px 13px 31px);
-		opacity: 0.7
+		opacity: 0.7;
 	}
 
 	&.correct {
