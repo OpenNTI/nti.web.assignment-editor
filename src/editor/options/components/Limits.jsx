@@ -10,7 +10,7 @@ import OptionGroup from './OptionGroup';
 import Option from './Option';
 
 const LIMIT_NONE = 'limit-none';
-const LIMIT_PORTION = 'limit-porition';
+const LIMIT_PORTION = 'limit-portion';
 
 const DEFAULT_TEXT = {
 	content: 'Setting a max number of questions will result in unique quizzes with randomly chosen questions for every student.',
@@ -51,33 +51,29 @@ class Limits extends React.Component {
 
 	setupValue (props = this.props) {
 		//eslint-disable-next-line react/no-direct-mutation-state
-		const setState = s => this.state ? this.setState(s) : (this.state = s);
+		const setState = (s,cb) => this.state ? this.setState(s, cb) : (this.state = s, cb());
 		const {questionSet} = props;
 		const {draw} = questionSet || {};
 
-		setState({
+		return new Promise(resolve => setState({
 			draw: (typeof draw === 'number' ? draw : 0) || null
-		});
+		}, () => resolve()));
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		const {questionSet:current} = this.props;
-		const {questionSet:next} = nextProps;
+	async componentDidUpdate (prevProps, prevState) {
+		const { questionSet:prev } = prevProps;
+		const { questionSet } = this.props;
 
-		if (current !== next) {
-			this.setupValue(nextProps);
+		if (questionSet !== prev) {
+			await this.setupValue();
 		}
-	}
 
-
-	componentDidUpdate (_, prevState) {
-		const {questionSet} = this.props;
 		const prevValue = prevState.draw || null;
 		const value = this.state.draw || null;
 
 		//draw changed, but the questionSet is the same.
-		if (value !== prevValue && questionSet === _.questionSet) {
+		if (value !== prevValue && questionSet === prev) {
 			clearTimeout(this.saveDelay);
 			this.saveDelay = setTimeout(this.save, 500);
 		}
@@ -110,7 +106,7 @@ class Limits extends React.Component {
 
 
 	/**
-	 * Upon clicking the porition checkbox, set it as checked.
+	 * Upon clicking the portion checkbox, set it as checked.
 	 * @returns {void}
 	 */
 	onLimitSelect = () => {
@@ -129,31 +125,31 @@ class Limits extends React.Component {
 
 	save = () => {
 		clearTimeout(this.saveDelay);
-		const {props: {questionSet:qset}, state: {draw}} = this;
+		const {props: {questionSet}, state: {draw}} = this;
 		const value = draw || null;
 
-		const afterOthers = () => (this.busy || Promise.resolve()).catch(()=>{}); // the .catch(()=>{}) prevents rejections from interuppting the chain
+		const afterOthers = () => (this.busy || Promise.resolve()).catch(()=>{}); // the .catch(()=>{}) prevents rejections from interrupting the chain
 
 		let work;
-		if (qset.draw !== value) {
-			work = afterOthers().then(() => qset.setQuestionLimit(value));
+		if (questionSet.draw !== value) {
+			work = afterOthers().then(() => questionSet.setQuestionLimit(value));
 		}
 
 		if (work) {
 			const clearBusy = () => work === this.busy && delete this.busy;
 			work = this.busy = work
-				.catch(maybeResetAssignmentOnError(qset))
-				.catch(() => this.setState({draw: qset.draw}))
+				.catch(maybeResetAssignmentOnError(questionSet))
+				.catch(() => this.setState({draw: questionSet.draw}))
 				.then(clearBusy);
 		}
 	}
 
 
-	disabledText (qset) {
-		if(!qset || qset.questions.length === 0) {
+	disabledText (questionSet) {
+		if(!questionSet || questionSet.questions.length === 0) {
 			return t('disabledNoQuestions');
 		}
-		if(qset.LimitedEditingCapabilities) {
+		if(questionSet.LimitedEditingCapabilities) {
 			return t('disabledLimitedEdit');
 		}
 		return t('disabled');

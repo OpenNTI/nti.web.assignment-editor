@@ -20,22 +20,22 @@ export default class Settings extends React.Component {
 		part: PropTypes.object.isRequired
 	}
 
-	state = {}
-
-	componentWillMount () {
-		this.setup();
+	constructor (props) {
+		super(props);
+		this.state = this.setup();
 	}
 
-	componentWillReceiveProps (nextProps) {
-		if (nextProps.part !== this.props.part) {
-			this.setup(nextProps);
+	componentDidUpdate (prevProps) {
+		if (prevProps.part !== this.props.part) {
+			this.setup();
 		}
 	}
 
 	setup (props = this.props) {
+		const setState = this.state ? x => this.setState(x) : x => x;
 		const {part} = props;
 		const extensions = part.allowed_extensions || [];
-		this.setState({
+		return setState({
 			extensions: extensions.filter(WILDCARDS),
 			selectedRadio: extensions.filter(WILDCARDS).length > 0 ? SPECIFIC_TYPES : ALL_TYPES
 		});

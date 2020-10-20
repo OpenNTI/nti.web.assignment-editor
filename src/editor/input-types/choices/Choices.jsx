@@ -113,9 +113,9 @@ export default class Choices extends React.Component {
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		const {choices:newChoices, error:newError, minAllowed} = nextProps;
-		const {choices:oldChoices, error:oldError} = this.props;
+	componentDidUpdate (prevProps) {
+		const {choices:newChoices, error:newError, minAllowed} = this.props;
+		const {choices:oldChoices, error:oldError} = prevProps;
 		const {columns, deletes} = this.mapColumns(newChoices, minAllowed);
 		let state = null;
 

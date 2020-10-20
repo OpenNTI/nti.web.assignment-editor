@@ -36,9 +36,9 @@ export default class MultipleChoiceChoice extends React.Component {
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		const {choice:newChoice} = nextProps;
-		const {choice:oldChoice} = this.props;
+	componentDidUpdate (prevProps) {
+		const {choice:newChoice} = this.props;
+		const {choice:oldChoice} = prevProps;
 
 		if (newChoice !== oldChoice) {
 			this.setState({

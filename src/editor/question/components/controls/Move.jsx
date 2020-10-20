@@ -62,15 +62,15 @@ export default class Move extends React.Component {
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		this.setup(nextProps);
+	componentDidUpdate () {
+		this.setup(this.props);
 	}
 
 
 	setup (props) {
 		//eslint-disable-next-line react/no-direct-mutation-state
 		const setState = x => this.state ? this.setState(x) : (this.state = x);
-		const {questionSet, question, type, disabled} = props;
+		const {questionSet, question, type, disabled: isDisabled} = props;
 
 		if (questionSet && questionSet.hasLink('AssessmentMove')) {
 			this.moveRoot = new Authoring.MoveRoot(questionSet, 'AssessmentMove');
@@ -78,10 +78,12 @@ export default class Move extends React.Component {
 			delete this.moveRoot;
 		}
 
-		setState({
-			index: getIndexOf(question, questionSet),
-			disabled: disabled || shouldDisable(type, question, questionSet)
-		});
+		const index = getIndexOf(question, questionSet);
+		const disabled = isDisabled || shouldDisable(type, question, questionSet);
+
+		if (index !== this.state?.index || disabled !== this.state?.disabled) {
+			setState({ index, disabled });
+		}
 	}
 
 

@@ -27,9 +27,9 @@ export default class MultipleChoiceMultipleAnswerEditor extends React.Component 
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		const {error:newError} = nextProps;
-		const {error:oldError} = this.props;
+	componentDidUpdate (prevProps) {
+		const {error:newError} = this.props;
+		const {error:oldError} = prevProps;
 
 		if (newError !== oldError) {
 			this.setState({
@@ -44,7 +44,7 @@ export default class MultipleChoiceMultipleAnswerEditor extends React.Component 
 		const mimeType = part && part.MimeType;
 
 		if (!mimeType) {
-			//TOOD: see if we ever need to handle this case
+			//TODO: see if we ever need to handle this case
 		}
 
 		return generatePartFor(mimeType, content, choices, solutions);

@@ -17,10 +17,11 @@ export default class DragHandle extends React.Component {
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		const {disabled} = nextProps;
+	componentDidUpdate (prevProps) {
+		const {disabled} = this.props;
 		const {disableDrag} = this.context;
 
+		// if (!prevProps.disabled && disabled && disableDrag) ?
 		if (disabled && disableDrag) {
 			disableDrag();
 		}

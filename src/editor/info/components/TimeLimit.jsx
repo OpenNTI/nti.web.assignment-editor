@@ -34,9 +34,9 @@ class TimeLimit extends React.Component {
 
 	attachFlyoutRef = x => this.flyout = x
 
-	componentWillMount () {
-		this.setup();
-
+	constructor (props) {
+		super(props);
+		this.state = this.setup(props);
 		store.addChangeListener(this.onStoreChange);
 	}
 
@@ -45,9 +45,9 @@ class TimeLimit extends React.Component {
 		store.removeChangeListener(this.onStoreChange);
 	}
 
-	componentWillReceiveProps (nextProps) {
-		if (this.props.assignment !== nextProps.assignment) {
-			this.setup(nextProps);
+	componentDidUpdate (prevProps) {
+		if (this.props.assignment !== prevProps.assignment) {
+			this.setup();
 		}
 	}
 
@@ -61,10 +61,11 @@ class TimeLimit extends React.Component {
 	}
 
 	setup = (props = this.props) => {
+		const setState = this.state ? x => this.setState(x) : x => x;
 		const {assignment} = props;
 		const value = assignment[TIME_LIMIT_KEY] || 0;
 		const hasTimeLimit = assignment[TIME_LIMIT_KEY] != null;
-		this.setState({
+		return setState({
 			value,
 			hasTimeLimit,
 			changed: false

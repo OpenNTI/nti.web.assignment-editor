@@ -52,9 +52,9 @@ export default class OrderingEditor extends React.Component {
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		const {part:newPart, error:newError, keepStateHash:newStateHash} = nextProps;
-		const {part:oldPart, error:oldError, keepStateHash:oldStateHash} = this.props;
+	componentDidUpdate (prevProps) {
+		const {part:newPart, error:newError, keepStateHash:newStateHash} = this.props;
+		const {part:oldPart, error:oldError, keepStateHash:oldStateHash} = prevProps;
 		const {labels, values, solutions} = newPart;
 		let state = null;
 

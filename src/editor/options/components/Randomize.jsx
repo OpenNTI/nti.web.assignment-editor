@@ -46,9 +46,13 @@ class Randomize extends React.Component {
 		this.setupValue(props);
 	}
 
-	componentDidUpdate () {
-		const {questionSet: qset} = this.props;
-		const hasChanged = qset && ['isRandomized', 'isPartTypeRandomized'].some(x => qset[x] !== this.state[x]);
+	async componentDidUpdate (prevProps) {
+		const {questionSet} = this.props;
+		const hasChanged = questionSet && ['isRandomized', 'isPartTypeRandomized'].some(x => questionSet[x] !== this.state[x]);
+
+		if (this.props.questionSet !== prevProps.questionSet) {
+			await this.setupValue();
+		}
 
 		if (hasChanged) {
 			this.save();
@@ -56,24 +60,17 @@ class Randomize extends React.Component {
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		if (this.props.questionSet !== nextProps.questionSet) {
-			this.setupValue(nextProps);
-		}
-	}
-
-
 	save = () => {
-		const {questionSet: qset} = this.props;
+		const {questionSet} = this.props;
 		const updaters = {
-			isRandomized: () => qset.toggleRandomized(),
-			isPartTypeRandomized: () => qset.toggleRandomizedPartTypes()
+			isRandomized: () => questionSet.toggleRandomized(),
+			isPartTypeRandomized: () => questionSet.toggleRandomizedPartTypes()
 		};
 
 		for (let key of Object.keys(updaters)) {
-			if (qset[key] !== this.state[key]) {
+			if (questionSet[key] !== this.state[key]) {
 				updaters[key]()
-					.catch(maybeResetAssignmentOnError(qset))
+					.catch(maybeResetAssignmentOnError(questionSet))
 					.catch(error => {
 						this.setState({error});
 						this.setupValue();
@@ -85,14 +82,14 @@ class Randomize extends React.Component {
 
 	setupValue (props = this.props) {
 		//eslint-disable-next-line react/no-direct-mutation-state
-		const setState = s => this.state ? this.setState(s) : (this.state = s);
+		const setState = (s, cb) => this.state ? this.setState(s, cb) : (this.state = s, cb());
 		const {questionSet} = props;
 		const {isRandomized, isPartTypeRandomized} = questionSet || {};
 
-		setState({
+		return new Promise(resolve => setState({
 			isRandomized,
 			isPartTypeRandomized
-		});
+		}, resolve));
 	}
 
 
@@ -115,14 +112,14 @@ class Randomize extends React.Component {
 		}
 	}
 
-	disabledText (qset) {
-		if(!qset || qset.questions.length === 0) {
+	disabledText (questionSet) {
+		if(!questionSet || questionSet.questions.length === 0) {
 			return t('disabledNoQuestions');
 		}
-		if(qset.LimitedEditingCapabilities) {
+		if(questionSet.LimitedEditingCapabilities) {
 			return t('disabledLimitedEdit');
 		}
-		if(qset.draw) {
+		if(questionSet.draw) {
 			return t('disabledMaxLimit');
 		}
 		return t('disabled');
@@ -130,10 +127,10 @@ class Randomize extends React.Component {
 
 	render () {
 		const {isRandomized, isPartTypeRandomized, error} = this.state;
-		const {questionSet:qset} = this.props;
-		const editRand = qset && (qset.hasLink('Randomize') || qset.hasLink('Unrandomize'));
-		const editRandParts = qset && (qset.hasLink('RandomizePartsType') || qset.hasLink('UnrandomizePartsType'));
-		const disabledText = this.disabledText(qset);
+		const {questionSet} = this.props;
+		const editRand = questionSet && (questionSet.hasLink('Randomize') || questionSet.hasLink('Unrandomize'));
+		const editRandParts = questionSet && (questionSet.hasLink('RandomizePartsType') || questionSet.hasLink('UnrandomizePartsType'));
+		const disabledText = this.disabledText(questionSet);
 
 		const errorMessage = error && (error.message || '');
 

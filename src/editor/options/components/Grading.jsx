@@ -35,20 +35,18 @@ class Grading extends React.Component {
 		this.setupValue(props);
 	}
 
-	componentDidUpdate () {
+	async componentDidUpdate (prevProps) {
 		const {assignment} = this.props;
 		const {isAutoGraded} = this.state;
+
+		if (this.props.assignment !== prevProps.assignment) {
+			await this.setupValue();
+		}
 
 		if (assignment.isAutoGraded !== isAutoGraded) {
 			this.save();
 		}
-	}
 
-
-	componentWillReceiveProps (nextProps) {
-		if (this.props.assignment !== nextProps.assignment) {
-			this.setupValue(nextProps);
-		}
 	}
 
 
@@ -67,7 +65,7 @@ class Grading extends React.Component {
 
 	setupValue (props = this.props) {
 		//eslint-disable-next-line react/no-direct-mutation-state
-		const setState = s => this.state ? this.setState(s) : (this.state = s);
+		const setState = (s, cb) => this.state ? this.setState(s, cb) : (this.state = s, cb());
 		const {assignment, questionSet} = props;
 		let {isAutoGraded} = assignment || {};
 
@@ -86,7 +84,7 @@ class Grading extends React.Component {
 			});
 		}
 
-		setState({isAutoGraded, conflicts});
+		return new Promise(resolve => setState({isAutoGraded, conflicts}, () => resolve()));
 	}
 
 

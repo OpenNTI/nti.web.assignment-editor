@@ -10,11 +10,7 @@ export default class DueDate extends React.Component {
 	constructor (props) {
 		super(props);
 
-		this.state = {};
-	}
-
-	componentWillMount () {
-		this.reset();
+		this.state = this.reset() || {};
 	}
 
 	dateChanged = (value) => {
@@ -22,6 +18,7 @@ export default class DueDate extends React.Component {
 	}
 
 	reset = () => {
+		const setState = this.state ? (x) => this.setState(x) : x => x;
 		const {assignment} = this.props;
 
 		if (!assignment || !assignment.getAvailableForSubmissionEnding) {
@@ -30,7 +27,7 @@ export default class DueDate extends React.Component {
 
 		const value = assignment.getAvailableForSubmissionEnding();
 
-		this.setState({
+		return setState({
 			value,
 			saving: false,
 			error: null

@@ -26,9 +26,9 @@ export default class Between extends React.Component {
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		const {question:newQuestion, before, after} = nextProps;
-		const {question:oldQuestion} = this.props;
+	componentDidUpdate (prevProps) {
+		const {question:newQuestion, before, after} = this.props;
+		const {question:oldQuestion} = prevProps;
 
 		if (newQuestion !== oldQuestion) {
 			this.setState({

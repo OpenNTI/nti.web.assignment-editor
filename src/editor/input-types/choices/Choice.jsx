@@ -59,17 +59,14 @@ export default class Choice extends React.Component {
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		const {choice:newChoice} = nextProps;
-		const {choice:oldChoice} = this.props;
+	componentDidUpdate (prevProps) {
+		const {choice:newChoice} = this.props;
+		const {choice:oldChoice} = prevProps;
 
 		if (newChoice !== oldChoice && newChoice.isNew) {
 			this.isNew = true;
 		}
-	}
 
-
-	componentDidUpdate () {
 		if (this.isNew) {
 			this.doFocus();
 			delete this.isNew;

@@ -40,13 +40,19 @@ export default class AssignmentContentView extends React.Component {
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		const {assignment} = nextProps;
+	static getDerivedStateFromProps({assignment}, state) {
 
-		this.setState({
-			title: (assignment && assignment.title) || '',
-			content: (assignment && assignment.content) || ''
-		});
+		const title = (assignment && assignment.title) || '';
+		const content = (assignment && assignment.content) || '';
+
+		if (title !== state.title || content !== state.content) {
+			return {
+				title,
+				content,
+			};
+		}
+
+		return null;
 	}
 
 

@@ -26,8 +26,8 @@ export default class FileUploadEditor extends React.Component {
 
 	state = {}
 
-	componentWillReceiveProps (nextProps) {
-		if (this.props.part !== nextProps.part) {
+	componentDidUpdate (prevProps) {
+		if (this.props.part !== prevProps.part) {
 			this.setState({part: null});
 		}
 	}

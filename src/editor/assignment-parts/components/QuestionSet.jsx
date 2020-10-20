@@ -49,12 +49,12 @@ export default class QuestionSetComponent extends React.Component {
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		const {questionSet:newQuestionSet} = nextProps;
-		const {questionSet:oldQuestionSet} = this.props;
+	componentDidUpdate (prevProps) {
+		const {questionSet:oldQuestionSet} = prevProps;
+		const {questionSet:newQuestionSet} = this.props;
 
 		if (newQuestionSet !== oldQuestionSet) {
-			this.setup(nextProps);
+			this.setup();
 		}
 	}
 

@@ -62,8 +62,8 @@ export default class Selectable extends React.Component {
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		const prevProps = this.props;
+	componentDidUpdate (prevProps) {
+		const nextProps = this.props;
 		const item = this.getSelectionItem();
 
 		if (prevProps.id !== nextProps.id) {

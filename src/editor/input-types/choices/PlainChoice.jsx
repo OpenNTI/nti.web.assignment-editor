@@ -53,9 +53,9 @@ export default class PlainChoice extends React.Component {
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		const {choice: newChoice, error:newError} = nextProps;
-		const {choice: oldChoice, error:oldError} = this.props;
+	componentDidUpdate (prevProps) {
+		const {choice: newChoice, error:newError} = this.props;
+		const {choice: oldChoice, error:oldError} = prevProps;
 		let state = null;
 
 		this.updatedLabel = newChoice.label;
@@ -79,10 +79,7 @@ export default class PlainChoice extends React.Component {
 		if (state) {
 			this.setState(state);
 		}
-	}
 
-
-	componentDidUpdate () {
 		if (this.isNew) {
 			this.doFocus();
 			delete this.isNew;

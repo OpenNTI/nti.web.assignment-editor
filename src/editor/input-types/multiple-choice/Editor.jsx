@@ -44,9 +44,9 @@ export default class MultipleChoiceEditor extends React.Component {
 	//TODO: listen for changes on the question to update the choices
 
 
-	componentWillReceiveProps (nextProps) {
-		const {part:newPart, error:newError, keepStateHash:newStateHash} = nextProps;
-		const {part:oldPart, error:oldError, keepStateHash:oldStateHash} = this.props;
+	componentDidUpdate (prevProps) {
+		const {part:newPart, error:newError, keepStateHash:newStateHash} = this.props;
+		const {part:oldPart, error:oldError, keepStateHash:oldStateHash} = prevProps;
 		const {choices, solutions} = newPart;
 		let state = null;
 
@@ -92,7 +92,7 @@ export default class MultipleChoiceEditor extends React.Component {
 		const mimeType = part && part.MimeType;
 
 		if (!mimeType) {
-			//TOOD: see if we ever need to handle this case
+			//TODO: see if we ever need to handle this case
 		}
 
 		return generatePart ? generatePart(content, choices, solutions) : generatePartFor(mimeType, content, choices, solutions);

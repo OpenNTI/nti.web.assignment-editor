@@ -35,9 +35,9 @@ export default class QuestionContent extends React.Component {
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		const {question:nextQuestion} = nextProps;
-		const {question:oldQuestion} = this.props;
+	componentDidUpdate (prevProps) {
+		const {question:nextQuestion} = this.props;
+		const {question:oldQuestion} = prevProps;
 
 		if (nextQuestion !== oldQuestion) {
 			warnIfQuestionEmpty(nextQuestion);

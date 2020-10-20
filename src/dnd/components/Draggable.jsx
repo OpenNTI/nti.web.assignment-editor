@@ -41,9 +41,9 @@ export default class Draggable extends React.Component {
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		const {data:newData} = nextProps;
-		const {data:oldData} = this.props;
+	componentDidUpdate (prevProps) {
+		const {data:newData} = this.props;
+		const {data:oldData} = prevProps;
 
 		if (newData !== oldData) {
 			this.setDataForTransfer(newData);
@@ -51,11 +51,12 @@ export default class Draggable extends React.Component {
 	}
 
 
-	componentWillUpdate () {
-		// if (!this.isDragging && this.isDraggable) {
-		// 	this.setDraggable(false);
-		// }
-	}
+	// getSnapshotBeforeUpdate () {
+	// 	// if (!this.isDragging && this.isDraggable) {
+	// 	// 	this.setDraggable(false);
+	// 	// }
+	//  	return null;
+	// }
 
 
 	setDataForTransfer (data) {

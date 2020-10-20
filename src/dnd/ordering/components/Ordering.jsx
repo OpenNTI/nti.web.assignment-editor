@@ -85,8 +85,8 @@ export default class Ordering extends React.Component {
 	}
 
 
-	mapItem (item, index) {
-		const {containerId} = this.props;
+	mapItem (item, index, props = this.props) {
+		const {containerId} = props;
 		const moveInfo = new MoveInfo({OriginContainer: containerId, OriginIndex: index});
 
 		return {
@@ -100,9 +100,9 @@ export default class Ordering extends React.Component {
 	}
 
 
-	componentWillReceiveProps (nextProps) {
-		const {items:oldItems} = this.state;
-		let {items} = nextProps;
+	componentDidUpdate (prevProps, prevState) {
+		const {items:oldItems} = prevState;
+		let {items} = this.props;
 		let activeDrag;
 
 		for (let item of oldItems) {
@@ -114,7 +114,7 @@ export default class Ordering extends React.Component {
 		items = items.slice(0);
 
 		items = items.map((item, index) => {
-			item = this.mapItem(item, index);
+			item = this.mapItem(item, index, prevProps);
 
 			if (activeDrag && activeDrag.ID === item.ID) {
 				item.isDragging = true;
