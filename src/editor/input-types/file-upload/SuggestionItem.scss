@@ -17,11 +17,13 @@
 		&.add {
 			color: var(--border-blue);
 		}
+
 		&.dismiss {
 			color: var(--secondary-grey);
 		}
 	}
 }
+
 .suggestions .value {
 	color: var(--primary-grey);
 	font-size: 16px;

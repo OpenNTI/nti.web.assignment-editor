@@ -53,7 +53,8 @@
 					display: block;
 					position: absolute;
 					bottom: 100%;
-					left: -1px; right: -1px;
+					left: -1px;
+					right: -1px;
 					margin-bottom: 20px;
 					background-color: var(--transparent-dark-background);
 					color: white;
@@ -72,7 +73,6 @@
 		}
 	}
 
-
 	.question-editor {
 		background: white;
 		margin-right: rem-calc(58px);
@@ -87,7 +87,6 @@
 			border-color: var(--border-grey);
 			box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.25);
 		}
-
 
 		&.error {
 			box-shadow: 0 0 1px 1px var(--border-red);
@@ -112,7 +111,7 @@
 			transition: opacity 50ms;
 		}
 
-		.visible-disclaimer  {
+		.visible-disclaimer {
 			display: none;
 		}
 	}
@@ -131,6 +130,7 @@
 		flex: 0 0 auto;
 		line-height: 1.25rem;
 		padding-right: 10px;
+
 		.no-reorder & {
 			display: none;
 		}
@@ -161,7 +161,7 @@
 		height: auto;
 		border-radius: rem-calc(2px);
 		padding: rem-calc(7px) 0;
-		background-color: #ffffff;
+		background-color: #fff;
 		box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.25);
 	}
 
@@ -169,7 +169,6 @@
 		padding: 0 rem-calc(15px) rem-calc(15px);
 		margin-top: rem-calc(-15px);
 	}
-
 
 	&.is-saving {
 		.index {
@@ -190,8 +189,8 @@
 	}
 }
 
-.dragging .assignment-editing-question-container  {
-// 	position: static;
+.dragging .assignment-editing-question-container {
+	// 	position: static;
 
 	.assignment-editing-controls {
 		display: none;

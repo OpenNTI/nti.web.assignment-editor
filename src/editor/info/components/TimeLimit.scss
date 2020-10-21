@@ -11,20 +11,20 @@ body > .fly-wrapper > .flyout.assignment-option-flyout {
 }
 
 .flyout.assignment-option-flyout {
-
 	.time-limit-editor {
 		color: var(--primary-grey);
 		padding: rem-calc(10px 15px 15px);
-		font-size: .875rem;
+		font-size: 0.875rem;
 		position: relative;
-
 
 		&.saving {
 			.saving-mask {
 				display: block;
 				position: absolute;
-				top: 0; bottom: 0;
-				left: 0; right: 0;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
 				background: rgba(255, 255, 255, 0.7);
 
 				.loading-spinner {
@@ -48,11 +48,12 @@ body > .fly-wrapper > .flyout.assignment-option-flyout {
 		}
 
 		.duration-picker {
-			margin: .5rem 0;
+			margin: 0.5rem 0;
 		}
+
 		.error {
 			color: var(--primary-red);
-			margin: 0 .25rem .5rem;
+			margin: 0 0.25rem 0.5rem;
 			font-style: italic;
 		}
 	}

@@ -5,7 +5,6 @@
 		// display: none;
 	}
 
-
 	i[class^="icon-"], span.more-controls {
 		font-size: 1rem;
 		color: var(--secondary-grey);
@@ -26,7 +25,7 @@
 				top: 50%;
 				left: 50%;
 				border-radius: 100%;
-				background: rgba(0,0,0,.05);
+				background: rgba(0, 0, 0, 0.05);
 				transform: translate(-50%, -50%);
 				z-index: -1;
 			}
