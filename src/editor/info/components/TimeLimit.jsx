@@ -30,8 +30,6 @@ class TimeLimit extends React.Component {
 		return props.assignment;
 	}
 
-	state = {}
-
 	attachFlyoutRef = x => this.flyout = x
 
 	constructor (props) {
