@@ -105,6 +105,10 @@ export default class Ordering extends React.Component {
 		let {items} = this.props;
 		let activeDrag;
 
+		if (prevProps.items === items) {
+			return;
+		}
+
 		for (let item of oldItems) {
 			if (item.isDragging) {
 				activeDrag = item;
