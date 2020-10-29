@@ -149,7 +149,7 @@ class TimeLimit extends React.Component {
 							onChange={this.toggleTimeLimit}/>
 						<DurationPicker onChange={this.timeChanged} value={value} />
 						{error && <div className="error">{error.toString()}</div>}
-						{<Button component="span" className={buttonClasses} onClick={this.save}>Save Changes</Button>}
+						{<Button as="span" className={buttonClasses} onClick={this.save}>Save Changes</Button>}
 						{saving && (<div className="saving-mask" />)}
 					</div>
 				</Flyout.Triggered>

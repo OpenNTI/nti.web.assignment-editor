@@ -177,7 +177,7 @@ class Limits extends React.Component {
 				<Input.Number
 					className="portion-max-input"
 					placeholder="Max set of questions"
-					min="0"
+					min={0}
 					value={draw || ''}
 					name={LIMIT_PORTION}
 					ref={this.setLimitInputRef}
