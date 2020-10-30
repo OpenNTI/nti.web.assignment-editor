@@ -12,6 +12,8 @@ import Content from './Content';
 
 const {Sharing} = Associations;
 
+const hasNewValues = (partial, y) => Object.keys(partial).some(x => y[x] !== partial[x]);
+
 export default class AssignmentContentView extends React.Component {
 	static propTypes = {
 		assignment: PropTypes.object,
@@ -80,10 +82,14 @@ export default class AssignmentContentView extends React.Component {
 		const {assignment} = this.props;
 		const {NTIID} = assignment;
 
-		this.setState({
+		const errorDetails = {
 			titleError: Store.getErrorFor(NTIID, 'title'),
 			contentError: Store.getErrorFor(NTIID, 'content')
-		});
+		};
+
+		if (hasNewValues(errorDetails, this.state)) {
+			this.setState(errorDetails);
+		}
 	}
 
 
