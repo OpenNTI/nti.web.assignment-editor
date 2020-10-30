@@ -62,7 +62,7 @@ export default class AssignmentContentView extends React.Component {
 
 
 	componentWillUnmount () {
-		Store.addChangeListener(this.onStoreChange);
+		Store.removeChangeListener(this.onStoreChange);
 	}
 
 
