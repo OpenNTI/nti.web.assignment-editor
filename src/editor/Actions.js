@@ -129,7 +129,7 @@ export function maybeResetAssignmentOnError (assignmentOrQuestionSet) {
 		logger.warn('Could not get assignment!! %o', assignment);
 	}
 
-	return (error) => {
+	return async (error) => {
 
 		if (error.code === 'ObjectHasSubmissions' || error.code === 'ObjectHasSavepoints') {
 			return assignment.refresh()
@@ -143,7 +143,7 @@ export function maybeResetAssignmentOnError (assignmentOrQuestionSet) {
 				});
 		}
 
-		return Promise.reject(error);
+		throw error;
 	};
 }
 

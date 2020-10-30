@@ -30,7 +30,7 @@ function getQuestionSetFrom (NTIID, assignment) {
 	}
 }
 
-export function updateQuestion (question, fields, assignment, force) {
+export async function updateQuestion (question, fields, assignment, force) {
 	const {content:oldContent, parts:oldParts} = question;
 	const {content:newContent, parts:newParts} = fields;
 	let values = {};
@@ -49,22 +49,23 @@ export function updateQuestion (question, fields, assignment, force) {
 
 	dispatch(SAVING, question);
 
-	return question.save(values)
-		.catch(maybeResetAssignmentOnError(assignment || question))
-		.then((newQuestion) => {
-			dispatch(QUESTION_UPDATED, question);
-			warnIfQuestionEmpty(newQuestion || question);
-			dispatch(SAVE_ENDED, question);
-		}).catch((reason) => {
-			dispatch(QUESTION_ERROR, {
-				NTIID: question.NTIID,
-				field: 'parts',
-				reason
-			});
-			dispatch(SAVE_ENDED, question);
+	try {
+		const newQuestion = await question.save(values)
+			.catch(maybeResetAssignmentOnError(assignment || question));
 
-			return Promise.reject(reason);
+		dispatch(QUESTION_UPDATED, question);
+		warnIfQuestionEmpty(newQuestion || question);
+		dispatch(SAVE_ENDED, question);
+
+	} catch( reason ) {
+		dispatch(QUESTION_ERROR, {
+			NTIID: question.NTIID,
+			field: 'parts',
+			reason
 		});
+		dispatch(SAVE_ENDED, question);
+		throw reason;
+	}
 }
 
 
