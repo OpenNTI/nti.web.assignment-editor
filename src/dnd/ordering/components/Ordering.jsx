@@ -4,6 +4,7 @@ import ReactDom from 'react-dom';
 import PropTypes from 'prop-types';
 import FlipMove from 'react-flip-move';
 import cx from 'classnames';
+import {v4 as guid} from 'uuid';
 import Logger from '@nti/util-logger';
 import {wait} from '@nti/lib-commons';
 
@@ -68,15 +69,11 @@ export default class Ordering extends React.Component {
 	constructor (props) {
 		super(props);
 
-		let {items} = props;
-
 		this.componentRefs = {};
 
-		this.dropHandlers = this.getDropHandlers(this.onContainerDrop.bind(this));
+		this.dropHandlers = this.getDropHandlers(this.onContainerDrop);
 
-		items = items.slice(0);
-
-		items = items.map(this.mapItem.bind(this));
+		const items = props.items.map(this.mapItem);
 
 		this.state = {
 			items: items,
@@ -85,13 +82,14 @@ export default class Ordering extends React.Component {
 	}
 
 
-	mapItem (item, index, props = this.props) {
-		const {containerId} = props;
+	mapItem = (item, index) => {
+		const {containerId} = this.props;
 		const moveInfo = new MoveInfo({OriginContainer: containerId, OriginIndex: index});
+		const ID = item.NTIID || item.ID || `placeholder-id-${guid()}`;
 
 		return {
+			ID,
 			item: item,
-			ID: item.NTIID || item.ID,
 			MoveData: [item, moveInfo],
 			MoveInfo: moveInfo,
 			onDragStart: this.onItemDragStart.bind(this, item),
@@ -101,7 +99,6 @@ export default class Ordering extends React.Component {
 
 
 	componentDidUpdate (prevProps, prevState) {
-		const {items:oldItems} = prevState;
 		let {items} = this.props;
 		let activeDrag;
 
@@ -109,16 +106,15 @@ export default class Ordering extends React.Component {
 			return;
 		}
 
-		for (let item of oldItems) {
+		for (let item of prevState.items) {
 			if (item.isDragging) {
 				activeDrag = item;
 			}
 		}
 
-		items = items.slice(0);
 
 		items = items.map((item, index) => {
-			item = this.mapItem(item, index, prevProps);
+			item = this.mapItem(item, index);
 
 			if (activeDrag && activeDrag.ID === item.ID) {
 				item.isDragging = true;
@@ -309,8 +305,6 @@ export default class Ordering extends React.Component {
 		let oldIndex = this.getIndexOfId(dropId);
 		let {items} = this.state;
 
-		items = items.slice(0);
-
 		this.lastDroppedId = dropId;
 
 		//If the item dropped is already in the list, and we are dropping it lower.
@@ -354,11 +348,7 @@ export default class Ordering extends React.Component {
 		//If the placeholder hasn't moved, don't set state
 		if (oldIndex === index) { return; }
 
-		items = items.slice(0);
-
-		items = items.filter((item) => {
-			return !(item.isPlaceholder || item.isDragging);
-		});
+		items = items.filter((item) => !(item.isPlaceholder || item.isDragging));
 
 		items = [...items.slice(0, index), ...toInsert, ...items.slice(index)];
 
@@ -376,7 +366,7 @@ export default class Ordering extends React.Component {
 	}
 
 
-	onItemDragStart = (dragItem) => {
+	onItemDragStart = async (dragItem) => {
 		//wait a little bit so the ghost image will be there
 		//For html5 drag and drop to work correctly the node that is dragging needs to still be in the dom,
 		//since we are using the same node for the placeholder, if it originated from here we need to keep the node
@@ -385,30 +375,29 @@ export default class Ordering extends React.Component {
 		this.lastDroppedId = null;
 		this.isInternalDrag = true;
 
-		wait(100)
-			.then(() => {
-				this.isInternalDrag = null;
+		await wait(100);
 
-				const dragId = dragItem.NTIID || dragItem.ID;
-				let {items} = this.state;
+		this.isInternalDrag = null;
 
-				items = items.slice(0);
+		const dragId = dragItem.NTIID || dragItem.ID;
+		let {items} = this.state;
 
-				this.setState({
-					items: items.map((item) => {
-						let itemId = item.NTIID || item.ID;
+		items = items.slice(0);
 
-						if (itemId === dragId) {
-							item.isDragging = true;
-							item.isPlaceholder = true;
-							item.height = (this.getRectForId(itemId) || {}).height;
-						}
+		this.setState({
+			items: items.map((item) => {
+				let itemId = item.NTIID || item.ID;
 
-						return item;
-					}),
-					disableAnimation: false
-				});
-			});
+				if (itemId === dragId) {
+					item.isDragging = true;
+					item.isPlaceholder = true;
+					item.height = (this.getRectForId(itemId) || {}).height;
+				}
+
+				return item;
+			}),
+			disableAnimation: false
+		});
 	}
 
 
@@ -417,8 +406,6 @@ export default class Ordering extends React.Component {
 		let {items, originalOrder} = this.state;
 		const dragId = dragItem.NTIID || dragItem.ID;
 		const wasHandled = Store.wasDataHandled(dragItem);
-
-		items = items.slice(0);
 
 		let itemMap = items.reduce((acc, item) => {
 			acc[item.NTIID || item.ID] = item;
