@@ -10,7 +10,7 @@ export default class SelectionItem extends EventEmitter {
 		super();
 		this.setMaxListeners(1000);
 
-		this.#id =  config?.id || guid();
+		this.#id =  config?.id ?? guid();
 		this.#value = config?.value;
 	}
 
