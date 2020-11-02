@@ -16,6 +16,8 @@ export {
 	QUESTION_TYPE
 };
 
+const isDifferent = (a,b) => (a && !b) || (!a && b) || (a.length !== b.length) || a.some((x, i) => x !== b[i]);
+
 export default class QuestionSetComponent extends React.Component {
 
 	static propTypes = {
@@ -36,9 +38,8 @@ export default class QuestionSetComponent extends React.Component {
 		const setState = (x) => this.state ? this.setState(x) : (this.state = x);
 
 		const {questionSet} = props;
-		const {questions} = questionSet;
 
-		setState({ questions });
+		setState({ questions: [...questionSet.questions] });
 
 		if (questionSet && questionSet.hasLink('AssessmentMove')) {
 			this.moveRoot = new Authoring.MoveRoot(questionSet, 'AssessmentMove');
@@ -51,9 +52,10 @@ export default class QuestionSetComponent extends React.Component {
 
 	componentDidUpdate (prevProps) {
 		const {questionSet:oldQuestionSet} = prevProps;
-		const {questionSet:newQuestionSet} = this.props;
+		const {questionSet} = this.props;
+		const {questions} = this.state;
 
-		if (newQuestionSet !== oldQuestionSet) {
+		if (questionSet !== oldQuestionSet || isDifferent(questions, questionSet.questions)) {
 			this.setup();
 		}
 	}
