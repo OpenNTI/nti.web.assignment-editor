@@ -125,7 +125,7 @@ export default class SelectionManager extends EventEmitter {
 
 
 	[UnmonitorItem] (item) {
-		if (!item.removeListener) {
+		if (item.removeListener) {
 			item.removeListener('updated', this[ItemUpdated]);
 		} else {
 			logger.warn('Selection item does not have removeListener');
