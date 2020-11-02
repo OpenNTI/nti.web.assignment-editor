@@ -46,25 +46,23 @@ function getQuestionSetData (questionSet) {
 }
 
 
-function buildPartWithQuestion (questionData, existingQuestionSet) {
-	return getService()
-		.then((service) => {
-			const part = service.getObjectPlaceholder({...blankAssignmentPart});
-			const questionSet = service.getObjectPlaceholder(getQuestionSetData(existingQuestionSet));
-			const question = service.getObjectPlaceholder({...questionData});
+async function buildPartWithQuestion (questionData, existingQuestionSet) {
+	const service = await getService();
+	const part = service.getObjectPlaceholder({...blankAssignmentPart});
+	const questionSet = service.getObjectPlaceholder(getQuestionSetData(existingQuestionSet));
+	const question = service.getObjectPlaceholder({...questionData});
 
-			part.isSaving = true;
-			questionSet.isSaving = true;
-			question.isSaving = true;
+	part.isSaving = true;
+	questionSet.isSaving = true;
+	question.isSaving = true;
 
-			questionSet[QUESTIONS_KEY] = [];
+	questionSet[QUESTIONS_KEY] = [];
 
-			questionSet[QUESTIONS_KEY].push(question);
+	questionSet[QUESTIONS_KEY].push(question);
 
-			part[QUESTION_SET_KEY] = questionSet;
+	part[QUESTION_SET_KEY] = questionSet;
 
-			return part;
-		});
+	return part;
 }
 
 
@@ -182,9 +180,9 @@ function addPartToAssignment (part, assignment, delaySave) {
 
 
 
-export function createPartWithQuestion (assignment, question, questionSet, delaySave) {
-	buildPartWithQuestion(question, questionSet)
-		.then((part) => addPartToAssignment(part, assignment, delaySave));
+export async function createPartWithQuestion (assignment, question, questionSet, delaySave) {
+	const part = await buildPartWithQuestion(question, questionSet);
+	addPartToAssignment(part, assignment, delaySave);
 }
 
 
@@ -221,7 +219,7 @@ export function removePartWithQuestionSet (assignment, questionSet) {
 }
 
 
-export function moveQuestion (question, questionSet, index, moveInfo, moveRoot, delaySave) {
+export async function moveQuestion (question, questionSet, index, moveInfo, moveRoot, delaySave) {
 	let orderedContents = questionSet && new Authoring.OrderedContents(questionSet);
 	let {index:oldIndex, container:oldContainer} = moveInfo;
 
@@ -232,16 +230,17 @@ export function moveQuestion (question, questionSet, index, moveInfo, moveRoot, 
 	} else {
 		dispatch(SAVING, questionSet);
 
-		orderedContents.move(question, index, oldIndex, oldContainer, moveRoot, delaySave)
-			.catch(maybeResetAssignmentOnError(questionSet))
-			.then(() => {
-				dispatch(QUESTION_SET_UPDATED, questionSet);
-				dispatch(SAVE_ENDED);
-			})
-			.catch((reason) => {
-				logger.error('Unable to move question: ', reason);
-				dispatch(QUESTION_SET_ERROR, reason);
-				dispatch(SAVE_ENDED);
-			});
+		try {
+			await orderedContents.move(question, index, oldIndex, oldContainer, moveRoot, delaySave)
+				.catch(maybeResetAssignmentOnError(questionSet));
+
+			dispatch(QUESTION_SET_UPDATED, questionSet);
+			dispatch(SAVE_ENDED);
+		}
+		catch (reason) {
+			logger.error('Unable to move question: ', reason);
+			dispatch(QUESTION_SET_ERROR, reason);
+			dispatch(SAVE_ENDED);
+		}
 	}
 }

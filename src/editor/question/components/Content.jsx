@@ -36,11 +36,11 @@ export default class QuestionContent extends React.Component {
 
 
 	componentDidUpdate (prevProps) {
-		const {question:nextQuestion} = this.props;
+		const {question} = this.props;
 		const {question:oldQuestion} = prevProps;
 
-		if (nextQuestion !== oldQuestion) {
-			warnIfQuestionEmpty(nextQuestion);
+		if (question !== oldQuestion && question && isNTIID(question.NTIID)) {
+			warnIfQuestionEmpty(question);
 		}
 	}
 
