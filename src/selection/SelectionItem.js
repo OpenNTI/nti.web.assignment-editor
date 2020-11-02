@@ -1,42 +1,32 @@
 import EventEmitter from 'events';
 
-const PRIVATE = new WeakMap();
+import {v4 as guid} from 'uuid';
 
 export default class SelectionItem extends EventEmitter {
+	#id;
+	#value;
+
 	constructor (config) {
 		super();
 		this.setMaxListeners(1000);
 
-		if (!config || config.id === undefined) {
-			throw new Error('No ID provided to selection item');
-		}
-
-		config = config || {};
-
-		PRIVATE.set(this, {
-			id: config.id,
-			value: config.value
-		});
-
+		this.#id =  config?.id || guid();
+		this.#value = config?.value;
 	}
 
 
 	get id () {
-		return PRIVATE.get(this).id;
+		return this.#id;
 	}
 
 
 	get value () {
-		return PRIVATE.get(this).value;
+		return this.#value;
 	}
 
 
 	set value (value) {
-		PRIVATE.set(this, {
-			id: this.id,
-			value: value
-		});
-
+		this.#value = value;
 		this.emit('updated', this);
 	}
 }
