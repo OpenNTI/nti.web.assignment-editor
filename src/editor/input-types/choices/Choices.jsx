@@ -97,19 +97,21 @@ export default class Choices extends React.Component {
 	constructor (props) {
 		super(props);
 
-		const {choices, accepts, buildBlankChoice, canRemove, error, minAllowed} = this.props;
+		const {choices, error, minAllowed} = this.props;
 		let {columns, deletes} = this.mapColumns(choices, minAllowed);
 
 		this.state = {
 			columns,
 			deletes,
-			accepts,
-			error,
-			canAdd: !!buildBlankChoice,
-			canRemove
+			error
 		};
 
 		this.setUpHandlers(columns, deletes);
+	}
+
+
+	get canAdd () {
+		return !!this.props.buildBlankChoice;
 	}
 
 
@@ -528,8 +530,8 @@ export default class Choices extends React.Component {
 
 
 	render () {
-		const {className} = this.props;
-		const {columns, canAdd, canRemove} = this.state;
+		const {className, canRemove} = this.props;
+		const {columns} = this.state;
 		const cls = cx(className, this.className, 'input-type-choices',{'can-delete': canRemove});
 
 		return (
@@ -538,7 +540,7 @@ export default class Choices extends React.Component {
 					{columns.map((choices, index) => this.renderColumn(choices, index))}
 				</div>
 				<div className="choices add">
-					{canAdd ? this.renderAdd() : null}
+					{this.renderAdd()}
 				</div>
 			</div>
 		);
@@ -574,8 +576,8 @@ export default class Choices extends React.Component {
 
 
 	renderChoice (column, choice, row) {
-		const {plainText} = this.props;
-		const {error, canRemove} = this.state;
+		const {plainText, canRemove} = this.props;
+		const {error} = this.state;
 		const onChange = this.choiceChangeHandlers[column];
 		const focusNext = this.focusNextHandlers[column];
 		const focusPrev = this.focusPrevHandlers[column];
@@ -607,7 +609,7 @@ export default class Choices extends React.Component {
 	renderAdd = () => {
 		const {addLabel} = this.props;
 
-		return (
+		return !this.canAdd ? null : (
 			<AddChoice
 				addLabel={addLabel}
 				add={this.add}
