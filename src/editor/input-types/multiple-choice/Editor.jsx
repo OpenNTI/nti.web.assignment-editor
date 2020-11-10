@@ -50,7 +50,7 @@ export default class MultipleChoiceEditor extends React.Component {
 		const {choices, solutions} = newPart;
 		let state = null;
 
-		if (newPart !== oldPart || newStateHash !== oldStateHash) {
+		if (newPart !== oldPart || (newStateHash !== oldStateHash && !isNaN(oldStateHash))) {
 			state = state || {};
 			state.choices = this.mapChoices(choices, solutions);
 		}

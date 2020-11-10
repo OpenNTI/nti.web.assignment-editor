@@ -129,7 +129,7 @@ export default class Question extends React.Component {
 		if ((data.type === QUESTION_ERROR || data.type === QUESTION_WARNING) && question.NTIID === data.NTIID) {
 			this.onQuestionMessages();
 		} else if (data.type === REVERT_ERRORS) {
-			this.keepStateHash += 1;
+			this.keepStateHash = (this.keepStateHash || 0) + 1;
 			this.onQuestionMessages();
 		}
 	}
