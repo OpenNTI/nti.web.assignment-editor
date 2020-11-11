@@ -65,9 +65,9 @@ export default class MultipleChoiceChoices extends Choices {
 
 
 	renderChoice (column, choice, row) {
-		const {plainText} = this.props;
+		const {plainText, canRemove} = this.props;
 		const {multipleAnswers, containerId} = this.props;
-		const {error, canRemove} = this.state;
+		const {error} = this.state;
 		const onChange = this.choiceChangeHandlers[column];
 		const focusNext = this.focusNextHandlers[column];
 		const focusPrev = this.focusPrevHandlers[column];
