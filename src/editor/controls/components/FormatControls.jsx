@@ -45,14 +45,12 @@ export default class FormatControls extends React.Component {
 	}
 
 
-	componentDidUpdate (_, prevState) {
-		const {selection:newSelection} = this.props;
-		const {editor:oldEditor} = prevState;
-		const newEditor = getEditorForSelection(newSelection);
+	componentDidUpdate () {
+		const editor = getEditorForSelection(this.props.selection);
 
-		if (newEditor !== oldEditor) {
+		if (editor !== this.state.editor) {
 			this.setState({
-				editor: newEditor
+				editor
 			});
 		}
 	}
