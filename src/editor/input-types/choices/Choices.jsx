@@ -118,10 +118,10 @@ export default class Choices extends React.Component {
 	componentDidUpdate (prevProps) {
 		const {choices:newChoices, error:newError, minAllowed} = this.props;
 		const {choices:oldChoices, error:oldError} = prevProps;
-		const {columns, deletes} = this.mapColumns(newChoices, minAllowed);
 		let state = null;
 
 		if (!choicesEqual(newChoices, oldChoices)) {
+			const {columns, deletes} = this.mapColumns(newChoices, minAllowed);
 			state = state || {};
 
 			state.columns = columns;
@@ -345,8 +345,12 @@ export default class Choices extends React.Component {
 			let oldColumn = columns[i] || [];
 			let newItem = buildBlankChoice(oldColumn.slice(0));
 
-			let newColumn = [...oldColumn.slice(0, index), newItem, ...oldColumn.slice(index)];
-			columns[i] = newColumn.map((cell, cellIndex) => {
+			columns[i] =  [
+				...oldColumn.slice(0, index),
+				newItem,
+				...oldColumn.slice(index)
+			].map((cell, cellIndex) => {
+				// XXX: this is mutating a shared value?!?
 				cell.index = cellIndex;
 				return cell;
 			});

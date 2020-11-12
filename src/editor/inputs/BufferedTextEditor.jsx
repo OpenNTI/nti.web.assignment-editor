@@ -180,16 +180,14 @@ export default class BufferedTextEditor extends React.Component {
 
 
 	focus () {
-		if (this.editor && this.editor.focus && !this.editingLink) {
+		if (this.editor?.focus && !this.editingLink) {
 			this.editor.focus();
 		}
 	}
 
 
 	focusToEnd () {
-		if (this.editor && this.editor.focusToEnd) {
-			this.editor.focusToEnd();
-		}
+		this.editor?.focusToEnd();
 	}
 
 
