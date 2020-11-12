@@ -34,21 +34,31 @@ export default class PublishLocked extends React.Component {
 
 	setFlyoutRef = x => this.flyoutRef = x
 
+	componentWillUnmount () {
+		this.unmounted = true;
+	}
 
-	onResetClick = () => {
+	onResetClick = async () => {
 		const {assignment} = this.props;
 		if (assignment.hasLink('reset')) {
 			this.setState({busy: true});
-			resetAssignmentSubmissions(assignment)
-				.then(this.closeMenu, () => this.setState({error: true}))
-				.then(()=> this.setState({busy: false}));
+			try {
+				await resetAssignmentSubmissions(assignment);
+				this.closeMenu();
+			}
+			catch {
+				this.setState({error: true});
+			}
+			finally {
+				if (!this.unmounted) {
+					this.setState({busy: false});
+				}
+			}
 		}
 	}
 
 	closeMenu = () => {
-		if (this.flyoutRef) {
-			this.flyoutRef.dismiss();
-		}
+		this.flyoutRef?.dismiss();
 	}
 
 
