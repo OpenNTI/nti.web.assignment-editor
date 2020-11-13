@@ -363,8 +363,6 @@ export default class Choices extends React.Component {
 		this.setState({
 			columns,
 			deletes
-		}, () => {
-			this.onChange();
 		});
 
 		return true;
