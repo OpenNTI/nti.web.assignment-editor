@@ -22,6 +22,11 @@ function getValue (editorState, type) {
 	return value ? value.join('\n') : '';
 }
 
+function toDraftState (value, props) {
+	const parser = props.plainText ? Parsers.PlainText : Parsers.HTML;
+	return parser.toDraftState(value);
+}
+
 export default class BufferedTextEditor extends React.Component {
 	static propTypes = {
 		className: PropTypes.string,
@@ -68,7 +73,7 @@ export default class BufferedTextEditor extends React.Component {
 		this.bufferedChange = buffer(bufferTime, () => this.onChange());
 
 		this.state = {
-			editorState: Parsers.HTML.toDraftState(initialValue),
+			editorState:toDraftState(initialValue, props),
 			plugins: this.getPluginsFor(props)
 		};
 	}
@@ -119,7 +124,7 @@ export default class BufferedTextEditor extends React.Component {
 
 		if (newValue !== oldValue && !this.isFocused && !this.isPendingSave(newValue)) {
 			state = state || {};
-			state.editorState = Parsers.HTML.toDraftState(newValue);
+			state.editorState = toDraftState(newValue, this.props);
 		}
 
 		this.cleanupPendingSave(newValue);
