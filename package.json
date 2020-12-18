@@ -65,6 +65,7 @@
     "classnames": "*",
     "react": "*",
     "react-dom": "*",
+    "react-test-renderer": "*",
     "prop-types": "*"
   }
 }
