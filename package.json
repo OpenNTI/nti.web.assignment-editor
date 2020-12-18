@@ -59,8 +59,7 @@
     "@nti/cmp-scripts": "^2.0.0",
     "@nti/style-common": "NextThought/nti.style.common",
     "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1",
-    "react-test-renderer": "^16.4.2"
+    "enzyme-adapter-react-16": "^1.1.1"
   },
   "peerDependencies": {
     "classnames": "*",
