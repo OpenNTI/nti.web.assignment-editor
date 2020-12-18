@@ -47,12 +47,10 @@
     "@nti/web-editor": "NextThought/nti.web.editor",
     "@nti/web-modeled-content": "NextThought/nti.web.modeled-content",
     "@nti/web-routing": "NextThought/nti.web.routing",
-    "classnames": "^2.0.0",
     "filesize": "^6.1.0",
     "invariant": "^2.1.1",
     "jump.js": "^1.0.1",
     "natural-orderby": "^2.0.3",
-    "prop-types": "^15.5.10",
     "react-flip-move": "^3.0.0",
     "react-transition-group": "^4.2.2",
     "uuid": "^8.3.0"
@@ -62,8 +60,12 @@
     "@nti/style-common": "NextThought/nti.style.common",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
     "react-test-renderer": "^16.4.2"
+  },
+  "peerDependencies": {
+    "classnames": "*",
+    "react": "*",
+    "react-dom": "*",
+    "prop-types": "*"
   }
 }
