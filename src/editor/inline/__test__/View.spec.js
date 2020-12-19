@@ -1,10 +1,8 @@
 /* eslint-env jest */
 import React from 'react';
-import { mount } from 'enzyme';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 
 import View from '../View';
-
-const wait = (x) => new Promise(f => setTimeout(f, x));
 
 describe('Assignment editor view test', () => {
 	const assignmentRef = {
@@ -21,15 +19,15 @@ describe('Assignment editor view test', () => {
 			PublicationState: null
 		};
 
-		const cmp = mount(<View assignment={assignment} assignmentRef={assignmentRef}/>);
+		const {container} = render(<View assignment={assignment} assignmentRef={assignmentRef}/>);
 
 		// draft is selected, there is no reset and due date editor is disabled
-		expect(cmp.find('.draft-container').exists()).toBe(true);
-		expect(cmp.find('.inline-reset-menu').exists()).toBe(false);
+		expect(container.querySelector('.draft-container')).toBeTruthy();
+		expect(container.querySelector('.inline-reset-menu')).toBe(null);
 
-		const dueDateEditor = cmp.find('.inline-due-date-editor').first().find('.date-editor').first();
+		const dueDateEditor = container.querySelector('.inline-due-date-editor .date-editor');
 
-		expect(dueDateEditor.prop('className')).toMatch(/disabled/);
+		expect(dueDateEditor.classList.contains('disabled')).toBeTruthy();
 	});
 
 
@@ -43,19 +41,19 @@ describe('Assignment editor view test', () => {
 			PublicationState: 'true'
 		};
 
-		const cmp = mount(<View assignment={assignment} assignmentRef={assignmentRef}/>);
+		const {container} = render(<View assignment={assignment} assignmentRef={assignmentRef}/>);
 
 		// no publish options since the assignment has been started and is resettable
-		expect(cmp.find('.publish-container').exists()).toBe(false);
-		expect(cmp.find('.inline-reset-menu').exists()).toBe(true);
+		expect(container.querySelector('.publish-container')).toBe(null);
+		expect(container.querySelector('.inline-reset-menu')).toBeTruthy();
 
-		expect(cmp.find('.publish-reset-label').text()).toEqual('Students have started your assignment.');
-		expect(cmp.find('.publish-reset-text').text()).toEqual('Resetting or deleting this assignment will result in erasing students work and submissions. You cannot undo this action.');
-		expect(cmp.find('.publish-reset').exists()).toBe(true);
+		expect(container.querySelector('.publish-reset-label').textContent).toEqual('Students have started your assignment.');
+		expect(container.querySelector('.publish-reset-text').textContent).toEqual('Resetting or deleting this assignment will result in erasing students work and submissions. You cannot undo this action.');
+		expect(container.querySelector('.publish-reset')).toBeTruthy();
 
-		const dueDateEditor = cmp.find('.inline-due-date-editor').first().find('.date-editor').first();
+		const dueDateEditor = container.querySelector('.inline-due-date-editor .date-editor');
 
-		expect(dueDateEditor.prop('className')).not.toMatch(/disabled/);
+		expect(dueDateEditor.classList.contains('disabled')).toBeFalsy();
 	});
 
 
@@ -69,21 +67,21 @@ describe('Assignment editor view test', () => {
 			PublicationState: 'true'
 		};
 
-		const cmp = mount(<View assignment={assignment} assignmentRef={assignmentRef}/>);
+		const {container} = render(<View assignment={assignment} assignmentRef={assignmentRef}/>);
 
 		// no publish options since the assignment has been started and is resettable
-		expect(cmp.find('.publish-container').exists()).toBe(false);
-		expect(cmp.find('.inline-reset-menu').exists()).toBe(true);
+		expect(container.querySelector('.publish-container')).toBe(null);
+		expect(container.querySelector('.inline-reset-menu')).toBeTruthy();
 
-		expect(cmp.find('.publish-reset-label').text()).toEqual('Students have started this assignment.');
-		expect(cmp.find('.publish-reset-text').text()).toEqual('The instructor must reset this assignment before a publish change can occur.');
+		expect(container.querySelector('.publish-reset-label').textContent).toEqual('Students have started this assignment.');
+		expect(container.querySelector('.publish-reset-text').textContent).toEqual('The instructor must reset this assignment before a publish change can occur.');
 
 		// non-instructor admins should not have the reset button
-		expect(cmp.find('.publish-reset').exists()).toBe(false);
+		expect(container.querySelector('.publish-reset')).toBe(null);
 
-		const dueDateEditor = cmp.find('.inline-due-date-editor').first().find('.date-editor').first();
+		const dueDateEditor = container.querySelector('.inline-due-date-editor .date-editor');
 
-		expect(dueDateEditor.prop('className')).not.toMatch(/disabled/);
+		expect(dueDateEditor.classList.contains('disabled')).toBeFalsy();
 	});
 
 
@@ -112,19 +110,15 @@ describe('Assignment editor view test', () => {
 			PublicationState: 'true'
 		};
 
-		const cmp = mount(<View assignment={assignment} assignmentRef={assignmentRef} onDismiss={onDismiss}/>);
+		const {container} = render(<View assignment={assignment} assignmentRef={assignmentRef} onDismiss={onDismiss}/>);
 
-		cmp.find('.inline-reset-menu').first().find('.publish-reset').first().simulate('click');
+		fireEvent.click(container.querySelector('.inline-reset-menu .publish-reset'));
 
-		await wait(200);
+		await waitFor(() => expect(didReset).toBe(true));
 
-		expect(didReset).toBe(true);
+		fireEvent.click(container.querySelector('.footer .cancel'));
 
-		cmp.find('.footer').first().find('.cancel').first().simulate('click');
-
-		await wait(200);
-
-		expect(didDismiss).toBe(true);
+		await waitFor(() => expect(didDismiss).toBe(true));
 	});
 
 
@@ -144,21 +138,22 @@ describe('Assignment editor view test', () => {
 			PublicationState: 'true'
 		};
 
-		const cmp = mount(<View assignment={assignment} assignmentRef={assignmentRef}/>);
+		const {container} = render(<View assignment={assignment} assignmentRef={assignmentRef}/>);
 
 		// schedule is selected and the scheduled date widget reflects the provided date
-		expect(cmp.find('.schedule-container').exists()).toBe(true);
-		expect(cmp.find('.inline-reset-menu').exists()).toBe(false);
+		expect(container.querySelector('.schedule-container')).toBeTruthy();
+		expect(container.querySelector('.inline-reset-menu')).toBe(null);
 
-		const scheduleDateEditor = cmp.find('.schedule-container').first().find('.date-editor').first();
+		const scheduleDateEditor = container.querySelector('.schedule-container .date-editor');
 
 		const datePattern = new RegExp('October.*31.*' + nextYear);
 
-		expect(scheduleDateEditor.text()).toMatch(datePattern);
+		expect(scheduleDateEditor.textContent).toMatch(datePattern);
 	});
 
 
 	test.skip('Test save scheduled', async () => {
+		const ref = React.createRef();
 		let didPublish = false;
 		let startDate = null;
 		let endDate = null;
@@ -186,12 +181,12 @@ describe('Assignment editor view test', () => {
 			PublicationState: null
 		};
 
-		const cmp = mount(<View assignment={assignment} assignmentRef={assignmentRef}/>);
+		const {container} = render(<View ref={ref} assignment={assignment} assignmentRef={assignmentRef}/>);
 
 		const scheduledDate = new Date('10/25/2018');
 		const dueDate = new Date('10/31/2018');
 
-		cmp.setState({
+		ref.current.setState({
 			selectedPublishType: 'schedule',
 			scheduledDate,
 			dueDateChecked: true,
@@ -200,14 +195,15 @@ describe('Assignment editor view test', () => {
 
 		// simulates saving as scheduled, which should invoke a publish call and
 		// a put that sets the scheduled date and due dates (since we specified a due date in the state)
-		cmp.find('.save').simulate('click');
+		fireEvent.click(container.querySelector('.save'));
 
-		await wait(200);
+		await waitFor(() => {
 
-		expect(didPublish).toBe(true);
+			expect(didPublish).toBe(true);
 
-		expect(scheduledDate).toEqual(startDate);
-		expect(endDate).toEqual(dueDate);
+			expect(scheduledDate).toEqual(startDate);
+			expect(endDate).toEqual(dueDate);
+		});
 	});
 
 
@@ -234,13 +230,11 @@ describe('Assignment editor view test', () => {
 			PublicationState: null
 		};
 
-		const cmp = mount(<View assignment={assignment} assignmentRef={assignmentRef}/>);
+		const {container} = render(<View assignment={assignment} assignmentRef={assignmentRef}/>);
 
 		// simulates saving as a draft, which should invoke an unpublish call
-		cmp.find('.save').simulate('click');
+		fireEvent.click(container.querySelector('.save'));
 
-		await wait(200);
-
-		expect(didUnpublish).toBe(true);
+		await waitFor(() => expect(didUnpublish).toBe(true));
 	});
 });
