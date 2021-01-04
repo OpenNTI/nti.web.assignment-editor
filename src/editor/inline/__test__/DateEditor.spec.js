@@ -1,6 +1,6 @@
 /* eslint-env jest */
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 
 import DateEditor from '../DateEditor';
 
@@ -19,6 +19,15 @@ const MONTHS = {
 	DECEMBER: 12
 };
 
+const isLeapYear = (date) => (date = date?.getFullYear?.() ?? date, (date % 100 === 0) ? (date % 400 === 0) : (date % 4 === 0));
+const nextLeap = (date) => {
+	date = new Date(date.getTime());
+	do {
+		date.setFullYear(date.getFullYear() + 1);
+	} while (!isLeapYear(date));
+	return date;
+};
+
 describe('DateEditor test', () => {
 	const selectMonth = function (el, month) {
 		const monthPicker = el.querySelector('.select-wrapper .menu-label');
@@ -27,17 +36,15 @@ describe('DateEditor test', () => {
 		return el.querySelectorAll('.select-wrapper .option-label')[month];
 	};
 
-	const selectYear = function (el, yearsFrom2018) {
-		const getSelect = (x, text) => [...x.querySelectorAll('.select-wrapper')].filter(y => y.querySelector('.select-box > .menu-label > .option-label')?.textContent === text)[0];
+	const selectYear = function (el, year) {
 		const getSelectItem = (x, text) => [...x.querySelectorAll('li > .option-label')].filter(y => y.textContent === String(text))[0];
 
-		const select = getSelect(el, '2018');
-		const label = select?.querySelector('.menu-label');
+		const select = el.querySelector('.select-wrapper.select-year');
+		const label = select.querySelector('.menu-label');
 
 		fireEvent.click(label);
 
-
-		return getSelectItem(getSelect(el, '2018'), yearsFrom2018 + 2018);
+		return getSelectItem(select, year);
 	};
 
 	const verifySelectedMonth = function (el, month) {
@@ -63,8 +70,17 @@ describe('DateEditor test', () => {
 
 	test('Test available days changes with month/year selections', async () => {
 		let newDate = null;
-		const date = new Date('2018-10-25T09:34:00Z');
+		const date = new Date();
 		const ref = React.createRef();
+		date.setMonth(9, 25);
+		if (isLeapYear(date)) {
+			date.setFullYear(date.getFullYear() - 1);
+		}
+		const startYear = date.getFullYear();
+		const startYearText = startYear.toString();
+
+		const leapYear = nextLeap(date).getFullYear();
+		const leapYearString = leapYear.toString();
 
 		const onDateChanged = (d) => {
 			newDate = new Date(d.getTime());
@@ -79,27 +95,27 @@ describe('DateEditor test', () => {
 		const octoberDays = cmp.state.availableDays;
 		expect(octoberDays.length).toEqual(31);
 
-		verifySelectedDate(container, 'October', '25', '2018');
+		verifySelectedDate(container, 'October', '25', startYearText);
 
 		// select february from the month picker, which should change the available days to 28 (non-leap year)
 		const february = selectMonth(container, MONTHS.FEBRUARY);
 		fireEvent.click(february);
 		rerender(withProps({ date: newDate }));
 
-		verifySelectedDate(container, 'February', '25', '2018');
+		verifySelectedDate(container, 'February', '25', startYearText);
 
 		const februaryDays = cmp.state.availableDays;
 		expect(februaryDays.length).toEqual(28);
 
-		// select 2020 from year picker, which is a leap year, setting available days to 29
-		const year2020 = selectYear(container, 2);
-		fireEvent.click(year2020);
+		// select next leap year from year picker, setting available days to 29
+		const leapYearSelect = selectYear(container, leapYear);
+		fireEvent.click(leapYearSelect);
 		rerender(withProps({ date: newDate }));
 
 		const februaryLeapYearDays = cmp.state.availableDays;
 		expect(februaryLeapYearDays.length).toEqual(29);
 
-		verifySelectedDate(container, 'February', '25', '2020');
+		verifySelectedDate(container, 'February', '25', leapYearString);
 
 		// go to a 30-day month (April)
 		const april = selectMonth(container, MONTHS.APRIL);
@@ -109,7 +125,7 @@ describe('DateEditor test', () => {
 		const aprilDays = cmp.state.availableDays;
 		expect(aprilDays.length).toEqual(30);
 
-		verifySelectedDate(container, 'April', '25', '2020');
+		verifySelectedDate(container, 'April', '25', leapYearString);
 
 		// finally, go back to a 31-day month (December)
 		const december = selectMonth(container, MONTHS.DECEMBER);
@@ -119,7 +135,7 @@ describe('DateEditor test', () => {
 		const decemberDays = cmp.state.availableDays;
 		expect(decemberDays.length).toEqual(31);
 
-		verifySelectedDate(container, 'December', '25', '2020');
+		verifySelectedDate(container, 'December', '25', leapYearString);
 	});
 
 	test('Test selected day changes to closest available', async () => {

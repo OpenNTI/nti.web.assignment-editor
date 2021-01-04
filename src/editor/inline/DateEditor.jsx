@@ -238,15 +238,15 @@ export default class AssignmentEditorDateEditor extends React.Component {
 
 		return (
 			<div className={cls}>
-				<div className="select-wrapper">
+				<div className="select-wrapper select-month">
 					<div className="label">{t('month')}</div>
 					<SelectBox options={MONTHS} onChange={this.onMonthChange} value={selectedMonth} disabled={disabled} showSelectedOption/>
 				</div>
-				<div className="select-wrapper">
+				<div className="select-wrapper select-day">
 					<div className="label">{t('day')}</div>
 					<SelectBox options={this.state.availableDays} onChange={this.onDayChange} value={selectedDay} disabled={disabled} showSelectedOption/>
 				</div>
-				<div className="select-wrapper">
+				<div className="select-wrapper select-year">
 					<div className="label">{t('year')}</div>
 					<SelectBox options={this.state.availableYears} onChange={this.onYearChange} value={selectedYear} disabled={disabled} showSelectedOption/>
 				</div>
