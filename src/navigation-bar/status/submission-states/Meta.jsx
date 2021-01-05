@@ -93,7 +93,7 @@ const COMPLETED_STATES = [
 			const noBuffer = !submissionBuffer && submissionBuffer !== 0;
 			const latest = new Date(due.getTime() + ((submissionBuffer || 0) * 1000));
 			const baseKey = latest > now || noBuffer ? 'notSubmitted.late.insideGracePeriod' : 'notSubmitted.late.outsideGracePeriod';
-			const formatted = DateTime.format(due, 'dddd, MMMM D [at] h:mm A z');
+			const formatted = DateTime.format(due, DateTime.WEEKDAY_MONTH_NAME_DAY_AT_TIME_WITH_ZONE);
 
 			return (
 				<div className="not-submitted">
@@ -115,7 +115,7 @@ const COMPLETED_STATES = [
 	{
 		render: function SubmittedOnTime (assignment, historyItem) {
 			const submittedDate = historyItem && historyItem.completed;
-			const formatted = DateTime.format(submittedDate, 'dddd, MMMM D');
+			const formatted = DateTime.format(submittedDate, DateTime.WEEKDAY_MONTH_NAME_DAY);
 			const baseKey = 'submitted.onTime';
 
 			return (
@@ -143,7 +143,7 @@ const COMPLETED_STATES = [
 	{
 		render: function SubmittedLate (assignment, historyItem) {
 			const submittedDate = historyItem && historyItem.completed;
-			const formatted = DateTime.format(submittedDate, 'dddd, MMMM D');
+			const formatted = DateTime.format(submittedDate, DateTime.WEEKDAY_MONTH_NAME_DAY);
 			const baseKey = 'submitted.late';
 
 			return (

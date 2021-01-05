@@ -11,9 +11,7 @@ const t = scoped('nti-assignment.navigation-bar.attempt-switcher.Attempt', {
 	submitted: 'Submitted on %(date)s'
 });
 
-function formatDate (date) {
-	return DateTime.format(date, 'MMM D, YYYY [at] h:mm A');
-}
+const formatDate = (date) => DateTime.format(date, DateTime.MONTH_ABBR_DAY_YEAR_AT_TIME);
 
 export default class AttemptSwitcherAttemptItem extends React.Component {
 	static propTypes = {

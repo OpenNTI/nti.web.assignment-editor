@@ -130,7 +130,7 @@ export default class AvailablePicker extends React.Component {
 
 		return (
 			<LabeledValue label={label} className="available-trigger" arrow disabled={disabled}>
-				{hasValue ? <DateTime date={date} format="L"/> : <span className={labelClasses}>{placeholder}</span>}
+				{hasValue ? <DateTime date={date} format={DateTime.DATE_PADDED}/> : <span className={labelClasses}>{placeholder}</span>}
 			</LabeledValue>
 		);
 	}

@@ -86,7 +86,7 @@ const STATES = [
 
 			const latest = new Date(due.getTime() + ((submissionBuffer || 0) * 1000));
 			const baseKey = latest > now ? 'notSubmitted.late.insideGracePeriod' : 'notSubmitted.late.outsideGracePeriod';
-			const formatted = DateTime.format(latest, 'dddd, MMMM D [at] h:mm A z');
+			const formatted = DateTime.format(latest, DateTime.WEEKDAY_MONTH_NAME_DAY_AT_TIME_WITH_ZONE);
 
 			return (
 				<div className="not-submitted-late">
