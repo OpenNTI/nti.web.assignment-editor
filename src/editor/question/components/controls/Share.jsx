@@ -1,8 +1,13 @@
-import './Share.scss';
-import React from 'react';
 import PropTypes from 'prop-types';
+import React, {useCallback} from 'react';
 import {scoped} from '@nti/lib-locale';
 import {Associations} from '@nti/web-commons';
+
+const Box = styled.div`
+	font: normal 400 0.875rem/1.25rem var(--body-font-family);
+	color: var(--primary-grey);
+	cursor: pointer;
+`;
 
 const {createInterfaceForItem, openEditorModal} = Associations;
 
@@ -20,24 +25,25 @@ const DEFAULT_TEXT = {
 
 const t = scoped('assignment.editing.controls.question-sharing', DEFAULT_TEXT);
 
-export default class ShareControl extends React.Component {
-	static propTypes = {
-		question: PropTypes.object.isRequired,
-		course: PropTypes.object.isRequired
-	}
+ShareControl.propTypes = {
+	question: PropTypes.object.isRequired,
+	course: PropTypes.object.isRequired
+};
 
+function ShareControl ({question, course}, ref) {
 
-	onClick = () => {
-		const {question, course} = this.props;
+	const onClick = useCallback(() => {
 		const associations = createInterfaceForItem(question, course, [AssignmentType]);
-
 		openEditorModal(t('modalLabel'), associations, null, t);
-	}
+	}, [question, course]);
 
 
-	render () {
-		return (
-			<span className="share-control-list-item" onClick={this.onClick}>{t('shareWith')}</span>
-		);
-	}
+
+	return (
+		<Box ref={ref} className="share-control-list-item" onClick={onClick}>
+			{t('shareWith')}
+		</Box>
+	);
 }
+
+export default React.forwardRef(ShareControl);
