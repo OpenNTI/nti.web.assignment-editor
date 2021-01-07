@@ -25,12 +25,7 @@ const DEFAULT_TEXT = {
 
 const t = scoped('assignment.editing.controls.question-sharing', DEFAULT_TEXT);
 
-ShareControl.propTypes = {
-	question: PropTypes.object.isRequired,
-	course: PropTypes.object.isRequired
-};
-
-function ShareControl ({question, course}, ref) {
+const ShareControl = React.forwardRef(({question, course}, ref) => {
 
 	const onClick = useCallback(() => {
 		const associations = createInterfaceForItem(question, course, [AssignmentType]);
@@ -44,6 +39,13 @@ function ShareControl ({question, course}, ref) {
 			{t('shareWith')}
 		</Box>
 	);
-}
+});
 
-export default React.forwardRef(ShareControl);
+
+ShareControl.displayName = 'ShareControl';
+ShareControl.propTypes = {
+	question: PropTypes.object.isRequired,
+	course: PropTypes.object.isRequired
+};
+
+export default ShareControl;
