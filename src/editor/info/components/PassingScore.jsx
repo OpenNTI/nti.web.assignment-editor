@@ -63,6 +63,7 @@ export default class PassingScore extends React.Component {
 
 		setState({
 			value,
+			showPrompt: false,
 			storedValue: value,
 			checked: Boolean(value),
 			disabled: !assignment.hasLink(rel)
@@ -91,14 +92,13 @@ export default class PassingScore extends React.Component {
 					}, void 0, rel);
 
 					this.setState({showPrompt: false});
-					this.closeMenu();
 				}
 				else if(!assignment.passingScore && value && !assignment.totalPoints) {
 					// in this case, we are setting a passingScore value on the assignment, but
 					// the assignment doesn't have a totalPoints value, in which case we need to prompt
 					// the user to ask them to input a total points value (passingScore with no totalPoints doesn't
 					// make much sense)
-					this.setState({showPrompt: true, totalPoints: 100});
+					this.setState({storedValue: value, showPrompt: true, totalPoints: 100});
 				}
 				else {
 					// otherwise, we are free to just save the changes to the passingScore
@@ -107,8 +107,8 @@ export default class PassingScore extends React.Component {
 					}, void 0, rel);
 
 					this.setState({storedValue: value});
-					this.closeMenu();
 				}
+				this.closeMenu();
 			}
 		}
 		catch (ex) {
@@ -146,7 +146,7 @@ export default class PassingScore extends React.Component {
 		this.setState({value});
 	}
 
-	onAssignmentChanged = () => {
+	syncStateFromAssignment = () => {
 		this.setupValue();
 	}
 
@@ -157,7 +157,7 @@ export default class PassingScore extends React.Component {
 			<SaveCancel
 				className="input-total-points-dialog"
 				getString={promptScope}
-				onCancel={() => { this.setState({showPrompt: false});}}
+				onCancel={this.syncStateFromAssignment}
 				onSave={(e) => {
 					this.onSave(e, true);
 				}}
@@ -201,14 +201,13 @@ export default class PassingScore extends React.Component {
 		const saveClassNames = cx('save-button flyout-fullwidth-btn', {changed: this.hasChanges()});
 
 		return (
-			<HOC.ItemChanges item={assignment} onItemChanged={this.onAssignmentChanged}>
+			<HOC.ItemChanges item={assignment} onItemChanged={this.syncStateFromAssignment}>
 				<Flyout.Triggered
 					ref={this.setFlyoutRef}
 					className="passing-score-flyout"
 					horizontalAlign={Flyout.ALIGNMENTS.LEFT}
 					sizing={Flyout.SIZES.MATCH_SIDE}
 					trigger={this.renderTrigger()}
-					onDismiss={this.reset}
 				>
 					{error && <div className="error">{error}</div>}
 					<Checkbox label={t('checkboxLabel')} checked={checked} onChange={this.onCheckChange} />
