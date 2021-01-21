@@ -71,7 +71,7 @@ export default class PassingScore extends React.Component {
 	}
 
 	onSave = async (e, forceTotalPointSave) => {
-		if(!this.hasChanges()) {
+		if(!this.hasChanges() && forceTotalPointSave !== true) {
 			return;
 		}
 
@@ -84,7 +84,7 @@ export default class PassingScore extends React.Component {
 			if(assignment) {
 				const value = this.getValue();
 
-				if(forceTotalPointSave) {
+				if(forceTotalPointSave === true) {
 					// the user entered a totalPoints value in the prompt, so now we will save both that and passingScore
 					await assignment.save({
 						'completion_passing_percent': checked && value ? value / 100.0 : null,
