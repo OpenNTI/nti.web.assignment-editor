@@ -1,2 +1,2 @@
-export AttemptSwitcher from './attempt-switcher';
-export Status from './status';
+export { default as AttemptSwitcher } from './attempt-switcher';
+export { default as Status } from './status';
