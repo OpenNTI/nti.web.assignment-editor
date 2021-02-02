@@ -133,7 +133,7 @@ export default class ActionStack extends EventEmitter {
 	 * @param  {OnCallback} action.onTimeout - Function to call when the timer to do the action runs out,
 	 * @param  {string} action.label - String that gets displayed to identify the action,
 	 * @param  {string} action.name - String that is used to label the button to perform the button
-	 * @return {void}
+	 * @returns {void}
 	 */
 	push (action) {
 		this.seenCount += 1;
@@ -157,7 +157,7 @@ export default class ActionStack extends EventEmitter {
 	 * If given an action, remove that action from the stack. Otherwise clear the entire stack.
 	 *
 	 * @param  {Object|string} action the action to remove
-	 * @return {void}
+	 * @returns {void}
 	 */
 	clear (action) {
 		let stack = this[ACTION_STACK];

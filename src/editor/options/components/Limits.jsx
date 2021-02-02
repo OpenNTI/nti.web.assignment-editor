@@ -96,7 +96,7 @@ class Limits extends React.Component {
 	/**
 	 * Upon typing in the limit input field, update the draw number to reflect the new value.
 	 * This is not yet gone to the server to be saved.
-	 * @param {Number} value draw?
+	 * @param {number} value draw?
 	 * @returns {void}
 	 */
 	onLimitChange = (value) => {

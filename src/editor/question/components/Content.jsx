@@ -85,7 +85,7 @@ export default class QuestionContent extends React.Component {
 	 * was created after the assignment editor is open, or the question
 	 * has been edited since it was created.
 	 *
-	 * @return {Object} the warning that should be shown, if any
+	 * @returns {Object} the warning that should be shown, if any
 	 */
 	getWarning () {
 		const {warning, published, question} = this.props;

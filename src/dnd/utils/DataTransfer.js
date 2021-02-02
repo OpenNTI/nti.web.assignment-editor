@@ -71,9 +71,9 @@ export default class DataTransfer {
 	 *
 	 * If no key is provided or we are unable to find one nothing will be added to the data transfer
 	 *
-	 * @param {String|Mixed} key   the key to store the value on (typically a mimetype), or the object to store
+	 * @param {string|Mixed} key   the key to store the value on (typically a mimetype), or the object to store
 	 * @param {Mixed} value the value to store
-	 * @return {void}
+	 * @returns {void}
 	 */
 	setData (key, value) {
 		if (!value && key) {
@@ -110,7 +110,7 @@ export default class DataTransfer {
 	 * instead of passing the event.
 	 *
 	 * @param  {Function} fn callback
-	 * @return {void}
+	 * @returns {void}
 	 */
 	forEach (fn) {
 		let data = this.transferData;
@@ -127,8 +127,8 @@ export default class DataTransfer {
 	 *
 	 * If the data is there, but we are not allowed to access it return true
 	 *
-	 * @param  {String} key the key to look for
-	 * @return {String}		the value on data transfer for that key
+	 * @param  {string} key the key to look for
+	 * @returns {string}		the value on data transfer for that key
 	 */
 	getData (key) {
 		const {dataTransfer} = this;
@@ -149,8 +149,8 @@ export default class DataTransfer {
 	/**
 	 * Get data for the key and try to parse it into json
 	 *
-	 * @param  {String} key the key to find
-	 * @return {JSON}     the parsed JSON or null if it wasn't able to parse it
+	 * @param  {string} key the key to find
+	 * @returns {JSON}     the parsed JSON or null if it wasn't able to parse it
 	 */
 	getJSON (key) {
 		let data = this.getData(key);
@@ -167,8 +167,8 @@ export default class DataTransfer {
 	/**
 	 * Return parsed JSON or the raw data for a key
 	 *
-	 * @param  {String} key the key to find
-	 * @return {String|JSON}     the raw data or JSON if it would be parsed
+	 * @param  {string} key the key to find
+	 * @returns {string|JSON}     the raw data or JSON if it would be parsed
 	 */
 	findDataFor (key) {
 		return this.getJSON(key) || this.getData(key);
@@ -178,8 +178,8 @@ export default class DataTransfer {
 	/**
 	 * Figure out is the dataTansfer contains data for a key
 	 *
-	 * @param  {String} key the key to find
-	 * @return {Boolean}     if it has that type of data or not
+	 * @param  {string} key the key to find
+	 * @returns {boolean}     if it has that type of data or not
 	 */
 	containsType (key) {
 		let types = this.dataTransfer && this.dataTransfer.types;
