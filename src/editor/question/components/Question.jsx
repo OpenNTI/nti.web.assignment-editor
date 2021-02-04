@@ -64,10 +64,11 @@ export default class Question extends React.Component {
 
 	buttons = [
 		{label: t('cancel'), onClick: () => this.onDialogCancel()},
-		{label: t('save'), onClick: () => {
-			setTimeout(() => {
-				this.onDialogSave();
-			}, 200);
+		{label: t('save'), onClick: async () => {
+			await this.flushChanges();
+			// FIXME: Re: NTI-7321, PR #42 Introduced a delay. Do we really need to wait? Is there a promise/event?
+			await new Promise(x => setTimeout(x, 200));
+			this.onDialogSave();
 		}}
 	]
 
@@ -186,8 +187,8 @@ export default class Question extends React.Component {
 	}
 
 
-	flushChanges = () => {
-		this.onChangeBuffered.flush();
+	flushChanges = async () => {
+		this.onChangeBuffered.flush?.();
 	}
 
 
