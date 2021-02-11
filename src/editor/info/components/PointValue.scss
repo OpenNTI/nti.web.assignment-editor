@@ -1,10 +1,12 @@
 .point-value {
 	input {
-		height: 22px;
+		height: auto;
+		margin: 0;
+		line-height: 0;
+		max-height: 22px;
 		background-color: white;
 		padding-left: 0;
 		border: none;
-		margin-top: -3px;
 
 		&:focus {
 			border: inherit;
