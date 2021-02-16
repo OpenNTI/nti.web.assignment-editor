@@ -1,24 +1,24 @@
+/* eslint react/no-find-dom-node: warn */
 import './Ordering.scss';
 import React from 'react';
 import ReactDom from 'react-dom';
 import PropTypes from 'prop-types';
 import FlipMove from 'react-flip-move';
 import cx from 'classnames';
-import {v4 as guid} from 'uuid';
+import { v4 as guid } from 'uuid';
 import Logger from '@nti/util-logger';
-import {wait} from '@nti/lib-commons';
+import { wait } from '@nti/lib-commons';
 
 import Draggable from '../../components/Draggable';
 import Dropzone from '../../components/Dropzone';
 import MoveInfo from '../../utils/MoveInfo';
 import Store from '../../Store';
-import {ORDERING_DRAG_OVER, ORDERING_DRAG_LEAVE} from '../../Constants';
-import {dragOverOrdering, dragLeaveOrdering} from '../../Actions';
+import { ORDERING_DRAG_OVER, ORDERING_DRAG_LEAVE } from '../../Constants';
+import { dragOverOrdering, dragLeaveOrdering } from '../../Actions';
 
 const logger = Logger.get('lib:dnd:ordering:Ordering');
 
-
-function makeRectRelativeTo (child, parent) {
+function makeRectRelativeTo(child, parent) {
 	let top = child.top - parent.top;
 	let left = child.left - parent.left;
 	let width = child.width;
@@ -30,29 +30,26 @@ function makeRectRelativeTo (child, parent) {
 		right: left + width,
 		bottom: top + height,
 		width: width,
-		height: height
+		height: height,
 	};
 }
 
 //For now just check vertically for before and after
 //Checking horizontally adds quite a bit of complexity
 //and we don't need it just yet
-function getMidpointOfRect (rect) {
-	return Math.floor(rect.top + (rect.height / 2));
+function getMidpointOfRect(rect) {
+	return Math.floor(rect.top + rect.height / 2);
 }
 
-
-function isPointBeforeRect (x, y, rect) {
+function isPointBeforeRect(x, y, rect) {
 	const midpoint = getMidpointOfRect(rect);
 
 	return y < midpoint;
 }
 
-
-function isPointAfterRect (x, y, rect) {
+function isPointAfterRect(x, y, rect) {
 	return !isPointBeforeRect(x, y, rect);
 }
-
 
 export default class Ordering extends React.Component {
 	static propTypes = {
@@ -62,11 +59,10 @@ export default class Ordering extends React.Component {
 		renderPlaceholder: PropTypes.func,
 		accepts: PropTypes.array,
 		className: PropTypes.string,
-		onChange: PropTypes.func
-	}
+		onChange: PropTypes.func,
+	};
 
-
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
 		this.componentRefs = {};
@@ -77,14 +73,16 @@ export default class Ordering extends React.Component {
 
 		this.state = {
 			items: items,
-			originalOrder: items
+			originalOrder: items,
 		};
 	}
 
-
 	mapItem = (item, index) => {
-		const {containerId} = this.props;
-		const moveInfo = new MoveInfo({OriginContainer: containerId, OriginIndex: index});
+		const { containerId } = this.props;
+		const moveInfo = new MoveInfo({
+			OriginContainer: containerId,
+			OriginIndex: index,
+		});
 		const ID = item.NTIID || item.ID || `placeholder-id-${guid()}`;
 
 		return {
@@ -93,13 +91,12 @@ export default class Ordering extends React.Component {
 			MoveData: [item, moveInfo],
 			MoveInfo: moveInfo,
 			onDragStart: this.onItemDragStart.bind(this, item),
-			onDragEnd: this.onItemDragEnd.bind(this, item)
+			onDragEnd: this.onItemDragEnd.bind(this, item),
 		};
-	}
+	};
 
-
-	componentDidUpdate (prevProps, prevState) {
-		let {items} = this.props;
+	componentDidUpdate(prevProps, prevState) {
+		let { items } = this.props;
 		let activeDrag;
 
 		if (prevProps.items === items) {
@@ -111,7 +108,6 @@ export default class Ordering extends React.Component {
 				activeDrag = item;
 			}
 		}
-
 
 		items = items.map((item, index) => {
 			item = this.mapItem(item, index);
@@ -125,38 +121,33 @@ export default class Ordering extends React.Component {
 
 		this.setState({
 			items: items,
-			originalOrder: items
+			originalOrder: items,
 		});
 	}
 
-
-	componentDidMount () {
+	componentDidMount() {
 		Store.addChangeListener(this.onStoreChange);
 	}
 
-
-	componentWillUnmount () {
+	componentWillUnmount() {
 		Store.addChangeListener(this.onStoreChange);
 	}
 
-
-	onStoreChange = (e) => {
+	onStoreChange = e => {
 		if (e.type === ORDERING_DRAG_OVER || e.type === ORDERING_DRAG_LEAVE) {
 			this.maybeRemovePlaceholder();
 		}
-	}
+	};
 
-
-	maybeRemovePlaceholder () {
+	maybeRemovePlaceholder() {
 		if (Store.activeOrdering !== this) {
 			this.removePlaceholder();
 		}
 	}
 
-
-	getPlaceholder () {
-		const {containerId} = this.props;
-		const {items} = this.state;
+	getPlaceholder() {
+		const { containerId } = this.props;
+		const { items } = this.state;
 
 		for (let item of items) {
 			if (item.isPlaceholder || item.isDragging) {
@@ -167,16 +158,15 @@ export default class Ordering extends React.Component {
 
 		return {
 			item: {
-				MimeType: 'application/vnd.nextthought.app.placeholder'
+				MimeType: 'application/vnd.nextthought.app.placeholder',
 			},
 			ID: 'Placeholder-' + containerId,
-			isPlaceholder: true
+			isPlaceholder: true,
 		};
 	}
 
-
-	removePlaceholder () {
-		let {items} = this.state;
+	removePlaceholder() {
+		let { items } = this.state;
 		let hadPlaceholder = false;
 
 		items = items.reduce((acc, item) => {
@@ -194,15 +184,14 @@ export default class Ordering extends React.Component {
 
 		if (hadPlaceholder) {
 			this.setState({
-				items: items
+				items: items,
 			});
 		}
 	}
 
-
-	getContainerRect () {
+	getContainerRect() {
 		//We cannot use refs for this, so we must use this method until its taken away.
-		const container = ReactDom.findDOMNode(this); //eslint-disable-line react/no-find-dom-node
+		const container = ReactDom.findDOMNode(this);
 		let rect;
 
 		if (container) {
@@ -214,15 +203,14 @@ export default class Ordering extends React.Component {
 				right: 0,
 				bottom: 0,
 				width: 0,
-				height: 0
+				height: 0,
 			};
 		}
 
 		return rect;
 	}
 
-
-	getRectForId (id) {
+	getRectForId(id) {
 		const parentRect = this.getContainerRect();
 		const cmp = this.componentRefs[id];
 		let rect;
@@ -234,17 +222,16 @@ export default class Ordering extends React.Component {
 		} else {
 			rect = {
 				top: 0,
-				height: 0
+				height: 0,
 			};
 		}
 
 		return rect;
 	}
 
-
-	getIndexOfPoint (x, y) {
+	getIndexOfPoint(x, y) {
 		const parentRect = this.getContainerRect();
-		const {items} = this.state;
+		const { items } = this.state;
 		let index = 0;
 
 		if (parentRect) {
@@ -255,7 +242,9 @@ export default class Ordering extends React.Component {
 		for (let item of items) {
 			let cmpRect = this.getRectForId(item.ID);
 
-			if (item.isPlaceholder || item.isDragging) { continue; }
+			if (item.isPlaceholder || item.isDragging) {
+				continue;
+			}
 
 			if (!cmpRect) {
 				logger.error('Now component for item: ', item);
@@ -269,9 +258,8 @@ export default class Ordering extends React.Component {
 		return index;
 	}
 
-
-	getIndexOfId (id) {
-		const {items} = this.state;
+	getIndexOfId(id) {
+		const { items } = this.state;
 		let index = -1;
 
 		for (let i = 0; i < items.length; i++) {
@@ -284,9 +272,8 @@ export default class Ordering extends React.Component {
 		return index;
 	}
 
-
-	getActiveDragging () {
-		const {items} = this.state;
+	getActiveDragging() {
+		const { items } = this.state;
 
 		for (let item of items) {
 			if (item.isDragging) {
@@ -295,15 +282,14 @@ export default class Ordering extends React.Component {
 		}
 	}
 
-
 	onContainerDrop = (data, dataTransfer, e) => {
-		const {onChange} = this.props;
-		const {clientX, clientY} = e;
+		const { onChange } = this.props;
+		const { clientX, clientY } = e;
 		const moveInfo = dataTransfer.findDataFor(MoveInfo.MimeType);
 		const dropId = data.NTIID || data.ID;
 		let newIndex = this.getIndexOfPoint(clientX, clientY);
 		let oldIndex = this.getIndexOfId(dropId);
-		let {items} = this.state;
+		let { items } = this.state;
 
 		this.lastDroppedId = dropId;
 
@@ -328,45 +314,48 @@ export default class Ordering extends React.Component {
 		if (onChange) {
 			onChange(items, data, newIndex, new MoveInfo(moveInfo));
 		}
-	}
-
+	};
 
 	onContainerDragOver = (e, canHandle) => {
-		if (!canHandle) { return; }
+		if (!canHandle) {
+			return;
+		}
 
 		dragOverOrdering(this);
 
-		if (this.isInternalDrag) { return; }
+		if (this.isInternalDrag) {
+			return;
+		}
 
-		const {clientX, clientY} = e;
+		const { clientX, clientY } = e;
 		const placeholder = this.getPlaceholder();
 		const index = this.getIndexOfPoint(clientX, clientY);
 		const oldIndex = placeholder && this.getIndexOfId(placeholder.ID);
-		let {items} = this.state;
+		let { items } = this.state;
 		let toInsert = [placeholder];
 
 		//If the placeholder hasn't moved, don't set state
-		if (oldIndex === index) { return; }
+		if (oldIndex === index) {
+			return;
+		}
 
-		items = items.filter((item) => !(item.isPlaceholder || item.isDragging));
+		items = items.filter(item => !(item.isPlaceholder || item.isDragging));
 
 		items = [...items.slice(0, index), ...toInsert, ...items.slice(index)];
 
 		this.setState({
 			items: items,
-			disableAnimation: false
+			disableAnimation: false,
 		});
-	}
-
+	};
 
 	onContainerDragLeave = () => {
 		dragLeaveOrdering(this);
 
 		this.removePlaceholder();
-	}
+	};
 
-
-	onItemDragStart = async (dragItem) => {
+	onItemDragStart = async dragItem => {
 		//wait a little bit so the ghost image will be there
 		//For html5 drag and drop to work correctly the node that is dragging needs to still be in the dom,
 		//since we are using the same node for the placeholder, if it originated from here we need to keep the node
@@ -380,12 +369,12 @@ export default class Ordering extends React.Component {
 		this.isInternalDrag = null;
 
 		const dragId = dragItem.NTIID || dragItem.ID;
-		let {items} = this.state;
+		let { items } = this.state;
 
 		items = items.slice(0);
 
 		this.setState({
-			items: items.map((item) => {
+			items: items.map(item => {
 				let itemId = item.NTIID || item.ID;
 
 				if (itemId === dragId) {
@@ -396,14 +385,13 @@ export default class Ordering extends React.Component {
 
 				return item;
 			}),
-			disableAnimation: false
+			disableAnimation: false,
 		});
-	}
+	};
 
-
-	onItemDragEnd = (dragItem) => {
-		const {onChange} = this.props;
-		let {items, originalOrder} = this.state;
+	onItemDragEnd = dragItem => {
+		const { onChange } = this.props;
+		let { items, originalOrder } = this.state;
 		const dragId = dragItem.NTIID || dragItem.ID;
 		const wasHandled = Store.wasDataHandled(dragItem);
 
@@ -414,7 +402,7 @@ export default class Ordering extends React.Component {
 		}, {});
 
 		if (!wasHandled || this.lastDroppedId === dragId) {
-			items = originalOrder.map((originalItem) => {
+			items = originalOrder.map(originalItem => {
 				let itemId = originalItem.NTIID || originalItem.ID;
 				let item = itemMap[itemId];
 
@@ -428,10 +416,10 @@ export default class Ordering extends React.Component {
 
 			this.setState({
 				items: items,
-				disableAnimation: true
+				disableAnimation: true,
 			});
 		} else {
-			items = items.filter((item) => {
+			items = items.filter(item => {
 				let itemId = item.NTIID || item.ID;
 
 				return itemId !== dragId;
@@ -441,11 +429,10 @@ export default class Ordering extends React.Component {
 				onChange(items.map(item => item.item));
 			}
 		}
-	}
+	};
 
-
-	getDropHandlers (handler) {
-		const {accepts} = this.props;
+	getDropHandlers(handler) {
+		const { accepts } = this.props;
 
 		return (accepts || []).reduce((acc, accept) => {
 			acc[accept] = handler;
@@ -454,12 +441,11 @@ export default class Ordering extends React.Component {
 		}, {});
 	}
 
-
-	getAttachRef (key) {
+	getAttachRef(key) {
 		this.attachFns = this.attchFns || {};
 
 		if (!this.attachFns[key]) {
-			this.attachFns[key] = (ref) => {
+			this.attachFns[key] = ref => {
 				if (!ref) {
 					delete this.attachFns[key];
 					delete this.componentRefs[key];
@@ -472,10 +458,9 @@ export default class Ordering extends React.Component {
 		return this.attachFns[key];
 	}
 
-
-	render () {
-		const {className} = this.props;
-		const {items, disableAnimation} = this.state;
+	render() {
+		const { className } = this.props;
+		const { items, disableAnimation } = this.state;
 		const cls = cx('ordering-container', className || '');
 
 		return (
@@ -500,12 +485,15 @@ export default class Ordering extends React.Component {
 		);
 	}
 
-
 	renderItem = (item, index) => {
-		const {renderItem} = this.props;
-		const cls = cx('ordering-item', {placeholder: item.isPlaceholder, 'is-dragging': item.isDragging});
+		const { renderItem } = this.props;
+		const cls = cx('ordering-item', {
+			placeholder: item.isPlaceholder,
+			'is-dragging': item.isDragging,
+		});
 		const key = item.ID;
-		const style = item.isPlaceholder && item.height ? {height: item.height} : {};
+		const style =
+			item.isPlaceholder && item.height ? { height: item.height } : {};
 
 		return (
 			<Draggable
@@ -515,13 +503,16 @@ export default class Ordering extends React.Component {
 				onDragStart={item.onDragStart}
 				onDragEnd={item.onDragEnd}
 			>
-				<div ref={this.getAttachRef(key)} data-ordering-key={key} style={style}>
-					{ !item.isPlaceholder && !item.isDragging ?
-						renderItem(item.item, index, item.isPlaceholder) :
-						null
-					}
+				<div
+					ref={this.getAttachRef(key)}
+					data-ordering-key={key}
+					style={style}
+				>
+					{!item.isPlaceholder && !item.isDragging
+						? renderItem(item.item, index, item.isPlaceholder)
+						: null}
 				</div>
 			</Draggable>
 		);
-	}
+	};
 }

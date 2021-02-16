@@ -1,29 +1,29 @@
+/* eslint react/no-find-dom-node: warn */
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import Logger from '@nti/util-logger';
-import {wait} from '@nti/lib-commons';
+import { wait } from '@nti/lib-commons';
 
 const logger = Logger.get('HeightChange');
 
 const OBSERVER_INIT = {
 	childList: true,
 	characterData: true,
-	subtree: true
+	subtree: true,
 };
 
-function getMutationObserver () {
+function getMutationObserver() {
 	return global.MutationObserver || global.WebKitMutationObserver;
 }
 
 export default class HeightChange extends React.Component {
 	static propTypes = {
 		children: PropTypes.node,
-		onChange: PropTypes.func
-	}
+		onChange: PropTypes.func,
+	};
 
-
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
 		const mutationObserver = getMutationObserver();
@@ -31,46 +31,45 @@ export default class HeightChange extends React.Component {
 		this.currentHeight = -1;
 
 		if (mutationObserver) {
-			this.observer = new mutationObserver ( () => this.maybeChanged());
+			this.observer = new mutationObserver(() => this.maybeChanged());
 		} else {
-			logger.error('Mutation Observer is not defined, onChange will not be called');
+			logger.error(
+				'Mutation Observer is not defined, onChange will not be called'
+			);
 		}
 	}
 
-
-	getDOMNode () {
+	getDOMNode() {
 		//We need the underlying dom node. Using refs will likely give us a Component instance...
 		//we don't want to assume the component exposes a ref my any particular name, so,
 		//until this API is removed, we will use it.
-		return ReactDOM.findDOMNode(this);//eslint-disable-line react/no-find-dom-node
+		return ReactDOM.findDOMNode(this);
 	}
 
-
-	maybeChanged () {
-		const {onChange} = this.props;
+	maybeChanged() {
+		const { onChange } = this.props;
 		const node = this.getDOMNode();
 
-		if (!onChange) { return; }
+		if (!onChange) {
+			return;
+		}
 
-		wait()
-			.then(() => {
-				//clientHeight is less expensive to read
-				const newHeight = node.clientHeight;
+		wait().then(() => {
+			//clientHeight is less expensive to read
+			const newHeight = node.clientHeight;
 
-				if (newHeight !== this.currentHeight) {
-					this.currentHeight = newHeight;
-					onChange();
-				}
-			});
+			if (newHeight !== this.currentHeight) {
+				this.currentHeight = newHeight;
+				onChange();
+			}
+		});
 	}
 
-
-	componentDidUpdate () {
+	componentDidUpdate() {
 		this.maybeChanged();
 	}
 
-
-	componentDidMount () {
+	componentDidMount() {
 		const node = this.getDOMNode();
 
 		this.currentHeight = node.clientHeight;
@@ -80,16 +79,14 @@ export default class HeightChange extends React.Component {
 		}
 	}
 
-
-	componentWillUnmount () {
+	componentWillUnmount() {
 		if (this.observer) {
 			this.observer.disconnect();
 		}
 	}
 
-
-	render () {
-		const {children} = this.props;
+	render() {
+		const { children } = this.props;
 		const child = React.Children.only(children);
 
 		return child;

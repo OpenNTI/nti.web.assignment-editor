@@ -1,9 +1,10 @@
+/* eslint react/no-find-dom-node: warn */
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import cx from 'classnames';
 
-import {dragStart, dragEnd} from '../Actions';
+import { dragStart, dragEnd } from '../Actions';
 import DataTransfer from '../utils/DataTransfer';
 import DnDInfo from '../utils/Info';
 
@@ -15,41 +16,37 @@ export default class Draggable extends React.Component {
 		onMouseDown: PropTypes.func,
 		onMouseUp: PropTypes.func,
 		children: PropTypes.any,
-		className: PropTypes.string
-	}
-
+		className: PropTypes.string,
+	};
 
 	static childContextTypes = {
 		addDragHandle: PropTypes.func,
 		// removeDragHandle: React.PropTypes.func,
 		enableDrag: PropTypes.func,
-		disableDrag: PropTypes.func
-	}
+		disableDrag: PropTypes.func,
+	};
 
-	constructor (props) {
+	constructor(props) {
 		super(props);
 		this.setDataForTransfer(props.data);
 	}
 
-
-	getChildContext () {
+	getChildContext() {
 		return {
-			addDragHandle: () => this.hasDragHandle = true,
+			addDragHandle: () => (this.hasDragHandle = true),
 			enableDrag: () => this.setDraggable(true),
-			disableDrag: () => this.setDraggable(false)
+			disableDrag: () => this.setDraggable(false),
 		};
 	}
 
-
-	componentDidUpdate (prevProps) {
-		const {data:newData} = this.props;
-		const {data:oldData} = prevProps;
+	componentDidUpdate(prevProps) {
+		const { data: newData } = this.props;
+		const { data: oldData } = prevProps;
 
 		if (newData !== oldData) {
 			this.setDataForTransfer(newData);
 		}
 	}
-
 
 	// getSnapshotBeforeUpdate () {
 	// 	// if (!this.isDragging && this.isDraggable) {
@@ -58,8 +55,7 @@ export default class Draggable extends React.Component {
 	//  	return null;
 	// }
 
-
-	setDataForTransfer (data) {
+	setDataForTransfer(data) {
 		if (!Array.isArray(data)) {
 			data = [data];
 		}
@@ -73,20 +69,18 @@ export default class Draggable extends React.Component {
 		}
 	}
 
-
-	getDOMNode () {
+	getDOMNode() {
 		//We need the underlying dom node. Using refs will likely give us a Component instance...
 		//we don't want to assume the component exposes a ref my any particular name, so,
 		//until this API is removed, we will use it.
-		return ReactDOM.findDOMNode(this);//eslint-disable-line react/no-find-dom-node
+		return ReactDOM.findDOMNode(this);
 	}
 
-
-	onDragStart = (e) => {
+	onDragStart = e => {
 		e.stopPropagation();
 
-		const {onDragStart} = this.props;
-		const {dataTransfer} = e;
+		const { onDragStart } = this.props;
+		const { dataTransfer } = e;
 		const domNode = this.getDOMNode();
 
 		dataTransfer.effectAllowed = 'all';
@@ -109,11 +103,10 @@ export default class Draggable extends React.Component {
 		}
 
 		dragStart();
-	}
+	};
 
-
-	onDragEnd = (e) => {
-		const {onDragEnd} = this.props;
+	onDragEnd = e => {
+		const { onDragEnd } = this.props;
 		const domNode = this.getDOMNode();
 
 		this.isDragging = false;
@@ -126,10 +119,9 @@ export default class Draggable extends React.Component {
 		}
 
 		dragEnd();
-	}
+	};
 
-
-	setDraggable (add) {
+	setDraggable(add) {
 		const domNode = this.getDOMNode();
 		const listener = add ? 'addEventListener' : 'removeEventListener';
 
@@ -145,37 +137,38 @@ export default class Draggable extends React.Component {
 		domNode[listener]('dragend', this.onDragEnd);
 	}
 
-
-	onMouseDown = (e) => {
-		if (this.hasDragHandle) { return; }
+	onMouseDown = e => {
+		if (this.hasDragHandle) {
+			return;
+		}
 
 		e.stopPropagation();
 
-		const {onMouseDown} = this.props;
+		const { onMouseDown } = this.props;
 
 		if (onMouseDown) {
 			onMouseDown(e);
 		}
 
 		this.setDraggable(true);
-	}
+	};
 
+	onMouseUp = e => {
+		if (this.hasDragHandle) {
+			return;
+		}
 
-	onMouseUp = (e) => {
-		if (this.hasDragHandle) { return; }
-
-		const {onMouseUp} = this.props;
+		const { onMouseUp } = this.props;
 
 		if (onMouseUp) {
 			onMouseUp(e);
 		}
 
 		this.setDraggable(false);
-	}
+	};
 
-
-	render () {
-		const {children, className, ...props} = this.props;
+	render() {
+		const { children, className, ...props } = this.props;
 		const child = React.Children.only(children);
 
 		props.className = cx(className, 'draggable');
@@ -185,8 +178,6 @@ export default class Draggable extends React.Component {
 		delete props.onDragStart;
 		delete props.onDragEnd;
 
-		return (
-			React.cloneElement(child, props)
-		);
+		return React.cloneElement(child, props);
 	}
 }
