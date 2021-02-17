@@ -1,4 +1,3 @@
-/* eslint react/no-find-dom-node: warn */
 import './Ordering.scss';
 import React from 'react';
 import ReactDom from 'react-dom';
@@ -191,6 +190,7 @@ export default class Ordering extends React.Component {
 
 	getContainerRect() {
 		//We cannot use refs for this, so we must use this method until its taken away.
+		// eslint-disable-next-line react/no-find-dom-node
 		const container = ReactDom.findDOMNode(this);
 		let rect;
 

@@ -1,4 +1,3 @@
-/* eslint react/no-find-dom-node: warn */
 import React from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
@@ -73,6 +72,7 @@ export default class Draggable extends React.Component {
 		//We need the underlying dom node. Using refs will likely give us a Component instance...
 		//we don't want to assume the component exposes a ref my any particular name, so,
 		//until this API is removed, we will use it.
+		// eslint-disable-next-line react/no-find-dom-node
 		return ReactDOM.findDOMNode(this);
 	}
 
