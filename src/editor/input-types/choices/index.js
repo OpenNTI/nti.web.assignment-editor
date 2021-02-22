@@ -1,5 +1,5 @@
-import Choices, {Placeholder} from './Choices';
+import Choices, { Placeholder } from './Choices';
 export default Choices;
 
-export {Placeholder};
+export { Placeholder };
 export { default as AddChoice } from './AddChoice';

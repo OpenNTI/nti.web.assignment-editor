@@ -1,11 +1,12 @@
-@import "~@nti/style-common";
+@import '~@nti/style-common';
 
 .question-content-editor {
 	&.error .nti-rich-text {
 		box-shadow: 0 0 1px 1px var(--primary-red);
 	}
 
-	.nti-rich-text, .nti-buffered-text-editor {
+	.nti-rich-text,
+	.nti-buffered-text-editor {
 		padding: 0 0.2rem 0.2rem;
 		border: none;
 		background: white;
@@ -47,8 +48,10 @@
 // }
 
 .is-saving .question-content-editor {
-	.nti-rich-text, .nti-buffered-text-editor {
-		.DraftEditor-root, .public-DraftEditorPlaceholder-root {
+	.nti-rich-text,
+	.nti-buffered-text-editor {
+		.DraftEditor-root,
+		.public-DraftEditorPlaceholder-root {
 			color: transparent;
 		}
 	}

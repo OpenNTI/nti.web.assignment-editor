@@ -2,7 +2,8 @@
 
 .assignment-navigation-bar-status-submission-meta {
 	//override mobile global styles
-	&, & ul {
+	&,
+	& ul {
 		font: normal 600 0.625rem/1.3 var(--body-font-family);
 	}
 

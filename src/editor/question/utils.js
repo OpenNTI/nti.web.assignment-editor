@@ -1,8 +1,8 @@
-function cloneObj (obj) {
+function cloneObj(obj) {
 	const json = obj.toJSON ? obj.toJSON() : obj;
 
 	let clone = {
-		...json
+		...json,
 	};
 
 	delete clone.NTIID;
@@ -11,7 +11,7 @@ function cloneObj (obj) {
 	return clone;
 }
 
-export function cloneSolution (solution) {
+export function cloneSolution(solution) {
 	let clone = cloneObj(solution);
 
 	clone.Class = solution.Class;
@@ -20,7 +20,7 @@ export function cloneSolution (solution) {
 	return clone;
 }
 
-export function clonePart (part) {
+export function clonePart(part) {
 	let clone = cloneObj(part);
 
 	if (part.solutions) {
@@ -32,15 +32,16 @@ export function clonePart (part) {
 	return clone;
 }
 
-
-export function cloneQuestion (question) {
+export function cloneQuestion(question) {
 	const savingValues = (question.saving && question.saving.values) || {};
-	const {parts, MimeType, PublicationState, content} = question;
+	const { parts, MimeType, PublicationState, content } = question;
 
 	return {
 		MimeType,
 		PublicationState,
 		content: savingValues.content || content,
-		parts: savingValues.parts ? savingValues.parts.map(clonePart) : parts.map(clonePart)
+		parts: savingValues.parts
+			? savingValues.parts.map(clonePart)
+			: parts.map(clonePart),
 	};
 }

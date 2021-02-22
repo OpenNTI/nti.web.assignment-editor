@@ -4,29 +4,24 @@ export const CLASSNAME = 'classname';
 export const DATA = 'data';
 
 const WHITE_LIST = {
-	[DRAGGABLE]: [
-		'onDragStart',
-		'onDragEnd'
-	],
+	[DRAGGABLE]: ['onDragStart', 'onDragEnd'],
 
-	[DROPZONE]: [
-		'onDragEnter',
-		'onDragLeave',
-		'onDragOver',
-		'onDrop'
-	],
+	[DROPZONE]: ['onDragEnter', 'onDragLeave', 'onDragOver', 'onDrop'],
 
 	[CLASSNAME]: ['className'],
 
-	[DATA] (acc, props) {
+	[DATA](acc, props) {
 		const names = Object.keys(props);
 		const test = RegExp.prototype.test.bind(/^data/);
 
-		return names.reduce((ac, name) => (test(name) && (ac[name] = props[name]), ac), acc);
-	}
+		return names.reduce(
+			(ac, name) => (test(name) && (ac[name] = props[name]), ac),
+			acc
+		);
+	},
 };
 
-export function getDomNodeProps (props, limitTo) {
+export function getDomNodeProps(props, limitTo) {
 	limitTo = limitTo || Object.keys(WHITE_LIST);
 
 	if (!Array.isArray(limitTo)) {

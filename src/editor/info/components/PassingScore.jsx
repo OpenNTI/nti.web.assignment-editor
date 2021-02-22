@@ -2,7 +2,7 @@ import './PassingScore.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {scoped} from '@nti/lib-locale';
+import { scoped } from '@nti/lib-locale';
 import {
 	HOC,
 	Checkbox,
@@ -11,54 +11,59 @@ import {
 	LabeledValue,
 	Loading,
 	Prompt,
-	Button
+	Button,
 } from '@nti/web-commons';
 
-const {SaveCancel} = Prompt;
+const { SaveCancel } = Prompt;
 
 const t = scoped('assignment-editor.editor.info.components.PassingScore', {
-	description: 'What score is necessary for a learner to pass this assignment?',
+	description:
+		'What score is necessary for a learner to pass this assignment?',
 	checkboxLabel: 'Passing Score',
 	none: 'None',
-	promptDescription: 'In order to have a passing score, the assignment must also have a total points value'
+	promptDescription:
+		'In order to have a passing score, the assignment must also have a total points value',
 });
 
-const promptScope = scoped('assignment-editor.editor.info.components.PassingScore.PromptScope', {
-	title: 'Input Total Points',
-	save: 'Save',
-	cancel: 'Cancel'
-});
+const promptScope = scoped(
+	'assignment-editor.editor.info.components.PassingScore.PromptScope',
+	{
+		title: 'Input Total Points',
+		save: 'Save',
+		cancel: 'Cancel',
+	}
+);
 
 export const rel = 'completion-passing-percent';
 
 export default class PassingScore extends React.Component {
 	static propTypes = {
-		assignment: PropTypes.object.isRequired
-	}
+		assignment: PropTypes.object.isRequired,
+	};
 
-	constructor (props) {
+	constructor(props) {
 		super(props);
 		this.setupValue(props);
 	}
 
+	setFlyoutRef = x => (this.flyoutRef = x);
 
-	setFlyoutRef = x => this.flyoutRef = x
-
-	componentDidMount () {
+	componentDidMount() {
 		this.setupValue();
 	}
 
-	componentDidUpdate (oldProps) {
-		if(oldProps.assignment !== this.props.assignment) {
+	componentDidUpdate(oldProps) {
+		if (oldProps.assignment !== this.props.assignment) {
 			this.setupValue();
 		}
 	}
 
-	setupValue (props = this.props) {
+	setupValue(props = this.props) {
 		//eslint-disable-next-line react/no-direct-mutation-state
-		const setState = s => this.state ? this.setState(s) : (this.state = s);
+		const setState = s =>
+			this.state ? this.setState(s) : (this.state = s);
 
-		const {assignment} = props;
+		const { assignment } = props;
 		let value = assignment && Math.floor(assignment.passingScore * 100.0);
 
 		setState({
@@ -66,142 +71,173 @@ export default class PassingScore extends React.Component {
 			showPrompt: false,
 			storedValue: value,
 			checked: Boolean(value),
-			disabled: !assignment.hasLink(rel)
+			disabled: !assignment.hasLink(rel),
 		});
 	}
 
 	onSave = async (e, forceTotalPointSave) => {
-		if(!this.hasChanges() && forceTotalPointSave !== true) {
+		if (!this.hasChanges() && forceTotalPointSave !== true) {
 			return;
 		}
 
-		const {assignment} = this.props;
-		const {checked, totalPoints} = this.state;
+		const { assignment } = this.props;
+		const { checked, totalPoints } = this.state;
 
-		this.setState({saving: true});
+		this.setState({ saving: true });
 
 		try {
-			if(assignment) {
+			if (assignment) {
 				const value = this.getValue();
 
-				if(forceTotalPointSave === true) {
+				if (forceTotalPointSave === true) {
 					// the user entered a totalPoints value in the prompt, so now we will save both that and passingScore
-					await assignment.save({
-						'completion_passing_percent': checked && value ? value / 100.0 : null,
-						'total_points': totalPoints
-					}, void 0, rel);
+					await assignment.save(
+						{
+							completion_passing_percent:
+								checked && value ? value / 100.0 : null,
+							total_points: totalPoints,
+						},
+						void 0,
+						rel
+					);
 
-					this.setState({showPrompt: false});
-				}
-				else if(!assignment.passingScore && value && !assignment.totalPoints) {
+					this.setState({ showPrompt: false });
+				} else if (
+					!assignment.passingScore &&
+					value &&
+					!assignment.totalPoints
+				) {
 					// in this case, we are setting a passingScore value on the assignment, but
 					// the assignment doesn't have a totalPoints value, in which case we need to prompt
 					// the user to ask them to input a total points value (passingScore with no totalPoints doesn't
 					// make much sense)
-					this.setState({storedValue: value, showPrompt: true, totalPoints: 100});
-				}
-				else {
+					this.setState({
+						storedValue: value,
+						showPrompt: true,
+						totalPoints: 100,
+					});
+				} else {
 					// otherwise, we are free to just save the changes to the passingScore
-					await assignment.save({
-						'completion_passing_percent': checked && value ? value / 100.0 : null
-					}, void 0, rel);
+					await assignment.save(
+						{
+							completion_passing_percent:
+								checked && value ? value / 100.0 : null,
+						},
+						void 0,
+						rel
+					);
 
-					this.setState({storedValue: value});
+					this.setState({ storedValue: value });
 				}
 				this.closeMenu();
 			}
+		} catch (ex) {
+			this.setState({ error: ex.message || ex });
+		} finally {
+			this.setState({ saving: false, stateChanged: false });
 		}
-		catch (ex) {
-			this.setState({error: ex.message || ex});
-		}
-		finally {
-			this.setState({saving: false, stateChanged: false});
-		}
-	}
+	};
 
-	onCheckChange = (e) => {
+	onCheckChange = e => {
 		const checked = e.target.checked;
-		const {checked:oldChecked} = this.state;
+		const { checked: oldChecked } = this.state;
 
 		if (checked !== oldChecked) {
 			this.setState({
 				checked,
 				value: checked ? this.getValue() : null,
-				stateChanged: true
+				stateChanged: true,
 			});
 		}
-	}
+	};
 
-	closeMenu () {
+	closeMenu() {
 		if (this.flyoutRef) {
 			this.flyoutRef.dismiss();
 		}
 	}
 
-	getValue () {
+	getValue() {
 		return this.state.value;
 	}
 
-	onPercentageChange = (value) => {
-		this.setState({value});
-	}
+	onPercentageChange = value => {
+		this.setState({ value });
+	};
 
 	syncStateFromAssignment = () => {
 		this.setupValue();
-	}
+	};
 
-	renderSavePrompt () {
-		const {saving, totalPoints} = this.state;
+	renderSavePrompt() {
+		const { saving, totalPoints } = this.state;
 
 		return (
 			<SaveCancel
 				className="input-total-points-dialog"
 				getString={promptScope}
 				onCancel={this.syncStateFromAssignment}
-				onSave={(e) => {
+				onSave={e => {
 					this.onSave(e, true);
 				}}
 				disableSave={saving || !totalPoints}
 			>
 				<div className="input-total-points">
 					<div className="description">{t('promptDescription')}</div>
-					<Input.Number min={1} constrain value={totalPoints} onChange={(val) => { this.setState({totalPoints: val});}}/>
+					<Input.Number
+						min={1}
+						constrain
+						value={totalPoints}
+						onChange={val => {
+							this.setState({ totalPoints: val });
+						}}
+					/>
 				</div>
 			</SaveCancel>
 		);
 	}
 
-	hasChanges () {
-		const {value, storedValue, stateChanged} = this.state;
+	hasChanges() {
+		const { value, storedValue, stateChanged } = this.state;
 		const actualValue = value === 0 ? null : value;
 		const actualStored = storedValue === 0 ? null : storedValue;
 		return actualValue !== actualStored || stateChanged;
 	}
 
-	renderTrigger () {
+	renderTrigger() {
 		const {
-			state: {storedValue: value, disabled}
+			state: { storedValue: value, disabled },
 		} = this;
 
 		const placeholder = value ? value + '%' : t('none');
 		const labelClasses = cx({
-			'placeholder': !value
+			placeholder: !value,
 		});
 
 		return (
-			<LabeledValue label={t('checkboxLabel')} className="passing-score-trigger" arrow disabled={disabled}>
+			<LabeledValue
+				label={t('checkboxLabel')}
+				className="passing-score-trigger"
+				arrow
+				disabled={disabled}
+			>
 				<span className={labelClasses}>{placeholder}</span>
 			</LabeledValue>
 		);
 	}
 
-	renderContent () {
-		const {assignment} = this.props;
-		const {value, checked, saving, error} = this.state;
-		const saveClassNames = cx('save-button flyout-fullwidth-btn', {changed: this.hasChanges()});
+	renderContent() {
+		const { assignment } = this.props;
+		const { value, checked, saving, error } = this.state;
+		const saveClassNames = cx('save-button flyout-fullwidth-btn', {
+			changed: this.hasChanges(),
+		});
 
 		return (
-			<HOC.ItemChanges item={assignment} onItemChanged={this.syncStateFromAssignment}>
+			<HOC.ItemChanges
+				item={assignment}
+				onItemChanged={this.syncStateFromAssignment}
+			>
 				<Flyout.Triggered
 					ref={this.setFlyoutRef}
 					className="passing-score-flyout"
@@ -210,16 +246,35 @@ export default class PassingScore extends React.Component {
 					trigger={this.renderTrigger()}
 				>
 					{error && <div className="error">{error}</div>}
-					<Checkbox label={t('checkboxLabel')} checked={checked} onChange={this.onCheckChange} />
+					<Checkbox
+						label={t('checkboxLabel')}
+						checked={checked}
+						onChange={this.onCheckChange}
+					/>
 					<div className="description">{t('description')}</div>
-					<Input.Percentage value={value} onChange={this.onPercentageChange} constrain disabled={!checked}/>
-					{saving ? <Loading.Ellipsis/> : <Button as="span" className={saveClassNames} onClick={this.onSave}>Save</Button>}
+					<Input.Percentage
+						value={value}
+						onChange={this.onPercentageChange}
+						constrain
+						disabled={!checked}
+					/>
+					{saving ? (
+						<Loading.Ellipsis />
+					) : (
+						<Button
+							as="span"
+							className={saveClassNames}
+							onClick={this.onSave}
+						>
+							Save
+						</Button>
+					)}
 				</Flyout.Triggered>
 			</HOC.ItemChanges>
 		);
 	}
 
-	render () {
+	render() {
 		return (
 			<div className="field passing-score">
 				{this.renderContent()}

@@ -2,53 +2,60 @@ import './Question.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {buffer} from '@nti/lib-commons';
-import {Errors} from '@nti/web-commons';
-import {scoped} from '@nti/lib-locale';
+import { buffer } from '@nti/lib-commons';
+import { Errors } from '@nti/web-commons';
+import { scoped } from '@nti/lib-locale';
 
-import {DragHandle} from '../../../dnd';
+import { DragHandle } from '../../../dnd';
 import InlineDialog from '../../../inline-dialog';
 import Store from '../../Store';
-import {QUESTION_ERROR, QUESTION_WARNING, REVERT_ERRORS} from '../../Constants';
-import {Component as Selectable} from '../../../selection';
+import {
+	QUESTION_ERROR,
+	QUESTION_WARNING,
+	REVERT_ERRORS,
+} from '../../Constants';
+import { Component as Selectable } from '../../../selection';
 import ControlsConfig from '../../controls/ControlsConfig';
-import {updateQuestion} from '../Actions';
+import { updateQuestion } from '../Actions';
 
 import Between from './Between';
 import Content from './Content';
-import Parts, {Placeholder as PartsPlaceholder} from './Parts';
-import Controls, {Placeholder as ControlsPlaceholder} from './controls/View';
+import Parts, { Placeholder as PartsPlaceholder } from './Parts';
+import Controls, { Placeholder as ControlsPlaceholder } from './controls/View';
 import Sharing from './Sharing';
 
-const {Field:{Component:ErrorCmp}} = Errors;
+const {
+	Field: { Component: ErrorCmp },
+} = Errors;
 
 const DEFAULT_TEXT = {
 	save: 'Save',
 	cancel: 'Cancel',
-	visibleDisclaimer: 'Your assignment is currently being viewed. Auto saving is disabled to prevent unfinished work from being seen.'
+	visibleDisclaimer:
+		'Your assignment is currently being viewed. Auto saving is disabled to prevent unfinished work from being seen.',
 };
 
 const t = scoped('assignment.editing.question', DEFAULT_TEXT);
 
-function isKnownPartError (error) {
-	if (!error) { return false; }
+function isKnownPartError(error) {
+	if (!error) {
+		return false;
+	}
 
-	const known = {choices: true, values: true, labels: true};
-	const {raw} = error;
+	const known = { choices: true, values: true, labels: true };
+	const { raw } = error;
 
 	return known[raw.field] && raw.index;
 }
 
-
-function isLastQuestion (question, questionSet) {
-	const {questions} = questionSet;
+function isLastQuestion(question, questionSet) {
+	const { questions } = questionSet;
 	const last = questions[questions.length - 1];
 
 	return last && last.NTIID === question.NTIID;
 }
 
-
-function isVisible (question, assignment) {
+function isVisible(question, assignment) {
 	return question.IsAvailable || assignment.IsAvailable;
 }
 
@@ -58,31 +65,35 @@ export default class Question extends React.Component {
 		questionSet: PropTypes.object.isRequired,
 		assignment: PropTypes.object.isRequired,
 		course: PropTypes.object,
-		index: PropTypes.number
-	}
-
+		index: PropTypes.number,
+	};
 
 	buttons = [
-		{label: t('cancel'), onClick: () => this.onDialogCancel()},
-		{label: t('save'), onClick: async () => {
-			await this.flushChanges();
-			// FIXME: Re: NTI-7321, PR #42 Introduced a delay. Do we really need to wait? Is there a promise/event?
-			await new Promise(x => setTimeout(x, 200));
-			this.onDialogSave();
-		}}
-	]
+		{ label: t('cancel'), onClick: () => this.onDialogCancel() },
+		{
+			label: t('save'),
+			onClick: async () => {
+				await this.flushChanges();
+				// FIXME: Re: NTI-7321, PR #42 Introduced a delay. Do we really need to wait? Is there a promise/event?
+				await new Promise(x => setTimeout(x, 200));
+				this.onDialogSave();
+			},
+		},
+	];
 
-	setSelectableRef = x => this.selectableRef = x
+	setSelectableRef = x => (this.selectableRef = x);
 
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
-		const {question} = this.props;
+		const { question } = this.props;
 		const showModal = question.delaySaving;
 
 		this.version = 0;
 
-		this.onChangeBuffered = showModal ? () => {} : buffer(500, () => this.onChange());
+		this.onChangeBuffered = showModal
+			? () => {}
+			: buffer(500, () => this.onChange());
 
 		Store.addChangeListener(this.onStoreChange);
 
@@ -92,22 +103,22 @@ export default class Question extends React.Component {
 
 		this.state = {
 			selectableId: question.NTIID,
-			selectableValue: new ControlsConfig(null, {after: true, item: question}),
-			modal: showModal
+			selectableValue: new ControlsConfig(null, {
+				after: true,
+				item: question,
+			}),
+			modal: showModal,
 		};
 	}
 
-
-	componentDidMount () {
+	componentDidMount() {
 		this.onQuestionMessages();
 	}
 
+	attachRef = x => (this.editorRef = x);
 
-	attachRef = (x) => this.editorRef = x
-
-
-	componentWillUnmount () {
-		const {question} = this.props;
+	componentWillUnmount() {
+		const { question } = this.props;
 
 		Store.removeChangeListener(this.onStoreChange);
 
@@ -116,44 +127,46 @@ export default class Question extends React.Component {
 		}
 	}
 
-
 	focusEditor = () => {
 		if (this.editorRef) {
 			this.editorRef.focus();
 		}
-	}
+	};
 
+	onStoreChange = data => {
+		const { question } = this.props;
 
-	onStoreChange = (data) => {
-		const {question} = this.props;
-
-		if ((data.type === QUESTION_ERROR || data.type === QUESTION_WARNING) && question.NTIID === data.NTIID) {
+		if (
+			(data.type === QUESTION_ERROR || data.type === QUESTION_WARNING) &&
+			question.NTIID === data.NTIID
+		) {
 			this.onQuestionMessages();
 		} else if (data.type === REVERT_ERRORS) {
 			this.keepStateHash = (this.keepStateHash || 0) + 1;
 			this.onQuestionMessages();
 		}
-	}
-
+	};
 
 	onQuestionChange = () => {
-		const {questionError, contentWarning} = this.state;
+		const { questionError, contentWarning } = this.state;
 
 		if (questionError && questionError.clear) {
 			questionError.clear();
 		}
-		if(contentWarning && contentWarning.clear) {
+		if (contentWarning && contentWarning.clear) {
 			contentWarning.clear();
 		}
-		if((!questionError || !questionError.clear) && (!contentWarning || !contentWarning.clear)) {
+		if (
+			(!questionError || !questionError.clear) &&
+			(!contentWarning || !contentWarning.clear)
+		) {
 			this.forceUpdate();
 		}
-	}
+	};
 
-
-	onQuestionMessages () {
-		const {question} = this.props;
-		const {NTIID} = question;
+	onQuestionMessages() {
+		const { question } = this.props;
+		const { NTIID } = question;
 		const contentError = Store.getErrorFor(NTIID, 'content');
 		const contentWarning = Store.getWarningFor(NTIID, 'content');
 		const partsError = Store.getErrorFor(NTIID, 'parts');
@@ -170,35 +183,36 @@ export default class Question extends React.Component {
 			contentError,
 			contentWarning,
 			questionError,
-			partError
+			partError,
 		});
 	}
 
-
 	onChange = () => {
-		const {question, assignment} = this.props;
-		const {delaySaving} = question;
+		const { question, assignment } = this.props;
+		const { delaySaving } = question;
 
 		if (this.pendingChanges || delaySaving) {
-			return updateQuestion(question, this.pendingChanges || {}, assignment, delaySaving);
+			return updateQuestion(
+				question,
+				this.pendingChanges || {},
+				assignment,
+				delaySaving
+			);
 		}
 
 		return Promise.resolve();
-	}
-
+	};
 
 	flushChanges = async () => {
 		this.onChangeBuffered.flush?.();
-	}
+	};
 
-
-	onContentChange = (content) => {
+	onContentChange = content => {
 		this.pendingChanges = this.pendingChanges || {};
 
 		this.pendingChanges.content = content;
 		this.onChangeBuffered();
-	}
-
+	};
 
 	onPartsChange = (index, part) => {
 		this.pendingChanges = this.pendingChanges || {};
@@ -206,42 +220,43 @@ export default class Question extends React.Component {
 		//When are support multi-part per question we need to revisit this.
 		this.pendingChanges.parts = [part];
 		this.onChangeBuffered();
-	}
+	};
 
-
-	onContentFocus = (editor) => {
-		const {question} = this.props;
+	onContentFocus = editor => {
+		const { question } = this.props;
 
 		this.setState({
-			selectableValue: new ControlsConfig(editor, question)
+			selectableValue: new ControlsConfig(editor, question),
 		});
-	}
-
+	};
 
 	onContentBlur = () => {
-		const {question} = this.props;
+		const { question } = this.props;
 
 		this.setState({
-			selectableValue: new ControlsConfig(null, {after: true, item: question})
+			selectableValue: new ControlsConfig(null, {
+				after: true,
+				item: question,
+			}),
 		});
-	}
-
+	};
 
 	onSelect = () => {
-		const {question, assignment} = this.props;
+		const { question, assignment } = this.props;
 
 		if (isVisible(question, assignment)) {
 			this.setModal(true);
 		} else {
 			this.setModal(false);
 		}
-	}
+	};
 
+	setModal(modal) {
+		const { modal: isModal } = this.state;
 
-	setModal (modal) {
-		const {modal:isModal} = this.state;
-
-		if (isModal === modal) { return; }
+		if (isModal === modal) {
+			return;
+		}
 
 		if (modal) {
 			this.onChangeBuffered = () => {};
@@ -251,14 +266,13 @@ export default class Question extends React.Component {
 
 		this.setState({
 			savingMask: false,
-			modal
+			modal,
 		});
 	}
 
-
 	onDialogSave = () => {
 		this.setState({
-			savingMask: true
+			savingMask: true,
 		});
 
 		Promise.resolve(this.onChange()) //protect against non-promise return value
@@ -273,18 +287,17 @@ export default class Question extends React.Component {
 				this.onQuestionMessages();
 
 				this.setState({
-					savingMask: false
+					savingMask: false,
 				});
 			});
-	}
-
+	};
 
 	onDialogCancel = () => {
-		const {question} = this.props;
+		const { question } = this.props;
 
 		this.setModal(false);
 
-		this.setState({questionError: void 0});
+		this.setState({ questionError: void 0 });
 
 		if (question.delaySaving && question.remove) {
 			question.remove();
@@ -293,17 +306,10 @@ export default class Question extends React.Component {
 		if (this.selectableRef) {
 			this.selectableRef.doUnselect();
 		}
-	}
+	};
 
-
-	render () {
-		const {
-			question,
-			index,
-			questionSet,
-			assignment,
-			course
-		} = this.props;
+	render() {
+		const { question, index, questionSet, assignment, course } = this.props;
 		const {
 			selectableId,
 			selectableValue,
@@ -312,20 +318,25 @@ export default class Question extends React.Component {
 			partError,
 			questionError,
 			modal,
-			savingMask
+			savingMask,
 		} = this.state;
 		const cls = cx('question-editor', {
 			'is-saving': question.isSaving && !modal,
 			error: contentError || questionError || question.error,
 			'saving-mask': savingMask,
 			'in-modal': modal,
-			'is-visible': isVisible(question, assignment)
+			'is-visible': isVisible(question, assignment),
 		});
 
 		return (
 			<div className="assignment-editing-question-container">
 				<Between question={question} before />
-				<InlineDialog active={modal} dialogButtons={this.buttons} topPadding={80} bottomPadding={70}>
+				<InlineDialog
+					active={modal}
+					dialogButtons={this.buttons}
+					topPadding={80}
+					bottomPadding={70}
+				>
 					<Selectable
 						className={cls}
 						ref={this.setSelectableRef}
@@ -335,10 +346,22 @@ export default class Question extends React.Component {
 						onChildSelect={this.onSelect}
 						onSelect={this.onSelect}
 					>
-						{modal && (<div className="visible-disclaimer">{t('visibleDisclaimer')}</div>)}
-						<Sharing question={question} course={course} questionSet={questionSet} assignment={assignment} />
+						{modal && (
+							<div className="visible-disclaimer">
+								{t('visibleDisclaimer')}
+							</div>
+						)}
+						<Sharing
+							question={question}
+							course={course}
+							questionSet={questionSet}
+							assignment={assignment}
+						/>
 						<div className="wrap" onClick={this.focusEditor}>
-							<DragHandle className="question-drag-handle hide-when-saving" disabled={modal} />
+							<DragHandle
+								className="question-drag-handle hide-when-saving"
+								disabled={modal}
+							/>
 							<div className="index">{index + 1}</div>
 							<Content
 								ref={this.attachRef}
@@ -351,19 +374,31 @@ export default class Question extends React.Component {
 								published={assignment.isPublished()}
 							/>
 						</div>
-						<Parts question={question} error={partError} onChange={this.onPartsChange} keepStateHash={this.keepStateHash} />
-						{questionError && (<ErrorCmp error={questionError} />)}
+						<Parts
+							question={question}
+							error={partError}
+							onChange={this.onPartsChange}
+							keepStateHash={this.keepStateHash}
+						/>
+						{questionError && <ErrorCmp error={questionError} />}
 					</Selectable>
 				</InlineDialog>
-				<Controls question={question} questionSet={questionSet} assignment={assignment} flushChanges={this.flushChanges} course={course} />
-				{isLastQuestion(question, questionSet) && (<Between question={question} after />)}
+				<Controls
+					question={question}
+					questionSet={questionSet}
+					assignment={assignment}
+					flushChanges={this.flushChanges}
+					course={course}
+				/>
+				{isLastQuestion(question, questionSet) && (
+					<Between question={question} after />
+				)}
 			</div>
 		);
 	}
 }
 
-
-export function Placeholder () {
+export function Placeholder() {
 	return (
 		<div className="assignment-editing-question-container placeholder">
 			<div className="question-editor">

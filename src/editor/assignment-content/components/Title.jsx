@@ -2,19 +2,19 @@ import './Title.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {scoped} from '@nti/lib-locale';
+import { scoped } from '@nti/lib-locale';
 
 import BufferedTextEditor from '../../inputs/BufferedTextEditor';
-import {Component as Selectable} from '../../../selection';
+import { Component as Selectable } from '../../../selection';
 import ControlsConfig from '../../controls/ControlsConfig';
 
 const t = scoped('assignment.editing.content.Title', {
-	placeholder: 'Title'
+	placeholder: 'Title',
 });
 
-function getMaxLength (schema = {}) {
-	const {Fields:fields} = schema;
-	const {title = {}} = fields || {};
+function getMaxLength(schema = {}) {
+	const { Fields: fields } = schema;
+	const { title = {} } = fields || {};
 
 	return title.max_length || 1000;
 }
@@ -25,50 +25,51 @@ export default class TitleEditor extends React.Component {
 		schema: PropTypes.object,
 		error: PropTypes.any,
 		onChange: PropTypes.func,
-		disabled: PropTypes.bool
-	}
+		disabled: PropTypes.bool,
+	};
 
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
 		this.state = {
 			selectableId: 'title',
-			selectableValue: new ControlsConfig()
+			selectableValue: new ControlsConfig(),
 		};
 	}
 
-
-	onChange = (value) => {
-		const {onChange, schema} = this.props;
+	onChange = value => {
+		const { onChange, schema } = this.props;
 
 		if (onChange) {
 			onChange(value, getMaxLength(schema));
 
 			this.setState({
-				value
+				value,
 			});
 		}
-	}
+	};
 
-
-	onEditorFocus = (editor) => {
-		const {selectableValue} = this.state;
+	onEditorFocus = editor => {
+		const { selectableValue } = this.state;
 
 		if (editor && selectableValue.editor !== editor) {
 			this.setState({
-				selectableValue: new ControlsConfig(editor)
+				selectableValue: new ControlsConfig(editor),
 			});
 		}
-	}
+	};
 
-
-	render () {
-		const {schema, error, value, disabled} = this.props;
-		const {selectableId, selectableValue} = this.state;
-		const cls = cx('assignment-title-editor', {error, disabled});
+	render() {
+		const { schema, error, value, disabled } = this.props;
+		const { selectableId, selectableValue } = this.state;
+		const cls = cx('assignment-title-editor', { error, disabled });
 
 		return (
-			<Selectable className={cls} id={selectableId} value={selectableValue}>
+			<Selectable
+				className={cls}
+				id={selectableId}
+				value={selectableValue}
+			>
 				<BufferedTextEditor
 					charLimit={getMaxLength(schema)}
 					countDown

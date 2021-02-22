@@ -5,20 +5,16 @@ import Placeholder from './Placeholder';
 
 export default class EssayEditor extends React.Component {
 	static propTypes = {
-		part: PropTypes.object.isRequired
-	}
+		part: PropTypes.object.isRequired,
+	};
 
-
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
 		this.state = {};
 	}
 
-
-	render () {
-		return (
-			<Placeholder/>
-		);
+	render() {
+		return <Placeholder />;
 	}
 }

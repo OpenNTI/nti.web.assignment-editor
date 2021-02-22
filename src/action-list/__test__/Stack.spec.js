@@ -2,19 +2,19 @@
 /* eslint-env jest */
 import Stack from '../Stack';
 
-function createAction (label, onComplete) {
+function createAction(label, onComplete) {
 	label = label || '';
 	onComplete = onComplete || (() => {});
 
 	return {
 		label,
-		onComplete
+		onComplete,
 	};
 }
 
 describe('Action Stack Tests', () => {
 	test('Stack is never longer than the max size', () => {
-		const queue = new Stack({maxVisible: 2});
+		const queue = new Stack({ maxVisible: 2 });
 
 		queue.push(createAction('First'));
 
@@ -29,9 +29,8 @@ describe('Action Stack Tests', () => {
 		expect(queue.length).toEqual(2);
 	});
 
-
 	test('Stack is never deeper than the max depth', () => {
-		const queue = new Stack({maxDepth: 2, maxVisible: 1});
+		const queue = new Stack({ maxDepth: 2, maxVisible: 1 });
 
 		queue.push(createAction('First'));
 
@@ -50,19 +49,17 @@ describe('Action Stack Tests', () => {
 		let queue;
 		let listeners;
 
-
 		beforeEach(() => {
 			listeners = {
-				changed: () => {}
+				changed: () => {},
 			};
 
-			queue = new Stack({maxVisible: 2});
+			queue = new Stack({ maxVisible: 2 });
 
 			spyOn(listeners, 'changed');
 
 			queue.addListener('changed', listeners.changed);
 		});
-
 
 		test('Pushing Item fires changed', () => {
 			queue.push(createAction('First'));
@@ -118,26 +115,23 @@ describe('Action Stack Tests', () => {
 		});
 	});
 
-
 	describe('Time limit tests', () => {
 		let queue;
 		let listeners;
 
-
 		beforeEach(() => {
 			listeners = {
-				changed: () => {}
+				changed: () => {},
 			};
 
-			queue = new Stack({maxVisible: 2, keepFor: 250});
+			queue = new Stack({ maxVisible: 2, keepFor: 250 });
 
 			spyOn(listeners, 'changed');
 
 			queue.addListener('changed', listeners.changed);
 		});
 
-
-		test('Pushing an item and waiting for the timeout to pass', (done) => {
+		test('Pushing an item and waiting for the timeout to pass', done => {
 			queue.push(createAction('TEST'));
 
 			setTimeout(() => {
@@ -147,6 +141,5 @@ describe('Action Stack Tests', () => {
 				done();
 			}, 500);
 		});
-
 	});
 });

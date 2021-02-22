@@ -1,11 +1,11 @@
 import './Button.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {scoped} from '@nti/lib-locale';
+import { scoped } from '@nti/lib-locale';
 
 import Button from '../base/Button';
 
-import {generatePartFor} from './utils';
+import { generatePartFor } from './utils';
 
 const ICON_CLS = 'multiple-choice';
 
@@ -14,7 +14,7 @@ const defaultSolution = 0;
 const defaultHint = [];
 
 const DEFAULT_TEXT = {
-	multipleChoiceButtonLabel: 'Multiple Choice'
+	multipleChoiceButtonLabel: 'Multiple Choice',
 };
 
 const t = scoped('assignment.editing.inputs', DEFAULT_TEXT);
@@ -22,21 +22,20 @@ const t = scoped('assignment.editing.inputs', DEFAULT_TEXT);
 export default class MultipleChoiceButton extends React.Component {
 	static propTypes = {
 		assignment: PropTypes.object.isRequired,
-		activeInsert: PropTypes.object
-	}
+		activeInsert: PropTypes.object,
+	};
 
-	static set handles (handles) {
+	static set handles(handles) {
 		this.handledMimetypes = handles;
 	}
 
-	static get handles () {
+	static get handles() {
 		return this.handledMimetypes;
 	}
 
-
-	render () {
-		const {assignment, activeInsert} = this.props;
-		const {handles} = this.constructor;
+	render() {
+		const { assignment, activeInsert } = this.props;
+		const { handles } = this.constructor;
 
 		return (
 			<Button
@@ -45,17 +44,23 @@ export default class MultipleChoiceButton extends React.Component {
 				activeInsert={activeInsert}
 				label={t('multipleChoiceButtonLabel')}
 				handles={handles}
-				iconCls={ICON_CLS} />
+				iconCls={ICON_CLS}
+			/>
 		);
 	}
 
-
-	getBlankPart () {
-		const {handles} = this.constructor;
+	getBlankPart() {
+		const { handles } = this.constructor;
 		let mimeType = handles && handles[0];
 
 		if (mimeType) {
-			return generatePartFor(mimeType, null, defaultChoices, defaultSolution, defaultHint);
+			return generatePartFor(
+				mimeType,
+				null,
+				defaultChoices,
+				defaultSolution,
+				defaultHint
+			);
 		}
 	}
 }

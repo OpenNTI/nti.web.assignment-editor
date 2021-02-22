@@ -1,13 +1,17 @@
-import {dispatch} from '@nti/lib-dispatcher';
-import {getService} from  '@nti/web-client';
+import { dispatch } from '@nti/lib-dispatcher';
+import { getService } from '@nti/web-client';
 import Logger from '@nti/util-logger';
-import {isNTIID} from '@nti/lib-ntiids';
-import {Authoring} from '@nti/lib-interfaces';
+import { isNTIID } from '@nti/lib-ntiids';
+import { Authoring } from '@nti/lib-interfaces';
 
-import {cloneQuestion} from '../question/utils';
-import {saveFieldOn, maybeResetAssignmentOnError} from '../Actions';
-import {SAVING, SAVE_ENDED, QUESTION_SET_UPDATED, QUESTION_SET_ERROR} from '../Constants';
-
+import { cloneQuestion } from '../question/utils';
+import { saveFieldOn, maybeResetAssignmentOnError } from '../Actions';
+import {
+	SAVING,
+	SAVE_ENDED,
+	QUESTION_SET_UPDATED,
+	QUESTION_SET_ERROR,
+} from '../Constants';
 
 const logger = Logger.get('lib:asssignment-editor:assignment-parts:Actions');
 
@@ -16,41 +20,42 @@ const QUESTION_SET_KEY = 'question_set';
 const PARTS_KEY = 'parts';
 
 const blankAssignmentPart = {
-	'Class': 'AssignmentPart',
-	'MimeType': 'application/vnd.nextthought.assessment.assignmentpart',
+	Class: 'AssignmentPart',
+	MimeType: 'application/vnd.nextthought.assessment.assignmentpart',
 	[QUESTION_SET_KEY]: [],
-	getQuestions () {
+	getQuestions() {
 		return this[QUESTION_SET_KEY];
-	}
+	},
 };
 
 const blankQuestionSet = {
-	'Class': 'QuestionSet',
-	'MimeType': 'application/vnd.nextthought.naquestionset',
+	Class: 'QuestionSet',
+	MimeType: 'application/vnd.nextthought.naquestionset',
 	[QUESTIONS_KEY]: [],
-	getQuestions () {
+	getQuestions() {
 		return this[QUESTIONS_KEY] || [];
-	}
+	},
 };
 
+function getQuestionSetData(questionSet) {
+	if (!questionSet) {
+		return { ...blankQuestionSet };
+	}
 
-function getQuestionSetData (questionSet) {
-	if (!questionSet) { return {...blankQuestionSet}; }
-
-	const {NTIID} = questionSet;
+	const { NTIID } = questionSet;
 
 	return {
-		actualNTIID: NTIID
+		actualNTIID: NTIID,
 	};
-
 }
 
-
-async function buildPartWithQuestion (questionData, existingQuestionSet) {
+async function buildPartWithQuestion(questionData, existingQuestionSet) {
 	const service = await getService();
-	const part = service.getObjectPlaceholder({...blankAssignmentPart});
-	const questionSet = service.getObjectPlaceholder(getQuestionSetData(existingQuestionSet));
-	const question = service.getObjectPlaceholder({...questionData});
+	const part = service.getObjectPlaceholder({ ...blankAssignmentPart });
+	const questionSet = service.getObjectPlaceholder(
+		getQuestionSetData(existingQuestionSet)
+	);
+	const question = service.getObjectPlaceholder({ ...questionData });
 
 	part.isSaving = true;
 	questionSet.isSaving = true;
@@ -65,9 +70,10 @@ async function buildPartWithQuestion (questionData, existingQuestionSet) {
 	return part;
 }
 
-
-function setErrorOnPlaceholderPart (part, reason) {
-	if (!part || !part.isPlaceholder) { return part; }
+function setErrorOnPlaceholderPart(part, reason) {
+	if (!part || !part.isPlaceholder) {
+		return part;
+	}
 
 	part.error = reason;
 
@@ -79,7 +85,7 @@ function setErrorOnPlaceholderPart (part, reason) {
 
 	const questions = questionSet[QUESTIONS_KEY];
 
-	questionSet[QUESTIONS_KEY] = questions.map((question) => {
+	questionSet[QUESTIONS_KEY] = questions.map(question => {
 		if (question.isPlaceholder) {
 			question.error = reason;
 		}
@@ -88,12 +94,10 @@ function setErrorOnPlaceholderPart (part, reason) {
 	return part;
 }
 
-
-function getSaveDataForFakePart (part) {
-
+function getSaveDataForFakePart(part) {
 	const questionSet = part[QUESTION_SET_KEY];
 	const questions = questionSet[QUESTIONS_KEY] || [];
-	const questionsData = questions.map((x) => {
+	const questionsData = questions.map(x => {
 		if (isNTIID(x.NTIID)) {
 			return x.NTIID;
 		}
@@ -111,20 +115,19 @@ function getSaveDataForFakePart (part) {
 	return part;
 }
 
-
-function markPartForDelaySaving (part, save, remove) {
+function markPartForDelaySaving(part, save, remove) {
 	const questionSet = part[QUESTION_SET_KEY];
 	const questions = questionSet[QUESTIONS_KEY] || [];
 
-	questionSet[QUESTIONS_KEY] = questions.map((question) => {
+	questionSet[QUESTIONS_KEY] = questions.map(question => {
 		if (question.isPlaceholder) {
 			Object.defineProperty(question, 'delaySaving', {
 				configurable: true,
 				enumerable: false,
-				value: true
+				value: true,
 			});
 
-			question.save = (data) => {
+			question.save = data => {
 				Object.assign(question, data);
 
 				return save(part);
@@ -137,18 +140,20 @@ function markPartForDelaySaving (part, save, remove) {
 	});
 }
 
-
-function addPartToAssignment (part, assignment, delaySave) {
-	function doSave (placeholder) {
-		const save = saveFieldOn(assignment, PARTS_KEY, [getSaveDataForFakePart(placeholder)]);
+function addPartToAssignment(part, assignment, delaySave) {
+	function doSave(placeholder) {
+		const save = saveFieldOn(assignment, PARTS_KEY, [
+			getSaveDataForFakePart(placeholder),
+		]);
 
 		if (save && save.then) {
-			save
-				.catch((reason) => {
-					assignment.parts = assignment.parts.map(p => setErrorOnPlaceholderPart(p, reason));
+			save.catch(reason => {
+				assignment.parts = assignment.parts.map(p =>
+					setErrorOnPlaceholderPart(p, reason)
+				);
 
-					assignment.onChange();
-				});
+				assignment.onChange();
+			});
 
 			return save;
 		}
@@ -156,7 +161,7 @@ function addPartToAssignment (part, assignment, delaySave) {
 		return Promise.resolve();
 	}
 
-	function remove () {
+	function remove() {
 		assignment.parts = assignment.parts.filter(p => p !== part);
 
 		assignment.onChange();
@@ -178,26 +183,29 @@ function addPartToAssignment (part, assignment, delaySave) {
 	return;
 }
 
-
-
-export async function createPartWithQuestion (assignment, question, questionSet, delaySave) {
+export async function createPartWithQuestion(
+	assignment,
+	question,
+	questionSet,
+	delaySave
+) {
 	const part = await buildPartWithQuestion(question, questionSet);
 	addPartToAssignment(part, assignment, delaySave);
 }
 
-
-export function removePartWithQuestionSet (assignment, questionSet) {
-	function deleteQuestionSet () {
+export function removePartWithQuestionSet(assignment, questionSet) {
+	function deleteQuestionSet() {
 		questionSet.delete();
 	}
 
+	let { [PARTS_KEY]: parts } = assignment;
 
-	let {[PARTS_KEY]:parts} = assignment;
-
-	parts = parts.filter(part => part[QUESTION_SET_KEY].NTIID !== questionSet.NTIID);
+	parts = parts.filter(
+		part => part[QUESTION_SET_KEY].NTIID !== questionSet.NTIID
+	);
 
 	const save = saveFieldOn(assignment, PARTS_KEY, parts);
-	const {questions} = questionSet;
+	const { questions } = questionSet;
 
 	//If there was only one question left, return an undo method
 	if (questions.length === 1) {
@@ -207,7 +215,7 @@ export function removePartWithQuestionSet (assignment, questionSet) {
 			},
 			cleanup: () => {
 				deleteQuestionSet();
-			}
+			},
 		});
 	} else if (save.then) {
 		save.then(() => deleteQuestionSet());
@@ -218,10 +226,17 @@ export function removePartWithQuestionSet (assignment, questionSet) {
 	return Promise.resolve();
 }
 
-
-export async function moveQuestion (question, questionSet, index, moveInfo, moveRoot, delaySave) {
-	let orderedContents = questionSet && new Authoring.OrderedContents(questionSet);
-	let {index:oldIndex, container:oldContainer} = moveInfo;
+export async function moveQuestion(
+	question,
+	questionSet,
+	index,
+	moveInfo,
+	moveRoot,
+	delaySave
+) {
+	let orderedContents =
+		questionSet && new Authoring.OrderedContents(questionSet);
+	let { index: oldIndex, container: oldContainer } = moveInfo;
 
 	if (!orderedContents || !moveRoot) {
 		logger.error('Invalid ordered contents');
@@ -231,13 +246,20 @@ export async function moveQuestion (question, questionSet, index, moveInfo, move
 		dispatch(SAVING, questionSet);
 
 		try {
-			await orderedContents.move(question, index, oldIndex, oldContainer, moveRoot, delaySave)
+			await orderedContents
+				.move(
+					question,
+					index,
+					oldIndex,
+					oldContainer,
+					moveRoot,
+					delaySave
+				)
 				.catch(maybeResetAssignmentOnError(questionSet));
 
 			dispatch(QUESTION_SET_UPDATED, questionSet);
 			dispatch(SAVE_ENDED);
-		}
-		catch (reason) {
+		} catch (reason) {
 			logger.error('Unable to move question: ', reason);
 			dispatch(QUESTION_SET_ERROR, reason);
 			dispatch(SAVE_ENDED);

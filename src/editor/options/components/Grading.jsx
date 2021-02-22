@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {scoped} from '@nti/lib-locale';
-import {HOC} from '@nti/web-commons';
+import { scoped } from '@nti/lib-locale';
+import { HOC } from '@nti/web-commons';
 
 import OptionGroup from './OptionGroup';
 import Option from './Option';
@@ -11,11 +11,14 @@ const DEFAULT_TEXT = {
 	content: 'Save time with auto grading.',
 	label: 'Enable Auto Grading',
 	'disabled-no-questions': 'Add some questions to enable this option.',
-	'disabled-total-points': 'Assignment must have a point value to enable auto grading.',
+	'disabled-total-points':
+		'Assignment must have a point value to enable auto grading.',
 	'disabled-conflicting-questions': {
-		other: 'Questions without provided answers are not compatible with auto grading. You must remove questions %(conflicts)s before enabling auto grade.',
-		one: 'Questions without provided answers are not compatible with auto grading. You must remove question %(conflicts)s before enabling auto grade.'
-	}
+		other:
+			'Questions without provided answers are not compatible with auto grading. You must remove questions %(conflicts)s before enabling auto grade.',
+		one:
+			'Questions without provided answers are not compatible with auto grading. You must remove question %(conflicts)s before enabling auto grade.',
+	},
 };
 
 const t = scoped('assignment.editing.options.grading', DEFAULT_TEXT);
@@ -23,21 +26,20 @@ const t = scoped('assignment.editing.options.grading', DEFAULT_TEXT);
 class Grading extends React.Component {
 	static propTypes = {
 		assignment: PropTypes.object,
-		questionSet: PropTypes.object
-	}
+		questionSet: PropTypes.object,
+	};
 
-	static getItem = (props) => props.assignment
+	static getItem = props => props.assignment;
 
-
-	constructor (props) {
+	constructor(props) {
 		super();
 
 		this.setupValue(props);
 	}
 
-	async componentDidUpdate (prevProps) {
-		const {assignment} = this.props;
-		const {isAutoGraded} = this.state;
+	async componentDidUpdate(prevProps) {
+		const { assignment } = this.props;
+		const { isAutoGraded } = this.state;
 
 		if (this.props.assignment !== prevProps.assignment) {
 			await this.setupValue();
@@ -46,28 +48,28 @@ class Grading extends React.Component {
 		if (assignment.isAutoGraded !== isAutoGraded) {
 			this.save();
 		}
-
 	}
-
 
 	save = () => {
-		const {assignment, questionSet} = this.props;
-		const {isAutoGraded} = this.state;
+		const { assignment, questionSet } = this.props;
+		const { isAutoGraded } = this.state;
 
-		if (questionSet.isAutoGradable && assignment.isAutoGraded !== isAutoGraded) {
-			assignment.setAutoGrade(isAutoGraded)
-				.catch(error => {
-					this.setState({isAutoGraded: assignment.isAutoGraded, error});
-				});
+		if (
+			questionSet.isAutoGradable &&
+			assignment.isAutoGraded !== isAutoGraded
+		) {
+			assignment.setAutoGrade(isAutoGraded).catch(error => {
+				this.setState({ isAutoGraded: assignment.isAutoGraded, error });
+			});
 		}
-	}
+	};
 
-
-	setupValue (props = this.props) {
+	setupValue(props = this.props) {
 		//eslint-disable-next-line react/no-direct-mutation-state
-		const setState = (s, cb) => this.state ? this.setState(s, cb) : (this.state = s, cb());
-		const {assignment, questionSet} = props;
-		let {isAutoGraded} = assignment || {};
+		const setState = (s, cb) =>
+			this.state ? this.setState(s, cb) : ((this.state = s), cb());
+		const { assignment, questionSet } = props;
+		let { isAutoGraded } = assignment || {};
 
 		let conflicts = null;
 
@@ -80,31 +82,32 @@ class Grading extends React.Component {
 
 			conflicts = t('disabled-conflicting-questions', {
 				count: conflicts.length,
-				conflicts: conflicts.map(x => x.index + 1).join(', ')
+				conflicts: conflicts.map(x => x.index + 1).join(', '),
 			});
 		}
 
-		return new Promise(resolve => setState({isAutoGraded, conflicts}, () => resolve()));
+		return new Promise(resolve =>
+			setState({ isAutoGraded, conflicts }, () => resolve())
+		);
 	}
-
 
 	onItemChanged = () => {
 		this.setupValue();
-	}
-
+	};
 
 	onChange = () => {
-		const {isAutoGraded} = this.state;
-		this.setState({isAutoGraded: !isAutoGraded, error: null});
-	}
+		const { isAutoGraded } = this.state;
+		this.setState({ isAutoGraded: !isAutoGraded, error: null });
+	};
 
+	render() {
+		const { assignment, questionSet } = this.props;
+		const { isAutoGraded, conflicts, error } = this.state;
+		const disabled =
+			assignment &&
+			(!assignment.canSetAutoGrade() || !assignment.totalPoints);
 
-	render () {
-		const {assignment, questionSet} = this.props;
-		const {isAutoGraded, conflicts, error} = this.state;
-		const disabled = assignment && (!assignment.canSetAutoGrade() || !assignment.totalPoints);
-
-		const errorMessage = error && ( error.message );
+		const errorMessage = error && error.message;
 
 		return (
 			<OptionGroup
@@ -112,10 +115,27 @@ class Grading extends React.Component {
 				header={t('header')}
 				content={t('content')}
 				error={conflicts || errorMessage}
-				disabled={!questionSet || Boolean(conflicts) || !assignment.totalPoints || !assignment.canSetAutoGrade()}
-				disabledText={questionSet ? (assignment.totalPoints ? '' : t('disabled-total-points')) : t('disabled-no-questions')}
+				disabled={
+					!questionSet ||
+					Boolean(conflicts) ||
+					!assignment.totalPoints ||
+					!assignment.canSetAutoGrade()
+				}
+				disabledText={
+					questionSet
+						? assignment.totalPoints
+							? ''
+							: t('disabled-total-points')
+						: t('disabled-no-questions')
+				}
 			>
-				<Option label={t('label')} name="auto-grading" value={isAutoGraded} onChange={this.onChange} disabled={disabled}/>
+				<Option
+					label={t('label')}
+					name="auto-grading"
+					value={isAutoGraded}
+					onChange={this.onChange}
+					disabled={disabled}
+				/>
 			</OptionGroup>
 		);
 	}

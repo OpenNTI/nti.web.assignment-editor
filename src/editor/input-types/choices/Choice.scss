@@ -1,4 +1,4 @@
-@import "~@nti/style-common";
+@import '~@nti/style-common';
 
 .input-type-choice {
 	position: relative;
@@ -55,7 +55,8 @@
 		}
 	}
 
-	.nti-rich-text, .nti-buffered-text-editor {
+	.nti-rich-text,
+	.nti-buffered-text-editor {
 		position: static;
 		font: normal 400 0.875rem/2.5 var(--body-font-family);
 		color: var(--primary-grey);
@@ -97,13 +98,14 @@
 }
 
 .input-type-choices.can-delete {
-	input[type=text] {
+	input[type='text'] {
 		padding-right: 30px;
 	}
 }
 
 .is-saving .input-type-choice {
-	.nti-rich-text .nti-draft-core .DraftEditor-root, .nti-buffered-text-editor .nti-draft-core .DraftEditor-root {
+	.nti-rich-text .nti-draft-core .DraftEditor-root,
+	.nti-buffered-text-editor .nti-draft-core .DraftEditor-root {
 		color: transparent;
 	}
 }

@@ -2,27 +2,35 @@ import './BufferedTextEditor.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {Editor, ContextProvider, Plugins, Parsers, generateID, STYLES, BLOCKS} from '@nti/web-editor';
-import {buffer} from '@nti/lib-commons';
+import {
+	Editor,
+	ContextProvider,
+	Plugins,
+	Parsers,
+	generateID,
+	STYLES,
+	BLOCKS,
+} from '@nti/web-editor';
+import { buffer } from '@nti/lib-commons';
 
 const DEFAULT_BUFFER = 5000;
 
 const Types = {
 	PLAINTEXT: 'plaintext',
-	HTML: 'html'
+	HTML: 'html',
 };
 
-const {ErrorMessage, WarningMessage} = Plugins.Messages.components;
-const {CharacterCounter} = Plugins.Counter.components;
+const { ErrorMessage, WarningMessage } = Plugins.Messages.components;
+const { CharacterCounter } = Plugins.Counter.components;
 
-function getValue (editorState, type) {
+function getValue(editorState, type) {
 	const parser = type === Types.PLAINTEXT ? Parsers.PlainText : Parsers.HTML;
 	const value = editorState && parser.fromDraftState(editorState);
 
 	return value ? value.join('\n') : '';
 }
 
-function toDraftState (value, props) {
+function toDraftState(value, props) {
 	const parser = props.plainText ? Parsers.PlainText : Parsers.HTML;
 	return parser.toDraftState(value);
 }
@@ -49,22 +57,20 @@ export default class BufferedTextEditor extends React.Component {
 		externalLinks: PropTypes.bool,
 
 		error: PropTypes.object,
-		warning: PropTypes.object
-	}
+		warning: PropTypes.object,
+	};
 
 	static defaultProps = {
 		buffer: DEFAULT_BUFFER,
-		linkify: true
-	}
+		linkify: true,
+	};
 
+	attachEditorRef = x => (this.editor = x);
 
-	attachEditorRef = x => this.editor = x
-
-
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
-		const {initialValue, buffer:bufferTime} = props;
+		const { initialValue, buffer: bufferTime } = props;
 
 		this.editorID = generateID();
 
@@ -73,13 +79,12 @@ export default class BufferedTextEditor extends React.Component {
 		this.bufferedChange = buffer(bufferTime, () => this.onChange());
 
 		this.state = {
-			editorState:toDraftState(initialValue, props),
-			plugins: this.getPluginsFor(props)
+			editorState: toDraftState(initialValue, props),
+			plugins: this.getPluginsFor(props),
 		};
 	}
 
-
-	isPendingSave (value) {
+	isPendingSave(value) {
 		for (let save of this.pendingSaves) {
 			if (save === value) {
 				return true;
@@ -89,27 +94,29 @@ export default class BufferedTextEditor extends React.Component {
 		return false;
 	}
 
-
-	pushPendingSave (value) {
+	pushPendingSave(value) {
 		this.pendingSaves.push(value);
 	}
 
-	cleanupPendingSave (value) {
+	cleanupPendingSave(value) {
 		this.pendingSaves = this.pendingSaves.filter(save => save !== value);
 	}
 
-
-	componentWillUnmount () {
+	componentWillUnmount() {
 		this.bufferedChange && this.bufferedChange.flush();
 		this.bufferedChange = buffer(100, () => {});
 	}
 
+	componentDidUpdate(prevProps) {
+		const diff = (...x) =>
+			x.some(key => prevProps[key] !== this.props[key]);
 
-	componentDidUpdate (prevProps) {
-		const diff = (...x) => x.some(key => prevProps[key] !== this.props[key]);
-
-		const {initialValue:newValue, buffer:newBuffer, onEditorChange} = this.props;
-		const {initialValue:oldValue, buffer:oldBuffer} = prevProps;
+		const {
+			initialValue: newValue,
+			buffer: newBuffer,
+			onEditorChange,
+		} = this.props;
+		const { initialValue: oldValue, buffer: oldBuffer } = prevProps;
 
 		let state;
 
@@ -117,12 +124,26 @@ export default class BufferedTextEditor extends React.Component {
 			this.bufferChange = buffer(newBuffer, () => this.onChange());
 		}
 
-		if (diff('charLimit', 'countDown', 'plainText', 'singleLine', 'linkify', 'inlineOnly', 'externalLinks')) {
+		if (
+			diff(
+				'charLimit',
+				'countDown',
+				'plainText',
+				'singleLine',
+				'linkify',
+				'inlineOnly',
+				'externalLinks'
+			)
+		) {
 			state = state || {};
 			state.plugins = this.getPluginsFor(this.props);
 		}
 
-		if (newValue !== oldValue && !this.isFocused && !this.isPendingSave(newValue)) {
+		if (
+			newValue !== oldValue &&
+			!this.isFocused &&
+			!this.isPendingSave(newValue)
+		) {
 			state = state || {};
 			state.editorState = toDraftState(newValue, this.props);
 		}
@@ -138,20 +159,43 @@ export default class BufferedTextEditor extends React.Component {
 		}
 	}
 
-
-	getPluginsFor (props = this.props) {
-		const {charLimit, countDown, plainText, singleLine, linkify, inlineOnly, customKeyBindings} = props;
+	getPluginsFor(props = this.props) {
+		const {
+			charLimit,
+			countDown,
+			plainText,
+			singleLine,
+			linkify,
+			inlineOnly,
+			customKeyBindings,
+		} = props;
 		let plugins = [];
 
 		if (charLimit != null) {
-			plugins.push(Plugins.Counter.create({character: {limit: charLimit, countDown}}));
+			plugins.push(
+				Plugins.Counter.create({
+					character: { limit: charLimit, countDown },
+				})
+			);
 		}
 
 		if (plainText) {
 			plugins.push(Plugins.Plaintext.create());
 		} else {
-			plugins.push(Plugins.LimitBlockTypes.create({allow: new Set([BLOCKS.UNSTYLED, BLOCKS.CODE])}));
-			plugins.push(Plugins.LimitStyles.create({allow: new Set([STYLES.BOLD, STYLES.ITALIC, STYLES.UNDERLINE])}));
+			plugins.push(
+				Plugins.LimitBlockTypes.create({
+					allow: new Set([BLOCKS.UNSTYLED, BLOCKS.CODE]),
+				})
+			);
+			plugins.push(
+				Plugins.LimitStyles.create({
+					allow: new Set([
+						STYLES.BOLD,
+						STYLES.ITALIC,
+						STYLES.UNDERLINE,
+					]),
+				})
+			);
 			plugins.push(Plugins.EnsureFocusableBlock.create());
 		}
 
@@ -164,11 +208,13 @@ export default class BufferedTextEditor extends React.Component {
 		}
 
 		if (linkify) {
-			plugins.push(Plugins.ExternalLinks.create({
-				allowedInBlockTypes: new Set([BLOCKS.UNSTYLED]),
-				onStartEdit: () => this.onStartLinkEdit(),
-				onStopEdit: () => this.onStopLinkEdit()
-			}));
+			plugins.push(
+				Plugins.ExternalLinks.create({
+					allowedInBlockTypes: new Set([BLOCKS.UNSTYLED]),
+					onStartEdit: () => this.onStartLinkEdit(),
+					onStopEdit: () => this.onStopLinkEdit(),
+				})
+			);
 		}
 
 		// if (linkify) {
@@ -176,79 +222,78 @@ export default class BufferedTextEditor extends React.Component {
 		// }
 
 		if (inlineOnly) {
-			plugins.push(Plugins.LimitBlockTypes.create({allow: new Set([BLOCKS.UNSTYLED])}));
+			plugins.push(
+				Plugins.LimitBlockTypes.create({
+					allow: new Set([BLOCKS.UNSTYLED]),
+				})
+			);
 		}
-
 
 		return plugins;
 	}
 
-
-	focus () {
+	focus() {
 		if (this.editor?.focus && !this.editingLink) {
 			this.editor.focus();
 		}
 	}
 
-
-	focusToEnd () {
+	focusToEnd() {
 		this.editor?.focusToEnd();
 	}
 
-
-	getValue () {
+	getValue() {
 		const state = this.editor && this.editor.getEditorState();
 
-		return getValue(state, this.props.plainText ? Types.PLAINTEXT : Types.HTML);
+		return getValue(
+			state,
+			this.props.plainText ? Types.PLAINTEXT : Types.HTML
+		);
 	}
 
+	getValueFromState() {
+		const { editorState } = this.state;
 
-	getValueFromState () {
-		const {editorState} = this.state;
-
-		return getValue(editorState, this.props.plainText ? Types.PLAINTEXT : Types.HTML);
+		return getValue(
+			editorState,
+			this.props.plainText ? Types.PLAINTEXT : Types.HTML
+		);
 	}
 
-
-	hasValueChanged () {
+	hasValueChanged() {
 		return this.getValue() !== this.getValueFromState();
 	}
 
-
 	onChange = () => {
-		const {onChange} = this.props;
+		const { onChange } = this.props;
 		const newValue = this.getValue();
 
 		if (onChange && this.hasValueChanged()) {
 			this.pushPendingSave(newValue);
 			onChange(newValue);
 		}
-	}
+	};
 
-
-	onStartLinkEdit () {
+	onStartLinkEdit() {
 		this.editingLink = true;
 		clearTimeout(this.onBlurTimeout);
 	}
 
-
-	onStopLinkEdit () {
+	onStopLinkEdit() {
 		this.editingLink = false;
 		this.bufferedChange();
 	}
 
-
 	onEditorChange = () => {
-		const {onEditorChange} = this.props;
+		const { onEditorChange } = this.props;
 
 		if (onEditorChange && this.hasValueChanged()) {
 			onEditorChange();
 		}
-	}
-
+	};
 
 	onContentChange = () => {
-		const {onEditorChange, error, warning} = this.props;
+		const { onEditorChange, error, warning } = this.props;
 
 		if (this.hasValueChanged()) {
 			if (onEditorChange) {
@@ -267,25 +312,25 @@ export default class BufferedTextEditor extends React.Component {
 				this.bufferedChange.flush();
 			}
 		}
-	}
+	};
 
-
-	onEditorFocus = (editor) => {
-		const {onFocus} = this.props;
+	onEditorFocus = editor => {
+		const { onFocus } = this.props;
 
 		this.isFocused = true;
 
 		if (onFocus) {
 			onFocus(editor);
 		}
-	}
+	};
 
-
-	onEditorBlur = (editor) => {
-		if (this.editingLink) { return; }
+	onEditorBlur = editor => {
+		if (this.editingLink) {
+			return;
+		}
 
 		this.onBlurTimeout = setTimeout(() => {
-			const {onBlur} = this.props;
+			const { onBlur } = this.props;
 
 			this.isFocused = null;
 
@@ -296,12 +341,17 @@ export default class BufferedTextEditor extends React.Component {
 				onBlur(editor);
 			}
 		}, 100);
-	}
+	};
 
-
-	render () {
-		const {className, charLimit, error, warning, ...otherProps} = this.props;
-		const {editorState, plugins} = this.state;
+	render() {
+		const {
+			className,
+			charLimit,
+			error,
+			warning,
+			...otherProps
+		} = this.props;
+		const { editorState, plugins } = this.state;
 		const counter = charLimit != null;
 
 		delete otherProps.initialValue;
@@ -317,7 +367,13 @@ export default class BufferedTextEditor extends React.Component {
 		delete otherProps.inlineOnly;
 
 		return (
-			<div className={cx('text-editor', 'nti-buffered-text-editor', className)}>
+			<div
+				className={cx(
+					'text-editor',
+					'nti-buffered-text-editor',
+					className
+				)}
+			>
 				<Editor
 					{...otherProps}
 					ref={this.attachEditorRef}
@@ -331,9 +387,11 @@ export default class BufferedTextEditor extends React.Component {
 				/>
 				<ContextProvider editorID={this.editorID}>
 					<div>
-						{counter && (<CharacterCounter className="character-count" />)}
-						{error && (<ErrorMessage error={error} />)}
-						{warning && (<WarningMessage warning={warning} />)}
+						{counter && (
+							<CharacterCounter className="character-count" />
+						)}
+						{error && <ErrorMessage error={error} />}
+						{warning && <WarningMessage warning={warning} />}
 					</div>
 				</ContextProvider>
 			</div>

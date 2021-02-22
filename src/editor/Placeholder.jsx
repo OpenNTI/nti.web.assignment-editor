@@ -2,13 +2,13 @@ import './Placeholder.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {scoped} from '@nti/lib-locale';
+import { scoped } from '@nti/lib-locale';
 
 const DEFAULT_TEXT = {
 	title: 'Editing is not available for this assignment.',
 	message: 'Assignments you did not create can only be previewed.',
 	defaultTitle: 'Unknown Assignment',
-	buttonText: 'Preview Assignment'
+	buttonText: 'Preview Assignment',
 };
 
 const t = scoped('assignment.editing.placeholder', DEFAULT_TEXT);
@@ -19,10 +19,10 @@ const LONG = 'long';
 const RADIO = 'radio';
 
 const DEFAULT_FAKE_QUESTIONS = [
-	{lines: [SHORT], answers: [RADIO]},
-	{lines: [SHORT, SHORT, LONG], answers: [RADIO, RADIO, RADIO, RADIO]},
-	{lines: [SHORT, SHORT], answers: [RADIO, RADIO, RADIO]},
-	{lines: [LONG], answers: [RADIO, RADIO]}
+	{ lines: [SHORT], answers: [RADIO] },
+	{ lines: [SHORT, SHORT, LONG], answers: [RADIO, RADIO, RADIO, RADIO] },
+	{ lines: [SHORT, SHORT], answers: [RADIO, RADIO, RADIO] },
+	{ lines: [LONG], answers: [RADIO, RADIO] },
 ];
 
 AssignmentEditorPlaceholder.propTypes = {
@@ -30,28 +30,23 @@ AssignmentEditorPlaceholder.propTypes = {
 	title: PropTypes.string,
 	message: PropTypes.string,
 	previewAssignment: PropTypes.func,
-	fakeQuestions: PropTypes.array
+	fakeQuestions: PropTypes.array,
 };
 
-
-function renderAnswer (answer, index) {
-	return (<div key={index} className="answer" />);
+function renderAnswer(answer, index) {
+	return <div key={index} className="answer" />;
 }
 
+function renderLine(line, index) {
+	const cls = cx('line', { long: line === LONG });
 
-function renderLine (line, index) {
-	const cls = cx('line', {long: line === LONG});
-
-	return (<div key={index} className={cls} />);
+	return <div key={index} className={cls} />;
 }
 
-
-function renderFakeQuestion (question, index) {
+function renderFakeQuestion(question, index) {
 	return (
 		<div key={index} className="question">
-			<div className="prompt">
-				{question.lines.map(renderLine)}
-			</div>
+			<div className="prompt">{question.lines.map(renderLine)}</div>
 			<div className="answer-container">
 				<div className="answers">
 					{question.answers.map(renderAnswer)}
@@ -61,8 +56,7 @@ function renderFakeQuestion (question, index) {
 	);
 }
 
-
-function renderFakeQuestions (questions = []) {
+function renderFakeQuestions(questions = []) {
 	return (
 		<div className="fake-questions">
 			{questions.map(renderFakeQuestion)}
@@ -70,9 +64,14 @@ function renderFakeQuestions (questions = []) {
 	);
 }
 
-
-function AssignmentEditorPlaceholder ({assignment, title = t('title'), message = t('message'), previewAssignment, fakeQuestions = DEFAULT_FAKE_QUESTIONS}) {
-	const {title:assignmentTitle} = assignment || {};
+function AssignmentEditorPlaceholder({
+	assignment,
+	title = t('title'),
+	message = t('message'),
+	previewAssignment,
+	fakeQuestions = DEFAULT_FAKE_QUESTIONS,
+}) {
+	const { title: assignmentTitle } = assignment || {};
 
 	return (
 		<div className="assignment-editing-placeholder">
@@ -81,7 +80,11 @@ function AssignmentEditorPlaceholder ({assignment, title = t('title'), message =
 			<div className="alert">
 				<div className="title">{title}</div>
 				<div className="message">{message}</div>
-				{previewAssignment && (<div className="button" onClick={previewAssignment}>{t('buttonText')}</div>)}
+				{previewAssignment && (
+					<div className="button" onClick={previewAssignment}>
+						{t('buttonText')}
+					</div>
+				)}
 			</div>
 		</div>
 	);

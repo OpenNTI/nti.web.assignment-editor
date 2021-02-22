@@ -1,50 +1,49 @@
 import './NoParts.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {scoped} from '@nti/lib-locale';
+import { scoped } from '@nti/lib-locale';
 
-import {Dropzone} from '../../../dnd';
-import {createPartWithQuestion} from '../Actions';
+import { Dropzone } from '../../../dnd';
+import { createPartWithQuestion } from '../Actions';
 
-import {QUESTION_TYPE} from './QuestionSet';
-
+import { QUESTION_TYPE } from './QuestionSet';
 
 const DEFAULT_TEXT = {
-	placeholder: 'No questions yet. Select question from the right to add one.'
+	placeholder: 'No questions yet. Select question from the right to add one.',
 };
 
 const t = scoped('assignment.parts.none', DEFAULT_TEXT);
 
 export default class NoParts extends React.Component {
 	static propTypes = {
-		assignment: PropTypes.object
-	}
+		assignment: PropTypes.object,
+	};
 
-
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
 		this.accepts = [QUESTION_TYPE];
 		this.dropHandlers = {
-			[QUESTION_TYPE]: this.onQuestionAdded
+			[QUESTION_TYPE]: this.onQuestionAdded,
 		};
 	}
 
+	onQuestionAdded = data => {
+		const { assignment } = this.props;
 
-	onQuestionAdded = (data) => {
-		const {assignment} = this.props;
+		createPartWithQuestion(
+			assignment,
+			data,
+			null,
+			assignment.isAvailable()
+		);
+	};
 
-		createPartWithQuestion(assignment, data, null, assignment.isAvailable());
-	}
-
-
-	render () {
+	render() {
 		return (
 			<Dropzone accepts={this.accepts} dropHandlers={this.dropHandlers}>
 				<div className="assignment-editor-no-parts">
-					<div className="empty-message">
-						{t('placeholder')}
-					</div>
+					<div className="empty-message">{t('placeholder')}</div>
 				</div>
 			</Dropzone>
 		);

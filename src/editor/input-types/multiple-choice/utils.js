@@ -1,7 +1,8 @@
-const SolutionMimeType = 'application/vnd.nextthought.assessment.multiplechoicesolution';
+const SolutionMimeType =
+	'application/vnd.nextthought.assessment.multiplechoicesolution';
 const SolutionClass = 'MultipleChoiceSolution';
 
-function choicesEqual (choicesA, choicesB) {
+function choicesEqual(choicesA, choicesB) {
 	if (choicesA.length !== choicesB.length) {
 		return false;
 	}
@@ -15,8 +16,7 @@ function choicesEqual (choicesA, choicesB) {
 	return true;
 }
 
-
-function solutionEqual (solutionA, solutionB) {
+function solutionEqual(solutionA, solutionB) {
 	if (!Array.isArray(solutionA)) {
 		solutionA = [solutionA];
 	}
@@ -34,7 +34,6 @@ function solutionEqual (solutionA, solutionB) {
 		return acc;
 	}, {});
 
-
 	for (let b of solutionB) {
 		if (!mapA[b]) {
 			return false;
@@ -44,8 +43,7 @@ function solutionEqual (solutionA, solutionB) {
 	return true;
 }
 
-
-export function solutionsEqual (solutionsA, solutionsB) {
+export function solutionsEqual(solutionsA, solutionsB) {
 	if (solutionsA.length !== solutionsB.length) {
 		return false;
 	}
@@ -59,8 +57,7 @@ export function solutionsEqual (solutionsA, solutionsB) {
 	return true;
 }
 
-
-export function partsEqual (partA, partB) {
+export function partsEqual(partA, partB) {
 	let equal = true;
 
 	if (partA.mimeType !== partB.mimeType) {
@@ -76,22 +73,20 @@ export function partsEqual (partA, partB) {
 	return equal;
 }
 
-
-function generateSolutionFor (value) {
+function generateSolutionFor(value) {
 	return {
 		Class: SolutionClass,
 		MimeType: SolutionMimeType,
-		value: value
+		value: value,
 	};
 }
 
-
-export function generatePartFor (mimeType, content, choices, solution, hints) {
+export function generatePartFor(mimeType, content, choices, solution, hints) {
 	return {
 		MimeType: mimeType,
 		content: content || '',
 		choices: choices,
 		solutions: [generateSolutionFor(solution, mimeType)],
-		hints: hints || []
+		hints: hints || [],
 	};
 }

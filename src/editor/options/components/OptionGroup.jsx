@@ -12,36 +12,45 @@ class OptionGroup extends React.Component {
 		header: PropTypes.string,
 		disabled: PropTypes.bool,
 		disabledText: PropTypes.string,
-		partiallyDisabled: PropTypes.bool
-	}
+		partiallyDisabled: PropTypes.bool,
+	};
 
-
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
 		this.state = {};
 	}
 
-
-	render () {
-		const {name, content, header, disabled, disabledText, error, partiallyDisabled} = this.props;
+	render() {
+		const {
+			name,
+			content,
+			header,
+			disabled,
+			disabledText,
+			error,
+			partiallyDisabled,
+		} = this.props;
 
 		const classNames = cx('assignment-option-group', name, {
 			disabled,
-			'partially-disabled': partiallyDisabled
+			'partially-disabled': partiallyDisabled,
 		});
 
 		return (
 			<div className={classNames}>
 				<div className="header">{header}</div>
-				<div className="options">
-					{this.props.children}
-				</div>
+				<div className="options">{this.props.children}</div>
 				<div className="assignment-option-content">
 					<p>{content}</p>
-					{(disabled || partiallyDisabled) && ( <span className="disabled-text">{disabledText}</span> )}
+					{(disabled || partiallyDisabled) && (
+						<span className="disabled-text">{disabledText}</span>
+					)}
 					{error && (
-						<p className="error"><i className="icon-alert small"/>{error}</p>
+						<p className="error">
+							<i className="icon-alert small" />
+							{error}
+						</p>
 					)}
 				</div>
 			</div>

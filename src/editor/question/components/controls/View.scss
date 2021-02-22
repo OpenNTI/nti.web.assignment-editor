@@ -1,11 +1,12 @@
-@import "~@nti/style-common";
+@import '~@nti/style-common';
 
 .assignment-editing-controls {
 	&.empty {
 		// display: none;
 	}
 
-	i[class^="icon-"], span.more-controls {
+	i[class^='icon-'],
+	span.more-controls {
 		font-size: 1rem;
 		color: var(--secondary-grey);
 		cursor: pointer;

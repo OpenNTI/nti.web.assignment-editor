@@ -1,8 +1,8 @@
-import {SAVE, EVENT_FINISH} from '@nti/lib-interfaces';
-import {dispatch} from '@nti/lib-dispatcher';
-import {getService} from  '@nti/web-client';
-import {Prompt} from '@nti/web-commons';
-import {wait} from '@nti/lib-commons';
+import { SAVE, EVENT_FINISH } from '@nti/lib-interfaces';
+import { dispatch } from '@nti/lib-dispatcher';
+import { getService } from '@nti/web-client';
+import { Prompt } from '@nti/web-commons';
+import { wait } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
 import {
@@ -16,18 +16,15 @@ import {
 	LOADED_SCHEMA,
 	REVERT_ERRORS,
 	SAVING,
-	SAVE_ENDED
+	SAVE_ENDED,
 } from './Constants';
 
-
 const SHORT = 3000;
-
 
 const logger = Logger.get('lib:asssignment-editor:Actions');
 const defaultSchema = {};
 
-
-export function freeAssignment (assignment) {
+export function freeAssignment(assignment) {
 	dispatch(FREE);
 
 	if (assignment) {
@@ -35,19 +32,20 @@ export function freeAssignment (assignment) {
 	}
 }
 
-
-export function loadAssignmentWithCourse (assignmentId, courseId) {
+export function loadAssignmentWithCourse(assignmentId, courseId) {
 	dispatch(LOADING);
 
 	return getService()
 		.then(service =>
 			courseId
-				? service.getObject(courseId)
-					.then(course => (
-						dispatch(LOADED_COURSE, course),
-						course.getAssignment(assignmentId)
-					)
-					)
+				? service
+						.getObject(courseId)
+						.then(
+							course => (
+								dispatch(LOADED_COURSE, course),
+								course.getAssignment(assignmentId)
+							)
+						)
 				: service.getObject(assignmentId)
 		)
 		.then(assignment => {
@@ -57,12 +55,14 @@ export function loadAssignmentWithCourse (assignmentId, courseId) {
 		})
 		.catch(reason => {
 			//TODO: HANDLE THE ERROR CASE
-			dispatch(LOADED, reason instanceof Error ? reason : new Error(reason));
+			dispatch(
+				LOADED,
+				reason instanceof Error ? reason : new Error(reason)
+			);
 		});
 }
 
-
-export function loadAssignment (ntiid, course) {
+export function loadAssignment(ntiid, course) {
 	dispatch(LOADING);
 
 	const fetch = course
@@ -77,12 +77,14 @@ export function loadAssignment (ntiid, course) {
 		})
 		.catch(reason => {
 			//TODO: HANDLE THE ERROR CASE
-			dispatch(LOADED, reason instanceof Error ? reason : new Error(reason));
+			dispatch(
+				LOADED,
+				reason instanceof Error ? reason : new Error(reason)
+			);
 		});
 }
 
-
-export function loadSchema (assignment) {
+export function loadSchema(assignment) {
 	//TODO: ACTUALLY LOAD THE SCHEMA
 	const link = assignment.getLink('schema');
 
@@ -90,21 +92,20 @@ export function loadSchema (assignment) {
 		dispatch(LOADED_SCHEMA, defaultSchema);
 	} else {
 		getService()
-			.then((service) => {
+			.then(service => {
 				return service.get(link);
 			})
-			.then((schema) => {
+			.then(schema => {
 				dispatch(LOADED_SCHEMA, schema);
 			})
-			.catch((reason) => {
+			.catch(reason => {
 				logger.error('Failed to load schema: ', reason);
 				dispatch(LOADED_SCHEMA, defaultSchema);
 			});
 	}
 }
 
-
-function onAssignmentSaved (action, data, e) {
+function onAssignmentSaved(action, data, e) {
 	const assignment = this; //emitters set the scope of the handler to themselves.
 	if (action === SAVE && e) {
 		const fn = maybeResetAssignmentOnError(assignment);
@@ -112,14 +113,14 @@ function onAssignmentSaved (action, data, e) {
 	}
 }
 
-
-export function maybeResetAssignmentOnError (assignmentOrQuestionSet) {
-
-	function getMainSubmittable (model) {
+export function maybeResetAssignmentOnError(assignmentOrQuestionSet) {
+	function getMainSubmittable(model) {
 		let p;
 		do {
 			p = model && model.parent('getSubmission');
-			if (p) { model = p; }
+			if (p) {
+				model = p;
+			}
 		} while (p);
 		return model;
 	}
@@ -129,26 +130,26 @@ export function maybeResetAssignmentOnError (assignmentOrQuestionSet) {
 		logger.warn('Could not get assignment!! %o', assignment);
 	}
 
-	return async (error) => {
-
-		if (error.code === 'ObjectHasSubmissions' || error.code === 'ObjectHasSavepoints') {
-			return assignment.refresh()
-				.then(() => {
-					assignment.onChange('all');
-					dispatch(ASSIGNMENT_ERROR, {
-						NTIID: assignment.NTIID,
-						field: null,
-						reason: error
-					});
+	return async error => {
+		if (
+			error.code === 'ObjectHasSubmissions' ||
+			error.code === 'ObjectHasSavepoints'
+		) {
+			return assignment.refresh().then(() => {
+				assignment.onChange('all');
+				dispatch(ASSIGNMENT_ERROR, {
+					NTIID: assignment.NTIID,
+					field: null,
+					reason: error,
 				});
+			});
 		}
 
 		throw error;
 	};
 }
 
-
-export function saveFieldOn (obj, field, newValue) {
+export function saveFieldOn(obj, field, newValue) {
 	if (!obj.save) {
 		throw new Error('Invalid object to save field on');
 	}
@@ -160,7 +161,7 @@ export function saveFieldOn (obj, field, newValue) {
 		return;
 	}
 
-	const values = {[field]: newValue};
+	const values = { [field]: newValue };
 
 	dispatch(SAVING, obj);
 
@@ -172,29 +173,26 @@ export function saveFieldOn (obj, field, newValue) {
 	return save;
 }
 
-
-export function deleteAssignment (assignment, promptText) {
-	Prompt.areYouSure(promptText)
-		.then(() => {
-			dispatch(ASSIGNMENT_DELETING, true);
-			assignment.delete()
-				.then(wait.min(SHORT))
-				.then(() => {
-					dispatch(ASSIGNMENT_DELETED);
-				})
-				.catch((reason) => {
-					dispatch(ASSIGNMENT_ERROR, {
-						NTIID: assignment.NTIID,
-						field: null,
-						reason
-					});
-					dispatch(ASSIGNMENT_DELETING, false);
+export function deleteAssignment(assignment, promptText) {
+	Prompt.areYouSure(promptText).then(() => {
+		dispatch(ASSIGNMENT_DELETING, true);
+		assignment
+			.delete()
+			.then(wait.min(SHORT))
+			.then(() => {
+				dispatch(ASSIGNMENT_DELETED);
+			})
+			.catch(reason => {
+				dispatch(ASSIGNMENT_ERROR, {
+					NTIID: assignment.NTIID,
+					field: null,
+					reason,
 				});
-		});
+				dispatch(ASSIGNMENT_DELETING, false);
+			});
+	});
 }
 
-
-export function resetAssignmentSubmissions (assignment) {
-	return assignment.resetAllSubmissions()
-		.then(() => dispatch(REVERT_ERRORS));
+export function resetAssignmentSubmissions(assignment) {
+	return assignment.resetAllSubmissions().then(() => dispatch(REVERT_ERRORS));
 }

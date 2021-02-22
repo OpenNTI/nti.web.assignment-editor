@@ -1,4 +1,4 @@
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
 
 export const MimeType = 'application/vnd.nextthought.app.dndinfo';
 const DnDSession = uuid();
@@ -12,12 +12,12 @@ export default {
 	SourceApp,
 	Version,
 
-	get dataForTransfer () {
+	get dataForTransfer() {
 		return JSON.stringify({
 			MimeType,
 			DnDSession,
 			SourceApp,
-			Version
+			Version,
 		});
-	}
+	},
 };

@@ -2,11 +2,11 @@ import './View.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {Authoring} from '@nti/lib-interfaces';
+import { Authoring } from '@nti/lib-interfaces';
 
 import Delete from './Delete';
 import Duplicate from './Duplicate';
-import Move, {UP, DOWN} from './Move';
+import Move, { UP, DOWN } from './Move';
 import More from './More';
 import Share from './Share';
 
@@ -15,30 +15,31 @@ QuestionControls.propTypes = {
 	questionSet: PropTypes.object.isRequired,
 	assignment: PropTypes.object.isRequired,
 	course: PropTypes.object,
-	flushChanges: PropTypes.func
+	flushChanges: PropTypes.func,
 };
 
-
-export default function QuestionControls (props) {
-	const {question, questionSet, assignment, flushChanges, course} = props;
+export default function QuestionControls(props) {
+	const { question, questionSet, assignment, flushChanges, course } = props;
 
 	const ordered = Authoring.OrderedContents.hasOrderedContents(questionSet);
 	const canMove = ordered;
 	const canDelete = ordered;
 	const canDuplicate = ordered;
 	const isEmpty = !canMove && !canDelete && !canDuplicate;
-	const cls = cx('assignment-editing-controls', {empty: isEmpty});
+	const cls = cx('assignment-editing-controls', { empty: isEmpty });
 
 	return (
 		<div className={cls}>
-			<Move type={UP}
+			<Move
+				type={UP}
 				question={question}
 				questionSet={questionSet}
 				assignment={assignment}
 				disabled={!canMove}
 			/>
 
-			<Move type={DOWN}
+			<Move
+				type={DOWN}
 				question={question}
 				questionSet={questionSet}
 				assignment={assignment}
@@ -67,7 +68,7 @@ export default function QuestionControls (props) {
 	);
 }
 
-export function Placeholder () {
+export function Placeholder() {
 	return (
 		<div className="assignment-editing-controls placeholder">
 			<i className="icon-moveup" />

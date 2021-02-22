@@ -1,7 +1,9 @@
-@import "~@nti/style-common";
+@import '~@nti/style-common';
 
 .selectable {
-	&, input, textarea {
+	&,
+	input,
+	textarea {
 		&:focus {
 			outline: 0;
 		}

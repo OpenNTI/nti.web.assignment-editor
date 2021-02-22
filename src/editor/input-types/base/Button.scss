@@ -1,4 +1,4 @@
-@import "~@nti/style-common";
+@import '~@nti/style-common';
 
 .assigment-editor-sidebar-button {
 	width: 110px;
@@ -34,7 +34,8 @@
 		}
 	}
 
-	.label,.used {
+	.label,
+	.used {
 		color: var(--secondary-grey);
 		text-transform: uppercase;
 		font-size: rem-calc(10px);

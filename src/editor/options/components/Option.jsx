@@ -1,7 +1,7 @@
 import './Option.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Checkbox, Radio} from '@nti/web-commons';
+import { Checkbox, Radio } from '@nti/web-commons';
 import cx from 'classnames';
 
 export default class Option extends React.Component {
@@ -11,29 +11,32 @@ export default class Option extends React.Component {
 		value: PropTypes.bool,
 		onChange: PropTypes.func,
 		name: PropTypes.string,
-		disabled: PropTypes.bool
-	}
+		disabled: PropTypes.bool,
+	};
 
 	static defaultProps = {
-		type: 'checkbox'
-	}
+		type: 'checkbox',
+	};
 
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
 		this.state = {};
 	}
 
-
-	render () {
-		const {type, value, disabled, ...props} = this.props;
+	render() {
+		const { type, value, disabled, ...props } = this.props;
 		const Control = type === 'radio' ? Radio : Checkbox;
-		const classNames = cx('assignment-single-option', {disabled});
+		const classNames = cx('assignment-single-option', { disabled });
 
 		return (
 			<div className={classNames}>
 				<div className="option-input">
-					<Control {...props} disabled={disabled} checked={Boolean(value)} />
+					<Control
+						{...props}
+						disabled={disabled}
+						checked={Boolean(value)}
+					/>
 				</div>
 			</div>
 		);

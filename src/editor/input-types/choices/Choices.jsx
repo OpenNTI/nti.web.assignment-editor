@@ -3,22 +3,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-import {SyncHeightGroup} from '../../../sync-height';
-import {Ordering} from '../../../dnd/';
+import { SyncHeightGroup } from '../../../sync-height';
+import { Ordering } from '../../../dnd/';
 
 import Choice from './Choice';
 import PlainChoice from './PlainChoice';
-import {isErrorForChoice} from './Factory';
+import { isErrorForChoice } from './Factory';
 import AddChoice from './AddChoice';
 
 const defaultLabel = 'Add a choice';
 
-function createSyncHeightGroup () {
+function createSyncHeightGroup() {
 	return new SyncHeightGroup();
 }
 
-
-function createDeleteListForColumns (columns, minAllowed) {
+function createDeleteListForColumns(columns, minAllowed) {
 	//This assumes all the columns are the same height
 	const firstColumn = columns[0] || [];
 	const columnLength = firstColumn.length;
@@ -40,13 +39,11 @@ function createDeleteListForColumns (columns, minAllowed) {
 	return deletes;
 }
 
-
-function choiceEqual (choiceA, choiceB) {
+function choiceEqual(choiceA, choiceB) {
 	return choiceA.ID === choiceB.ID && choiceA.label === choiceB.label;
 }
 
-
-function choicesEqual (choicesA, choicesB) {
+function choicesEqual(choicesA, choicesB) {
 	if (choicesA.length !== choicesB.length) {
 		return false;
 	}
@@ -80,48 +77,46 @@ export default class Choices extends React.Component {
 		reorderable: PropTypes.bool,
 		addLabel: PropTypes.string,
 		minAllowed: PropTypes.number,
-		plainText: PropTypes.bool
-	}
-
+		plainText: PropTypes.bool,
+	};
 
 	static defaultProps = {
 		accepts: [],
 		addLabel: defaultLabel,
-		minAllowed: 1
-	}
+		minAllowed: 1,
+	};
 
+	className = '';
 
-	className = ''
-
-
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
-		const {choices, error, minAllowed} = this.props;
-		let {columns, deletes} = this.mapColumns(choices, minAllowed);
+		const { choices, error, minAllowed } = this.props;
+		let { columns, deletes } = this.mapColumns(choices, minAllowed);
 
 		this.state = {
 			columns,
 			deletes,
-			error
+			error,
 		};
 
 		this.setUpHandlers(columns, deletes);
 	}
 
-
-	get canAdd () {
+	get canAdd() {
 		return !!this.props.buildBlankChoice;
 	}
 
-
-	componentDidUpdate (prevProps) {
-		const {choices:newChoices, error:newError, minAllowed} = this.props;
-		const {choices:oldChoices, error:oldError} = prevProps;
+	componentDidUpdate(prevProps) {
+		const { choices: newChoices, error: newError, minAllowed } = this.props;
+		const { choices: oldChoices, error: oldError } = prevProps;
 		let state = null;
 
 		if (!choicesEqual(newChoices, oldChoices)) {
-			const {columns, deletes} = this.mapColumns(newChoices, minAllowed);
+			const { columns, deletes } = this.mapColumns(
+				newChoices,
+				minAllowed
+			);
 			state = state || {};
 
 			state.columns = columns;
@@ -130,21 +125,18 @@ export default class Choices extends React.Component {
 			this.setUpHandlers(columns, deletes);
 		}
 
-
 		if (newError !== oldError) {
 			state = state || {};
 
 			state.error = newError;
 		}
 
-
 		if (state) {
 			this.setState(state);
 		}
 	}
 
-
-	mapColumns (rows, minAllowed) {
+	mapColumns(rows, minAllowed) {
 		let columns = [];
 
 		for (let row of rows) {
@@ -167,12 +159,11 @@ export default class Choices extends React.Component {
 
 		return {
 			columns,
-			deletes
+			deletes,
 		};
 	}
 
-
-	setUpHandlers (columns, deletes) {
+	setUpHandlers(columns, deletes) {
 		const canDelete = deletes.length > 1;
 
 		this.orderChangeHandlers = [];
@@ -202,13 +193,11 @@ export default class Choices extends React.Component {
 		}
 	}
 
-
-	clearRowSyncs () {
+	clearRowSyncs() {
 		this.rowSyncs = {};
 	}
 
-
-	getSyncForRow (row) {
+	getSyncForRow(row) {
 		this.rowSyncs = this.rowSyncs || {};
 
 		if (!this.rowSyncs[row]) {
@@ -218,10 +207,9 @@ export default class Choices extends React.Component {
 		return this.rowSyncs[row];
 	}
 
-
 	onChange = () => {
-		const {onChange} = this.props;
-		const {columns} = this.state;
+		const { onChange } = this.props;
+		const { columns } = this.state;
 		let rows = [];
 
 		// toFocus is always the previous choice
@@ -255,12 +243,11 @@ export default class Choices extends React.Component {
 		if (onChange) {
 			onChange(rows);
 		}
-	}
+	};
 
-
-	onOrderChange (columnIndex, choices) {
-		const {minAllowed} = this.props;
-		let {columns} = this.state;
+	onOrderChange(columnIndex, choices) {
+		const { minAllowed } = this.props;
+		let { columns } = this.state;
 		const oldColumn = columns[columnIndex];
 		const oldChoices = oldColumn.reduce((acc, choice) => {
 			acc[choice.NTIID || choice.ID] = choice;
@@ -278,16 +265,18 @@ export default class Choices extends React.Component {
 
 		this.setUpHandlers(columns, deletes);
 
-		this.setState({
-			columns,
-			deletes
-		}, () => {
-			this.onChange();
-		});
+		this.setState(
+			{
+				columns,
+				deletes,
+			},
+			() => {
+				this.onChange();
+			}
+		);
 	}
 
-
-	isSameChoice (a, b) {
+	isSameChoice(a, b) {
 		let equal = false;
 
 		if (a.NTIID && a.NTIID === b.NTIID) {
@@ -299,12 +288,11 @@ export default class Choices extends React.Component {
 		return equal;
 	}
 
-
-	onChoiceChange (columnIndex, newChoice) {
-		let {columns} = this.state;
+	onChoiceChange(columnIndex, newChoice) {
+		let { columns } = this.state;
 		let column = columns[columnIndex];
 
-		column = column.map((choice) => {
+		column = column.map(choice => {
 			if (this.isSameChoice(choice, newChoice)) {
 				choice = choice.clone();
 				choice.label = newChoice.label;
@@ -317,22 +305,24 @@ export default class Choices extends React.Component {
 
 		columns[columnIndex] = column;
 
-		this.setState({
-			columns
-		}, () => {
-			this.onChange();
-		});
+		this.setState(
+			{
+				columns,
+			},
+			() => {
+				this.onChange();
+			}
+		);
 	}
 
-
-	insertNewChoiceAt = (index) => {
-		const {buildBlankChoice, minAllowed} = this.props;
+	insertNewChoiceAt = index => {
+		const { buildBlankChoice, minAllowed } = this.props;
 
 		if (!buildBlankChoice) {
 			return false;
 		}
 
-		const {columns} = this.state;
+		const { columns } = this.state;
 		const column = columns[0];
 
 		if (index < 0) {
@@ -345,10 +335,10 @@ export default class Choices extends React.Component {
 			let oldColumn = columns[i] || [];
 			let newItem = buildBlankChoice(oldColumn.slice(0));
 
-			columns[i] =  [
+			columns[i] = [
 				...oldColumn.slice(0, index),
 				newItem,
-				...oldColumn.slice(index)
+				...oldColumn.slice(index),
 			].map((cell, cellIndex) => {
 				// XXX: this is mutating a shared value?!?
 				cell.index = cellIndex;
@@ -362,39 +352,38 @@ export default class Choices extends React.Component {
 
 		this.setState({
 			columns,
-			deletes
+			deletes,
 		});
 
 		return true;
-	}
-
+	};
 
 	insertNewChoiceAfter = (columnIndex, choice) => {
-		const {columns} = this.state;
+		const { columns } = this.state;
 		const column = columns[columnIndex];
 		let index = column.findIndex(x => x.ID === choice.ID);
 
 		return this.insertNewChoiceAt(index + 1);
-	}
-
+	};
 
 	add = () => {
 		return this.insertNewChoiceAt(-1);
-	}
+	};
 
+	remove = ids => {
+		const { canRemove, minAllowed } = this.props;
 
-	remove = (ids) => {
-		const {canRemove, minAllowed} = this.props;
+		if (!canRemove) {
+			return;
+		}
 
-		if (!canRemove) { return; }
-
-		const {columns} = this.state;
+		const { columns } = this.state;
 
 		for (let i = 0; i < columns.length; i++) {
 			let column = columns[i];
 			let toRemove = ids[i];
 
-			column = column.filter((choice) => {
+			column = column.filter(choice => {
 				const choiceId = choice.NTIID || choice.ID;
 
 				return toRemove !== choiceId;
@@ -411,17 +400,19 @@ export default class Choices extends React.Component {
 
 		this.setUpHandlers(columns, deletes);
 
-		this.setState({
-			columns,
-			deletes
-		}, () => {
-			this.onChange();
-		});
-	}
+		this.setState(
+			{
+				columns,
+				deletes,
+			},
+			() => {
+				this.onChange();
+			}
+		);
+	};
 
-
-	getChoiceAfter (columnIndex, choice) {
-		const {columns} = this.state;
+	getChoiceAfter(columnIndex, choice) {
+		const { columns } = this.state;
 
 		let column = columns[columnIndex];
 		let index = column.findIndex(x => x.ID === choice.ID);
@@ -436,9 +427,8 @@ export default class Choices extends React.Component {
 		return column && column[index];
 	}
 
-
-	getChoiceBefore (columnIndex, choice) {
-		const {columns} = this.state;
+	getChoiceBefore(columnIndex, choice) {
+		const { columns } = this.state;
 
 		let column = columns[columnIndex];
 		let index = column.findIndex(x => x.ID === choice.ID);
@@ -453,12 +443,11 @@ export default class Choices extends React.Component {
 		return column && column[index];
 	}
 
-
 	maybeDeleteRow = (columnIndex, choice) => {
-		const {columns} = this.state;
+		const { columns } = this.state;
 		const prevChoice = this.getChoiceBefore(columnIndex, choice);
 
-		function focusPrev () {
+		function focusPrev() {
 			if (prevChoice) {
 				prevChoice.focusToEnd();
 			}
@@ -472,7 +461,7 @@ export default class Choices extends React.Component {
 
 		//If there is only one column, just remove the choice and focus the previous
 		if (columns.length === 1) {
-			this.toFocus = prevChoice;//mark choice to focus after the removals
+			this.toFocus = prevChoice; //mark choice to focus after the removals
 			this.remove([choice.NTIID || choice.ID]);
 			return;
 		}
@@ -493,19 +482,20 @@ export default class Choices extends React.Component {
 		}
 
 		if (toDelete.length === columns.length) {
-			this.toFocus = prevChoice;//mark choice to focus after the removals
+			this.toFocus = prevChoice; //mark choice to focus after the removals
 			this.remove(toDelete);
 		} else if (prevChoice) {
 			focusPrev();
 		}
-	}
-
+	};
 
 	focusNext = (columnIndex, choice) => {
-		const {columns} = this.state;
+		const { columns } = this.state;
 
 		//If we only have one column let the native events handle it
-		if (columns.length === 1) { return false; }
+		if (columns.length === 1) {
+			return false;
+		}
 
 		const nextChoice = this.getChoiceAfter(columnIndex, choice);
 
@@ -513,10 +503,9 @@ export default class Choices extends React.Component {
 			nextChoice.focus();
 			return true;
 		}
-	}
+	};
 
-
-	focusPrev = (columnIndex, choice/*, force*/) => {
+	focusPrev = (columnIndex, choice /*, force*/) => {
 		// const {columns} = this.state;
 
 		//If we only have one column let the native events handle it
@@ -528,29 +517,29 @@ export default class Choices extends React.Component {
 			prevChoice.focusToEnd();
 			return true;
 		}
-	}
+	};
 
-
-	render () {
-		const {className, canRemove} = this.props;
-		const {columns} = this.state;
-		const cls = cx(className, this.className, 'input-type-choices',{'can-delete': canRemove});
+	render() {
+		const { className, canRemove } = this.props;
+		const { columns } = this.state;
+		const cls = cx(className, this.className, 'input-type-choices', {
+			'can-delete': canRemove,
+		});
 
 		return (
 			<div className={cls}>
 				<div className="choices">
-					{columns.map((choices, index) => this.renderColumn(choices, index))}
+					{columns.map((choices, index) =>
+						this.renderColumn(choices, index)
+					)}
 				</div>
-				<div className="choices add">
-					{this.renderAdd()}
-				</div>
+				<div className="choices add">{this.renderAdd()}</div>
 			</div>
 		);
 	}
 
-
-	renderColumn (choices, index) {
-		const {containerId, accepts, reorderable} = this.props;
+	renderColumn(choices, index) {
+		const { containerId, accepts, reorderable } = this.props;
 		const renderChoice = this.choiceRenders[index];
 		const onChange = this.orderChangeHandlers[index];
 		const accept = accepts[index] ? [accepts[index]] : [];
@@ -570,21 +559,25 @@ export default class Choices extends React.Component {
 		}
 
 		return (
-			<div key={containerId + '-' + index} className="choice-column no-reorder">
+			<div
+				key={containerId + '-' + index}
+				className="choice-column no-reorder"
+			>
 				{choices.map(renderChoice)}
 			</div>
 		);
 	}
 
-
-	renderChoice (column, choice, row) {
-		const {plainText, canRemove} = this.props;
-		const {error} = this.state;
+	renderChoice(column, choice, row) {
+		const { plainText, canRemove } = this.props;
+		const { error } = this.state;
 		const onChange = this.choiceChangeHandlers[column];
 		const focusNext = this.focusNextHandlers[column];
 		const focusPrev = this.focusPrevHandlers[column];
 		const insertNewChoice = this.insertNewHandlers[column];
-		const maybeDeleteRow = canRemove ? this.deleteRowHandlers[column] : void 0;
+		const maybeDeleteRow = canRemove
+			? this.deleteRowHandlers[column]
+			: void 0;
 		const choiceError = isErrorForChoice(error, choice);
 		const sync = this.getSyncForRow(row);
 		const onDelete = canRemove ? this.deleteHandlers[row] : void 0;
@@ -607,28 +600,22 @@ export default class Choices extends React.Component {
 		);
 	}
 
-
 	renderAdd = () => {
-		const {addLabel} = this.props;
+		const { addLabel } = this.props;
 
 		return !this.canAdd ? null : (
-			<AddChoice
-				addLabel={addLabel}
-				add={this.add}
-			/>
+			<AddChoice addLabel={addLabel} add={this.add} />
 		);
-	}
+	};
 }
 
 Placeholder.propTypes = {
-	children: PropTypes.any
+	children: PropTypes.any,
 };
-export function Placeholder ({children}) {
+export function Placeholder({ children }) {
 	return (
 		<div className="input-type-choices">
-			<div className="choice-column">
-				{children}
-			</div>
+			<div className="choice-column">{children}</div>
 			<AddChoice addLabel="Add a Choice" />
 		</div>
 	);

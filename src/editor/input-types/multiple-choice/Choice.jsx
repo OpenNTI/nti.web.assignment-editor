@@ -2,9 +2,9 @@ import './Choice.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {Radio, Checkbox} from '@nti/web-commons';
+import { Radio, Checkbox } from '@nti/web-commons';
 
-import Choice, {Placeholder as ChoicePlaceholder} from '../choices/Choice';
+import Choice, { Placeholder as ChoicePlaceholder } from '../choices/Choice';
 
 export default class MultipleChoiceChoice extends React.Component {
 	static propTypes = {
@@ -21,49 +21,45 @@ export default class MultipleChoiceChoice extends React.Component {
 		focusNext: PropTypes.func,
 		focusPrev: PropTypes.func,
 		maybeDeleteRow: PropTypes.func,
-	}
+	};
 
-	setChoiceCmpRef = x => this.choiceCmp = x;
+	setChoiceCmpRef = x => (this.choiceCmp = x);
 
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
-		const {choice} = this.props;
+		const { choice } = this.props;
 
 		this.state = {
-			correct: choice.correct
+			correct: choice.correct,
 		};
 	}
 
-
-	componentDidUpdate (prevProps) {
-		const {choice:newChoice} = this.props;
-		const {choice:oldChoice} = prevProps;
+	componentDidUpdate(prevProps) {
+		const { choice: newChoice } = this.props;
+		const { choice: oldChoice } = prevProps;
 
 		if (newChoice !== oldChoice) {
 			this.setState({
-				correct: newChoice.correct
+				correct: newChoice.correct,
 			});
 		}
 	}
 
-
-	onChange (choice) {
-		const {onChange} = this.props;
+	onChange(choice) {
+		const { onChange } = this.props;
 
 		if (onChange) {
 			onChange(choice);
 		}
 	}
 
-
-	onChoiceChange = (choice) => {
+	onChoiceChange = choice => {
 		this.onChange(choice);
-	}
+	};
 
-
-	onSolutionChange = (e) => {
-		const {choice:oldChoice, onSolutionChange} = this.props;
+	onSolutionChange = e => {
+		const { choice: oldChoice, onSolutionChange } = this.props;
 		let newChoice = oldChoice.clone();
 
 		newChoice.correct = e.target.checked;
@@ -71,10 +67,9 @@ export default class MultipleChoiceChoice extends React.Component {
 		if (onSolutionChange) {
 			onSolutionChange(newChoice);
 		}
-	}
+	};
 
-
-	render () {
+	render() {
 		const {
 			choice,
 			plainText,
@@ -86,11 +81,11 @@ export default class MultipleChoiceChoice extends React.Component {
 			focusNext,
 			focusPrev,
 			insertNewChoiceAfter,
-			maybeDeleteRow
+			maybeDeleteRow,
 		} = this.props;
 
-		const {correct} = this.state;
-		const cls = cx('multiple-choice-choice', {correct});
+		const { correct } = this.state;
+		const cls = cx('multiple-choice-choice', { correct });
 
 		return (
 			<div className={cls}>
@@ -112,26 +107,36 @@ export default class MultipleChoiceChoice extends React.Component {
 		);
 	}
 
-
-	renderSolution (correct, multipleAnswers, group) {
+	renderSolution(correct, multipleAnswers, group) {
 		if (multipleAnswers) {
 			return (
-				<Checkbox green checked={!!correct} onChange={this.onSolutionChange} tabIndex="-1"/>
+				<Checkbox
+					green
+					checked={!!correct}
+					onChange={this.onSolutionChange}
+					tabIndex="-1"
+				/>
 			);
 		}
 
 		return (
-			<Radio green name={group} checked={!!correct} onChange={this.onSolutionChange} tabIndex="-1"/>
+			<Radio
+				green
+				name={group}
+				checked={!!correct}
+				onChange={this.onSolutionChange}
+				tabIndex="-1"
+			/>
 		);
 	}
 }
 
 Placeholder.propTypes = {
-	correct: PropTypes.bool
+	correct: PropTypes.bool,
 };
-export function Placeholder ({correct}) {
+export function Placeholder({ correct }) {
 	return (
-		<div className={cx('multiple-choice-choice placeholder', {correct})}>
+		<div className={cx('multiple-choice-choice placeholder', { correct })}>
 			<ChoicePlaceholder correct={correct} />
 			<Radio green name="placeholder-group" checked={correct} />
 		</div>

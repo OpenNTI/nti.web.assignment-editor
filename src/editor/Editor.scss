@@ -1,4 +1,4 @@
-@import "~@nti/style-common";
+@import '~@nti/style-common';
 
 .assignment-editor {
 	background: white;
@@ -23,14 +23,16 @@
 		cursor: pointer;
 	}
 
-	.option-container, .content-container {
+	.option-container,
+	.content-container {
 		background: white;
 		min-height: 75vh;
 		min-height: calc(100vh - 125px);
 	}
 
 	.content-container {
-		&, .assignment-parts {
+		&,
+		.assignment-parts {
 			display: flex;
 			flex-direction: column;
 		}
@@ -50,7 +52,8 @@
 			padding: rem-calc(11px 0);
 			text-align: center;
 
-			span, i {
+			span,
+			i {
 				vertical-align: middle;
 			}
 
@@ -91,7 +94,8 @@
 			&.fade-in-out-enter-active {
 				opacity: 1;
 				transform: scale(1);
-				transition: opacity 400ms, transform 400ms cubic-bezier(0.5, 0.01, 0.02, 1.35);
+				transition: opacity 400ms,
+					transform 400ms cubic-bezier(0.5, 0.01, 0.02, 1.35);
 			}
 		}
 

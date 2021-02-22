@@ -1,60 +1,62 @@
 import './Attempts.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {scoped} from '@nti/lib-locale';
-import {HOC, Select} from '@nti/web-commons';
+import { scoped } from '@nti/lib-locale';
+import { HOC, Select } from '@nti/web-commons';
 
 import OptionGroup from './OptionGroup';
 import Option from './Option';
 
 const MAX_LIMIT = 19;
-const LIMITED_ARRAY = Array.from({length: MAX_LIMIT}).map((_, i) => i + 2);//2 - 20
+const LIMITED_ARRAY = Array.from({ length: MAX_LIMIT }).map((_, i) => i + 2); //2 - 20
 
 const t = scoped('assignment.editing.options.Attempts', {
 	header: 'Number of Attempts',
 	content: 'Specify how many times learners can take this assignment.',
 	disabled: {
 		noQuestions: 'Add some questions to enable this option.',
-		noPassingScore: 'Assignments must have a passing score to enable multiple attempts'
+		noPassingScore:
+			'Assignments must have a passing score to enable multiple attempts',
 	},
 	labels: {
 		oneAttempt: 'One Attempt',
 		limitedAttempts: 'Limited Attempts',
-		unlimitedAttempts: 'Unlimited Attempts'
+		unlimitedAttempts: 'Unlimited Attempts',
 	},
 	attempts: {
 		one: '%(count)s Attempt',
-		other: '%(count)s Attempts'
-	}
+		other: '%(count)s Attempts',
+	},
 });
 
 class Attempts extends React.Component {
 	static propTypes = {
 		assignment: PropTypes.object,
-		questionSet: PropTypes.object
-	}
+		questionSet: PropTypes.object,
+	};
 
-	static getItem (props) {
+	static getItem(props) {
 		return props.assignment;
 	}
 
+	state = {};
 
-	state = {}
+	numberInput = React.createRef();
 
-	numberInput = React.createRef()
-
-	componentDidMount () {
+	componentDidMount() {
 		this.setupFor(this.props);
 	}
 
+	componentDidUpdate(prevProps, prevState) {
+		const { assignment } = this.props;
+		const { maxSubmissions, passingScore } = this.state;
+		const { assignment: prevAssignment } = prevProps;
+		const { maxSubmisions: prevMax } = prevState;
 
-	componentDidUpdate (prevProps, prevState) {
-		const {assignment} = this.props;
-		const {maxSubmissions, passingScore} = this.state;
-		const {assignment:prevAssignment} = prevProps;
-		const {maxSubmisions:prevMax} = prevState;
-
-		if (assignment !== prevAssignment || assignment.passingScore !== passingScore) {
+		if (
+			assignment !== prevAssignment ||
+			assignment.passingScore !== passingScore
+		) {
 			this.setupFor(this.props);
 		}
 
@@ -63,10 +65,9 @@ class Attempts extends React.Component {
 		}
 	}
 
-
-	setupFor (props) {
-		const {assignment, questionSet} = this.props;
-		const {maxSubmissions} = assignment;
+	setupFor(props) {
+		const { assignment, questionSet } = this.props;
+		const { maxSubmissions } = assignment;
 
 		let disabled = !assignment.canSetMaxSubmissions();
 		let disabledText = null;
@@ -86,23 +87,27 @@ class Attempts extends React.Component {
 			disabled,
 			disabledText,
 			maxSubmissions: disabled ? 1 : maxSubmissions,
-			limitedSubmissions: maxSubmissions && maxSubmissions > 1 ? maxSubmissions : 2
+			limitedSubmissions:
+				maxSubmissions && maxSubmissions > 1 ? maxSubmissions : 2,
 		});
 	}
 
+	saveMaxSubmissions() {
+		const { assignment } = this.props;
 
-	saveMaxSubmissions () {
-		const {assignment} = this.props;
-
-		if (this.saveBufferTimeout) { return; }
+		if (this.saveBufferTimeout) {
+			return;
+		}
 
 		this.saveBufferTimeout = setTimeout(async () => {
 			delete this.saveBufferTimeout;
 
-			const {maxSubmissions: oldMax} = assignment;
-			const {maxSubmissions: newMax} = this.state;
+			const { maxSubmissions: oldMax } = assignment;
+			const { maxSubmissions: newMax } = this.state;
 
-			if (oldMax === newMax) { return; }
+			if (oldMax === newMax) {
+				return;
+			}
 
 			try {
 				await assignment.setMaxSubmissions(newMax);
@@ -111,58 +116,53 @@ class Attempts extends React.Component {
 			} catch (e) {
 				this.setupFor(this.props);
 				this.setState({
-					error: e
+					error: e,
 				});
 			}
 		}, 100);
 	}
 
-
-
 	setOneAttempt = () => {
 		this.setState({
-			maxSubmissions: 1
+			maxSubmissions: 1,
 		});
-	}
-
+	};
 
 	setMultipleAttempts = () => {
-		const {limitedSubmissions} = this.state;
+		const { limitedSubmissions } = this.state;
 
 		this.setState({
-			maxSubmissions: limitedSubmissions
+			maxSubmissions: limitedSubmissions,
 		});
-	}
-
+	};
 
 	setUnlimitedAttempts = () => {
 		this.setState({
-			maxSubmissions: -1
+			maxSubmissions: -1,
 		});
-	}
+	};
 
-
-	setMaxSubmissions = (value) => {
+	setMaxSubmissions = value => {
 		this.setState({
-			maxSubmissions: value
+			maxSubmissions: value,
 		});
-	}
+	};
 
-
-	changeLimitedAttempts = (e) => {
+	changeLimitedAttempts = e => {
 		const value = parseInt(e.target.value, 10);
 
 		this.setState({
 			maxSubmissions: value,
-			limitedSubmissions: value
+			limitedSubmissions: value,
 		});
-	}
+	};
 
+	render() {
+		const { maxSubmissions, disabled, disabledText, error } = this.state;
 
-	render () {
-		const {maxSubmissions, disabled, disabledText, error} = this.state;
-
-		if (disabled && !disabledText) { return null; }
+		if (disabled && !disabledText) {
+			return null;
+		}
 
 		return (
 			<OptionGroup
@@ -195,22 +195,19 @@ class Attempts extends React.Component {
 		);
 	}
 
-
-	renderLimitedChoices () {
-		const {limitedSubmissions} = this.state;
+	renderLimitedChoices() {
+		const { limitedSubmissions } = this.state;
 		const limited = limitedSubmissions || 2;
 
 		return (
 			<div className="select-container">
 				<Select value={limited} onChange={this.changeLimitedAttempts}>
-					{LIMITED_ARRAY.map((limit) => {
+					{LIMITED_ARRAY.map(limit => {
 						return (
-							<option value={limit} key={limit} >
-								{
-									limited === limit ?
-										t('attempts', {count: limit}) :
-										limit
-								}
+							<option value={limit} key={limit}>
+								{limited === limit
+									? t('attempts', { count: limit })
+									: limit}
 							</option>
 						);
 					})}

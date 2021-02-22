@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import MultipleChoiceEditor from '../multiple-choice/Editor';
 
-import {generatePartFor} from './utils';
+import { generatePartFor } from './utils';
 
 export default class MultipleChoiceMultipleAnswerEditor extends React.Component {
 	static propTypes = {
@@ -12,35 +12,32 @@ export default class MultipleChoiceMultipleAnswerEditor extends React.Component 
 		error: PropTypes.any,
 		index: PropTypes.number,
 		onChange: PropTypes.func,
-		keepStateHash: PropTypes.number
-	}
+		keepStateHash: PropTypes.number,
+	};
 
-
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
-		const {error} = props;
+		const { error } = props;
 
 		this.state = {
-			error
+			error,
 		};
 	}
 
-
-	componentDidUpdate (prevProps) {
-		const {error:newError} = this.props;
-		const {error:oldError} = prevProps;
+	componentDidUpdate(prevProps) {
+		const { error: newError } = this.props;
+		const { error: oldError } = prevProps;
 
 		if (newError !== oldError) {
 			this.setState({
-				error: newError
+				error: newError,
 			});
 		}
 	}
 
-
 	generatePart = (content, choices, solutions) => {
-		const {part} = this.props;
+		const { part } = this.props;
 		const mimeType = part && part.MimeType;
 
 		if (!mimeType) {
@@ -48,12 +45,11 @@ export default class MultipleChoiceMultipleAnswerEditor extends React.Component 
 		}
 
 		return generatePartFor(mimeType, content, choices, solutions);
-	}
+	};
 
-
-	render () {
-		const {part, question, index, onChange, keepStateHash} = this.props;
-		const {error} = this.state;
+	render() {
+		const { part, question, index, onChange, keepStateHash } = this.props;
+		const { error } = this.state;
 
 		return (
 			<MultipleChoiceEditor

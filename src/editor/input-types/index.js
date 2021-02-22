@@ -4,7 +4,7 @@ import Logger from '@nti/util-logger';
 import ModeledContent from './modeled-content';
 import FileUpload from './file-upload';
 import FreeResponse from './free-response';
-import MultipleChoice, {Placeholder} from './multiple-choice';
+import MultipleChoice, { Placeholder } from './multiple-choice';
 import MultipleChoiceMultipleAnwer from './multiple-choice-multiple-answer';
 import Ordering from './ordering';
 
@@ -18,17 +18,12 @@ const KINDS = [
 	ModeledContent,
 	FreeResponse,
 	FileUpload,
-	Ordering
+	Ordering,
 ];
 
-export {
-	PROMPT,
-	QUESTION,
-	Placeholder
-};
+export { PROMPT, QUESTION, Placeholder };
 
-
-function canHandle (cmp, type) {
+function canHandle(cmp, type) {
 	return (cmp.handles || []).reduce((acc, mimeType) => {
 		if (mimeType.toLowerCase() === type) {
 			acc = true;
@@ -38,8 +33,14 @@ function canHandle (cmp, type) {
 	}, false);
 }
 
-
-export function getEditorWidget (part, index, question, error, onChange, keepStateHash) {
+export function getEditorWidget(
+	part,
+	index,
+	question,
+	error,
+	onChange,
+	keepStateHash
+) {
 	const mimeType = part && part.MimeType && part.MimeType.toLowerCase();
 	let cmp;
 
@@ -55,29 +56,31 @@ export function getEditorWidget (part, index, question, error, onChange, keepSta
 		return '<span>Unsupported Question Type</span>';
 	}
 
-
 	return React.createElement(cmp, {
 		key: part.NTIID || `new-question-${mimeType}-${index}`,
-		index, part, question, error, onChange, keepStateHash
+		index,
+		part,
+		question,
+		error,
+		onChange,
+		keepStateHash,
 	});
 }
 
-
-export function getButtons (mimeTypes, assignment, activeInsert) {
+export function getButtons(mimeTypes, assignment, activeInsert) {
 	//TODO: filter this down to whats accepted by the schema
 	if (!mimeTypes) {
-		return KINDS.map((cmp) => {
+		return KINDS.map(cmp => {
 			return React.createElement(cmp.button, {
 				key: cmp.handles,
 				assignment,
-				activeInsert
+				activeInsert,
 			});
 		});
 	}
 }
 
-
-function getEqualityCheck (mimeType) {
+function getEqualityCheck(mimeType) {
 	let equal;
 
 	for (let Type of KINDS) {
@@ -87,16 +90,21 @@ function getEqualityCheck (mimeType) {
 	}
 
 	if (!equal) {
-		logger.error('There is no equality check for type: ', mimeType, ' always say its not equal.');
+		logger.error(
+			'There is no equality check for type: ',
+			mimeType,
+			' always say its not equal.'
+		);
 
-		equal = () => { return false; };
+		equal = () => {
+			return false;
+		};
 	}
 
 	return equal;
 }
 
-
-export function partsEqual (partsA, partsB) {
+export function partsEqual(partsA, partsB) {
 	if (partsA.length !== partsB.lenght) {
 		return false;
 	}
@@ -112,9 +120,8 @@ export function partsEqual (partsA, partsB) {
 	return true;
 }
 
-
-export function getContentPlaceholderFor (question) {
-	const {parts} = question;
+export function getContentPlaceholderFor(question) {
+	const { parts } = question;
 	let placeholder = QUESTION;
 
 	if (!parts || parts.length !== 1) {

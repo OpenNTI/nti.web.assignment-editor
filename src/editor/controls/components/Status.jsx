@@ -1,22 +1,24 @@
 import './Status.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Errors} from '@nti/web-commons';
-import {scoped} from '@nti/lib-locale';
+import { Errors } from '@nti/web-commons';
+import { scoped } from '@nti/lib-locale';
 
 import {
 	ASSIGNMENT_ERROR,
 	QUESTION_SET_ERROR,
 	QUESTION_ERROR,
-	REVERT_ERRORS
+	REVERT_ERRORS,
 } from '../../Constants';
 import Store from '../../Store';
 
-const {Field: {FlyoutList:ErrorFlyoutList}} = Errors;
+const {
+	Field: { FlyoutList: ErrorFlyoutList },
+} = Errors;
 
 const defaultText = {
 	saving: 'Saving...',
-	saved: 'All Changes Saved'
+	saved: 'All Changes Saved',
 };
 
 const t = scoped('assignment.editing.status', defaultText);
@@ -24,80 +26,75 @@ const t = scoped('assignment.editing.status', defaultText);
 export default class AssignmentStatus extends React.Component {
 	static propTypes = {
 		hasUpdated: PropTypes.bool,
-		isSaving: PropTypes.bool
-	}
+		isSaving: PropTypes.bool,
+	};
 
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
-		const {errors} = Store;
+		const { errors } = Store;
 
 		this.state = {
-			errors
+			errors,
 		};
 	}
 
-
-	componentDidMount () {
+	componentDidMount() {
 		this.addListeners();
 	}
 
-
-	componentWillUnmount () {
+	componentWillUnmount() {
 		this.removeListeners();
 	}
 
-
-	addListeners () {
+	addListeners() {
 		this.removeListeners();
 		Store.addChangeListener(this.onStoreChange);
 	}
 
-
-	removeListeners () {
+	removeListeners() {
 		Store.removeChangeListener(this.onStoreChange);
 	}
 
+	onStoreChange = data => {
+		const { type } = data;
 
-	onStoreChange = (data) => {
-		const {type} = data;
-
-		if (type === REVERT_ERRORS || type === ASSIGNMENT_ERROR || type === QUESTION_SET_ERROR || type === QUESTION_ERROR) {
+		if (
+			type === REVERT_ERRORS ||
+			type === ASSIGNMENT_ERROR ||
+			type === QUESTION_SET_ERROR ||
+			type === QUESTION_ERROR
+		) {
 			this.onErrorsChanged();
 		}
-	}
+	};
 
-
-	onErrorsChanged () {
-		const {errors:oldErrors} = this.state;
-		const {errors:newErrors} = Store;
+	onErrorsChanged() {
+		const { errors: oldErrors } = this.state;
+		const { errors: newErrors } = Store;
 
 		if (oldErrors !== newErrors) {
 			this.setState({
-				errors: newErrors
+				errors: newErrors,
 			});
 		}
 	}
 
-
-	render () {
-		const {isSaving, hasUpdated} = this.props;
-		const {errors} = this.state;
+	render() {
+		const { isSaving, hasUpdated } = this.props;
+		const { errors } = this.state;
 		const hasErrors = errors.length > 0;
 
 		return (
 			<div className="assignment-editor-status">
-				{
-					hasErrors && !isSaving ?
-						this.renderErrors(errors) :
-						this.renderStatus(isSaving, hasUpdated)
-				}
+				{hasErrors && !isSaving
+					? this.renderErrors(errors)
+					: this.renderStatus(isSaving, hasUpdated)}
 			</div>
 		);
 	}
 
-
-	renderStatus (isSaving, hasUpdated) {
+	renderStatus(isSaving, hasUpdated) {
 		let text;
 
 		//If we have updated and we aren't saving show saved text
@@ -107,15 +104,10 @@ export default class AssignmentStatus extends React.Component {
 			text = t('saving');
 		}
 
-		return (
-			<span className="status">{text}</span>
-		);
+		return <span className="status">{text}</span>;
 	}
 
-
-	renderErrors (errors) {
-		return (
-			<ErrorFlyoutList errors={errors} />
-		);
+	renderErrors(errors) {
+		return <ErrorFlyoutList errors={errors} />;
 	}
 }

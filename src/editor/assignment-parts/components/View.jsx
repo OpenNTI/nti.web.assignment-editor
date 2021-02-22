@@ -2,69 +2,64 @@ import './View.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Logger from '@nti/util-logger';
-import {HOC} from '@nti/web-commons';
+import { HOC } from '@nti/web-commons';
 
 import NoParts from './NoParts';
 import Part from './Part';
 
-const {ItemChanges} = HOC;
+const { ItemChanges } = HOC;
 
 const logger = Logger.get('lib:asssignment-editor:AssignmentParts');
 
 export default class AssignmentPartsView extends React.Component {
 	static propTypes = {
 		assignment: PropTypes.object,
-		course: PropTypes.object
-	}
-
+		course: PropTypes.object,
+	};
 
 	onAssignmentUpdate = () => {
 		this.forceUpdate();
-	}
+	};
 
-
-	render () {
-		const {assignment} = this.props;
+	render() {
+		const { assignment } = this.props;
 
 		if (!assignment) {
-			return (
-				<div className="assignment-parts loading" />
-			);
+			return <div className="assignment-parts loading" />;
 		}
 
 		const parts = assignment.parts;
 
 		return (
-			<ItemChanges item={assignment} onItemChanged={this.onAssignmentUpdate}>
+			<ItemChanges
+				item={assignment}
+				onItemChanged={this.onAssignmentUpdate}
+			>
 				<div className="assignment-parts">
-					{parts && parts.length ?
-						this.renderParts(parts) :
-						this.renderNoParts()
-					}
+					{parts && parts.length
+						? this.renderParts(parts)
+						: this.renderNoParts()}
 				</div>
 			</ItemChanges>
 		);
 	}
 
-
-	renderParts (parts) {
-		const {assignment, course} = this.props;
+	renderParts(parts) {
+		const { assignment, course } = this.props;
 
 		if (parts.length > 1) {
-			logger.warn('More than one assignment part, not sure how to handle it. Just taking the first.', parts);
+			logger.warn(
+				'More than one assignment part, not sure how to handle it. Just taking the first.',
+				parts
+			);
 		}
 
-		return (
-			<Part part={parts[0]} assignment={assignment} course={course} />
-		);
+		return <Part part={parts[0]} assignment={assignment} course={course} />;
 	}
 
+	renderNoParts() {
+		const { assignment } = this.props;
 
-	renderNoParts () {
-		const {assignment} = this.props;
-
-		return (
-			<NoParts assignment={assignment} />
-		);
+		return <NoParts assignment={assignment} />;
 	}
 }

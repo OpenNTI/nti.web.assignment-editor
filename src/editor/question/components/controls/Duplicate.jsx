@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-import {duplicateQuestionFrom} from '../../Actions';
+import { duplicateQuestionFrom } from '../../Actions';
 
 const TITLE = 'Duplicate';
 
@@ -12,15 +12,20 @@ export default class DeleteControl extends React.Component {
 		questionSet: PropTypes.object.isRequired,
 		assignment: PropTypes.object.isRequired,
 		flushChanges: PropTypes.func,
-		disabled: PropTypes.bool
-	}
+		disabled: PropTypes.bool,
+	};
 
-
-	onClick = (e) => {
+	onClick = e => {
 		e.preventDefault();
 		e.stopPropagation();
 
-		const {disabled, question, assignment, questionSet, flushChanges} = this.props;
+		const {
+			disabled,
+			question,
+			assignment,
+			questionSet,
+			flushChanges,
+		} = this.props;
 
 		if (disabled) {
 			return;
@@ -29,13 +34,16 @@ export default class DeleteControl extends React.Component {
 		flushChanges();
 
 		duplicateQuestionFrom(question, questionSet, assignment.isAvailable());
-	}
+	};
 
-
-	render () {
-		const {disabled} = this.props;
+	render() {
+		const { disabled } = this.props;
 		return (
-			<i className={cx('icon-duplicate', {disabled})} title={TITLE} onClick={this.onClick}/>
+			<i
+				className={cx('icon-duplicate', { disabled })}
+				title={TITLE}
+				onClick={this.onClick}
+			/>
 		);
 	}
 }

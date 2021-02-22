@@ -1,4 +1,4 @@
-@import "~@nti/style-common";
+@import '~@nti/style-common';
 
 .assignment-content-editor {
 	cursor: text;
@@ -42,7 +42,8 @@
 		box-shadow: 0 0 0 1px var(--border-grey);
 	}
 
-	.nti-rich-text, .nti-buffered-text-editor {
+	.nti-rich-text,
+	.nti-buffered-text-editor {
 		border: none;
 		background: none;
 

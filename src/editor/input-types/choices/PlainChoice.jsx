@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {buffer, Events} from '@nti/lib-commons';
+import { buffer, Events } from '@nti/lib-commons';
 
-import {DragHandle} from '../../../dnd';
-import {Component as Selectable} from '../../../selection';
+import { DragHandle } from '../../../dnd';
+import { Component as Selectable } from '../../../selection';
 import ControlsConfig from '../../controls/ControlsConfig';
 
-const {getKeyCode} = Events;
+const { getKeyCode } = Events;
 
 const PLACEHOLDER = '';
 
@@ -32,13 +32,13 @@ export default class PlainChoice extends React.Component {
 		insertNewChoiceAfter: PropTypes.func,
 		focusNext: PropTypes.func,
 		focusPrev: PropTypes.func,
-		maybeDeleteRow: PropTypes.func
-	}
+		maybeDeleteRow: PropTypes.func,
+	};
 
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
-		const {choice, error} = this.props;
+		const { choice, error } = this.props;
 
 		this.isNew = choice.isNew;
 
@@ -46,16 +46,15 @@ export default class PlainChoice extends React.Component {
 			label: choice.label,
 			selectableId: choice.NTIID || choice.ID,
 			selectableValue: new ControlsConfig(),
-			error
+			error,
 		};
 
-		this.setEditorRef = x => this.editorRef = x;
+		this.setEditorRef = x => (this.editorRef = x);
 	}
 
-
-	componentDidUpdate (prevProps) {
-		const {choice: newChoice, error:newError} = this.props;
-		const {choice: oldChoice, error:oldError} = prevProps;
+	componentDidUpdate(prevProps) {
+		const { choice: newChoice, error: newError } = this.props;
+		const { choice: oldChoice, error: oldError } = prevProps;
 		let state = null;
 
 		this.updatedLabel = newChoice.label;
@@ -75,7 +74,6 @@ export default class PlainChoice extends React.Component {
 			state.error = newError;
 		}
 
-
 		if (state) {
 			this.setState(state);
 		}
@@ -88,8 +86,7 @@ export default class PlainChoice extends React.Component {
 		this.addListener();
 	}
 
-
-	componentDidMount () {
+	componentDidMount() {
 		this.addListener();
 
 		if (this.isNew && this.editorRef) {
@@ -98,16 +95,14 @@ export default class PlainChoice extends React.Component {
 		}
 	}
 
-
-	componentWillUnmount () {
+	componentWillUnmount() {
 		this.removeListener();
 	}
 
-
-	addListener (choice) {
+	addListener(choice) {
 		this.removeListener();
 
-		const {choice:propChoice} = this.props;
+		const { choice: propChoice } = this.props;
 		const listenTo = choice || propChoice;
 
 		if (listenTo) {
@@ -115,48 +110,43 @@ export default class PlainChoice extends React.Component {
 		}
 	}
 
-
-	removeListener () {
-		const {choice} = this.props;
+	removeListener() {
+		const { choice } = this.props;
 
 		if (choice) {
 			choice.removeListener('focus', this.doFocus);
 		}
 	}
 
-
-	doFocus = (where) => {
+	doFocus = where => {
 		if (this.editorRef) {
-
 			if (where && this[where]) {
 				this[where]();
 			} else {
 				this.editorRef.focus();
 			}
 		}
-	}
-
+	};
 
 	focusToEnd = () => {
 		const dom = this.editorRef;
-		if(dom) {
-			const {value} = dom;
-			const {length} = value;
+		if (dom) {
+			const { value } = dom;
+			const { length } = value;
 
 			dom.focus();
 			dom.setSelectionRange(length, length);
 		}
-	}
+	};
 
-	areLabelsEqual (oldLabel, label) {
+	areLabelsEqual(oldLabel, label) {
 		return oldLabel === label;
 	}
 
-
 	onChange = buffer(5000, () => {
-		const {onChange, choice:oldChoice} = this.props;
+		const { onChange, choice: oldChoice } = this.props;
 		const oldLabel = oldChoice.label;
-		const {label} = this.state;
+		const { label } = this.state;
 
 		if (onChange && !this.areLabelsEqual(oldLabel, label)) {
 			let newChoice = oldChoice.clone();
@@ -164,14 +154,13 @@ export default class PlainChoice extends React.Component {
 
 			onChange(newChoice);
 		}
-	})
+	});
 
-
-	onInputChange = (e) => {
-		const {error, label} = this.state;
+	onInputChange = e => {
+		const { error, label } = this.state;
 
 		this.setState({
-			label: e.target.value
+			label: e.target.value,
 		});
 
 		if (!this.areLabelsEqual(label, e.target.value)) {
@@ -183,74 +172,93 @@ export default class PlainChoice extends React.Component {
 				this.onChange.flush();
 			}
 		}
-	}
-
+	};
 
 	onInputFocus = () => {
 		this.isFocused = true;
-	}
-
+	};
 
 	onInputBlur = () => {
 		this.isFocused = null;
 		this.onChange();
 		this.onChange.flush();
-	}
+	};
 
-
-	onInputKeyDown = (e) => {
-		const {focusNext, focusPrev, insertNewChoiceAfter, maybeDeleteRow, choice} = this.props;
-		const {label} = this.state;
+	onInputKeyDown = e => {
+		const {
+			focusNext,
+			focusPrev,
+			insertNewChoiceAfter,
+			maybeDeleteRow,
+			choice,
+		} = this.props;
+		const { label } = this.state;
 		const code = getKeyCode(e);
 
 		if (code === getKeyCode.ENTER && insertNewChoiceAfter) {
 			insertNewChoiceAfter(choice);
-		}  else if (code === getKeyCode.SHIFT_TAB && focusPrev) {
+		} else if (code === getKeyCode.SHIFT_TAB && focusPrev) {
 			focusPrev(choice);
 		} else if (code === getKeyCode.TAB && focusNext) {
 			focusNext(choice);
-		} else if (code === getKeyCode.BACKSPACE && maybeDeleteRow && (label === '' || label === ' ')) {
+		} else if (
+			code === getKeyCode.BACKSPACE &&
+			maybeDeleteRow &&
+			(label === '' || label === ' ')
+		) {
 			e.preventDefault();
 			e.stopPropagation();
 			maybeDeleteRow(choice);
 		}
-	}
-
+	};
 
 	onDelete = () => {
-		const {onDelete} = this.props;
+		const { onDelete } = this.props;
 
 		if (onDelete) {
 			onDelete();
 		}
-	}
-
+	};
 
 	onSelect = () => {
 		if (this.inputRef) {
 			this.inputRef.focus();
 		}
-	}
+	};
 
-
-	render () {
-		const {className, choice, onDelete} = this.props;
-		const {error, selectableId, selectableValue} = this.state;
+	render() {
+		const { className, choice, onDelete } = this.props;
+		const { error, selectableId, selectableValue } = this.state;
 		//Use the same class name as the other choice so css will style both
-		const cls = cx(className, 'input-type-choice', {error, correct: choice.correct});
+		const cls = cx(className, 'input-type-choice', {
+			error,
+			correct: choice.correct,
+		});
 
 		return (
-			<Selectable className={cls} id={selectableId} value={selectableValue} onSelect={this.onSelect} onUnselect={this.onUnselect}>
+			<Selectable
+				className={cls}
+				id={selectableId}
+				value={selectableValue}
+				onSelect={this.onSelect}
+				onUnselect={this.onUnselect}
+			>
 				<DragHandle className="choice-drag-handle hide-when-saving" />
 				{this.renderEditor()}
-				{onDelete && (<div className="delete hide-when-saving" onClick={this.onDelete}><i className="icon-remove" title="Delete Row"/></div>)}
+				{onDelete && (
+					<div
+						className="delete hide-when-saving"
+						onClick={this.onDelete}
+					>
+						<i className="icon-remove" title="Delete Row" />
+					</div>
+				)}
 			</Selectable>
 		);
 	}
 
-
-	renderEditor () {
-		const {label} = this.state;
+	renderEditor() {
+		const { label } = this.state;
 
 		return (
 			<input

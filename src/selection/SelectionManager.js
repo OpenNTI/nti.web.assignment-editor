@@ -9,25 +9,23 @@ const ItemUpdated = Symbol('Item Updated');
 const logger = Logger.get('lib:asssignment-editor:utils:SelectionManager');
 
 export default class SelectionManager extends EventEmitter {
-	constructor () {
+	constructor() {
 		super();
 		this.setMaxListeners(1000);
 
 		PRIVATE.set(this, {
-			selectedItems: []
+			selectedItems: [],
 		});
 
 		this[ItemUpdated] = this[ItemUpdated].bind(this);
 	}
 
-
-	select (items, keepCurrent) {
+	select(items, keepCurrent) {
 		let p = PRIVATE.get(this);
 
 		if (!Array.isArray(items)) {
 			items = [items];
 		}
-
 
 		let selectedMap = p.selectedItems.reduce((acc, item) => {
 			acc[item.id] = true;
@@ -37,30 +35,31 @@ export default class SelectionManager extends EventEmitter {
 
 		let addedNew = false;
 
-		p.selectedItems = items.reduce((acc, item) => {
-			addedNew = addedNew || !selectedMap[item.id];
+		p.selectedItems = items.reduce(
+			(acc, item) => {
+				addedNew = addedNew || !selectedMap[item.id];
 
-			if (!keepCurrent || !selectedMap[item.id]) {
-				this[MonitorItem](item);
-				acc.push(item);
-			}
+				if (!keepCurrent || !selectedMap[item.id]) {
+					this[MonitorItem](item);
+					acc.push(item);
+				}
 
-			return acc;
-		}, keepCurrent ? p.selectedItems : []);
+				return acc;
+			},
+			keepCurrent ? p.selectedItems : []
+		);
 
 		if (addedNew) {
 			this.emit('selection-changed', p.selectedItems);
 		}
 	}
 
-
-	unselect (items) {
+	unselect(items) {
 		let p = PRIVATE.get(this);
 
 		if (!Array.isArray(items)) {
 			items = [items];
 		}
-
 
 		let unselectMap = items.reduce((acc, item) => {
 			acc[item.id] = true;
@@ -86,36 +85,33 @@ export default class SelectionManager extends EventEmitter {
 		}
 	}
 
-
-	selectId (id) {
+	selectId(id) {
 		this.emit('select-item', id);
 	}
 
-
-	isSelected (testItem) {
+	isSelected(testItem) {
 		let p = PRIVATE.get(this);
 
 		//If every selected does not have the same id, the testItem is not selected
 		return !p.selectedItems.every(item => testItem.id !== item.id);
 	}
 
-
-
-	getSelection (testItem) {
+	getSelection(testItem) {
 		let p = PRIVATE.get(this);
 		let selection;
 
 		if (!testItem) {
 			selection = p.selectedItems;
 		} else {
-			selection = p.selectedItems.filter(item => item.id === testItem.id)[0];
+			selection = p.selectedItems.filter(
+				item => item.id === testItem.id
+			)[0];
 		}
 
 		return selection;
 	}
 
-
-	[MonitorItem] (item) {
+	[MonitorItem](item) {
 		if (item.addListener) {
 			item.addListener('updated', this[ItemUpdated]);
 		} else {
@@ -123,8 +119,7 @@ export default class SelectionManager extends EventEmitter {
 		}
 	}
 
-
-	[UnmonitorItem] (item) {
+	[UnmonitorItem](item) {
 		if (item.removeListener) {
 			item.removeListener('updated', this[ItemUpdated]);
 		} else {
@@ -132,8 +127,7 @@ export default class SelectionManager extends EventEmitter {
 		}
 	}
 
-
-	[ItemUpdated] (item) {
+	[ItemUpdated](item) {
 		const p = PRIVATE.get(this);
 
 		if (this.isSelected(item)) {

@@ -17,18 +17,25 @@ describe('DueDate test', () => {
 		let dueDateChecked = true;
 		const date = new Date('10/25/18 04:34');
 
-		const onDateChanged = (d) => {
+		const onDateChanged = d => {
 			// newDate = new Date(d.getTime());
 		};
 
-		const onDueDateChecked = (val) => {
+		const onDueDateChecked = val => {
 			dueDateChecked = val;
 		};
 
-		const testRender = TestRenderer.create(<DueDate date={date} dueDateChecked={dueDateChecked} onDueDateChecked={onDueDateChecked} onDateChanged={onDateChanged}/>);
+		const testRender = TestRenderer.create(
+			<DueDate
+				date={date}
+				dueDateChecked={dueDateChecked}
+				onDueDateChecked={onDueDateChecked}
+				onDateChanged={onDateChanged}
+			/>
+		);
 		const cmp = testRender.root;
 
-		let dateEditor = cmp.findByProps({className: 'date-editor'});
+		let dateEditor = cmp.findByProps({ className: 'date-editor' });
 
 		expect(dateEditor.props.className).not.toMatch(/disabled/);
 

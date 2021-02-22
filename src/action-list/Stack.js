@@ -10,7 +10,7 @@ const DEFAULT_MAX_DEPTH = 5;
 const DEFAULT_KEEP_FOR = Infinity;
 
 export default class ActionStack extends EventEmitter {
-	constructor (config = {}) {
+	constructor(config = {}) {
 		super();
 
 		this.seenCount = 0;
@@ -24,38 +24,32 @@ export default class ActionStack extends EventEmitter {
 		this[ACTION_STACK] = [];
 	}
 
-
-	get next () {
+	get next() {
 		return this.unwrapAction(this[ACTION_STACK][0]);
 	}
 
-
-	get items () {
+	get items() {
 		const stack = this[ACTION_STACK];
 
 		return stack.slice(0, this.maxVisible).map(this.unwrapAction);
 	}
 
-
-	get length () {
+	get length() {
 		const stack = this[ACTION_STACK];
 
 		return Math.min(this.maxVisible, stack.length);
 	}
 
-
-	get depth () {
+	get depth() {
 		return this[ACTION_STACK].length;
 	}
 
-
-	[SET_STACK] (stack) {
+	[SET_STACK](stack) {
 		this[ACTION_STACK] = stack;
 		this.emit('changed');
 	}
 
-
-	[START_TIMER] (action) {
+	[START_TIMER](action) {
 		if (action && this.keepFor !== Infinity) {
 			action.timer = setTimeout(() => {
 				if (action.onTimeout) {
@@ -69,8 +63,7 @@ export default class ActionStack extends EventEmitter {
 		return action;
 	}
 
-
-	[STOP_TIMER] (action) {
+	[STOP_TIMER](action) {
 		if (action && action.timer) {
 			clearTimeout(action.timer);
 			delete action.timer;
@@ -79,37 +72,39 @@ export default class ActionStack extends EventEmitter {
 		return action;
 	}
 
-
-	wrapAction (action) {
+	wrapAction(action) {
 		const id = this.seenCount;
-		const {label, name, onComplete, onTimeout} = action;
+		const { label, name, onComplete, onTimeout } = action;
 		let completed;
 
-		return this[START_TIMER]({
-			label, name,
-			ID: id,
-			complete: (...args) => {
-				this.clear(id);
+		return this[START_TIMER](
+			{
+				label,
+				name,
+				ID: id,
+				complete: (...args) => {
+					this.clear(id);
 
-				completed = true;
-				onComplete(...args);
+					completed = true;
+					onComplete(...args);
+				},
+				onTimeout: () => {
+					if (onTimeout && !completed) {
+						onTimeout();
+					}
+				},
 			},
-			onTimeout: () => {
-				if (onTimeout && !completed) {
-					onTimeout();
-				}
-			}
-		}, this.keepFor);
+			this.keepFor
+		);
 	}
 
-
-	unwrapAction (action) {
+	unwrapAction(action) {
 		return {
 			label: action.label,
 			name: action.name,
 			complete: action.complete,
 			timeout: action.onTimeout,
-			ID: action.ID
+			ID: action.ID,
 		};
 	}
 
@@ -118,7 +113,6 @@ export default class ActionStack extends EventEmitter {
 	 * @param {*} someparam
 	 * @return {void}
 	 */
-
 
 	/**
 	 * Push an action on to the stack.
@@ -135,7 +129,7 @@ export default class ActionStack extends EventEmitter {
 	 * @param  {string} action.name - String that is used to label the button to perform the button
 	 * @returns {void}
 	 */
-	push (action) {
+	push(action) {
 		this.seenCount += 1;
 
 		let stack = this[ACTION_STACK];
@@ -152,19 +146,18 @@ export default class ActionStack extends EventEmitter {
 		this[SET_STACK](stack);
 	}
 
-
 	/**
 	 * If given an action, remove that action from the stack. Otherwise clear the entire stack.
 	 *
 	 * @param  {Object|string} action the action to remove
 	 * @returns {void}
 	 */
-	clear (action) {
+	clear(action) {
 		let stack = this[ACTION_STACK];
 
 		if (action) {
 			action = action.ID || action;
-			stack = stack.filter((q) => {
+			stack = stack.filter(q => {
 				let remove = false;
 
 				if (q.ID === action) {

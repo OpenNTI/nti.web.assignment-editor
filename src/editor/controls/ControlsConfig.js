@@ -13,18 +13,16 @@ export default class ControlsConfig {
 	 * @param  {[type]} insertAt [description]
 	 * @returns {[type]}          [description]
 	 */
-	constructor (editor, insertAt) {
+	constructor(editor, insertAt) {
 		this.activeEditor = editor;
 		this.activeInsertAt = insertAt;
 	}
 
-
-	get insertAt () {
+	get insertAt() {
 		return this.activeInsertAt;
 	}
 
-
-	get editor () {
+	get editor() {
 		return this.activeEditor;
 	}
 }

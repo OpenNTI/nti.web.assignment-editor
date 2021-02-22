@@ -1,4 +1,4 @@
-import {dispatch} from '@nti/lib-dispatcher';
+import { dispatch } from '@nti/lib-dispatcher';
 
 import {
 	SAVING,
@@ -8,23 +8,22 @@ import {
 	ASSIGNMENT_WARNING,
 } from '../Constants';
 
-export function warnIfDiscussionEmpty (assignment) {
-	const {discussion_ntiid:discussionID} = assignment;
+export function warnIfDiscussionEmpty(assignment) {
+	const { discussion_ntiid: discussionID } = assignment;
 
 	if (!assignment.isSaving && !discussionID) {
 		dispatch(ASSIGNMENT_WARNING, {
 			NTIID: assignment.NTIID,
 			field: 'discussion_ntiid',
 			reason: {
-				message: 'Discussion cannot be blank.'
-			}
+				message: 'Discussion cannot be blank.',
+			},
 		});
 	}
 }
 
-
-export function setDiscussionOnAssignment (discussionID, assignment) {
-	const {'discussion_ntiid':current} = assignment;
+export function setDiscussionOnAssignment(discussionID, assignment) {
+	const { discussion_ntiid: current } = assignment;
 
 	if (current === discussionID) {
 		return Promise.resolve();
@@ -32,16 +31,18 @@ export function setDiscussionOnAssignment (discussionID, assignment) {
 
 	dispatch(SAVING, assignment);
 
-	return assignment.setDiscussionID(discussionID)
+	return assignment
+		.setDiscussionID(discussionID)
 		.then(() => {
 			dispatch(ASSIGNMENT_UPDATED, assignment);
 			warnIfDiscussionEmpty(assignment);
 			dispatch(SAVE_ENDED);
-		}).catch((reason) => {
+		})
+		.catch(reason => {
 			dispatch(ASSIGNMENT_ERROR, {
 				NTIID: assignment.NTIID,
 				field: 'discussion_ntiid',
-				reason
+				reason,
 			});
 
 			dispatch(SAVE_ENDED, assignment);

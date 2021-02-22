@@ -16,11 +16,14 @@ const MONTHS = {
 	SEPTEMBER: 9,
 	OCTOBER: 10,
 	NOVEMBER: 11,
-	DECEMBER: 12
+	DECEMBER: 12,
 };
 
-const isLeapYear = (date) => (date = date?.getFullYear?.() ?? date, (date % 100 === 0) ? (date % 400 === 0) : (date % 4 === 0));
-const nextLeap = (date) => {
+const isLeapYear = date => (
+	(date = date?.getFullYear?.() ?? date),
+	date % 100 === 0 ? date % 400 === 0 : date % 4 === 0
+);
+const nextLeap = date => {
 	date = new Date(date.getTime());
 	do {
 		date.setFullYear(date.getFullYear() + 1);
@@ -37,7 +40,10 @@ describe('DateEditor test', () => {
 	};
 
 	const selectYear = function (el, year) {
-		const getSelectItem = (x, text) => [...x.querySelectorAll('li > .option-label')].filter(y => y.textContent === String(text))[0];
+		const getSelectItem = (x, text) =>
+			[...x.querySelectorAll('li > .option-label')].filter(
+				y => y.textContent === String(text)
+			)[0];
 
 		const select = el.querySelector('.select-wrapper.select-year');
 		const label = select.querySelector('.menu-label');
@@ -48,17 +54,23 @@ describe('DateEditor test', () => {
 	};
 
 	const verifySelectedMonth = function (el, month) {
-		const monthPicker = el.querySelectorAll('.select-wrapper')[0].querySelector('.menu-label');
+		const monthPicker = el
+			.querySelectorAll('.select-wrapper')[0]
+			.querySelector('.menu-label');
 		expect(monthPicker.textContent).toEqual(month);
 	};
 
 	const verifySelectedDay = function (el, day) {
-		const dayPicker = el.querySelectorAll('.select-wrapper')[1].querySelector('.menu-label');
+		const dayPicker = el
+			.querySelectorAll('.select-wrapper')[1]
+			.querySelector('.menu-label');
 		expect(dayPicker.textContent).toEqual(day);
 	};
 
 	const verifySelectedYear = function (el, year) {
-		const yearPicker = el.querySelectorAll('.select-wrapper')[2].querySelector('.menu-label');
+		const yearPicker = el
+			.querySelectorAll('.select-wrapper')[2]
+			.querySelector('.menu-label');
 		expect(yearPicker.textContent).toEqual(year);
 	};
 
@@ -82,14 +94,21 @@ describe('DateEditor test', () => {
 		const leapYear = nextLeap(date).getFullYear();
 		const leapYearString = leapYear.toString();
 
-		const onDateChanged = (d) => {
+		const onDateChanged = d => {
 			newDate = new Date(d.getTime());
 		};
 
-		const withProps = (p) => <DateEditor ref={ref} date={date} onDateChanged={onDateChanged} {...p}/>;
-		const {container, rerender} = render(withProps({}));
+		const withProps = p => (
+			<DateEditor
+				ref={ref}
+				date={date}
+				onDateChanged={onDateChanged}
+				{...p}
+			/>
+		);
+		const { container, rerender } = render(withProps({}));
 
-		const {current: cmp} = ref;
+		const { current: cmp } = ref;
 
 		// check that the initial month (October) has 31 day options in its state
 		const octoberDays = cmp.state.availableDays;
@@ -143,14 +162,21 @@ describe('DateEditor test', () => {
 		const date = new Date('10/31/18 04:34');
 		const ref = React.createRef();
 
-		const onDateChanged = (d) => {
+		const onDateChanged = d => {
 			newDate = new Date(d.getTime());
 		};
 
-		const withProps = (p) => <DateEditor ref={ref} date={date} onDateChanged={onDateChanged} {...p}/>;
-		const {container, rerender} = render(withProps({}));
+		const withProps = p => (
+			<DateEditor
+				ref={ref}
+				date={date}
+				onDateChanged={onDateChanged}
+				{...p}
+			/>
+		);
+		const { container, rerender } = render(withProps({}));
 
-		const {current: cmp} = ref;
+		const { current: cmp } = ref;
 
 		// check that initial selected day is 31
 		expect(cmp.state.selectedDay).toEqual('31');
@@ -178,16 +204,17 @@ describe('DateEditor test', () => {
 		verifySelectedDate(container, 'December', '28', '2018');
 	});
 
-
 	test('Test set to current', async () => {
 		let newDate = null;
 		const date = new Date(); // now
 
-		const onDateChanged = (d) => {
+		const onDateChanged = d => {
 			newDate = new Date(d.getTime());
 		};
 
-		const {container} = render(<DateEditor date={date} onDateChanged={onDateChanged}/>);
+		const { container } = render(
+			<DateEditor date={date} onDateChanged={onDateChanged} />
+		);
 
 		// click "Current Date/Time" link
 		const setToCurrentLink = container.querySelector('.set-current-date a');

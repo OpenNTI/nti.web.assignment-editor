@@ -3,11 +3,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Logger from '@nti/util-logger';
 
-import {canAddPart, canMovePart, canRemovePart} from '../utils';
+import { canAddPart, canMovePart, canRemovePart } from '../utils';
 import ChoiceFactory from '../choices/Factory';
 import Choices from '../choices';
 
-import {generatePartFor} from './utils';
+import { generatePartFor } from './utils';
 
 const labelsError = 'labels';
 const valuesError = 'values';
@@ -26,36 +26,53 @@ export default class OrderingEditor extends React.Component {
 		error: PropTypes.any,
 		index: PropTypes.number,
 		onChange: PropTypes.func,
-		keepStateHash: PropTypes.number
-	}
+		keepStateHash: PropTypes.number,
+	};
 
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
-		const {part, error} = this.props;
-		const {labels, values, solutions, NTIID:partId} = part;
+		const { part, error } = this.props;
+		const { labels, values, solutions, NTIID: partId } = part;
 
 		this.labelType = (partId + '-label').toLowerCase();
 		this.valueType = (partId + '-value').toLowerCase();
 
 		this.partTypes = [this.labelType, this.valueType];
 
-		this.labelFactory = new ChoiceFactory (this.labelType, partId + '-label', labelsError, LABELS);
-		this.valueFactory = new ChoiceFactory (this.valueType, partId + '-value', valuesError, VALUES);
+		this.labelFactory = new ChoiceFactory(
+			this.labelType,
+			partId + '-label',
+			labelsError,
+			LABELS
+		);
+		this.valueFactory = new ChoiceFactory(
+			this.valueType,
+			partId + '-value',
+			valuesError,
+			VALUES
+		);
 
 		const choices = this.mapChoices(labels, values, solutions);
 
 		this.state = {
 			choices,
-			error
+			error,
 		};
 	}
 
-
-	componentDidUpdate (prevProps) {
-		const {part:newPart, error:newError, keepStateHash:newStateHash} = this.props;
-		const {part:oldPart, error:oldError, keepStateHash:oldStateHash} = prevProps;
-		const {labels, values, solutions} = newPart;
+	componentDidUpdate(prevProps) {
+		const {
+			part: newPart,
+			error: newError,
+			keepStateHash: newStateHash,
+		} = this.props;
+		const {
+			part: oldPart,
+			error: oldError,
+			keepStateHash: oldStateHash,
+		} = prevProps;
+		const { labels, values, solutions } = newPart;
 		let state = null;
 
 		if (newPart !== oldPart || newStateHash !== oldStateHash) {
@@ -73,15 +90,13 @@ export default class OrderingEditor extends React.Component {
 		}
 	}
 
-
-	mapChoices (labels, values, solutions) {
-		let solution = solutions && solutions[0];//For now just use the first solution
+	mapChoices(labels, values, solutions) {
+		let solution = solutions && solutions[0]; //For now just use the first solution
 		let choices = [];
-
 
 		solution = solution && solution.value;
 
-		if(!solution) {
+		if (!solution) {
 			logger.error('No solution? Defaulting to label order.');
 			solution = Object.keys(labels);
 		}
@@ -92,16 +107,15 @@ export default class OrderingEditor extends React.Component {
 
 			choices.push([
 				this.labelFactory.make(label, false, i),
-				this.valueFactory.make(value, true, i)
+				this.valueFactory.make(value, true, i),
 			]);
 		}
 
 		return choices;
 	}
 
-
-	generatePart (content, labels, values, solutions) {
-		const {part} = this.props;
+	generatePart(content, labels, values, solutions) {
+		const { part } = this.props;
 		const mimeType = part && part.MimeType;
 
 		if (!mimeType) {
@@ -111,9 +125,8 @@ export default class OrderingEditor extends React.Component {
 		return generatePartFor(mimeType, content, labels, values, solutions);
 	}
 
-
-	choicesChanged = (choices) => {
-		const {onChange, index} = this.props;
+	choicesChanged = choices => {
+		const { onChange, index } = this.props;
 		let labels = [];
 		let values = [];
 		let solutions = {};
@@ -127,14 +140,12 @@ export default class OrderingEditor extends React.Component {
 			solutions[i] = i;
 		}
 
-
 		if (onChange) {
 			onChange(index, this.generatePart('', labels, values, solutions));
 		}
-	}
+	};
 
-
-	buildBlankChoice = (column) => {
+	buildBlankChoice = column => {
 		const first = column[0];
 		let blank;
 
@@ -145,26 +156,24 @@ export default class OrderingEditor extends React.Component {
 		}
 
 		return blank;
-	}
+	};
 
-
-	addNewChoice () {
-		let {choices} = this.state;
+	addNewChoice() {
+		let { choices } = this.state;
 
 		choices = choices.slice(0);
 
 		choices.push([
 			this.labelFactory.make('', false, choices.length, true),
-			this.valueFactory.make('', true, choices.length)
+			this.valueFactory.make('', true, choices.length),
 		]);
 
 		this.choicesChanged(choices);
 	}
 
-
-	render () {
-		const {part, question} = this.props;
-		const {choices, error} =  this.state;
+	render() {
+		const { part, question } = this.props;
+		const { choices, error } = this.state;
 
 		return (
 			<Choices
@@ -174,7 +183,9 @@ export default class OrderingEditor extends React.Component {
 				choices={choices}
 				error={error}
 				onChange={this.choicesChanged}
-				buildBlankChoice={canAddPart(question) ? this.buildBlankChoice : void 0}
+				buildBlankChoice={
+					canAddPart(question) ? this.buildBlankChoice : void 0
+				}
 				canRemove={canRemovePart(question)}
 				addLabel={addLabel}
 				reorderable={canMovePart(question)}

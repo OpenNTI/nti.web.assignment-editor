@@ -1,20 +1,24 @@
 import './More.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Flyout} from '@nti/web-commons';
+import { Flyout } from '@nti/web-commons';
 
-function renderTrigger () {
-	return (
-		<span className="more-controls">&middot;&middot;&middot;</span>
-	);
+function renderTrigger() {
+	return <span className="more-controls">&middot;&middot;&middot;</span>;
 }
 
 MoreControls.propTypes = {
-	children: PropTypes.node
+	children: PropTypes.node,
 };
-export default function MoreControls ({children}) {
+export default function MoreControls({ children }) {
 	return (
-		<Flyout.Triggered autoDismissOnAction className="more-controls-flyout" trigger={renderTrigger()} arrow horizontalAlign={Flyout.ALIGNMENTS.RIGHT} >
+		<Flyout.Triggered
+			autoDismissOnAction
+			className="more-controls-flyout"
+			trigger={renderTrigger()}
+			arrow
+			horizontalAlign={Flyout.ALIGNMENTS.RIGHT}
+		>
 			{children}
 		</Flyout.Triggered>
 	);

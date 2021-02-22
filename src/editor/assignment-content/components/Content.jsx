@@ -2,15 +2,14 @@ import './Content.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {scoped} from '@nti/lib-locale';
+import { scoped } from '@nti/lib-locale';
 
 import BufferedTextEditor from '../../inputs/BufferedTextEditor';
-import {Component as Selectable} from '../../../selection';
+import { Component as Selectable } from '../../../selection';
 import ControlsConfig from '../../controls/ControlsConfig';
 
-
 const t = scoped('assignment.editing.content.Content', {
-	placeholder: 'Write an assignment description here...'
+	placeholder: 'Write an assignment description here...',
 });
 
 export default class ContentEditor extends React.Component {
@@ -19,52 +18,53 @@ export default class ContentEditor extends React.Component {
 		schema: PropTypes.object,
 		error: PropTypes.any,
 		onChange: PropTypes.func,
-		disabled: PropTypes.bool
-	}
+		disabled: PropTypes.bool,
+	};
 
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
 		this.state = {
 			selectableId: 'description',
 			selectableValue: new ControlsConfig(),
-			value: props.value
+			value: props.value,
 		};
 	}
 
-
-	onChange = (value) => {
-		const {onChange} = this.props;
+	onChange = value => {
+		const { onChange } = this.props;
 
 		if (onChange) {
 			onChange(value);
 
 			this.setState({
-				value
+				value,
 			});
 		}
-	}
+	};
 
-
-	onEditorFocus = (editor) => {
-		const {selectableValue} = this.state;
+	onEditorFocus = editor => {
+		const { selectableValue } = this.state;
 
 		if (editor && selectableValue.editor !== editor) {
 			this.setState({
-				selectableValue: new ControlsConfig(editor)
+				selectableValue: new ControlsConfig(editor),
 			});
 		}
-	}
+	};
 
-
-	render () {
-		const {disabled} = this.props;
-		const {value, error} = this.state;
-		const {selectableId, selectableValue} = this.state;
-		const cls = cx('assignment-content-editor', {error, disabled});
+	render() {
+		const { disabled } = this.props;
+		const { value, error } = this.state;
+		const { selectableId, selectableValue } = this.state;
+		const cls = cx('assignment-content-editor', { error, disabled });
 
 		return (
-			<Selectable className={cls} id={selectableId} value={selectableValue}>
+			<Selectable
+				className={cls}
+				id={selectableId}
+				value={selectableValue}
+			>
 				{disabled ? null : (
 					<BufferedTextEditor
 						initialValue={value}

@@ -1,16 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Events} from '@nti/lib-commons';
+import { Events } from '@nti/lib-commons';
 
-const {getKeyCode} = Events;
+const { getKeyCode } = Events;
 
 export default class AddChoice extends React.Component {
 	static propTypes = {
 		addLabel: PropTypes.string,
-		add: PropTypes.func
-	}
+		add: PropTypes.func,
+	};
 
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
 		this.state = { isFocused: false };
@@ -20,17 +20,17 @@ export default class AddChoice extends React.Component {
 		this.onKeyPress = this.onKeyPress.bind(this);
 	}
 
-	onBlur (e) {
+	onBlur(e) {
 		e.stopPropagation();
-		this.setState({isFocused: false});
+		this.setState({ isFocused: false });
 	}
 
-	onFocus (e) {
+	onFocus(e) {
 		e.stopPropagation();
-		this.setState({isFocused: true});
+		this.setState({ isFocused: true });
 	}
 
-	onKeyPress (e) {
+	onKeyPress(e) {
 		e.preventDefault();
 
 		if (getKeyCode(e) === getKeyCode.ENTER && this.props.add) {
@@ -38,10 +38,12 @@ export default class AddChoice extends React.Component {
 		}
 	}
 
-	render () {
-		const {addLabel} = this.props;
-		const {add} = this.props;
-		const cls = this.state.isFocused ? 'add-choice selectable selected' : 'add-choice';
+	render() {
+		const { addLabel } = this.props;
+		const { add } = this.props;
+		const cls = this.state.isFocused
+			? 'add-choice selectable selected'
+			: 'add-choice';
 
 		return (
 			<div

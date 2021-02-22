@@ -1,22 +1,28 @@
 import './View.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Loading, Errors, HOC, Button} from '@nti/web-commons';
-import {scoped} from '@nti/lib-locale';
+import { Loading, Errors, HOC, Button } from '@nti/web-commons';
+import { scoped } from '@nti/lib-locale';
 
 import Store from '../../Store';
-import {ASSIGNMENT_ERROR, ASSIGNMENT_WARNING, REVERT_ERRORS} from '../../Constants';
-import {warnIfDiscussionEmpty, setDiscussionOnAssignment} from '../Actions';
+import {
+	ASSIGNMENT_ERROR,
+	ASSIGNMENT_WARNING,
+	REVERT_ERRORS,
+} from '../../Constants';
+import { warnIfDiscussionEmpty, setDiscussionOnAssignment } from '../Actions';
 
 import Discussion from './Discussion';
 
-const {Field:{Component:ErrorCmp}} = Errors;
-const {ItemChanges} = HOC;
+const {
+	Field: { Component: ErrorCmp },
+} = Errors;
+const { ItemChanges } = HOC;
 
 const DEFAULT_TEXT = {
 	description: 'Grade a student on their participation in a discussion.',
 	enter: 'Enter a NTIID:',
-	save: 'Save'
+	save: 'Save',
 };
 
 const t = scoped('assignment.viewer.discussion', DEFAULT_TEXT);
@@ -24,104 +30,101 @@ const t = scoped('assignment.viewer.discussion', DEFAULT_TEXT);
 export default class DiscussionAssignment extends React.Component {
 	static propTypes = {
 		assignment: PropTypes.object,
-		course: PropTypes.object
-	}
+		course: PropTypes.object,
+	};
 
-
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
-		const {assignment} = props;
+		const { assignment } = props;
 
 		Store.addChangeListener(this.onStoreChange);
 
 		this.state = {
 			loading: true,
 			activeValue: assignment.discussionId || '',
-			discussions: []
+			discussions: [],
 		};
 	}
 
-
-	componentDidMount () {
-		const {course, assignment} = this.props;
+	componentDidMount() {
+		const { course, assignment } = this.props;
 
 		this.loadDiscussionsFromCourse(course);
 		warnIfDiscussionEmpty(assignment);
 	}
 
-
-	componentWillUnmount () {
+	componentWillUnmount() {
 		Store.removeChangeListener(this.onStoreChange);
 	}
 
+	onStoreChange = data => {
+		const { assignment } = this.props;
 
-	onStoreChange = (data) => {
-		const {assignment} = this.props;
-
-		if ((data.type === ASSIGNMENT_ERROR || data.type === ASSIGNMENT_WARNING) && assignment.NTIID === data.NTIID) {
+		if (
+			(data.type === ASSIGNMENT_ERROR ||
+				data.type === ASSIGNMENT_WARNING) &&
+			assignment.NTIID === data.NTIID
+		) {
 			this.onAssignmentMessages();
 		} else if (data.type === REVERT_ERRORS) {
 			this.onAssignmentMessages();
 		}
-	}
+	};
 
-
-	onAssignmentMessages () {
-		const {assignment} = this.props;
-		const {NTIID} = assignment;
+	onAssignmentMessages() {
+		const { assignment } = this.props;
+		const { NTIID } = assignment;
 		const error = Store.getErrorFor(NTIID, 'discussion_ntiid');
 		const warning = Store.getWarningFor(NTIID, 'discussion_ntiid');
 
 		this.setState({
 			error,
-			warning
+			warning,
 		});
 	}
 
-
-	loadDiscussionsFromCourse (course) {
-		return new Promise((fulfill) => {
-			this.setState({
-				loading: true
-			}, () => {
-				fulfill(course.getCourseDiscussions());
-			});
-		}).then((discussions) => {
+	loadDiscussionsFromCourse(course) {
+		return new Promise(fulfill => {
+			this.setState(
+				{
+					loading: true,
+				},
+				() => {
+					fulfill(course.getCourseDiscussions());
+				}
+			);
+		}).then(discussions => {
 			this.setState({
 				loading: false,
-				discussions
+				discussions,
 			});
 		});
 	}
 
-
-	selectDiscussion = (discussion) => {
+	selectDiscussion = discussion => {
 		this.selectDiscussionID(discussion.NTIID);
-	}
+	};
 
-
-	selectDiscussionID (id) {
-		const {assignment} = this.props;
+	selectDiscussionID(id) {
+		const { assignment } = this.props;
 
 		setDiscussionOnAssignment(id, assignment);
 	}
 
-
 	onAssignmentUpdate = () => {
-		const {assignment} = this.props;
+		const { assignment } = this.props;
 
 		this.setState({
-			activeValue: assignment.discussionId || ''
+			activeValue: assignment.discussionId || '',
 		});
-	}
+	};
 
-
-	onManualInputChange = (e) => {
-		const {error, warning} = this.state;
+	onManualInputChange = e => {
+		const { error, warning } = this.state;
 
 		this.setState({
-			activeValue: e.target.value
+			activeValue: e.target.value,
 		});
 
 		if (error) {
@@ -131,62 +134,64 @@ export default class DiscussionAssignment extends React.Component {
 		if (warning) {
 			warning.clear();
 		}
-	}
-
+	};
 
 	saveManualInput = () => {
-		const {activeValue} = this.state;
+		const { activeValue } = this.state;
 
 		this.selectDiscussionID(activeValue);
-	}
+	};
 
-
-	render () {
-		const {assignment} = this.props;
-		const {loading, discussions, error, warning} = this.state;
+	render() {
+		const { assignment } = this.props;
+		const { loading, discussions, error, warning } = this.state;
 
 		return (
-			<ItemChanges item={assignment} onItemChanged={this.onAssignmentUpdate}>
+			<ItemChanges
+				item={assignment}
+				onItemChanged={this.onAssignmentUpdate}
+			>
 				<div className="discussion-assignment-list">
-					<p className="description">
-						{t('description')}
-					</p>
+					<p className="description">{t('description')}</p>
 					{!loading && this.renderManualInput()}
 					<div className="messages">
 						{error && <ErrorCmp error={error} />}
-						{!error && warning && <ErrorCmp error={warning} isWarning/>}
+						{!error && warning && (
+							<ErrorCmp error={warning} isWarning />
+						)}
 					</div>
-					{
-						loading ?
-							(<Loading.Mask />) :
-							(
-								<ul>
-									{discussions.map(x => this.renderDiscussion(x))}
-								</ul>
-							)
-					}
+					{loading ? (
+						<Loading.Mask />
+					) : (
+						<ul>
+							{discussions.map(x => this.renderDiscussion(x))}
+						</ul>
+					)}
 				</div>
 			</ItemChanges>
 		);
 	}
 
-
-	renderDiscussion = (discussion) => {
-		const {course, assignment} = this.props;
-		const {discussion_ntiid:activeNTIID} = assignment;
+	renderDiscussion = discussion => {
+		const { course, assignment } = this.props;
+		const { discussion_ntiid: activeNTIID } = assignment;
 		const selected = discussion.NTIID === activeNTIID;
 
 		return (
 			<li key={discussion.NTIID}>
-				<Discussion discussion={discussion} selected={selected} onSelect={this.selectDiscussion} course={course} />
+				<Discussion
+					discussion={discussion}
+					selected={selected}
+					onSelect={this.selectDiscussion}
+					course={course}
+				/>
 			</li>
 		);
-	}
-
+	};
 
 	renderManualInput = () => {
-		const {assignment} = this.props;
-		const {activeValue} = this.state;
+		const { assignment } = this.props;
+		const { activeValue } = this.state;
 
 		if (!assignment.canManuallyEdit) {
 			return null;
@@ -195,9 +200,16 @@ export default class DiscussionAssignment extends React.Component {
 		return (
 			<div className="manual-input">
 				<label htmlFor="discussion_id_input">{t('enter')}</label>
-				<input name="discussion_id_input" type="text" value={activeValue} onChange={this.onManualInputChange} />
-				<Button onClick={this.saveManualInput}><span>{t('save')}</span></Button>
+				<input
+					name="discussion_id_input"
+					type="text"
+					value={activeValue}
+					onChange={this.onManualInputChange}
+				/>
+				<Button onClick={this.saveManualInput}>
+					<span>{t('save')}</span>
+				</Button>
 			</div>
 		);
-	}
+	};
 }

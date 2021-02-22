@@ -2,13 +2,12 @@ import './Content.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {isNTIID} from '@nti/lib-ntiids';
+import { isNTIID } from '@nti/lib-ntiids';
 
 import BufferedTextEditor from '../../inputs/BufferedTextEditor';
 import Store from '../../Store';
-import {getContentPlaceholderFor} from '../../input-types/';
-import {warnIfQuestionEmpty} from '../Actions';
-
+import { getContentPlaceholderFor } from '../../input-types/';
+import { warnIfQuestionEmpty } from '../Actions';
 
 export default class QuestionContent extends React.Component {
 	static propTypes = {
@@ -19,64 +18,57 @@ export default class QuestionContent extends React.Component {
 		onBlur: PropTypes.func,
 		error: PropTypes.any,
 		warning: PropTypes.any,
-		onChange: PropTypes.func
-	}
+		onChange: PropTypes.func,
+	};
 
+	attachRef = x => (this.editor = x);
 
-	attachRef = (x) => this.editor = x;
-
-
-	componentDidMount () {
-		const {question} = this.props;
+	componentDidMount() {
+		const { question } = this.props;
 
 		if (question && isNTIID(question.NTIID)) {
 			warnIfQuestionEmpty(question);
 		}
 	}
 
-
-	componentDidUpdate (prevProps) {
-		const {question} = this.props;
-		const {question:oldQuestion} = prevProps;
+	componentDidUpdate(prevProps) {
+		const { question } = this.props;
+		const { question: oldQuestion } = prevProps;
 
 		if (question !== oldQuestion && question && isNTIID(question.NTIID)) {
 			warnIfQuestionEmpty(question);
 		}
 	}
 
-
-	onEditorFocus = (editor) => {
-		const {onFocus} = this.props;
+	onEditorFocus = editor => {
+		const { onFocus } = this.props;
 
 		if (onFocus) {
 			onFocus(editor);
 		}
-	}
-
+	};
 
 	onEditorBlur = () => {
-		const {onBlur} = this.props;
+		const { onBlur } = this.props;
 
 		if (onBlur) {
 			onBlur();
 		}
-	}
+	};
 
-
-	onChange = (value) => {
-		const {onChange} = this.props;
+	onChange = value => {
+		const { onChange } = this.props;
 
 		if (onChange) {
 			onChange(value);
 		}
-	}
-
+	};
 
 	focus = () => {
-		if(this.editor) {
+		if (this.editor) {
 			this.editor.focus();
 		}
-	}
+	};
 
 	/**
 	 * If we have a warning, and are in a state to show it return it.
@@ -87,24 +79,27 @@ export default class QuestionContent extends React.Component {
 	 *
 	 * @returns {Object} the warning that should be shown, if any
 	 */
-	getWarning () {
-		const {warning, published, question} = this.props;
+	getWarning() {
+		const { warning, published, question } = this.props;
 
-		if (!warning) { return null; }
+		if (!warning) {
+			return null;
+		}
 
-		const {openSince} = Store;
+		const { openSince } = Store;
 		const created = question.getCreatedTime();
 		const modified = question.getLastModified();
 
-		return (published || created < openSince || modified > created) ? warning : null;
+		return published || created < openSince || modified > created
+			? warning
+			: null;
 	}
 
-
-	render () {
-		const {isSaving, question, error} = this.props;
+	render() {
+		const { isSaving, question, error } = this.props;
 		const warning = this.getWarning();
-		const {content} = question;
-		const cls = cx('question-content-editor', {error});
+		const { content } = question;
+		const cls = cx('question-content-editor', { error });
 
 		const placeholder = getContentPlaceholderFor(question);
 
@@ -121,9 +116,7 @@ export default class QuestionContent extends React.Component {
 						error={warning ? void 0 : error || void 0}
 						warning={warning || void 0}
 					/>
-				) :
-					null
-				}
+				) : null}
 			</div>
 		);
 	}

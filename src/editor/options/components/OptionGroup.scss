@@ -1,4 +1,4 @@
-@import "~@nti/style-common";
+@import '~@nti/style-common';
 
 .assignment-option-group {
 	display: flex;
@@ -31,7 +31,7 @@
 	}
 
 	&:not(:last-child) {
-		border-bottom: 1px solid  rgba(216, 216, 216, 0.4);
+		border-bottom: 1px solid rgba(216, 216, 216, 0.4);
 	}
 
 	.header {
@@ -49,7 +49,8 @@
 	.assignment-option-content {
 		width: 50%;
 
-		p, span {
+		p,
+		span {
 			margin: 0;
 			font-size: 0.875rem;
 			color: var(--secondary-grey);

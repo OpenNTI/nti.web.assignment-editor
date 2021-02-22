@@ -1,4 +1,4 @@
-@import "~@nti/style-common";
+@import '~@nti/style-common';
 
 .assignment-control-bar {
 	display: flex;
@@ -10,7 +10,8 @@
 		flex: 1 1 auto;
 		color: var(--secondary-grey);
 
-		i, span {
+		i,
+		span {
 			display: inline-block;
 			vertical-align: middle;
 		}

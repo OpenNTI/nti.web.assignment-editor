@@ -2,21 +2,20 @@ import './Choices.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Choices, {Placeholder as ChoicesPlaceholder} from '../choices';
-import {isErrorForChoice} from '../choices/Factory';
+import Choices, { Placeholder as ChoicesPlaceholder } from '../choices';
+import { isErrorForChoice } from '../choices/Factory';
 
-import Choice, {Placeholder as ChoicePlaceholder} from './Choice';
+import Choice, { Placeholder as ChoicePlaceholder } from './Choice';
 
 export default class MultipleChoiceChoices extends Choices {
 	static propTypes = {
 		...Choices.propTypes,
-		multipleAnswers: PropTypes.bool
-	}
+		multipleAnswers: PropTypes.bool,
+	};
 
+	className = 'multiple-choice-choices';
 
-	className = 'multiple-choice-choices'
-
-	setUpHandlers (columns, deletes) {
+	setUpHandlers(columns, deletes) {
 		super.setUpHandlers(columns, deletes);
 
 		this.solutionHandlers = [];
@@ -26,10 +25,9 @@ export default class MultipleChoiceChoices extends Choices {
 		}
 	}
 
-
-	onSolutionChange (column, choice) {
-		const {multipleAnswers} = this.props;
-		const {columns} = this.state;
+	onSolutionChange(column, choice) {
+		const { multipleAnswers } = this.props;
+		const { columns } = this.state;
 		const oldColumn = columns[column];
 		const newColumn = [];
 		let solutionChanged = false;
@@ -45,7 +43,7 @@ export default class MultipleChoiceChoices extends Choices {
 		}
 
 		if (solutionChanged) {
-			columns[column] = newColumn.map((newChoice) => {
+			columns[column] = newColumn.map(newChoice => {
 				if (this.isSameChoice(newChoice, choice)) {
 					newChoice.correct = choice.correct;
 				} else if (newChoice.correct && !multipleAnswers) {
@@ -55,25 +53,29 @@ export default class MultipleChoiceChoices extends Choices {
 				return newChoice;
 			});
 
-			this.setState({
-				columns
-			}, () => {
-				this.onChange();
-			});
+			this.setState(
+				{
+					columns,
+				},
+				() => {
+					this.onChange();
+				}
+			);
 		}
 	}
 
-
-	renderChoice (column, choice, row) {
-		const {plainText, canRemove} = this.props;
-		const {multipleAnswers, containerId} = this.props;
-		const {error} = this.state;
+	renderChoice(column, choice, row) {
+		const { plainText, canRemove } = this.props;
+		const { multipleAnswers, containerId } = this.props;
+		const { error } = this.state;
 		const onChange = this.choiceChangeHandlers[column];
 		const focusNext = this.focusNextHandlers[column];
 		const focusPrev = this.focusPrevHandlers[column];
 		const insertNewChoice = this.insertNewHandlers[column];
 		const solutionHandler = this.solutionHandlers[column];
-		const maybeDeleteRow = canRemove ? this.deleteRowHandlers[column] : void 0;
+		const maybeDeleteRow = canRemove
+			? this.deleteRowHandlers[column]
+			: void 0;
 		const sync = this.getSyncForRow(row);
 		const onDelete = canRemove ? this.deleteHandlers[row] : null;
 
@@ -98,8 +100,7 @@ export default class MultipleChoiceChoices extends Choices {
 	}
 }
 
-
-export function Placeholder () {
+export function Placeholder() {
 	return (
 		<ChoicesPlaceholder className="multiple-choice-placeholder">
 			<ChoicePlaceholder correct />

@@ -1,6 +1,6 @@
 /* globals spyOn */
 /* eslint-env jest */
-import {saveFieldOn} from '../Actions';
+import { saveFieldOn } from '../Actions';
 
 describe('Assignment Editor Action Tests', () => {
 	describe('Saving Field Tests', () => {
@@ -9,24 +9,22 @@ describe('Assignment Editor Action Tests', () => {
 		beforeEach(() => {
 			assignment = {
 				value: 'old',
-				parent () {},
+				parent() {},
 				save: () => {
 					return Promise.resolve();
-				}
+				},
 			};
 
 			spyOn(assignment, 'save').and.callThrough();
 		});
 
-
-		test ('Saving the same value does NOT call save', () => {
+		test('Saving the same value does NOT call save', () => {
 			saveFieldOn(assignment, 'value', 'old');
 
 			expect(assignment.save).not.toHaveBeenCalled();
 		});
 
-
-		test ('Saving a new value does call save', () => {
+		test('Saving a new value does call save', () => {
 			saveFieldOn(assignment, 'value', 'new');
 
 			expect(assignment.save).toHaveBeenCalled();

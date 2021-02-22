@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default class TextArea extends React.Component {
-
 	static propTypes = {
 		onChange: PropTypes.func,
 		onFocus: PropTypes.func,
@@ -10,45 +9,41 @@ export default class TextArea extends React.Component {
 		className: PropTypes.string,
 		value: PropTypes.string,
 		placeholder: PropTypes.string,
-		error: PropTypes.string
-	}
+		error: PropTypes.string,
+	};
 
 	static defaultProps = {
 		onBlur: () => {},
 		onFocus: () => {},
-		onChange: () => {}
-	}
+		onChange: () => {},
+	};
 
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
 		this.state = {
-			value: props.value
+			value: props.value,
 		};
 
-		const bindList = [
-			'onChange'
-		];
+		const bindList = ['onChange'];
 
 		for (let fn of bindList) {
 			this[fn] = this[fn].bind(this);
 		}
 	}
 
-
-	getValue () {
-		const {value} = this.state;
+	getValue() {
+		const { value } = this.state;
 
 		return value;
 	}
 
-
-	onChange (e) {
-		const {onChange} = this.props;
+	onChange(e) {
+		const { onChange } = this.props;
 		const value = e.target.value;
 
 		this.setState({
-			value: value
+			value: value,
 		});
 
 		if (onChange) {
@@ -56,10 +51,9 @@ export default class TextArea extends React.Component {
 		}
 	}
 
-
-	render () {
+	render() {
 		//TODO: render any errors passed in
-		const {className} = this.props;
+		const { className } = this.props;
 
 		return (
 			<textarea
@@ -70,7 +64,7 @@ export default class TextArea extends React.Component {
 				onFocus={this.props.onFocus}
 				onBlur={this.props.onBlur}
 				onChange={this.onChange}
-				style={{width: '100%', resize: 'none', border: 'none'}}
+				style={{ width: '100%', resize: 'none', border: 'none' }}
 			/>
 		);
 	}

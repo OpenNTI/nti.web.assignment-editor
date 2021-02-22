@@ -1,6 +1,6 @@
 import Editor from './Editor';
 import Button from './Button';
-import {partsEqual, generatePartFor} from './utils';
+import { partsEqual, generatePartFor } from './utils';
 
 const defaultChoices = ['Choice 1'];
 const defaultSolution = [0];
@@ -10,35 +10,37 @@ export default class MultipleChoiceMultipleAnswerPart {
 	//TODO: get this mime type from the model
 	static handles = [
 		'application/vnd.nextthought.assessment.multiplechoicemultipleanswerpart',
-		'application/vnd.nextthought.assessment.randomizedmultiplechoicemultipleanswerpart'
+		'application/vnd.nextthought.assessment.randomizedmultiplechoicemultipleanswerpart',
+	];
 
-	]
-
-
-	static get button () {
+	static get button() {
 		return Button;
 	}
 
-
-	static get editor () {
+	static get editor() {
 		return Editor;
 	}
 
-
-	static partsEqual (partA, partB) {
+	static partsEqual(partA, partB) {
 		return partsEqual(partA, partB);
 	}
 
-	static generatePartFor (...args) {
+	static generatePartFor(...args) {
 		return generatePartFor(...args);
 	}
 
-	static getBlankPart () {
-		const {handles} = this.constructor;
+	static getBlankPart() {
+		const { handles } = this.constructor;
 		let mimeType = handles && handles[0];
 
 		if (mimeType) {
-			return generatePartFor(mimeType, null, defaultChoices, defaultSolution, defaultHint);
+			return generatePartFor(
+				mimeType,
+				null,
+				defaultChoices,
+				defaultSolution,
+				defaultHint
+			);
 		}
 	}
 }

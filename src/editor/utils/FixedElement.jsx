@@ -7,45 +7,43 @@ const SCROLL_STOP_TIMEOUT = 500;
 export default class FixedEelement extends React.Component {
 	static propTypes = {
 		children: PropTypes.any,
-		className: PropTypes.string
-	}
+		className: PropTypes.string,
+	};
 
-
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
-		this.setCmpRef = x => this.cmpRef = x;
+		this.setCmpRef = x => (this.cmpRef = x);
 
 		this.state = {
 			styles: {
-				transform: 'none'
-			}
+				transform: 'none',
+			},
 		};
 	}
 
-
-	componentDidMount () {
+	componentDidMount() {
 		global.addEventListener('scroll', this.onWindowScroll);
 	}
 
-
-	componentWillUnmount () {
+	componentWillUnmount() {
 		global.removeEventListener('scroll', this.onWindowScroll);
 	}
 
-
-	startScrollStopTimer () {
+	startScrollStopTimer() {
 		if (this.scrollStopTimeout) {
 			clearTimeout(this.scrollStopTimeout);
 		}
 
-		this.scrollStopTimeout = setTimeout(() => this.onScrollStop(), SCROLL_STOP_TIMEOUT);
+		this.scrollStopTimeout = setTimeout(
+			() => this.onScrollStop(),
+			SCROLL_STOP_TIMEOUT
+		);
 	}
-
 
 	onWindowScroll = () => {
 		const rect = this.cmpRef && this.cmpRef.getBoundingClientRect();
-		const {isFixed} = this;
+		const { isFixed } = this;
 
 		this.startScrollStopTimer();
 
@@ -57,29 +55,27 @@ export default class FixedEelement extends React.Component {
 					position: 'fixed',
 					top: `${Math.round(rect.top)}px`,
 					left: `${Math.round(rect.left)}px`,
-					width: `${rect.width}px`
-				}
+					width: `${rect.width}px`,
+				},
 			});
 		}
-	}
+	};
 
-
-	onScrollStop () {
+	onScrollStop() {
 		const top = global.scrollY;
 
 		delete this.isFixed;
 
 		this.setState({
 			styles: {
-				transform: `translate3d(0, ${Math.round(top)}px, 0)`
-			}
+				transform: `translate3d(0, ${Math.round(top)}px, 0)`,
+			},
 		});
 	}
 
-
-	render () {
-		const {className, children} = this.props;
-		const {styles} = this.state;
+	render() {
+		const { className, children } = this.props;
+		const { styles } = this.state;
 		const cls = cx(className, 'fixed-element');
 
 		return (

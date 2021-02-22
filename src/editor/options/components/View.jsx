@@ -1,7 +1,7 @@
 import './View.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {HOC} from '@nti/web-commons';
+import { HOC } from '@nti/web-commons';
 
 import Attempts from './Attempts';
 import Grading from './Grading';
@@ -10,28 +10,27 @@ import Limits from './Limits';
 import Visibility from './Visibility';
 import Buffer from './Buffer';
 
-function getQuestionSet (assignment) {
-	const {parts} = assignment || {};
+function getQuestionSet(assignment) {
+	const { parts } = assignment || {};
 	const part = (parts || [])[0];
-	const {question_set:questionSet} = part || {};
+	const { question_set: questionSet } = part || {};
 
 	return !questionSet || questionSet.isPlaceholder ? void 0 : questionSet;
 }
 
 class AssignmentOptions extends React.Component {
 	static propTypes = {
-		assignment: PropTypes.object
-	}
+		assignment: PropTypes.object,
+	};
 
-	static getItem (props) {
+	static getItem(props) {
 		return props.assignment;
 	}
 
-	render () {
-		const {assignment} = this.props;
+	render() {
+		const { assignment } = this.props;
 		const questionSet = getQuestionSet(assignment);
-		const {title} = assignment || {};
-
+		const { title } = assignment || {};
 
 		return (
 			<div className="assignment-options">
@@ -40,12 +39,24 @@ class AssignmentOptions extends React.Component {
 					<p className="options-assignment-title">{title}</p>
 				</header>
 				<div>
-					<Visibility assignment={assignment} questionSet={questionSet}/>
-					<Grading assignment={assignment} questionSet={questionSet} />
-					<Randomize assignment={assignment} questionSet={questionSet} />
+					<Visibility
+						assignment={assignment}
+						questionSet={questionSet}
+					/>
+					<Grading
+						assignment={assignment}
+						questionSet={questionSet}
+					/>
+					<Randomize
+						assignment={assignment}
+						questionSet={questionSet}
+					/>
 					<Limits assignment={assignment} questionSet={questionSet} />
 					<Buffer assignment={assignment} questionSet={questionSet} />
-					<Attempts assignment={assignment} questionSet={questionSet} />
+					<Attempts
+						assignment={assignment}
+						questionSet={questionSet}
+					/>
 				</div>
 			</div>
 		);

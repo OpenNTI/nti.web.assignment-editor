@@ -1,30 +1,30 @@
 import './PointValue.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {scoped} from '@nti/lib-locale';
-import {Input, LabeledValue, HOC, Prompt} from '@nti/web-commons';
+import { scoped } from '@nti/lib-locale';
+import { Input, LabeledValue, HOC, Prompt } from '@nti/web-commons';
 
-import {rel} from './PassingScore';
+import { rel } from './PassingScore';
 
 const t = scoped('assignment-editor.editor.info.components.PointValue', {
-	removePrompt: 'Removing total points will also remove the current passing score.'
+	removePrompt:
+		'Removing total points will also remove the current passing score.',
 });
 
 export default class PointValue extends React.Component {
-
 	static propTypes = {
-		assignment: PropTypes.object.isRequired
-	}
+		assignment: PropTypes.object.isRequired,
+	};
 
-	state = {}
+	state = {};
 
-	componentDidMount () {
+	componentDidMount() {
 		this.setUp();
 	}
 
-	componentDidUpdate (prevProps, prevState) {
-		const {assignment} = this.props;
-		let {value} = this.state;
+	componentDidUpdate(prevProps, prevState) {
+		const { assignment } = this.props;
+		let { value } = this.state;
 
 		if (prevProps.assignment !== assignment) {
 			value = this.setUp();
@@ -36,24 +36,26 @@ export default class PointValue extends React.Component {
 		}
 	}
 
-	setUp (props = this.props) {
-		const {assignment: {totalPoints: value}} = props;
+	setUp(props = this.props) {
+		const {
+			assignment: { totalPoints: value },
+		} = props;
 
 		this.setState({
-			value
+			value,
 		});
 
 		return value;
 	}
 
-	attachRef = x => this.input = x
+	attachRef = x => (this.input = x);
 
 	onBlur = () => {
 		clearTimeout(this.saveChangeDelay);
 		this.save();
-	}
+	};
 
-	onChange = (value) => {
+	onChange = value => {
 		//we set the min to 0, but just safe-guard it just in case.
 		if (value < 0 || isNaN(value)) {
 			return;
@@ -62,40 +64,42 @@ export default class PointValue extends React.Component {
 		}
 
 		this.setState({
-			value: typeof value === 'number' ? value : null
+			value: typeof value === 'number' ? value : null,
 		});
-	}
+	};
 
 	save = () => {
-		const {assignment} = this.props;
-		const {value} = this.state;
+		const { assignment } = this.props;
+		const { value } = this.state;
 
-		if(this.prompting) {
+		if (this.prompting) {
 			return;
 		}
 
-		if(!value && assignment.passingScore) {
+		if (!value && assignment.passingScore) {
 			this.prompting = true;
-
 
 			// we have a passing score and are trying to clear out total points, so we need to prompt the user to let
 			// them know that, by doing so, we will also clear the passing score value as well
-			Prompt.areYouSure(t('removePrompt')).then(() => {
-				this.prompting = false;
+			Prompt.areYouSure(t('removePrompt'))
+				.then(() => {
+					this.prompting = false;
 
-				assignment.save({
-					'completion_passing_percent': null,
-					'total_points': null
-				},
-				void 0,
-				rel);
-			}).catch((e) => {
-				this.prompting = false;
+					assignment.save(
+						{
+							completion_passing_percent: null,
+							total_points: null,
+						},
+						void 0,
+						rel
+					);
+				})
+				.catch(e => {
+					this.prompting = false;
 
-				this.setState({value: assignment.totalPoints});
-			});
-		}
-		else {
+					this.setState({ value: assignment.totalPoints });
+				});
+		} else {
 			// don't need to worry about passingScore here, so just save the total points value
 			const doneSaving = () => {
 				delete this.savingValue;
@@ -103,28 +107,35 @@ export default class PointValue extends React.Component {
 				this.setUp();
 			};
 
-
-			if (assignment.totalPoints !== value && this.savingValue !== value) {
+			if (
+				assignment.totalPoints !== value &&
+				this.savingValue !== value
+			) {
 				this.savingValue = value;
 
-				assignment.setTotalPoints(value)
-					.then(doneSaving, doneSaving);
+				assignment.setTotalPoints(value).then(doneSaving, doneSaving);
 			}
 		}
-	}
+	};
 
 	onAssignmentChanged = () => {
 		this.setUp();
-	}
+	};
 
-	render () {
-		const {assignment} = this.props;
-		const {value} = this.state;
+	render() {
+		const { assignment } = this.props;
+		const { value } = this.state;
 
 		return (
 			<div className="field point-value">
-				<HOC.ItemChanges item={assignment} onItemChanged={this.onAssignmentChanged}>
-					<LabeledValue label="Value" disabled={!assignment.canSetTotalPoints()}>
+				<HOC.ItemChanges
+					item={assignment}
+					onItemChanged={this.onAssignmentChanged}
+				>
+					<LabeledValue
+						label="Value"
+						disabled={!assignment.canSetTotalPoints()}
+					>
 						<Input.Number
 							value={typeof value === 'number' ? value : null}
 							min={0}

@@ -5,7 +5,9 @@
 	align-items: flex-start;
 	justify-content: center;
 
-	.late, .passing, .failed {
+	.late,
+	.passing,
+	.failed {
 		width: rem-calc(40px);
 		height: rem-calc(40px);
 		background-size: cover;

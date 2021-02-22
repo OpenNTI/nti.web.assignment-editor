@@ -5,14 +5,13 @@ export default class PartsButton extends React.Component {
 	static propTypes = {
 		onCreate: PropTypes.func,
 		part: PropTypes.object,
-		label: PropTypes.string
-	}
+		label: PropTypes.string,
+	};
 
+	onClick = e => {};
 
-	onClick = (e) => {}
-
-	render () {
-		const {label} = this.props;
+	render() {
+		const { label } = this.props;
 
 		return (
 			<div className="question-part-button" onClick={this.onClick}>

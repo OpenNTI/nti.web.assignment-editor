@@ -7,19 +7,20 @@ import SubmissionStatus from './SubmissionStatus';
 export default class AssignmentNavigationBarStatus extends React.PureComponent {
 	static propTypes = {
 		assignment: PropTypes.object,
-		historyItem: PropTypes.object
-	}
+		historyItem: PropTypes.object,
+	};
 
+	render() {
+		const { assignment, historyItem } = this.props;
 
-	render () {
-		const {assignment, historyItem} = this.props;
-
-		if (!assignment && !historyItem) { return null; }
+		if (!assignment && !historyItem) {
+			return null;
+		}
 
 		return (
 			<div className="assignment-navigation-bar-status">
-				{assignment && (<AssignmentStatus {...this.props} />)}
-				{assignment && (<SubmissionStatus {...this.props} />)}
+				{assignment && <AssignmentStatus {...this.props} />}
+				{assignment && <SubmissionStatus {...this.props} />}
 			</div>
 		);
 	}

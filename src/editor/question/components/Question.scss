@@ -1,4 +1,4 @@
-@import "~@nti/style-common";
+@import '~@nti/style-common';
 
 .assignment-editing-question-container {
 	position: relative;
@@ -24,14 +24,20 @@
 	.inline-dialog {
 		.inner-wrapper {
 			padding-left: rem-calc(30px);
-			padding-right: rem-calc(285px); //account for the fixed space on the right (for smaller than max-width cases)
+			padding-right: rem-calc(
+				285px
+			); //account for the fixed space on the right (for smaller than max-width cases)
 
 			.question-editor {
 				position: relative;
 				border-radius: 2px 2px 0 0;
 
-				& > *:first-child { border-radius: 0; }
-				& > *:last-child { border-radius: 0; }
+				& > *:first-child {
+					border-radius: 0;
+				}
+				& > *:last-child {
+					border-radius: 0;
+				}
 
 				&.saving-mask {
 					& > * {
@@ -64,7 +70,9 @@
 			}
 
 			.dialog-buttons {
-				margin-right: rem-calc(58px); //match the question-editor's margins
+				margin-right: rem-calc(
+					58px
+				); //match the question-editor's margins
 				max-width: 650px;
 				background: white;
 				border-radius: 0 0 2px 2px;
@@ -80,8 +88,12 @@
 		border: 1px solid #e7e7e7;
 		box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.15);
 		max-width: 650px;
-		& > *:first-child { border-radius: 2px 2px 0 0; }
-		& > *:last-child { border-radius: 0 0 2px 2px; }
+		& > *:first-child {
+			border-radius: 2px 2px 0 0;
+		}
+		& > *:last-child {
+			border-radius: 0 0 2px 2px;
+		}
 
 		&.selected {
 			border-color: var(--border-grey);

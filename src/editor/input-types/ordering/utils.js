@@ -1,7 +1,8 @@
-const solutionMimeType = 'application/vnd.nextthought.assessment.orderingsolution';
+const solutionMimeType =
+	'application/vnd.nextthought.assessment.orderingsolution';
 const solutionClass = 'OrderingSolution';
 
-function arrayEqual (a, b) {
+function arrayEqual(a, b) {
 	if (a.length !== b.length) {
 		return false;
 	}
@@ -15,7 +16,7 @@ function arrayEqual (a, b) {
 	return true;
 }
 
-function solutionEqual (solutionA, solutionB) {
+function solutionEqual(solutionA, solutionB) {
 	const keysA = Object.keys(solutionA);
 	const keysB = Object.keys(solutionB);
 
@@ -32,7 +33,7 @@ function solutionEqual (solutionA, solutionB) {
 	return true;
 }
 
-function solutionsEqual (solutionsA, solutionsB) {
+function solutionsEqual(solutionsA, solutionsB) {
 	if (solutionsA.length !== solutionsB.length) {
 		return false;
 	}
@@ -46,8 +47,7 @@ function solutionsEqual (solutionsA, solutionsB) {
 	return true;
 }
 
-
-export function partsEqual (partA, partB) {
+export function partsEqual(partA, partB) {
 	let equal = true;
 
 	if (partA.MimeType !== partB.MimeType) {
@@ -65,17 +65,22 @@ export function partsEqual (partA, partB) {
 	return equal;
 }
 
-
-function generateSolutionFor (value) {
+function generateSolutionFor(value) {
 	return {
 		Class: solutionClass,
 		MimeType: solutionMimeType,
-		value: value
+		value: value,
 	};
 }
 
-
-export function generatePartFor (mimeType, content, labels, values, solution, hints) {
+export function generatePartFor(
+	mimeType,
+	content,
+	labels,
+	values,
+	solution,
+	hints
+) {
 	return {
 		MimeType: mimeType,
 		content: content || '',
@@ -83,6 +88,6 @@ export function generatePartFor (mimeType, content, labels, values, solution, hi
 		values: values,
 		solutions: [generateSolutionFor(solution)],
 		hints: hints || [],
-		randomized: true
+		randomized: true,
 	};
 }

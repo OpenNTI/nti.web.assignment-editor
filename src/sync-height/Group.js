@@ -4,7 +4,7 @@ const HEIGHTS = Symbol('Heights');
 const CURRENT_HEIGHT = Symbol('Current Height');
 
 export default class SyncHeightGroup extends EventEmitter {
-	constructor (config = {}) {
+	constructor(config = {}) {
 		super();
 
 		this.itemCount = 0;
@@ -14,27 +14,23 @@ export default class SyncHeightGroup extends EventEmitter {
 		this[CURRENT_HEIGHT] = 0;
 	}
 
-
-	get height () {
+	get height() {
 		return this[CURRENT_HEIGHT];
 	}
 
-
-	getNewItem () {
+	getNewItem() {
 		this.itemCount += 1;
 
 		return this.itemCount;
 	}
 
-
-	maybeEmitSync () {
+	maybeEmitSync() {
 		if (this.itemCount > 1) {
 			this.emit('sync-height');
 		}
 	}
 
-
-	sync () {
+	sync() {
 		const heights = this[HEIGHTS];
 		const values = Object.values(heights);
 		const newHeight = values.reduce((acc, height) => {
@@ -51,8 +47,7 @@ export default class SyncHeightGroup extends EventEmitter {
 		}
 	}
 
-
-	setHeightFor (id, height) {
+	setHeightFor(id, height) {
 		const heights = this[HEIGHTS];
 		const oldHeight = heights[id];
 

@@ -5,7 +5,6 @@ import cx from 'classnames';
 
 import SelectionItem from '../SelectionItem';
 
-
 export default class Selectable extends React.Component {
 	static propTypes = {
 		value: PropTypes.any,
@@ -15,15 +14,15 @@ export default class Selectable extends React.Component {
 		onSelect: PropTypes.func,
 		onUnselect: PropTypes.func,
 		onChildSelect: PropTypes.func,
-		onChildUnselect: PropTypes.func
-	}
+		onChildUnselect: PropTypes.func,
+	};
 
 	static childContextTypes = {
 		SelectionParent: PropTypes.shape({
 			childSelected: PropTypes.func,
-			childUnselected: PropTypes.func
-		})
-	}
+			childUnselected: PropTypes.func,
+		}),
+	};
 
 	static contextTypes = {
 		SelectionManager: PropTypes.shape({
@@ -31,38 +30,36 @@ export default class Selectable extends React.Component {
 			unselect: PropTypes.func,
 			addListener: PropTypes.func,
 			removeListener: PropTypes.func,
-			isSelected: PropTypes.func
+			isSelected: PropTypes.func,
 		}),
 		SelectionParent: PropTypes.shape({
 			childSelected: PropTypes.func,
-			childUnselected: PropTypes.func
-		})
-	}
+			childUnselected: PropTypes.func,
+		}),
+	};
 
 	static defaultProps = {
 		onSelect: () => {},
-		onUnselect: () => {}
-	}
+		onUnselect: () => {},
+	};
 
-	selectedChildren = []
+	selectedChildren = [];
 
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
 		this.state = {
-			selected: false
+			selected: false,
 		};
 	}
 
-
-	getChildContext () {
+	getChildContext() {
 		return {
-			SelectionParent: this
+			SelectionParent: this,
 		};
 	}
 
-
-	componentDidUpdate (prevProps) {
+	componentDidUpdate(prevProps) {
 		const nextProps = this.props;
 		const item = this.getSelectionItem();
 
@@ -75,61 +72,62 @@ export default class Selectable extends React.Component {
 		}
 	}
 
-
-	componentDidMount () {
+	componentDidMount() {
 		let selectionManager = this.context.SelectionManager;
 
 		if (selectionManager) {
-			selectionManager.addListener('selection-changed', this.onSelectionChanged);
+			selectionManager.addListener(
+				'selection-changed',
+				this.onSelectionChanged
+			);
 		}
 
 		this.onSelectionChanged();
 	}
 
-
-	componentWillUnmount () {
+	componentWillUnmount() {
 		let selectionManager = this.context.SelectionManager;
 
 		if (selectionManager) {
-			selectionManager.removeListener('selection-changed', this.onSelectionChanged);
+			selectionManager.removeListener(
+				'selection-changed',
+				this.onSelectionChanged
+			);
 		}
 	}
 
-
 	onSelectionChanged = () => {
-		const {selected:wasSelected} = this.state;
+		const { selected: wasSelected } = this.state;
 		const item = this.getSelectionItem();
 		const selectionManager = this.context.SelectionManager;
 		const isSelected = selectionManager.isSelected(item);
 
 		if (selectionManager && wasSelected !== isSelected) {
 			this.setState({
-				selected: isSelected
+				selected: isSelected,
 			});
 		}
-	}
+	};
 
-
-	getSelectionItem () {
+	getSelectionItem() {
 		if (!this.selectionItem) {
 			this.selectionItem = new SelectionItem({
 				id: this.props.id,
-				value: this.props.value
+				value: this.props.value,
 			});
 		}
 
 		return this.selectionItem;
 	}
 
-
-	select = (e) => {
+	select = e => {
 		const {
-			SelectionManager:selectionManager,
-			SelectionParent:selectionParent
+			SelectionManager: selectionManager,
+			SelectionParent: selectionParent,
 		} = this.context;
 		const item = this.getSelectionItem();
-		const {selected} = this.state;
-		const {onSelect, id} = this.props;
+		const { selected } = this.state;
+		const { onSelect, id } = this.props;
 
 		clearTimeout(this.doUnselectTimeout);
 
@@ -142,15 +140,12 @@ export default class Selectable extends React.Component {
 			}
 		}
 
-
-
 		if (onSelect && !selected) {
 			onSelect(item);
 		}
-	}
+	};
 
-
-	unselect = (e) => {
+	unselect = e => {
 		e.stopPropagation();
 
 		//Wait to do the unselect actions to see if something is adding focus
@@ -158,16 +153,15 @@ export default class Selectable extends React.Component {
 		this.doUnselectTimeout = setTimeout(() => {
 			this.doUnselect();
 		}, 250);
-	}
+	};
 
-
-	doUnselect () {
+	doUnselect() {
 		const {
-			SelectionManager:selectionManager,
-			SelectionParent:selectionParent
+			SelectionManager: selectionManager,
+			SelectionParent: selectionParent,
 		} = this.context;
 		const item = this.getSelectionItem();
-		const {onUnselect, id} = this.props;
+		const { onUnselect, id } = this.props;
 
 		if (selectionManager) {
 			selectionManager.unselect(item);
@@ -180,12 +174,10 @@ export default class Selectable extends React.Component {
 		if (onUnselect) {
 			onUnselect(item);
 		}
-
 	}
 
-
-	childSelected (id) {
-		const {onChildSelect} = this.props;
+	childSelected(id) {
+		const { onChildSelect } = this.props;
 		const isSelected = this.selectedChildren.find(x => x === id);
 
 		if (!isSelected) {
@@ -195,18 +187,20 @@ export default class Selectable extends React.Component {
 		clearTimeout(this.doUnselectChildTimeout);
 
 		//On select should always set the state to having a child selected
-		this.setState({
-			childSelected: true
-		}, () => {
-			if (onChildSelect) {
-				onChildSelect();
+		this.setState(
+			{
+				childSelected: true,
+			},
+			() => {
+				if (onChildSelect) {
+					onChildSelect();
+				}
 			}
-		});
+		);
 	}
 
-
-	childUnselected (id) {
-		const {onChildUnselect} = this.props;
+	childUnselected(id) {
+		const { onChildUnselect } = this.props;
 
 		this.selectedChildren = this.selectedChildren.filter(x => x !== id);
 
@@ -215,22 +209,26 @@ export default class Selectable extends React.Component {
 		this.doUnselectChildTimeout = setTimeout(() => {
 			//Unselected should only set the state to unselected if there
 			//are no other selected children
-			this.setState({
-				childSelected: this.selectedChildren.length
-			}, () => {
-				if (onChildUnselect) {
-					onChildUnselect();
+			this.setState(
+				{
+					childSelected: this.selectedChildren.length,
+				},
+				() => {
+					if (onChildUnselect) {
+						onChildUnselect();
+					}
 				}
-			});
+			);
 		}, 250);
-
 	}
 
-
-	render () {
-		let {className, children, ...otherProps} = this.props;
-		let {selected, childSelected} = this.state;
-		let cls = cx(className || '', 'selectable', { selected, childSelected});
+	render() {
+		let { className, children, ...otherProps } = this.props;
+		let { selected, childSelected } = this.state;
+		let cls = cx(className || '', 'selectable', {
+			selected,
+			childSelected,
+		});
 
 		delete otherProps.onFocus;
 		delete otherProps.onBlur;
@@ -242,7 +240,12 @@ export default class Selectable extends React.Component {
 		delete otherProps.onChildUnselect;
 
 		return (
-			<div {...otherProps} className={cls} onFocus={this.select} onBlur={this.unselect}>
+			<div
+				{...otherProps}
+				className={cls}
+				onFocus={this.select}
+				onBlur={this.unselect}
+			>
 				{children}
 			</div>
 		);

@@ -2,7 +2,7 @@ import Logger from '@nti/util-logger';
 
 const logger = Logger.get('lib:dnd:DataTransfer');
 
-export function getTransferKey (obj) {
+export function getTransferKey(obj) {
 	let key = '';
 
 	if (obj.getKeyForDataTransfer) {
@@ -20,7 +20,7 @@ export function getTransferKey (obj) {
 	return key;
 }
 
-export function isSameData (a, b) {
+export function isSameData(a, b) {
 	let equal = false;
 
 	if (a.NTIID != null) {
@@ -45,16 +45,18 @@ export default class DataTransfer {
 	 * Create a DataTransfer
 	 * @param  {DataTransfer} dataTransfer the data transfer from the dnd event
 	 */
-	constructor (dataTransfer) {
+	constructor(dataTransfer) {
 		this.dataTransfer = dataTransfer;
 		this.transferData = {};
 	}
 
-
-	get types () {
-		return (this.dataTransfer && this.dataTransfer.types) || Object.keys(this.transferData) || [];
+	get types() {
+		return (
+			(this.dataTransfer && this.dataTransfer.types) ||
+			Object.keys(this.transferData) ||
+			[]
+		);
 	}
-
 
 	/**
 	 * Add values to be set on the dataTransfer object.
@@ -75,12 +77,11 @@ export default class DataTransfer {
 	 * @param {Mixed} value the value to store
 	 * @returns {void}
 	 */
-	setData (key, value) {
+	setData(key, value) {
 		if (!value && key) {
 			value = key;
 			key = getTransferKey(value);
 		}
-
 
 		if (!key) {
 			logger.error('No key provided for data transfer');
@@ -92,15 +93,13 @@ export default class DataTransfer {
 		} else {
 			try {
 				value = JSON.stringify(value);
-			}
-			catch (e) {
+			} catch (e) {
 				logger.warn('Circular reference error.  Dragging may not work');
 			}
 		}
 
 		this.transferData[key] = value;
 	}
-
 
 	/**
 	 * Iterate the data that has been set with setData,
@@ -112,7 +111,7 @@ export default class DataTransfer {
 	 * @param  {Function} fn callback
 	 * @returns {void}
 	 */
-	forEach (fn) {
+	forEach(fn) {
 		let data = this.transferData;
 		let keys = Object.keys(data);
 
@@ -130,21 +129,25 @@ export default class DataTransfer {
 	 * @param  {string} key the key to look for
 	 * @returns {string}		the value on data transfer for that key
 	 */
-	getData (key) {
-		const {dataTransfer} = this;
-		const {types} = dataTransfer || {};
+	getData(key) {
+		const { dataTransfer } = this;
+		const { types } = dataTransfer || {};
 		const data = dataTransfer && dataTransfer.getData(key);
 
-		if (!dataTransfer) { return false; }
+		if (!dataTransfer) {
+			return false;
+		}
 
 		// in firefox 'types' is a 'DOMStringList' which doesn't have an 'indexOf' method but does have 'contains'
-		if (types.indexOf && types.indexOf(key) >= 0 || types.contains && types.contains(key)) {
+		if (
+			(types.indexOf && types.indexOf(key) >= 0) ||
+			(types.contains && types.contains(key))
+		) {
 			return data === '' ? true : data;
 		}
 
 		return false;
 	}
-
 
 	/**
 	 * Get data for the key and try to parse it into json
@@ -152,7 +155,7 @@ export default class DataTransfer {
 	 * @param  {string} key the key to find
 	 * @returns {JSON}     the parsed JSON or null if it wasn't able to parse it
 	 */
-	getJSON (key) {
+	getJSON(key) {
 		let data = this.getData(key);
 
 		try {
@@ -170,10 +173,9 @@ export default class DataTransfer {
 	 * @param  {string} key the key to find
 	 * @returns {string|JSON}     the raw data or JSON if it would be parsed
 	 */
-	findDataFor (key) {
+	findDataFor(key) {
 		return this.getJSON(key) || this.getData(key);
 	}
-
 
 	/**
 	 * Figure out is the dataTansfer contains data for a key
@@ -181,7 +183,7 @@ export default class DataTransfer {
 	 * @param  {string} key the key to find
 	 * @returns {boolean}     if it has that type of data or not
 	 */
-	containsType (key) {
+	containsType(key) {
 		let types = this.dataTransfer && this.dataTransfer.types;
 		let contains = false;
 

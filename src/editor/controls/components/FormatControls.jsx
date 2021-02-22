@@ -8,14 +8,14 @@ import {
 	UnderlineButton,
 	TypeButton,
 	LinkButton,
-	BLOCKS
+	BLOCKS,
 } from '@nti/web-editor';
 
 const DISABLE_FOR_BLOCKS = {
-	[BLOCKS.CODE]: true
+	[BLOCKS.CODE]: true,
 };
 
-function getEditorForSelection (selection) {
+function getEditorForSelection(selection) {
 	const first = selection && selection[0];
 	let value = first && first.value;
 	let editor;
@@ -30,32 +30,30 @@ function getEditorForSelection (selection) {
 
 export default class FormatControls extends React.Component {
 	static propTypes = {
-		selection: PropTypes.any
-	}
+		selection: PropTypes.any,
+	};
 
-
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
-		const {selection} = this.props;
+		const { selection } = this.props;
 
 		this.state = {
-			editor: getEditorForSelection(selection)
+			editor: getEditorForSelection(selection),
 		};
 	}
 
-
-	componentDidUpdate () {
+	componentDidUpdate() {
 		const editor = getEditorForSelection(this.props.selection);
 
 		if (editor !== this.state.editor) {
 			this.setState({
-				editor
+				editor,
 			});
 		}
 	}
 
-	shouldDisableForState (editorState) {
+	shouldDisableForState(editorState) {
 		if (!editorState) {
 			return false;
 		}
@@ -74,19 +72,28 @@ export default class FormatControls extends React.Component {
 		return block && DISABLE_FOR_BLOCKS[block.getType()];
 	}
 
-
-	render () {
-		const {editor} = this.state;
+	render() {
+		const { editor } = this.state;
 
 		return (
 			<ContextProvider editor={editor}>
 				<div className="editor-format-controls">
-					<BoldButton shouldDisableForState={this.shouldDisableForState}/>
-					<ItalicButton shouldDisableForState={this.shouldDisableForState}/>
-					<UnderlineButton shouldDisableForState={this.shouldDisableForState}/>
-					<span className="format-divider"/>
-					<LinkButton shouldDisableForState={this.shouldDisableForState} />
-					<TypeButton type={BLOCKS.CODE} inlineStyle><div className="icon-code-block"/></TypeButton>
+					<BoldButton
+						shouldDisableForState={this.shouldDisableForState}
+					/>
+					<ItalicButton
+						shouldDisableForState={this.shouldDisableForState}
+					/>
+					<UnderlineButton
+						shouldDisableForState={this.shouldDisableForState}
+					/>
+					<span className="format-divider" />
+					<LinkButton
+						shouldDisableForState={this.shouldDisableForState}
+					/>
+					<TypeButton type={BLOCKS.CODE} inlineStyle>
+						<div className="icon-code-block" />
+					</TypeButton>
 				</div>
 			</ContextProvider>
 		);

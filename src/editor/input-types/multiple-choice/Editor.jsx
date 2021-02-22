@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import ChoiceFactory from '../choices/Factory';
-import {canAddPart, canMovePart, canRemovePart} from '../utils';
+import { canAddPart, canMovePart, canRemovePart } from '../utils';
 
-import Choices, {Placeholder} from './Choices';
-import {generatePartFor} from './utils';
+import Choices, { Placeholder } from './Choices';
+import { generatePartFor } from './utils';
 
 const errorField = 'choices';
 
-export {Placeholder};
+export { Placeholder };
 
 export default class MultipleChoiceEditor extends React.Component {
 	static propTypes = {
@@ -20,37 +20,50 @@ export default class MultipleChoiceEditor extends React.Component {
 		generatePart: PropTypes.func,
 		index: PropTypes.number,
 		onChange: PropTypes.func,
-		keepStateHash: PropTypes.number
-	}
+		keepStateHash: PropTypes.number,
+	};
 
-
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
-		const {part, error} = this.props;
-		const {choices, solutions, NTIID:partId} = part;
+		const { part, error } = this.props;
+		const { choices, solutions, NTIID: partId } = part;
 
 		this.partType = (partId + '-answer').toLowerCase();
 		this.partTypes = [this.partType];
 
-		this.choiceFactory = new ChoiceFactory (this.partType, partId, errorField);
+		this.choiceFactory = new ChoiceFactory(
+			this.partType,
+			partId,
+			errorField
+		);
 
 		this.state = {
 			choices: this.mapChoices(choices, solutions),
-			error
+			error,
 		};
 	}
 
 	//TODO: listen for changes on the question to update the choices
 
-
-	componentDidUpdate (prevProps) {
-		const {part:newPart, error:newError, keepStateHash:newStateHash} = this.props;
-		const {part:oldPart, error:oldError, keepStateHash:oldStateHash} = prevProps;
-		const {choices, solutions} = newPart;
+	componentDidUpdate(prevProps) {
+		const {
+			part: newPart,
+			error: newError,
+			keepStateHash: newStateHash,
+		} = this.props;
+		const {
+			part: oldPart,
+			error: oldError,
+			keepStateHash: oldStateHash,
+		} = prevProps;
+		const { choices, solutions } = newPart;
 		let state = null;
 
-		if (newPart !== oldPart || (newStateHash !== oldStateHash && !isNaN(oldStateHash))) {
+		if (
+			newPart !== oldPart ||
+			(newStateHash !== oldStateHash && !isNaN(oldStateHash))
+		) {
 			state = state || {};
 			state.choices = this.mapChoices(choices, solutions);
 		}
@@ -65,9 +78,8 @@ export default class MultipleChoiceEditor extends React.Component {
 		}
 	}
 
-
-	mapChoices (choices, solutions) {
-		let solution = (solutions || [])[0];//For now just handle the first solution
+	mapChoices(choices, solutions) {
+		let solution = (solutions || [])[0]; //For now just handle the first solution
 
 		solution = solution && solution.value;
 
@@ -86,54 +98,57 @@ export default class MultipleChoiceEditor extends React.Component {
 		});
 	}
 
-
-	generatePart (content, choices, solutions) {
-		const {part, generatePart} = this.props;
+	generatePart(content, choices, solutions) {
+		const { part, generatePart } = this.props;
 		const mimeType = part && part.MimeType;
 
 		if (!mimeType) {
 			//TODO: see if we ever need to handle this case
 		}
 
-		return generatePart ? generatePart(content, choices, solutions) : generatePartFor(mimeType, content, choices, solutions);
+		return generatePart
+			? generatePart(content, choices, solutions)
+			: generatePartFor(mimeType, content, choices, solutions);
 	}
 
+	choicesChanged = choices => {
+		const { multipleAnswers, onChange, index: partIndex } = this.props;
 
-	choicesChanged = (choices) => {
-		const {multipleAnswers, onChange, index:partIndex} = this.props;
+		let values = choices.reduce(
+			(acc, choice, index) => {
+				let label = choice.label;
 
-		let values = choices.reduce((acc, choice, index) => {
-			let label = choice.label;
+				acc.choices.push(label);
 
-			acc.choices.push(label);
+				if (choice.correct) {
+					acc.solutions.push(index);
+				}
 
-			if (choice.correct) {
-				acc.solutions.push(index);
-			}
-
-			return acc;
-		}, {choices: [], solutions: []});
+				return acc;
+			},
+			{ choices: [], solutions: [] }
+		);
 
 		if (!multipleAnswers) {
 			values.solutions = values.solutions[0];
 		}
 
 		if (onChange) {
-			onChange(partIndex, this.generatePart('', values.choices, values.solutions));
+			onChange(
+				partIndex,
+				this.generatePart('', values.choices, values.solutions)
+			);
 		}
+	};
 
-	}
-
-
-	buildBlankChoice = (column) => {
+	buildBlankChoice = column => {
 		return this.choiceFactory.make('', false, column.length, true);
-	}
+	};
 
+	removeChoice(id) {
+		let { choices } = this.state;
 
-	removeChoice (id) {
-		let {choices} = this.state;
-
-		choices = choices.filter((choice) => {
+		choices = choices.filter(choice => {
 			let choiceId = choice.NTIID || choice.ID;
 
 			return choiceId !== id;
@@ -142,10 +157,9 @@ export default class MultipleChoiceEditor extends React.Component {
 		this.choicesChanged(choices);
 	}
 
-
-	render () {
-		const {part, multipleAnswers, question} = this.props;
-		const {choices, error} = this.state;
+	render() {
+		const { part, multipleAnswers, question } = this.props;
+		const { choices, error } = this.state;
 
 		return (
 			<Choices
@@ -154,7 +168,9 @@ export default class MultipleChoiceEditor extends React.Component {
 				choices={choices}
 				error={error}
 				onChange={this.choicesChanged}
-				buildBlankChoice={canAddPart(question) ? this.buildBlankChoice : void 0}
+				buildBlankChoice={
+					canAddPart(question) ? this.buildBlankChoice : void 0
+				}
 				canRemove={canRemovePart(question)}
 				multipleAnswers={multipleAnswers}
 				reorderable={canMovePart(question)}

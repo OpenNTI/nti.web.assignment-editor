@@ -1,25 +1,22 @@
 import Editor from './Editor';
 import Button from './Button';
-import {partsEqual} from './utils';
+import { partsEqual } from './utils';
 
 export default class FreeResponsePart {
 	//TODO: get this mime type from the model
 	static handles = [
-		'application/vnd.nextthought.assessment.freeresponsepart'
-	]
+		'application/vnd.nextthought.assessment.freeresponsepart',
+	];
 
-
-	static get button () {
+	static get button() {
 		return Button;
 	}
 
-
-	static get editor () {
+	static get editor() {
 		return Editor;
 	}
 
-
-	static partsEqual (partA, partB) {
+	static partsEqual(partA, partB) {
 		return partsEqual(partA, partB);
 	}
 }

@@ -3,7 +3,7 @@
 .assignment-navigation-bar-status-assignment {
 	list-style: none;
 	margin: 0;
-	padding: 0.625rem 17px;//to match the breadcrumb from the webapp
+	padding: 0.625rem 17px; //to match the breadcrumb from the webapp
 	border-bottom: 1px solid var(--border-grey-light);
 	display: flex;
 	flex-wrap: wrap;
@@ -39,7 +39,8 @@
 
 	&.has-submission {
 		li {
-			i, b {
+			i,
+			b {
 				color: var(--secondary-grey);
 			}
 		}
@@ -47,7 +48,8 @@
 
 	.passing-score {
 		&.failed {
-			i, .percentage {
+			i,
+			.percentage {
 				color: var(--primary-red);
 			}
 		}

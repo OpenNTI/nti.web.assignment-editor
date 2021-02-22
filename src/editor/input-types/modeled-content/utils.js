@@ -1,12 +1,11 @@
-export function generatePartFor (mimeType, content, solution, hints) {
+export function generatePartFor(mimeType, content, solution, hints) {
 	return {
 		MimeType: mimeType,
 		content: content || '',
-		hints: hints || []
+		hints: hints || [],
 	};
 }
 
-
-export function partsEqual (/*partA, partB*/) {
+export function partsEqual(/*partA, partB*/) {
 	return false;
 }

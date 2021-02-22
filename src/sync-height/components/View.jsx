@@ -6,39 +6,37 @@ const SYNC_HEIGHT = Symbol('Sync Height');
 export default class SyncHeightView extends React.Component {
 	static propTypes = {
 		group: PropTypes.object.isRequired,
-		children: PropTypes.any
-	}
+		children: PropTypes.any,
+	};
 
-	setInnerRef = x => this.innerRef = x
+	setInnerRef = x => (this.innerRef = x);
 
-
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
-		const {group} = this.props;
+		const { group } = this.props;
 
 		this.item = group.getNewItem();
 
 		this.state = {
-			height: group.height
+			height: group.height,
 		};
 
 		this[SYNC_HEIGHT] = () => {
-			const {height:newHeight} = this.props.group;
-			const {height:oldHeight} = this.state;
+			const { height: newHeight } = this.props.group;
+			const { height: oldHeight } = this.state;
 
 			if (newHeight !== oldHeight) {
 				this.setState({
-					height: newHeight
+					height: newHeight,
 				});
 			}
 		};
 	}
 
-
-	componentDidUpdate (prevProps) {
-		const {group:newGroup} = this.props;
-		const {group:oldGroup} = prevProps;
+	componentDidUpdate(prevProps) {
+		const { group: newGroup } = this.props;
+		const { group: oldGroup } = prevProps;
 
 		if (newGroup !== oldGroup) {
 			this.addListeners(newGroup);
@@ -46,14 +44,13 @@ export default class SyncHeightView extends React.Component {
 			this.updateHeight();
 
 			this.setState({
-				height: newGroup.height
+				height: newGroup.height,
 			});
 		}
 	}
 
-
-	updateHeight () {
-		const {group} = this.props;
+	updateHeight() {
+		const { group } = this.props;
 		const height = this.innerRef && this.innerRef.clientHeight;
 
 		if (height != null && group) {
@@ -61,45 +58,38 @@ export default class SyncHeightView extends React.Component {
 		}
 	}
 
-
-	componentDidMount () {
+	componentDidMount() {
 		this.addListeners();
 	}
 
-
-	componentWillUnmount () {
+	componentWillUnmount() {
 		this.removeListeners();
 	}
 
-
-	addListeners (newGroup) {
+	addListeners(newGroup) {
 		this.removeListeners();
 
-		const {group} = this.props;
+		const { group } = this.props;
 		const listenTo = newGroup || group;
 
 		listenTo.addListener('sync-height', this[SYNC_HEIGHT]);
 	}
 
-
-	removeListeners () {
-		const {group} = this.props;
+	removeListeners() {
+		const { group } = this.props;
 
 		group.removeListener('sync-height', this[SYNC_HEIGHT]);
 	}
 
-
-	render () {
-		const {children} = this.props;
-		const {height} = this.state;
+	render() {
+		const { children } = this.props;
+		const { height } = this.state;
 
 		//TODO: use the HeightChange HOC to listen for height changes, instead
 		//of relying on the parent to call updateHeight
 		return (
-			<div className="sync-height" style={{minHeight: height + 'px'}}>
-				<div ref={this.setInnerRef}>
-					{children}
-				</div>
+			<div className="sync-height" style={{ minHeight: height + 'px' }}>
+				<div ref={this.setInnerRef}>{children}</div>
 			</div>
 		);
 	}

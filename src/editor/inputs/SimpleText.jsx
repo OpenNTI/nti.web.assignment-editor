@@ -2,42 +2,37 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default class SimpleText extends React.Component {
-
 	static propTypes = {
 		onChange: PropTypes.func,
 		onFocus: PropTypes.func,
 		onBlur: PropTypes.func,
 		value: PropTypes.string,
-		error: PropTypes.string
-	}
+		error: PropTypes.string,
+	};
 
 	static draultProps = {
 		onBlur: () => {},
 		onFocus: () => {},
-		onChange: () => {}
-	}
+		onChange: () => {},
+	};
 
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
 		this.state = {
-			value: props.value
+			value: props.value,
 		};
 
-		const bindList = [
-			'onChange'
-		];
+		const bindList = ['onChange'];
 
 		for (let fn of bindList) {
 			this[fn] = this[fn].bind(this);
 		}
 	}
 
+	onChange() {}
 
-	onChange () {}
-
-
-	render () {
+	render() {
 		//TODO: render any errors passed in
 		return (
 			<input

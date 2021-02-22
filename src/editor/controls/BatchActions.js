@@ -5,25 +5,22 @@ const Queue = Symbol('Queue');
 const Batch = Symbol('Batch');
 
 export default class BatchActions extends EventEmitter {
-	constructor () {
+	constructor() {
 		super();
 
 		this[Queue] = [];
 		this[Actions] = {};
 	}
 
-
-	get shouldBatch () {
+	get shouldBatch() {
 		return this[Batch];
 	}
 
-
-	set shouldBatch (value) {
+	set shouldBatch(value) {
 		this[Batch] = !!value;
 	}
 
-
-	preformAction (fn, key) {
+	preformAction(fn, key) {
 		if (this.shouldBatch) {
 			this.batchAction(fn, key);
 		} else {
@@ -31,8 +28,7 @@ export default class BatchActions extends EventEmitter {
 		}
 	}
 
-
-	batchAction (fn, key) {
+	batchAction(fn, key) {
 		if (key && this[Actions][key]) {
 			this[Actions][key] = fn;
 		} else if (key) {
@@ -45,8 +41,7 @@ export default class BatchActions extends EventEmitter {
 		this.emit('changed');
 	}
 
-
-	preformAll () {
+	preformAll() {
 		const actions = this[Actions];
 		const queue = this[Queue];
 

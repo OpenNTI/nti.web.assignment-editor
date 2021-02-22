@@ -6,7 +6,8 @@
 	align-items: center;
 	flex-direction: row;
 
-	.nti-button, .nti-button.primary {
+	.nti-button,
+	.nti-button.primary {
 		background: var(--primary-green);
 		font-weight: 400;
 		margin-right: 0.5rem;

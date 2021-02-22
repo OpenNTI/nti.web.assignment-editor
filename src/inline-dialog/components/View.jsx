@@ -3,19 +3,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import jump from 'jump.js';
-import {getViewportHeight} from '@nti/lib-dom';
-import {DialogButtons, LockScroll} from '@nti/web-commons';
+import { getViewportHeight } from '@nti/lib-dom';
+import { DialogButtons, LockScroll } from '@nti/web-commons';
 
-import {HeightChange} from '../../sync-height';
-import {getDialogPositionForRect, getScrollOffsetForRect} from '../utils';
+import { HeightChange } from '../../sync-height';
+import { getDialogPositionForRect, getScrollOffsetForRect } from '../utils';
 
 const BODY_OPEN_CLS = 'inline-dialog-open';
 
-function getBody () {
+function getBody() {
 	return typeof document === 'undefined' ? null : document.body;
 }
 
-function addOpenClsToBody () {
+function addOpenClsToBody() {
 	const body = getBody();
 
 	if (body) {
@@ -23,7 +23,7 @@ function addOpenClsToBody () {
 	}
 }
 
-function removeOpenClsFromBody () {
+function removeOpenClsFromBody() {
 	const body = getBody();
 
 	if (body) {
@@ -38,28 +38,26 @@ export default class InlineDialog extends React.Component {
 		dialogButtons: PropTypes.array,
 		active: PropTypes.bool,
 		topPadding: PropTypes.number,
-		bottomPadding: PropTypes.number
-	}
+		bottomPadding: PropTypes.number,
+	};
 
-	setDialogRef = x => this.dialog = x
-	setInnerRef = x => this.innerRef = x
-	setPlaceholderRef = x => this.placeholderRef = x
+	setDialogRef = x => (this.dialog = x);
+	setInnerRef = x => (this.innerRef = x);
+	setPlaceholderRef = x => (this.placeholderRef = x);
 
+	state = {};
 
-	state = {}
-
-	componentDidMount () {
-		const {active} = this.props;
+	componentDidMount() {
+		const { active } = this.props;
 
 		if (active) {
 			this.activateModal();
 		}
 	}
 
-
-	componentDidUpdate () {
-		const {active} = this.props;
-		const {active:isActive} = this.state;
+	componentDidUpdate() {
+		const { active } = this.props;
+		const { active: isActive } = this.state;
 
 		if (active && !isActive) {
 			this.activateModal();
@@ -68,8 +66,7 @@ export default class InlineDialog extends React.Component {
 		}
 	}
 
-
-	getDialogRect () {
+	getDialogRect() {
 		let rect = null;
 
 		if (this.innerRef && this.placeholderRef) {
@@ -77,7 +74,7 @@ export default class InlineDialog extends React.Component {
 
 			rect = {
 				top: placeholderRect.top,
-				height: this.innerRef.firstChild.clientHeight
+				height: this.innerRef.firstChild.clientHeight,
 			};
 		} else {
 			rect = this.dialog && this.dialog.getBoundingClientRect();
@@ -86,68 +83,81 @@ export default class InlineDialog extends React.Component {
 		return rect;
 	}
 
+	updateModal = force => {
+		const { topPadding, bottomPadding } = this.props;
+		const { active } = this.state;
 
-	updateModal = (force) => {
-		const {topPadding, bottomPadding} = this.props;
-		const {active} = this.state;
-
-		if (this.isUpdating || (!active && !force)) { return; }
+		if (this.isUpdating || (!active && !force)) {
+			return;
+		}
 
 		this.isUpdating = true;
 
-		const onceScrolled = new Promise((fulfill) => {
-			const scrollOffset = getScrollOffsetForRect(this.getDialogRect(), getViewportHeight(), topPadding, bottomPadding);
+		const onceScrolled = new Promise(fulfill => {
+			const scrollOffset = getScrollOffsetForRect(
+				this.getDialogRect(),
+				getViewportHeight(),
+				topPadding,
+				bottomPadding
+			);
 
 			if (scrollOffset) {
 				jump(scrollOffset, {
 					duration: 250,
-					callback: fulfill
+					callback: fulfill,
 				});
 			} else {
 				fulfill();
 			}
 		});
 
+		onceScrolled.then(() => {
+			const { dialogPosition: currentPosition } = this.state;
+			const newPosition = getDialogPositionForRect(this.getDialogRect());
 
-		onceScrolled
-			.then(() => {
-				const {dialogPosition:currentPosition} = this.state;
-				const newPosition = getDialogPositionForRect(this.getDialogRect());
-
-				if (!currentPosition || currentPosition.top !== newPosition.top || currentPosition.height !== newPosition.height) {
-					this.setState({
+			if (
+				!currentPosition ||
+				currentPosition.top !== newPosition.top ||
+				currentPosition.height !== newPosition.height
+			) {
+				this.setState(
+					{
 						active: true,
-						dialogPosition: newPosition
-					}, () => {
+						dialogPosition: newPosition,
+					},
+					() => {
 						delete this.isUpdating;
-					});
-				}
-			});
-	}
+					}
+				);
+			}
+		});
+	};
 
-
-	activateModal () {
+	activateModal() {
 		this.updateModal(true);
 
 		addOpenClsToBody();
 	}
 
-
-	deactivateModal () {
+	deactivateModal() {
 		this.setState({
 			active: false,
-			dialogPosition: null
+			dialogPosition: null,
 		});
 
 		removeOpenClsFromBody();
 	}
 
-
-	render () {
-		const {children, className, dialogButtons, bottomPadding} = this.props;
-		const {dialogPosition, active} = this.state;
+	render() {
+		const {
+			children,
+			className,
+			dialogButtons,
+			bottomPadding,
+		} = this.props;
+		const { dialogPosition, active } = this.state;
 		const child = React.Children.only(children);
-		const cls = cx('inline-dialog', className, {active});
+		const cls = cx('inline-dialog', className, { active });
 		let wrapperStyles = {};
 		let innerStyles = {};
 		let placeholderStyles = {};
@@ -161,25 +171,32 @@ export default class InlineDialog extends React.Component {
 			innerStyles.paddingBottom = `${bottomPadding}px`;
 		}
 
-
 		return (
 			<div ref={this.setDialogRef} className={cls}>
-				{
-					active ?
-						(
-							<div className="wrapper" style={wrapperStyles}>
-								<LockScroll />
-								<div ref={this.setInnerRef} className="inner-wrapper" style={innerStyles}>
-									<HeightChange onChange={this.updateModal}>
-										{child}
-									</HeightChange>
-									<DialogButtons buttons={dialogButtons} />
-								</div>
-							</div>
-						) :
-						child
-				}
-				{ active && (<div ref={this.setPlaceholderRef} className="inline-dialog-placeholder" style={placeholderStyles} />)}
+				{active ? (
+					<div className="wrapper" style={wrapperStyles}>
+						<LockScroll />
+						<div
+							ref={this.setInnerRef}
+							className="inner-wrapper"
+							style={innerStyles}
+						>
+							<HeightChange onChange={this.updateModal}>
+								{child}
+							</HeightChange>
+							<DialogButtons buttons={dialogButtons} />
+						</div>
+					</div>
+				) : (
+					child
+				)}
+				{active && (
+					<div
+						ref={this.setPlaceholderRef}
+						className="inline-dialog-placeholder"
+						style={placeholderStyles}
+					/>
+				)}
 			</div>
 		);
 	}

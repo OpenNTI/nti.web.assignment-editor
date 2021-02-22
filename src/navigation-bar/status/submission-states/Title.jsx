@@ -1,8 +1,8 @@
 import './Title.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {scoped} from '@nti/lib-locale';
-import {DateTime} from '@nti/web-commons';
+import { scoped } from '@nti/lib-locale';
+import { DateTime } from '@nti/web-commons';
 
 import getStateRenderer from './get-state-renderer';
 
@@ -11,68 +11,65 @@ const t = scoped('nti-assignment.navigation-bar.submission-states.Title', {
 		late: {
 			noGracePeriod: {
 				title: 'Late submissions will be accepted.',
-				subTitle: 'A late penalty may be applied to your score.'
+				subTitle: 'A late penalty may be applied to your score.',
 			},
 			insideGracePeriod: {
 				title: 'Late submissions will be accepted until %(date)s.',
-				subTitle: 'A late penalty may be applied to your score.'
+				subTitle: 'A late penalty may be applied to your score.',
 			},
 			outsideGracePeriod: {
-				title: 'You can no longer submit this assignment.'
-			}
-		}
+				title: 'You can no longer submit this assignment.',
+			},
+		},
 	},
 	submitted: {
 		pending: {
-			title: 'Thank you for submitting. We will notify you when your score is available.'
+			title:
+				'Thank you for submitting. We will notify you when your score is available.',
 		},
 		notPassFail: {
 			notAutoGrade: {
-				title: 'Thank you for submitting. Your score is now available.'
+				title: 'Thank you for submitting. Your score is now available.',
 			},
 			autoGrade: {
-				title: 'Your assignment was submitted successfully!'
-			}
+				title: 'Your assignment was submitted successfully!',
+			},
 		},
 		passFail: {
 			passed: {
 				title: 'Congratulations!',
-				subTitle: 'You met the requirements to pass this assignment.'
+				subTitle: 'You met the requirements to pass this assignment.',
 			},
 			failed: {
-				title: 'You did not meet the requirements to pass this assignment.'
-			}
-		}
-	}
+				title:
+					'You did not meet the requirements to pass this assignment.',
+			},
+		},
+	},
 });
 
-function renderTitle (baseKey, data) {
+function renderTitle(baseKey, data) {
 	const key = `${baseKey}.title`;
 
-	return t.isMissing(key) ?
-		null :
-		(
-			<span className="title">{t(key, data || {})}</span>
-		);
+	return t.isMissing(key) ? null : (
+		<span className="title">{t(key, data || {})}</span>
+	);
 }
 
-
-function renderSubTitle (baseKey, data) {
+function renderSubTitle(baseKey, data) {
 	const key = `${baseKey}.subTitle`;
 
-	return t.isMissing(key) ?
-		null :
-		(
-			<span className="sub-title">{t(key, data || {})}</span>
-		);
+	return t.isMissing(key) ? null : (
+		<span className="sub-title">{t(key, data || {})}</span>
+	);
 }
 
 const STATES = [
 	{
-		render: function NotSubmittedLate (assignment) {
+		render: function NotSubmittedLate(assignment) {
 			const now = new Date();
 			const due = assignment.getDueDate();
-			const {submissionBuffer} = assignment;
+			const { submissionBuffer } = assignment;
 
 			//If there is no submissionBuffer we will always accept late submissions
 			if (!submissionBuffer && submissionBuffer !== 0) {
@@ -84,13 +81,21 @@ const STATES = [
 				);
 			}
 
-			const latest = new Date(due.getTime() + ((submissionBuffer || 0) * 1000));
-			const baseKey = latest > now ? 'notSubmitted.late.insideGracePeriod' : 'notSubmitted.late.outsideGracePeriod';
-			const formatted = DateTime.format(latest, DateTime.WEEKDAY_MONTH_NAME_DAY_AT_TIME_WITH_ZONE);
+			const latest = new Date(
+				due.getTime() + (submissionBuffer || 0) * 1000
+			);
+			const baseKey =
+				latest > now
+					? 'notSubmitted.late.insideGracePeriod'
+					: 'notSubmitted.late.outsideGracePeriod';
+			const formatted = DateTime.format(
+				latest,
+				DateTime.WEEKDAY_MONTH_NAME_DAY_AT_TIME_WITH_ZONE
+			);
 
 			return (
 				<div className="not-submitted-late">
-					{renderTitle(baseKey, {date: formatted})}
+					{renderTitle(baseKey, { date: formatted })}
 					{renderSubTitle(baseKey)}
 				</div>
 			);
@@ -101,11 +106,16 @@ const STATES = [
 			const due = assignment.getDueDate();
 			const hasBeenSubmitted = historyItem && historyItem.isSubmitted();
 
-			return !assignment.isNonSubmit() && due && due < now && !hasBeenSubmitted;
-		}
+			return (
+				!assignment.isNonSubmit() &&
+				due &&
+				due < now &&
+				!hasBeenSubmitted
+			);
+		},
 	},
 	{
-		render: function Pending () {
+		render: function Pending() {
 			const base = 'submitted.pending';
 
 			return (
@@ -121,10 +131,10 @@ const STATES = [
 			const grade = historyItem && historyItem.getGradeValue();
 
 			return hasBeenSubmitted && (grade == null || grade === '');
-		}
+		},
 	},
 	{
-		render: function Success () {
+		render: function Success() {
 			const base = 'submitted.passFail.passed';
 
 			return (
@@ -135,14 +145,19 @@ const STATES = [
 			);
 		},
 		case: (assignment, historyItem) => {
-			const {CompletedItem} = assignment;
+			const { CompletedItem } = assignment;
 			const hasBeenSubmitted = historyItem && historyItem.isSubmitted();
 
-			return assignment.passingScore && hasBeenSubmitted && CompletedItem && CompletedItem.Success;
-		}
+			return (
+				assignment.passingScore &&
+				hasBeenSubmitted &&
+				CompletedItem &&
+				CompletedItem.Success
+			);
+		},
 	},
 	{
-		render: function Failed () {
+		render: function Failed() {
 			const base = 'submitted.passFail.failed';
 
 			return (
@@ -153,15 +168,19 @@ const STATES = [
 			);
 		},
 		case: (assignment, historyItem) => {
-			const {CompletedItem} = assignment;
+			const { CompletedItem } = assignment;
 			const hasBeenSubmitted = historyItem && historyItem.isSubmitted();
 
-
-			return assignment.passingScore && hasBeenSubmitted && CompletedItem && !CompletedItem.Success;
-		}
+			return (
+				assignment.passingScore &&
+				hasBeenSubmitted &&
+				CompletedItem &&
+				!CompletedItem.Success
+			);
+		},
 	},
 	{
-		render: function NotPassFailAutoGrade () {
+		render: function NotPassFailAutoGrade() {
 			const base = 'submitted.notPassFail.autoGrade';
 
 			return (
@@ -173,13 +192,16 @@ const STATES = [
 		},
 		case: (assignment, historyItem) => {
 			const hasBeenSubmitted = historyItem && historyItem.isSubmitted();
-			const autoGrade = historyItem && historyItem.grade && historyItem.grade.hasAutoGrade();
+			const autoGrade =
+				historyItem &&
+				historyItem.grade &&
+				historyItem.grade.hasAutoGrade();
 
 			return hasBeenSubmitted && autoGrade;
-		}
+		},
 	},
 	{
-		render: function NotPassFailNotAutoGrade () {
+		render: function NotPassFailNotAutoGrade() {
 			const base = 'submitted.notPassFail.notAutoGrade';
 
 			return (
@@ -192,25 +214,29 @@ const STATES = [
 		//The assignment has been submitted, has manual grade
 		case: (assignment, historyItem) => {
 			const hasBeenSubmitted = historyItem && historyItem.isSubmitted();
-			const autoGrade = historyItem && historyItem.grade && historyItem.grade.hasAutoGrade();
+			const autoGrade =
+				historyItem &&
+				historyItem.grade &&
+				historyItem.grade.hasAutoGrade();
 
 			return hasBeenSubmitted && !autoGrade;
-		}
+		},
 	},
 ];
 
 export default class AssignmentSubmissionTitle extends React.PureComponent {
 	static propTypes = {
 		assignment: PropTypes.object,
-		historyItem: PropTypes.object
-	}
+		historyItem: PropTypes.object,
+	};
 
-
-	render () {
-		const {assignment, historyItem} = this.props;
+	render() {
+		const { assignment, historyItem } = this.props;
 		const render = getStateRenderer(STATES, assignment, historyItem);
 
-		if (!render) { return null; }
+		if (!render) {
+			return null;
+		}
 
 		return (
 			<div className="assignment-navigation-bar-status-submission-title">

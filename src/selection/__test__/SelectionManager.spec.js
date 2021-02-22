@@ -10,7 +10,7 @@ describe('Selection Manager tests', () => {
 
 	beforeEach(() => {
 		listeners = {
-			changed: () => {}
+			changed: () => {},
 		};
 
 		spyOn(listeners, 'changed');
@@ -21,7 +21,7 @@ describe('Selection Manager tests', () => {
 	});
 
 	test('Select fires selection-changed', () => {
-		let item = new SelectionItem({id: 0});
+		let item = new SelectionItem({ id: 0 });
 
 		selectionManager.select(item);
 
@@ -29,7 +29,7 @@ describe('Selection Manager tests', () => {
 	});
 
 	test('Selecting the same item more than once only has one selection', () => {
-		let item = new SelectionItem({id: 0});
+		let item = new SelectionItem({ id: 0 });
 
 		selectionManager.select(item);
 		selectionManager.select(item);
@@ -41,8 +41,8 @@ describe('Selection Manager tests', () => {
 	});
 
 	test('Selecting with keepSelection keeps the current selection', () => {
-		let itemA = new SelectionItem({id: 0});
-		let itemB = new SelectionItem({id: 1});
+		let itemA = new SelectionItem({ id: 0 });
+		let itemB = new SelectionItem({ id: 1 });
 
 		selectionManager.select(itemA);
 		selectionManager.select(itemB, true);
@@ -52,9 +52,9 @@ describe('Selection Manager tests', () => {
 		expect(selection.length).toEqual(2);
 	});
 
-	test('Select doesn\'t fire selection-changed when selecting an item with the same id as a selected one', () => {
-		let itemA = new SelectionItem({id: 0});
-		let itemB = new SelectionItem({id: 0});
+	test("Select doesn't fire selection-changed when selecting an item with the same id as a selected one", () => {
+		let itemA = new SelectionItem({ id: 0 });
+		let itemB = new SelectionItem({ id: 0 });
 
 		selectionManager.select(itemA);
 		selectionManager.select(itemB);
@@ -63,8 +63,8 @@ describe('Selection Manager tests', () => {
 	});
 
 	test('Unselect removes item from selection', () => {
-		let itemA = new SelectionItem({id: 0});
-		let itemB = new SelectionItem({id: 1});
+		let itemA = new SelectionItem({ id: 0 });
+		let itemB = new SelectionItem({ id: 1 });
 
 		selectionManager.select(itemA);
 		selectionManager.select(itemB, true);
@@ -81,19 +81,18 @@ describe('Selection Manager tests', () => {
 		expect(selection[0].id).toEqual(1);
 	});
 
-	test('Unselect doesn\'t fire selection changed if nothing selected', () => {
-		selectionManager.unselect(new SelectionItem({id: 0}));
+	test("Unselect doesn't fire selection changed if nothing selected", () => {
+		selectionManager.unselect(new SelectionItem({ id: 0 }));
 
 		expect(listeners.changed.calls.count()).toEqual(0);
 	});
 
 	test('Unselect does fire selection changed if unselecting selected item', () => {
-		let item = new SelectionItem({id: 0});
+		let item = new SelectionItem({ id: 0 });
 
 		selectionManager.select(item);
 		selectionManager.unselect(item);
 
 		expect(listeners.changed.calls.count()).toEqual(2);
 	});
-
 });

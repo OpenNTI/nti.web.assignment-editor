@@ -1,16 +1,16 @@
 import './View.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
-import {scoped} from '@nti/lib-locale';
-import {Flyout} from '@nti/web-commons';
+import { scoped } from '@nti/lib-locale';
+import { Flyout } from '@nti/web-commons';
 
 import Attempt from './Attempt';
 
 const t = scoped('nti-assignment.navigation-bar.attempt-switcher.View', {
-	label: 'Attempts'
+	label: 'Attempts',
 });
 
-function isSameAttempt (a, b) {
+function isSameAttempt(a, b) {
 	a = a && a.getID ? a.getID() : a;
 	b = b && b.getID ? b.getID() : b;
 
@@ -21,31 +21,31 @@ export default class AssignmentNavigationAttemptSwitcher extends React.Component
 	static propTypes = {
 		attempts: PropTypes.arrayOf(
 			PropTypes.shape({
-				getID: PropTypes.func
+				getID: PropTypes.func,
 			})
 		),
 		active: PropTypes.oneOfType([
 			PropTypes.string,
 			PropTypes.shape({
-				getID: PropTypes.func
-			})
-		])
-	}
+				getID: PropTypes.func,
+			}),
+		]),
+	};
 
-	attachFlyout = x => this.flyout = x;
-
+	attachFlyout = x => (this.flyout = x);
 
 	onNavigation = () => {
 		if (this.flyout) {
 			this.flyout.doClose();
 		}
-	}
+	};
 
+	render() {
+		const { active, attempts } = this.props;
 
-	render () {
-		const {active, attempts} = this.props;
-
-		if (!attempts.length) { return null; }
+		if (!attempts.length) {
+			return null;
+		}
 
 		return (
 			<Flyout.Triggered
@@ -59,7 +59,11 @@ export default class AssignmentNavigationAttemptSwitcher extends React.Component
 					{attempts.map((attempt, index) => {
 						return (
 							<li key={index}>
-								<Attempt active={isSameAttempt(active, attempt)} attempt={attempt} onNavigation={this.onNavigation} />
+								<Attempt
+									active={isSameAttempt(active, attempt)}
+									attempt={attempt}
+									onNavigation={this.onNavigation}
+								/>
 							</li>
 						);
 					})}
@@ -68,12 +72,11 @@ export default class AssignmentNavigationAttemptSwitcher extends React.Component
 		);
 	}
 
-
-	renderTrigger (active) {
+	renderTrigger(active) {
 		return (
 			<div className="assignment-navigation-bar-attempt-switcher-trigger">
-				{active && (<Attempt label attempt={active} />)}
-				{!active && (<span>{t('label')}</span>)}
+				{active && <Attempt label attempt={active} />}
+				{!active && <span>{t('label')}</span>}
 				<i className="icon-chevron-down" />
 			</div>
 		);

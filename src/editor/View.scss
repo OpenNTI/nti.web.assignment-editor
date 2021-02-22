@@ -1,4 +1,4 @@
-@import "~@nti/style-common";
+@import '~@nti/style-common';
 
 .assignment-editor-container {
 	max-width: rem-calc(1024px);
@@ -6,7 +6,8 @@
 	margin: 0 auto;
 	font-family: var(--body-font-family);
 
-	&, * {
+	&,
+	* {
 		box-sizing: border-box;
 	}
 
@@ -44,7 +45,8 @@
 		}
 	}
 
-	.assignment-content-editor.selectable, .assignment-title-editor.selectable {
+	.assignment-content-editor.selectable,
+	.assignment-title-editor.selectable {
 		&:not(.selected) {
 			.nti-draft-core {
 				background: none;

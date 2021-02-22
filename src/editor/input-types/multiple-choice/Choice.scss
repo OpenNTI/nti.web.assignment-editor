@@ -1,10 +1,11 @@
-@import "~@nti/style-common";
+@import '~@nti/style-common';
 
 .multiple-choice-choice {
 	position: relative;
 	margin-bottom: 9px;
 
-	.nti-rich-text, .nti-buffered-text-editor {
+	.nti-rich-text,
+	.nti-buffered-text-editor {
 		padding-left: rem-calc(32px);
 	}
 
@@ -12,7 +13,8 @@
 		padding-left: rem-calc(32px);
 	}
 
-	.radio-component, .checkbox-component {
+	.radio-component,
+	.checkbox-component {
 		position: absolute;
 		top: 12px;
 		left: rem-calc(32px);
@@ -31,7 +33,8 @@
 // }
 
 .is-saving .multiple-choice-choice {
-	.radio-component, .checkbox-component {
+	.radio-component,
+	.checkbox-component {
 		opacity: 0;
 	}
 }

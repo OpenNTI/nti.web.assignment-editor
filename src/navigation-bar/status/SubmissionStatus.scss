@@ -2,13 +2,15 @@
 
 .assignment-navigation-bar-status-submission {
 	&:empty {
-		&, &.wide, &.narrow {
+		&,
+		&.wide,
+		&.narrow {
 			display: none;
 		}
 	}
 
 	&.wide {
-		padding: 1.625rem 17px;//to match the breadcrumb from the webapp
+		padding: 1.625rem 17px; //to match the breadcrumb from the webapp
 		border-bottom: 1px solid var(--border-grey-light);
 		display: grid;
 		grid-template-columns: 40px 1fr 100px;
@@ -17,7 +19,7 @@
 		grid-row-gap: 0.375rem;
 
 		.is-ie & {
-			padding-left: 1.25rem;	// IE ignores grid-gap
+			padding-left: 1.25rem; // IE ignores grid-gap
 		}
 
 		.assignment-navigation-bar-status-submission-icon {
@@ -58,7 +60,7 @@
 		grid-row-gap: 0.625rem;
 
 		.is-ie & {
-			padding-left: 1.25rem;	// IE ignores grid-gap
+			padding-left: 1.25rem; // IE ignores grid-gap
 		}
 
 		.assignment-navigation-bar-status-submission-icon {

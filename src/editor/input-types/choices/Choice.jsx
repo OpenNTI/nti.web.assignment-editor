@@ -2,15 +2,15 @@ import './Choice.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {Events} from '@nti/lib-commons';
+import { Events } from '@nti/lib-commons';
 
 import BufferedTextEditor from '../../inputs/BufferedTextEditor';
-import {DragHandle} from '../../../dnd';
+import { DragHandle } from '../../../dnd';
 import SyncHeight from '../../../sync-height';
-import {Component as Selectable} from '../../../selection';
+import { Component as Selectable } from '../../../selection';
 import ControlsConfig from '../../controls/ControlsConfig';
 
-const {getKeyCode} = Events;
+const { getKeyCode } = Events;
 
 const PLACEHOLDER = '';
 
@@ -37,30 +37,28 @@ export default class Choice extends React.Component {
 		insertNewChoiceAfter: PropTypes.func,
 		focusNext: PropTypes.func,
 		focusPrev: PropTypes.func,
-		maybeDeleteRow: PropTypes.func
-	}
+		maybeDeleteRow: PropTypes.func,
+	};
 
+	setSyncRef = x => (this.syncRef = x);
 
-	setSyncRef = x => this.syncRef = x
-
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
-		const {choice} = this.props;
+		const { choice } = this.props;
 
 		this.isNew = choice.isNew;
 
 		this.state = {
 			selectableId: choice.NTIID || choice.ID,
-			selectableValue: new ControlsConfig()
+			selectableValue: new ControlsConfig(),
 		};
 
-		this.setEditorRef = x => this.editorRef = x;
+		this.setEditorRef = x => (this.editorRef = x);
 	}
 
-
-	componentDidUpdate ({choice: oldChoice}) {
-		const {choice} = this.props;
+	componentDidUpdate({ choice: oldChoice }) {
+		const { choice } = this.props;
 
 		if (choice !== oldChoice && choice?.isNew) {
 			this.isNew = true;
@@ -74,8 +72,7 @@ export default class Choice extends React.Component {
 		this.addListener();
 	}
 
-
-	componentDidMount () {
+	componentDidMount() {
 		this.addListener();
 		this.syncHeight();
 
@@ -87,16 +84,14 @@ export default class Choice extends React.Component {
 		}
 	}
 
-
-	componentWillUnmount () {
+	componentWillUnmount() {
 		this.removeListener();
 	}
 
-
-	addListener (choice) {
+	addListener(choice) {
 		this.removeListener();
 
-		const {choice:propChoice} = this.props;
+		const { choice: propChoice } = this.props;
 		const listenTo = choice || propChoice;
 
 		if (listenTo) {
@@ -104,17 +99,15 @@ export default class Choice extends React.Component {
 		}
 	}
 
-
-	removeListener () {
-		const {choice} = this.props;
+	removeListener() {
+		const { choice } = this.props;
 
 		if (choice) {
 			choice.removeListener('focus', this.doFocus);
 		}
 	}
 
-
-	doFocus = (where) => {
+	doFocus = where => {
 		if (this.editorRef) {
 			if (where && this.editorRef[where]) {
 				this.editorRef[where]();
@@ -122,25 +115,22 @@ export default class Choice extends React.Component {
 				this.editorRef.focus();
 			}
 		}
-	}
-
+	};
 
 	focusToEnd = () => {
-		if(this.editorRef) {
+		if (this.editorRef) {
 			this.editorRef.focusToEnd();
 		}
-	}
-
+	};
 
 	syncHeight = () => {
 		if (this.syncRef && this.syncRef.updateHeight) {
 			this.syncRef.updateHeight();
 		}
-	}
+	};
 
-
-	onChange = (label) => {
-		const {onChange, choice:oldChoice} = this.props;
+	onChange = label => {
+		const { onChange, choice: oldChoice } = this.props;
 
 		if (onChange) {
 			let newChoice = oldChoice.clone();
@@ -148,48 +138,42 @@ export default class Choice extends React.Component {
 
 			onChange(newChoice);
 		}
-	}
+	};
 
-
-	onEditorFocus = (editor) => {
+	onEditorFocus = editor => {
 		this.setState({
-			selectableValue: new ControlsConfig(editor)
+			selectableValue: new ControlsConfig(editor),
 		});
-	}
-
+	};
 
 	onDelete = () => {
-		const {onDelete} = this.props;
+		const { onDelete } = this.props;
 
 		if (onDelete) {
 			onDelete();
 		}
-	}
-
+	};
 
 	onTabKey = () => {
-		const {focusNext, choice} = this.props;
+		const { focusNext, choice } = this.props;
 
 		return focusNext && focusNext(choice);
-	}
-
+	};
 
 	onShiftTabKey = () => {
-		const {focusPrev, choice} = this.props;
+		const { focusPrev, choice } = this.props;
 
 		return focusPrev && focusPrev(choice);
-	}
-
+	};
 
 	onEnterKey = () => {
-		const {insertNewChoiceAfter, choice} = this.props;
+		const { insertNewChoiceAfter, choice } = this.props;
 
 		return insertNewChoiceAfter && insertNewChoiceAfter(choice);
-	}
-
+	};
 
 	onBackspaceKey = () => {
-		const {maybeDeleteRow, choice} = this.props;
+		const { maybeDeleteRow, choice } = this.props;
 		const value = this.editorRef.getValue();
 
 		if (!value && maybeDeleteRow) {
@@ -197,28 +181,46 @@ export default class Choice extends React.Component {
 		}
 
 		return false;
-	}
+	};
 
-
-	render () {
-		const {className, choice, heightSyncGroup, onDelete, error} = this.props;
-		const {selectableId, selectableValue} = this.state;
-		const cls = cx(className, 'input-type-choice', {error, correct: choice.correct});
+	render() {
+		const {
+			className,
+			choice,
+			heightSyncGroup,
+			onDelete,
+			error,
+		} = this.props;
+		const { selectableId, selectableValue } = this.state;
+		const cls = cx(className, 'input-type-choice', {
+			error,
+			correct: choice.correct,
+		});
 
 		return (
-			<Selectable className={cls} id={selectableId} value={selectableValue}>
+			<Selectable
+				className={cls}
+				id={selectableId}
+				value={selectableValue}
+			>
 				<DragHandle className="choice-drag-handle hide-when-saving" />
 				<SyncHeight ref={this.setSyncRef} group={heightSyncGroup}>
 					{this.renderEditor()}
 				</SyncHeight>
-				{onDelete && (<div className="delete hide-when-saving" onClick={this.onDelete}><i className="icon-remove" title="Delete Row"/></div>)}
+				{onDelete && (
+					<div
+						className="delete hide-when-saving"
+						onClick={this.onDelete}
+					>
+						<i className="icon-remove" title="Delete Row" />
+					</div>
+				)}
 			</Selectable>
 		);
 	}
 
-
-	renderEditor () {
-		const {choice, error} = this.props;
+	renderEditor() {
+		const { choice, error } = this.props;
 
 		return (
 			<BufferedTextEditor
@@ -234,7 +236,7 @@ export default class Choice extends React.Component {
 					[getKeyCode.TAB]: this.onTabKey,
 					[getKeyCode.SHIFT_TAB]: this.onShiftTabKey,
 					[getKeyCode.ENTER]: this.onEnterKey,
-					[getKeyCode.BACKSPACE]: this.onBackspaceKey
+					[getKeyCode.BACKSPACE]: this.onBackspaceKey,
 				}}
 			/>
 		);
@@ -242,14 +244,16 @@ export default class Choice extends React.Component {
 }
 
 Placeholder.propTypes = {
-	correct: PropTypes.bool
+	correct: PropTypes.bool,
 };
-export function Placeholder ({correct}) {
+export function Placeholder({ correct }) {
 	return (
-		<div className={cx('input-type-choice', 'placeholder', {correct})}>
+		<div className={cx('input-type-choice', 'placeholder', { correct })}>
 			<DragHandle className="choice-drag-handle" force />
 			<div className="placeholder-text" />
-			<div className="delete hide-when-saving"><i className="icon-remove" title="Delete Row" /></div>
+			<div className="delete hide-when-saving">
+				<i className="icon-remove" title="Delete Row" />
+			</div>
 		</div>
 	);
 }

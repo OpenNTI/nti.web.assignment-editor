@@ -2,7 +2,7 @@ import './Settings.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {RadioGroup, DialogButtons, TokenEditor} from '@nti/web-commons';
+import { RadioGroup, DialogButtons, TokenEditor } from '@nti/web-commons';
 
 import Suggestions from './Suggestions';
 
@@ -13,84 +13,86 @@ const WILDCARD = '*';
 const WILDCARDS = x => x !== WILDCARD;
 
 export default class Settings extends React.Component {
-
 	static propTypes = {
 		onDismiss: PropTypes.func,
 		onSave: PropTypes.func,
-		part: PropTypes.object.isRequired
-	}
+		part: PropTypes.object.isRequired,
+	};
 
-	constructor (props) {
+	constructor(props) {
 		super(props);
 		this.state = this.setup();
 	}
 
-	componentDidUpdate (prevProps) {
+	componentDidUpdate(prevProps) {
 		if (prevProps.part !== this.props.part) {
 			this.setup();
 		}
 	}
 
-	setup (props = this.props) {
+	setup(props = this.props) {
 		const setState = this.state ? x => this.setState(x) : x => x;
-		const {part} = props;
+		const { part } = props;
 		const extensions = part.allowed_extensions || [];
 		return setState({
 			extensions: extensions.filter(WILDCARDS),
-			selectedRadio: extensions.filter(WILDCARDS).length > 0 ? SPECIFIC_TYPES : ALL_TYPES
+			selectedRadio:
+				extensions.filter(WILDCARDS).length > 0
+					? SPECIFIC_TYPES
+					: ALL_TYPES,
 		});
 	}
 
 	cancel = () => {
 		this.props.onDismiss();
-	}
+	};
 
 	save = () => {
-		if(this.props.onSave(this.value())) {
+		if (this.props.onSave(this.value())) {
 			this.props.onDismiss();
 		}
-	}
+	};
 
-	value () {
-		const {extensions, selectedRadio: option} = this.state;
+	value() {
+		const { extensions, selectedRadio: option } = this.state;
 		const fileExtensions = option === ALL_TYPES ? [WILDCARD] : extensions;
 		return {
-			fileExtensions
+			fileExtensions,
 		};
 	}
 
-	onRadioChange = (value) => {
+	onRadioChange = value => {
 		this.setState({
-			selectedRadio: value
+			selectedRadio: value,
 		});
-	}
+	};
 
 	activateSpecific = () => {
 		this.setState({
-			selectedRadio: SPECIFIC_TYPES
+			selectedRadio: SPECIFIC_TYPES,
 		});
-	}
+	};
 
-	preprocessToken (token) {
+	preprocessToken(token) {
 		if (!token.startsWith('.')) {
 			token = '.' + token;
 		}
 		return token.toLowerCase();
 	}
 
-	onTokenChange = (values) => {
-		this.setState({extensions: values});
-	}
+	onTokenChange = values => {
+		this.setState({ extensions: values });
+	};
 
-	onSuggestionSelect = (value) => {
-		const {extensions: values} = this.state;
-		this.setState({extensions: [...values, value]});
-	}
+	onSuggestionSelect = value => {
+		const { extensions: values } = this.state;
+		this.setState({ extensions: [...values, value] });
+	};
 
-	render () {
-		const {extensions = [], selectedRadio} = this.state;
+	render() {
+		const { extensions = [], selectedRadio } = this.state;
 		const fileExtensionsClasses = cx({
-			'disabled': selectedRadio === ALL_TYPES
+			disabled: selectedRadio === ALL_TYPES,
 		});
 
 		return (
@@ -101,7 +103,8 @@ export default class Settings extends React.Component {
 				</div>
 				<div className="content">
 					<form>
-						<RadioGroup name="accepted-file-types"
+						<RadioGroup
+							name="accepted-file-types"
 							onChange={this.onRadioChange}
 							options={[ALL_TYPES, SPECIFIC_TYPES]}
 							initialValue={selectedRadio}
@@ -120,18 +123,20 @@ export default class Settings extends React.Component {
 						/>
 					</form>
 				</div>
-				<DialogButtons flat buttons={[
-					{
-						label: 'Cancel',
-						onClick: this.cancel
-					},
-					{
-						label: 'Save',
-						onClick: this.save
-					}
-				]} />
+				<DialogButtons
+					flat
+					buttons={[
+						{
+							label: 'Cancel',
+							onClick: this.cancel,
+						},
+						{
+							label: 'Save',
+							onClick: this.save,
+						},
+					]}
+				/>
 			</div>
 		);
 	}
-
 }

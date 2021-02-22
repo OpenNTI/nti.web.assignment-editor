@@ -2,18 +2,18 @@ import './View.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
-import {Error, Loading, ControlBar} from '@nti/web-commons';
-import {PropType as NTIID} from '@nti/lib-ntiids';
+import { Error, Loading, ControlBar } from '@nti/web-commons';
+import { PropType as NTIID } from '@nti/lib-ntiids';
 
-import {Manager as SelectionManager} from '../selection';
+import { Manager as SelectionManager } from '../selection';
 
 import FixedElement from './utils/FixedElement';
 import AssignmentEditor from './Editor';
 import Controls from './controls';
 import Sidebar from './sidebar';
-import {LOADED, ASSIGNMENT_DELETING, ASSIGNMENT_DELETED} from './Constants';
+import { LOADED, ASSIGNMENT_DELETING, ASSIGNMENT_DELETED } from './Constants';
 import Store from './Store';
-import {loadAssignmentWithCourse, freeAssignment} from './Actions';
+import { loadAssignmentWithCourse, freeAssignment } from './Actions';
 import NotFound from './NotFound';
 import * as ConflictResolution from './conflict-resolution';
 
@@ -26,37 +26,33 @@ export default class Editor extends React.Component {
 		onDeleted: PropTypes.func,
 		gotoRoot: PropTypes.func,
 		previewAssignment: PropTypes.func,
-		pageSource: PropTypes.object
-	}
-
+		pageSource: PropTypes.object,
+	};
 
 	static childContextTypes = {
 		SelectionManager: PropTypes.shape({
 			select: PropTypes.func,
-			unselect: PropTypes.func
-		})
-	}
+			unselect: PropTypes.func,
+		}),
+	};
 
-	state = {}
+	state = {};
 
-	attachSidebarRef = x => this.sidebar = x
+	attachSidebarRef = x => (this.sidebar = x);
 
-
-	componentDidMount () {
-		const {assignmentId, courseId} = this.props;
+	componentDidMount() {
+		const { assignmentId, courseId } = this.props;
 
 		ConflictResolution.register();
 		Store.addChangeListener(this.onStoreChange);
 		loadAssignmentWithCourse(assignmentId, courseId);
 	}
 
-
-	componentWillUnmount () {
+	componentWillUnmount() {
 		freeAssignment(Store.assignment);
 		ConflictResolution.unregister();
 		Store.removeChangeListener(this.onStoreChange);
 	}
-
 
 	onWindowScroll = () => {
 		const top = global.scrollY;
@@ -64,11 +60,10 @@ export default class Editor extends React.Component {
 		if (this.sidebarDOM) {
 			this.sidebarDOM.style.transform = `translate3d(0, ${top}px, 0)`;
 		}
-	}
+	};
 
-
-	onStoreChange = (data) => {
-		const {onDeleted} = this.props;
+	onStoreChange = data => {
+		const { onDeleted } = this.props;
 
 		if (data.type === LOADED) {
 			this.forceUpdate();
@@ -79,24 +74,25 @@ export default class Editor extends React.Component {
 				onDeleted();
 			}
 		}
-	}
+	};
 
-
-	getChildContext () {
+	getChildContext() {
 		return {
-			SelectionManager: selectionManager
+			SelectionManager: selectionManager,
 		};
 	}
 
-
-	render () {
-		const {undoStack} = Store;
-		const {gotoRoot, pageSource, previewAssignment} = this.props;
-		const {deleting} = this.state;
-		const {assignment, course, loadError: error, schema} = Store;
+	render() {
+		const { undoStack } = Store;
+		const { gotoRoot, pageSource, previewAssignment } = this.props;
+		const { deleting } = this.state;
+		const { assignment, course, loadError: error, schema } = Store;
 		const readOnly = assignment && !assignment.getLink('edit');
 
-		if ((Store.isLoaded && !assignment) || (error && error.statusCode === 404)) {
+		if (
+			(Store.isLoaded && !assignment) ||
+			(error && error.statusCode === 404)
+		) {
 			return this.renderFailedToLoad();
 		}
 
@@ -104,7 +100,9 @@ export default class Editor extends React.Component {
 			return this.renderError(error || 'No Assignment');
 		}
 
-		let cls = cx('assignment-editor-container', {loading: !Store.isLoaded});
+		let cls = cx('assignment-editor-container', {
+			loading: !Store.isLoaded,
+		});
 
 		return (
 			<div className={cls}>
@@ -122,11 +120,21 @@ export default class Editor extends React.Component {
 						/>
 						<div className="assignment-editing-sidebar-column">
 							<FixedElement className="assignment-editing-sidebar-fixed">
-								<Sidebar ref={this.attachSidebarRef} assignment={assignment} schema={schema} readOnly={readOnly} />
+								<Sidebar
+									ref={this.attachSidebarRef}
+									assignment={assignment}
+									schema={schema}
+									readOnly={readOnly}
+								/>
 							</FixedElement>
 						</div>
 						<ControlBar visible>
-							<Controls assignment={assignment} undoStack={undoStack} previewAssignment={previewAssignment} selectionManager={selectionManager} />
+							<Controls
+								assignment={assignment}
+								undoStack={undoStack}
+								previewAssignment={previewAssignment}
+								selectionManager={selectionManager}
+							/>
 						</ControlBar>
 					</div>
 				)}
@@ -134,8 +142,7 @@ export default class Editor extends React.Component {
 		);
 	}
 
-
-	renderError (error) {
+	renderError(error) {
 		return (
 			<div className="assignment-editor-container error">
 				<Error error={error} />
@@ -143,12 +150,9 @@ export default class Editor extends React.Component {
 		);
 	}
 
+	renderFailedToLoad() {
+		const { gotoRoot } = this.props;
 
-	renderFailedToLoad () {
-		const {gotoRoot} = this.props;
-
-		return (
-			<NotFound gotoRoot={gotoRoot} />
-		);
+		return <NotFound gotoRoot={gotoRoot} />;
 	}
 }

@@ -32,7 +32,9 @@
 			color: var(--primary-red);
 		}
 
-		.publish-label, .draft-label, .schedule-label {
+		.publish-label,
+		.draft-label,
+		.schedule-label {
 			font-size: 0.875rem;
 			font-weight: 300;
 		}

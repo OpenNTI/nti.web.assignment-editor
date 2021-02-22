@@ -1,4 +1,4 @@
-@import "~@nti/style-common";
+@import '~@nti/style-common';
 
 .ordering-editor-choices {
 	.ordering-item:first-of-type {
@@ -38,7 +38,8 @@
 			display: none;
 		}
 
-		.nti-rich-text, .nti-buffered-text-editor {
+		.nti-rich-text,
+		.nti-buffered-text-editor {
 			border: none;
 		}
 
