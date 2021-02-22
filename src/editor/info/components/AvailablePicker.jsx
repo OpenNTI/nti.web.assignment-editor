@@ -36,8 +36,8 @@ export default class AvailablePicker extends React.Component {
 	setFlyoutRef = x => (this.flyoutRef = x);
 
 	setupValue(props = this.props) {
-		//eslint-disable-next-line react/no-direct-mutation-state
 		const setState = s =>
+			//eslint-disable-next-line react/no-direct-mutation-state
 			this.state ? this.setState(s) : (this.state = s);
 		const { value } = props;
 

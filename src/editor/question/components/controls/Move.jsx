@@ -59,8 +59,8 @@ export default class Move extends React.Component {
 	}
 
 	setup(props) {
-		//eslint-disable-next-line react/no-direct-mutation-state
 		const setState = x =>
+			//eslint-disable-next-line react/no-direct-mutation-state
 			this.state ? this.setState(x) : (this.state = x);
 		const { questionSet, question, type, disabled: isDisabled } = props;
 

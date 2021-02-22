@@ -33,8 +33,8 @@ export default class QuestionSetComponent extends React.Component {
 	}
 
 	setup = (props = this.props) => {
-		//eslint-disable-next-line react/no-direct-mutation-state
 		const setState = x =>
+			//eslint-disable-next-line react/no-direct-mutation-state
 			this.state ? this.setState(x) : (this.state = x);
 
 		const { questionSet } = props;

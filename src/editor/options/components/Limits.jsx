@@ -48,8 +48,8 @@ class Limits extends React.Component {
 	setLimitInputRef = x => (this.limitInputRef = x);
 
 	setupValue(props = this.props) {
-		//eslint-disable-next-line react/no-direct-mutation-state
 		const setState = (s, cb) =>
+			//eslint-disable-next-line react/no-direct-mutation-state
 			this.state ? this.setState(s, cb) : ((this.state = s), cb());
 		const { questionSet } = props;
 		const { draw } = questionSet || {};
