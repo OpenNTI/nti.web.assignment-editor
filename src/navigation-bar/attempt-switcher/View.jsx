@@ -52,7 +52,7 @@ export default class AssignmentNavigationAttemptSwitcher extends React.Component
 				ref={this.attachFlyout}
 				trigger={this.renderTrigger(active)}
 				verticalAlign={Flyout.ALIGNMENTS.ALIGN_BOTTOM}
-				horizontalAlgin={Flyout.ALIGNMENTS.ALIGN_LEFT}
+				horizontalAlign={Flyout.ALIGNMENTS.ALIGN_LEFT}
 				sizing={Flyout.SIZES.MATCH_SIDE}
 			>
 				<ul className="assignment-navigation-bar-attempt-switcher">
