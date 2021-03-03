@@ -64,7 +64,7 @@
 			&.open {
 				ul {
 					max-height: 12rem;
-					overflow-y: scroll;
+					overflow-y: auto;
 				}
 
 				.option-label.selected {
