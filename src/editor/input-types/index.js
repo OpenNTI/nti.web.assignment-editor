@@ -1,4 +1,5 @@
 import React from 'react';
+
 import Logger from '@nti/util-logger';
 
 import ModeledContent from './modeled-content';

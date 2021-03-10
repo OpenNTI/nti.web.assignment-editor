@@ -2,6 +2,7 @@ import './View.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+
 import { Error, Loading, ControlBar } from '@nti/web-commons';
 import { PropType as NTIID } from '@nti/lib-ntiids';
 

@@ -2,6 +2,7 @@ import './Choice.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+
 import { Radio, Checkbox } from '@nti/web-commons';
 
 import Choice, { Placeholder as ChoicePlaceholder } from '../choices/Choice';

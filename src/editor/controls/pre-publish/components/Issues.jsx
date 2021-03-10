@@ -2,9 +2,10 @@ import './Issues.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
+import { orderBy } from 'natural-orderby';
+
 import { scoped } from '@nti/lib-locale';
 import { Errors, DialogButtons } from '@nti/web-commons';
-import { orderBy } from 'natural-orderby';
 
 const {
 	Field: { List: ErrorList },

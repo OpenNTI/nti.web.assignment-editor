@@ -1,6 +1,7 @@
 import './Attempts.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import { scoped } from '@nti/lib-locale';
 import { HOC, Select } from '@nti/web-commons';
 

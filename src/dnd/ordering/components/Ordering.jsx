@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import FlipMove from 'react-flip-move';
 import cx from 'classnames';
 import { v4 as guid } from 'uuid';
+
 import Logger from '@nti/util-logger';
 import { wait } from '@nti/lib-commons';
 

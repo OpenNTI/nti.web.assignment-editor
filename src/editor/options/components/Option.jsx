@@ -1,8 +1,9 @@
 import './Option.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, Radio } from '@nti/web-commons';
 import cx from 'classnames';
+
+import { Checkbox, Radio } from '@nti/web-commons';
 
 export default class Option extends React.Component {
 	static propTypes = {

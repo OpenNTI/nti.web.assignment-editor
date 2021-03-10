@@ -2,6 +2,7 @@ import './Editor.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import filesize from 'filesize';
+
 import { Prompt } from '@nti/web-commons';
 import { scoped } from '@nti/lib-locale';
 

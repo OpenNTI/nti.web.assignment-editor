@@ -1,6 +1,7 @@
 import './Editor.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
+
 import Logger from '@nti/util-logger';
 
 import { canAddPart, canMovePart, canRemovePart } from '../utils';

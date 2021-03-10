@@ -2,8 +2,9 @@ import './Editor.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { scoped } from '@nti/lib-locale';
 import cx from 'classnames';
+
+import { scoped } from '@nti/lib-locale';
 import { StickyElement, StickyContainer, Panels } from '@nti/web-commons';
 
 import AssignmentContent from './assignment-content';
