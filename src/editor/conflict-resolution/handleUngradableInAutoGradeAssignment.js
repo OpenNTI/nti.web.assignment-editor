@@ -30,11 +30,11 @@ export default function handleUngradableInAutoGradeAssignment(challenge) {
 	})
 		.then(() => challenge.confirm())
 		.then(refresh)
-		.catch(() => {
+		.catch(async reason => {
 			if (assignment) {
-				return wait
-					.on(refresh())
-					.then(() => (challenge.reject(), Promise.reject()));
+				await wait.on(refresh());
+				challenge.reject();
+				throw reason;
 			}
 		});
 }

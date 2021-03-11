@@ -26,7 +26,7 @@ function insertAt(assignment, part, index, question, delaySave) {
 
 	if (!questionSet) {
 		logger.error('Unknown state, assignment part without questionSet!!!');
-		save = Promise.reject();
+		save = Promise.reject(new Error('Unknown state'));
 	} else if (!orderedContents.canEdit) {
 		save = Promise.reject(
 			new Error('Unable to edit question set, dropping it on the floor')
