@@ -18,7 +18,6 @@ import { REVERT_ERRORS } from '../../Constants';
 
 const logger = Logger.get('lib:asssignment-editor:TimeLimit');
 
-const TIME_LIMIT_KEY = 'maximum_time_allowed';
 const { ItemChanges } = HOC;
 
 class TimeLimit extends React.Component {
@@ -59,8 +58,8 @@ class TimeLimit extends React.Component {
 	setup = (props = this.props) => {
 		const setState = this.state ? x => this.setState(x) : x => x;
 		const { assignment } = props;
-		const value = assignment[TIME_LIMIT_KEY] || 0;
-		const hasTimeLimit = assignment[TIME_LIMIT_KEY] != null;
+		const value = assignment.MaximumTimeAllowed || 0;
+		const hasTimeLimit = assignment.MaximumTimeAllowed != null;
 		return setState({
 			value,
 			hasTimeLimit,
@@ -110,7 +109,7 @@ class TimeLimit extends React.Component {
 		assignment
 			.save(
 				{
-					[TIME_LIMIT_KEY]: hasTimeLimit ? value : null,
+					MaximumTimeAllowed: hasTimeLimit ? value : null,
 				},
 				void 0,
 				'maximum-time-allowed'
