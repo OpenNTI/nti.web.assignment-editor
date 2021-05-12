@@ -109,8 +109,7 @@ class TimeLimit extends React.Component {
 		assignment
 			.save(
 				{
-					// the server needs to edit this field
-					maximum_time_allowed: hasTimeLimit ? value : null,
+					MaximumTimeAllowed: hasTimeLimit ? value : null,
 				},
 				void 0,
 				'maximum-time-allowed'
