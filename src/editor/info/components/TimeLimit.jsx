@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
+import { Models } from '@nti/lib-interfaces';
 import Logger from '@nti/util-logger';
 import {
 	Checkbox,
@@ -16,13 +17,15 @@ import {
 import store from '../../Store';
 import { REVERT_ERRORS } from '../../Constants';
 
-const logger = Logger.get('lib:asssignment-editor:TimeLimit');
+const logger = Logger.get('assignment-editor:TimeLimit');
 
 const { ItemChanges } = HOC;
 
+const { Assignment, TimedAssignment } = Models.assessment.assignment;
+
 class TimeLimit extends React.Component {
 	static propTypes = {
-		assignment: PropTypes.object.isRequired,
+		assignment: PropTypes.instanceOf(Assignment).isRequired,
 	};
 
 	static getItem(props) {
@@ -97,37 +100,47 @@ class TimeLimit extends React.Component {
 		this.setup();
 	};
 
-	save = () => {
+	save = async () => {
 		const { assignment } = this.props;
 		const { value, hasTimeLimit } = this.state;
+
+		const target =
+			assignment instanceof TimedAssignment
+				? assignment
+				: TimedAssignment.fromAssignment(assignment);
 
 		this.setState({
 			saving: true,
 			error: null,
 		});
 
-		assignment
-			.save(
+		try {
+			await target.save(
 				{
 					MaximumTimeAllowed: hasTimeLimit ? value : null,
 				},
 				void 0,
 				'maximum-time-allowed'
-			)
-			.then(() => {
-				this.setState({
-					changed: false,
-					saving: false,
-				});
-				this.flyout.dismiss();
-			})
-			.catch(error => {
-				logger.error(error);
-				this.setState({
-					error,
-					saving: false,
-				});
+			);
+
+			if (target !== assignment) {
+				await assignment.refresh(target);
+			}
+
+			this.setState({
+				changed: false,
 			});
+			this.flyout.dismiss();
+		} catch (error) {
+			logger.error(error);
+			this.setState({
+				error,
+			});
+		} finally {
+			this.setState({
+				saving: false,
+			});
+		}
 	};
 
 	render() {
