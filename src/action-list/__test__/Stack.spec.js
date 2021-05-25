@@ -1,4 +1,3 @@
-/* globals spyOn */
 /* eslint-env jest */
 import Stack from '../Stack';
 
@@ -56,7 +55,7 @@ describe('Action Stack Tests', () => {
 
 			queue = new Stack({ maxVisible: 2 });
 
-			spyOn(listeners, 'changed');
+			jest.spyOn(listeners, 'changed');
 
 			queue.addListener('changed', listeners.changed);
 		});
@@ -126,7 +125,7 @@ describe('Action Stack Tests', () => {
 
 			queue = new Stack({ maxVisible: 2, keepFor: 250 });
 
-			spyOn(listeners, 'changed');
+			jest.spyOn(listeners, 'changed');
 
 			queue.addListener('changed', listeners.changed);
 		});

@@ -1,4 +1,3 @@
-/* globals spyOn */
 /* eslint-env jest */
 import { saveFieldOn } from '../Actions';
 
@@ -15,7 +14,7 @@ describe('Assignment Editor Action Tests', () => {
 				},
 			};
 
-			spyOn(assignment, 'save').and.callThrough();
+			jest.spyOn(assignment, 'save');
 		});
 
 		test('Saving the same value does NOT call save', () => {
