@@ -142,6 +142,10 @@ export default class Choice extends React.Component {
 	};
 
 	onEditorFocus = editor => {
+		const { choice } = this.props;
+
+		choice.onFocus();
+
 		this.setState({
 			selectableValue: new ControlsConfig(editor),
 		});
@@ -185,13 +189,8 @@ export default class Choice extends React.Component {
 	};
 
 	render() {
-		const {
-			className,
-			choice,
-			heightSyncGroup,
-			onDelete,
-			error,
-		} = this.props;
+		const { className, choice, heightSyncGroup, onDelete, error } =
+			this.props;
 		const { selectableId, selectableValue } = this.state;
 		const cls = cx(className, 'input-type-choice', {
 			error,

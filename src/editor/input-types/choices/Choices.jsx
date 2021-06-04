@@ -226,8 +226,6 @@ export default class Choices extends React.Component {
 			rows = column.reduce((acc, cell, index) => {
 				let accVal = acc[index];
 
-				cell.isNew = false;
-
 				if (!accVal) {
 					acc[index] = cell;
 				} else if (!Array.isArray(accVal)) {
@@ -350,10 +348,13 @@ export default class Choices extends React.Component {
 
 		this.setUpHandlers(columns, deletes);
 
-		this.setState({
-			columns,
-			deletes,
-		});
+		this.setState(
+			{
+				columns,
+				deletes,
+			},
+			() => this.onChange()
+		);
 
 		return true;
 	};
