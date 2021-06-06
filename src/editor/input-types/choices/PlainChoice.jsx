@@ -177,6 +177,7 @@ export default class PlainChoice extends React.Component {
 
 	onInputFocus = () => {
 		this.isFocused = true;
+		this.props?.choice.onFocus?.();
 	};
 
 	onInputBlur = () => {
