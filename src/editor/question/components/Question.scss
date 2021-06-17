@@ -111,6 +111,11 @@
 			}
 		}
 
+		&.is-placeholder {
+			pointer-events: none;
+			opacity: 0.5;
+		}
+
 		&.is-visible:not(.in-modal) {
 			cursor: pointer;
 

@@ -323,6 +323,7 @@ export default class Question extends React.Component {
 		} = this.state;
 		const cls = cx('question-editor', {
 			'is-saving': question.isSaving && !modal,
+			'is-placeholder': question.isPlaceholder && !modal,
 			error: contentError || questionError || question.error,
 			'saving-mask': savingMask,
 			'in-modal': modal,
