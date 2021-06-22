@@ -36,7 +36,7 @@ export function cloneQuestion(question) {
 	const savingValues = (question.saving && question.saving.values) || {};
 	const { parts, MimeType, PublicationState, content } = question;
 
-	return {
+	const clone = {
 		MimeType,
 		PublicationState,
 		content: savingValues.content || content,
@@ -44,4 +44,14 @@ export function cloneQuestion(question) {
 			? savingValues.parts.map(clonePart)
 			: parts.map(clonePart),
 	};
+
+	if (question.isPlaceholder) {
+		Object.defineProperties(clone, {
+			isPlaceholder: {
+				value: true,
+			},
+		});
+	}
+
+	return clone;
 }
