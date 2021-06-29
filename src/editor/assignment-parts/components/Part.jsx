@@ -4,33 +4,26 @@ import PropTypes from 'prop-types';
 import QuestionSet from './QuestionSet';
 import Placeholder from './PlaceholderQuestionSet';
 
-export default class AssignmentPart extends React.Component {
-	static propTypes = {
-		part: PropTypes.object.isRequired,
-		assignment: PropTypes.object.isRequired,
-		course: PropTypes.object,
-	};
+AssignmentPart.propTypes = {
+	part: PropTypes.object.isRequired,
+	assignment: PropTypes.object.isRequired,
+	course: PropTypes.object,
+};
 
-	constructor(props) {
-		super(props);
-
-		this.state = {};
+export default function AssignmentPart({
+	part: { question_set: questionSet },
+	assignment,
+	course,
+}) {
+	if (!assignment.isModifiable || typeof questionSet === 'string') {
+		return <Placeholder />;
 	}
 
-	render() {
-		const { part, assignment, course } = this.props;
-		const questionSet = part.question_set;
-
-		if (!assignment.isModifiable) {
-			return <Placeholder />;
-		}
-
-		return (
-			<QuestionSet
-				questionSet={questionSet}
-				assignment={assignment}
-				course={course}
-			/>
-		);
-	}
+	return (
+		<QuestionSet
+			questionSet={questionSet}
+			assignment={assignment}
+			course={course}
+		/>
+	);
 }

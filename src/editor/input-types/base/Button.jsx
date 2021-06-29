@@ -17,7 +17,7 @@ const getTypes = x =>
 const getCountInQuestion = (question, types) =>
 	Array.from(question || []).reduce(
 		(acc, part) =>
-			part && types[part.MimeType.toLowerCase()] ? acc + 1 : acc,
+			part && types[part.MimeType?.toLowerCase?.()] ? acc + 1 : acc,
 		0
 	);
 
