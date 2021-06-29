@@ -15,6 +15,9 @@ export default function AssignmentPart({
 	assignment,
 	course,
 }) {
+	// If questionSet is a string (ntiid) we wait, on the assumption that
+	// it's an ntiid and will be resolved in a subsequent render. See NTI-10788
+	// for an edge case where this occurs.
 	if (!assignment.isModifiable || typeof questionSet === 'string') {
 		return <Placeholder />;
 	}
