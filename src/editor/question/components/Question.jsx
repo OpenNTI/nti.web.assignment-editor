@@ -51,7 +51,7 @@ function isKnownPartError(error) {
 
 function isLastQuestion(question, questionSet) {
 	const { questions } = questionSet;
-	const last = questions[questions.length - 1];
+	const last = questions?.length && questions[questions.length - 1];
 
 	return last && last.NTIID === question.NTIID;
 }
