@@ -10,8 +10,8 @@ import {
 	Flyout,
 	LabeledValue,
 	Loading,
-	Button,
 } from '@nti/web-commons';
+import { Button } from '@nti/web-core';
 
 export default class AvailablePicker extends React.Component {
 	static propTypes = {

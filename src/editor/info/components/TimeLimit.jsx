@@ -11,8 +11,8 @@ import {
 	Flyout,
 	LabeledValue,
 	HOC,
-	Button,
 } from '@nti/web-commons';
+import { Button } from '@nti/web-core';
 
 import store from '../../Store';
 import { REVERT_ERRORS } from '../../Constants';

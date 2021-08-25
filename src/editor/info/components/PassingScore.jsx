@@ -12,8 +12,8 @@ import {
 	LabeledValue,
 	Loading,
 	Prompt,
-	Button,
 } from '@nti/web-commons';
+import { Button } from '@nti/web-core';
 
 const { SaveCancel } = Prompt;
 

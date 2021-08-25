@@ -2,7 +2,8 @@ import './View.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Loading, Errors, HOC, Button } from '@nti/web-commons';
+import { Loading, Errors, HOC } from '@nti/web-commons';
+import { Button } from "@nti/web-core";
 import { scoped } from '@nti/lib-locale';
 
 import Store from '../../Store';
