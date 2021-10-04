@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Loading, Errors, HOC } from '@nti/web-commons';
-import { Button } from "@nti/web-core";
+import { Button } from '@nti/web-core';
 import { scoped } from '@nti/lib-locale';
 
 import Store from '../../Store';
@@ -77,8 +77,8 @@ export default class DiscussionAssignment extends React.Component {
 	onAssignmentMessages() {
 		const { assignment } = this.props;
 		const { NTIID } = assignment;
-		const error = Store.getErrorFor(NTIID, 'discussion_ntiid');
-		const warning = Store.getWarningFor(NTIID, 'discussion_ntiid');
+		const error = Store.getErrorFor(NTIID, 'discussionId');
+		const warning = Store.getWarningFor(NTIID, 'discussionId');
 
 		this.setState({
 			error,
@@ -176,7 +176,7 @@ export default class DiscussionAssignment extends React.Component {
 
 	renderDiscussion = discussion => {
 		const { course, assignment } = this.props;
-		const { discussion_ntiid: activeNTIID } = assignment;
+		const { discussionId: activeNTIID } = assignment;
 		const selected = discussion.NTIID === activeNTIID;
 
 		return (

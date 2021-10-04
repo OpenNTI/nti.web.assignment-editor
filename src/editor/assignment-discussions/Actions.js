@@ -9,12 +9,12 @@ import {
 } from '../Constants';
 
 export function warnIfDiscussionEmpty(assignment) {
-	const { discussion_ntiid: discussionID } = assignment;
+	const { discussionId } = assignment;
 
-	if (!assignment.isSaving && !discussionID) {
+	if (!assignment.isSaving && !discussionId) {
 		dispatch(ASSIGNMENT_WARNING, {
 			NTIID: assignment.NTIID,
-			field: 'discussion_ntiid',
+			field: 'discussionId',
 			reason: {
 				message: 'Discussion cannot be blank.',
 			},
@@ -23,7 +23,7 @@ export function warnIfDiscussionEmpty(assignment) {
 }
 
 export function setDiscussionOnAssignment(discussionID, assignment) {
-	const { discussion_ntiid: current } = assignment;
+	const { discussionId: current } = assignment;
 
 	if (current === discussionID) {
 		return Promise.resolve();
@@ -41,7 +41,7 @@ export function setDiscussionOnAssignment(discussionID, assignment) {
 		.catch(reason => {
 			dispatch(ASSIGNMENT_ERROR, {
 				NTIID: assignment.NTIID,
-				field: 'discussion_ntiid',
+				field: 'discussionId',
 				reason,
 			});
 
