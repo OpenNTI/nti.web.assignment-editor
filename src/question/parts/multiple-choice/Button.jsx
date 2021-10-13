@@ -1,4 +1,3 @@
-import React from 'react';
 
 import Part from '../../../editor/input-types/multiple-choice/';
 import Button from '../components/Buttons';

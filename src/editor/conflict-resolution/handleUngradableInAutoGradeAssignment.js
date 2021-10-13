@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { ConflictResolution, Prompt } from '@nti/web-commons';
 import { wait } from '@nti/lib-commons';

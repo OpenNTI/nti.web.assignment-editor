@@ -111,7 +111,7 @@ export default class ActionStack extends EventEmitter {
 	/**
 	 * @callback OnCallback
 	 * @param {*} someparam
-	 * @return {void}
+	 * @returns {void}
 	 */
 
 	/**
@@ -120,9 +120,8 @@ export default class ActionStack extends EventEmitter {
 	 * If the stack is at the max depth, remove the oldest item.
 	 * Start a timer to remove it after the keep for timeout has passed.
 	 *
-
 	 *
-	 * @param  {Objcet|string} action - the action to push
+	 * @param  {object|string} action - the action to push
 	 * @param  {OnCallback} action.onComplete - Function to call when the user completes the action,
 	 * @param  {OnCallback} action.onTimeout - Function to call when the timer to do the action runs out,
 	 * @param  {string} action.label - String that gets displayed to identify the action,

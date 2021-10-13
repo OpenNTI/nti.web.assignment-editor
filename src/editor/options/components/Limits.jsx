@@ -97,6 +97,7 @@ class Limits extends React.Component {
 	/**
 	 * Upon typing in the limit input field, update the draw number to reflect the new value.
 	 * This is not yet gone to the server to be saved.
+	 *
 	 * @param {number} value draw?
 	 * @returns {void}
 	 */
@@ -109,6 +110,7 @@ class Limits extends React.Component {
 
 	/**
 	 * Upon clicking the portion checkbox, set it as checked.
+	 *
 	 * @returns {void}
 	 */
 	onLimitSelect = () => {
