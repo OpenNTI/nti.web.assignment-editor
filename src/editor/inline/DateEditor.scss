@@ -11,14 +11,14 @@
 			}
 		}
 
-		.TimePicker {
+		.time-picker {
 			.time {
-				opacity: 0.25;
+				opacity: 25%;
 			}
 		}
 
 		.set-current-date {
-			opacity: 0.25;
+			opacity: 25%;
 
 			a {
 				pointer-events: none;
@@ -73,7 +73,7 @@
 
 					&::before {
 						content: '\221A';
-						font-family: 'icomoon', serif !important;
+						font-family: icomoon, serif !important;
 						font-size: 18px;
 						position: absolute;
 						left: 10px;
@@ -88,7 +88,7 @@
 		padding-top: 23px;
 		margin-left: 12px;
 
-		.TimePicker {
+		.time-picker {
 			.time {
 				input.number-input-component {
 					border-radius: 3px;
