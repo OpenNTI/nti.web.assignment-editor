@@ -44,7 +44,7 @@
     "@nti/web-editor": "NextThought/nti.web.editor",
     "@nti/web-modeled-content": "NextThought/nti.web.modeled-content",
     "@nti/web-routing": "NextThought/nti.web.routing",
-    "filesize": "^8.0.0",
+    "filesize": "^9.0.0",
     "invariant": "^2.1.1",
     "jump.js": "^1.0.1",
     "natural-orderby": "^2.0.3",
