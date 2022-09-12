@@ -50,7 +50,7 @@
     "natural-orderby": "^2.0.3",
     "react-flip-move": "^3.0.0",
     "react-transition-group": "^4.2.2",
-    "uuid": "^8.3.0"
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@nti/cmp-scripts": "^2.31.8"
