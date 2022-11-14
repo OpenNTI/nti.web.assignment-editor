@@ -47,7 +47,7 @@
     "filesize": "^8.0.0",
     "invariant": "^2.1.1",
     "jump.js": "^1.0.1",
-    "natural-orderby": "^2.0.3",
+    "natural-orderby": "^3.0.1",
     "react-flip-move": "^3.0.0",
     "react-transition-group": "^4.2.2",
     "uuid": "^8.3.0"
